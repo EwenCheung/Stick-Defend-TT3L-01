@@ -1,89 +1,65 @@
 import pygame
-import sys
+from sys import exit
 
 pygame.init()
+class Button():
+    def __init__(self, image, x_pos, y_pos):
+        self.image = image
+        self.x_pos = x_pos
+        self.y_pos = y_pos
+        self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
 
-screen = pygame.display.set_mode((1000, 600))
-pygame.display.set_caption("Tower Defend")
+    def update(self):
+        screen.blit(self.image, self.rect)
 
-# Load images
-background_image = pygame.image.load('War of stick/map_bg.jpg')
-army_one = pygame.image.load('War of stick/background_photo.jpg').convert_alpha()
+    def checkForInput(self, position):
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+            print('Button press')
 
-# Initial position of the background image
-bg_x = 0
+troop_one = pygame.image.load("War of stick/background_photo.jpg")
+troop_one = pygame.transform.scale(troop_one, (100, 100))
 
-# Scrolling speed
-scroll_speed = 2
+class Game():
+    def __init__(self):
+        self.clock = pygame.time.Clock()
+        pygame.display.set_caption('Tower Defend')  # title name
+        self.screen = pygame.display.set_mode((1000, 600))
+        self.bg_x = 0
+        self.scroll_speed = 5
+        self.set_up()  # Load the background image outside the loop
 
+    def event_handling(self):
+        # Event handling
+        for event in pygame.event.get():
+            # press 'x' to quit the game
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
 
-class Button:
-    def __init__(self, x, y, image, width, height):
-        self.image = pygame.transform.scale(image, (width, height))
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (x, y)
-        self.clicked = False
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
+            self.bg_x += self.scroll_speed
+        elif keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+            self.bg_x -= self.scroll_speed
 
-    def draw(self):
-        # Mouse position
-        pos = pygame.mouse.get_pos()
+        self.bg_x = max(self.bg_x, 1000 - self.background_image.get_width())
+        self.bg_x = min(self.bg_x, 0)
 
-        # Check mouseover and click condition
-        if self.rect.collidepoint(pos):
-            if pygame.mouse.get_pressed()[0] == 1 and not self.clicked:
-                self.clicked = True
-                return True
+    def set_up(self):
+        self.background_image = pygame.image.load('War of stick/map_bg.jpg')
 
-            if pygame.mouse.get_pressed()[0] == 0:
-                self.clicked = False
+    def game_start(self):
+        self.screen.blit(self.background_image, (self.bg_x, 0))
 
-        # Draw button on screen
-        screen.blit(self.image, (self.rect.x, self.rect.y))
+    def run(self):
+        while True:
+            self.screen.fill((255, 255, 255))  # Clear screen
 
+            self.event_handling()
+            self.game_start()
 
-# Create button instance
-button_one = Button(40, 20, army_one, 40, 40)
+            pygame.display.update()  # Update the display
+            self.clock.tick(60)  # Limit frame rate to 60 FPS
 
-# Flag to keep track of whether the button has been clicked
-button_clicked = False
-
-# Main loop
-while True:
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-
-    # Get the state of all keyboard buttons
-    keys = pygame.key.get_pressed()
-
-    # Scroll the background based on keyboard input
-    if keys[pygame.K_a]:
-        bg_x += scroll_speed
-    if keys[pygame.K_d]:
-        bg_x -= scroll_speed
-
-    # Ensure the background stays within the window boundaries
-    bg_x = max(bg_x, 1000 - background_image.get_width())
-    bg_x = min(bg_x, 0)
-
-    # Draw background image
-    screen.blit(background_image, (bg_x, 0))
-
-    # Check if the button is clicked
-    if button_one.draw() and not button_clicked:
-        # If the button is clicked, draw the army image 
-        screen.blit(army_one, (100, 100))
-        # Set the button clicked status
-        button_clicked = True
-
-        # Update the display
-    pygame.display.flip()
-
-
-# mok stupid lah
-
-
-# jehukewhfoiaejfa\efjegf
-# kuaegfueak
+if __name__ == "__main__":
+    Game().run()
