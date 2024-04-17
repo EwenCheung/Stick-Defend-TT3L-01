@@ -14,10 +14,10 @@ army_one = pygame.image.load('background_photo.jpg').convert_alpha()
 bg_x = 0
 
 # Scrolling speed
-scroll_speed = 1
+scroll_speed = 2
 
-# Button class
-class Button():
+
+class Button:
     def __init__(self, x, y, image, width, height):
         self.image = pygame.transform.scale(image, (width, height))
         self.rect = self.image.get_rect()
@@ -33,12 +33,13 @@ class Button():
             if pygame.mouse.get_pressed()[0] == 1 and not self.clicked:
                 self.clicked = True
                 return True
-            
+
             if pygame.mouse.get_pressed()[0] == 0:
                 self.clicked = False
 
         # Draw button on screen
         screen.blit(self.image, (self.rect.x, self.rect.y))
+
 
 # Create button instance
 button_one = Button(40, 20, army_one, 40, 40)
@@ -70,13 +71,12 @@ while True:
     # Draw background image
     screen.blit(background_image, (bg_x, 0))
 
-        # Check if the button is clicked
+    # Check if the button is clicked
     if button_one.draw() and not button_clicked:
         # If the button is clicked, draw the army image 
-        screen.blit(army_one, (100,100))
+        screen.blit(army_one, (100, 100))
         # Set the button clicked status
-        button_clicked = True    
+        button_clicked = True
 
-  
-    # Update the display
+        # Update the display
     pygame.display.flip()
