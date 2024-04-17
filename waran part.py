@@ -80,10 +80,3 @@ while True:
 
         # Update the display
     pygame.display.flip()
-
-
-# mok stupid lah
-
-
-# jehukewhfoiaejfa\efjegf
-# kuaegfueak
