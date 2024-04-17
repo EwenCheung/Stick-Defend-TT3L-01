@@ -7,8 +7,8 @@ screen = pygame.display.set_mode((1000, 600))
 pygame.display.set_caption("Tower Defend")
 
 # Load images
-background_image = pygame.image.load('map_bg.jpg')
-army_one = pygame.image.load('background_photo.jpg').convert_alpha()
+background_image = pygame.image.load('War of stick/map_bg.jpg')
+army_one = pygame.image.load('War of stick/background_photo.jpg').convert_alpha()
 
 # Initial position of the background image
 bg_x = 0
