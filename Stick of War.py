@@ -25,16 +25,16 @@ class Game():
             keys = pygame.key.get_pressed()
             if keys[pygame.K_a] or keys[pygame.K_LEFT]:
                 self.bg_x += self.scroll_speed
-            if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+            elif keys[pygame.K_d] or keys[pygame.K_RIGHT]:
                 self.bg_x -= self.scroll_speed
 
     def set_up(self):
         self.background_image = pygame.image.load('War of stick/map_bg.jpg')
 
     def game_start(self):
-        bg_x = max(self.bg_x, 1000 - self.background_image.get_width())
-        bg_x = min(self.bg_x, 0)
-        self.screen.blit(self.background_image, (bg_x, 0))
+        self.bg_x = max(self.bg_x, 1000 - self.background_image.get_width())
+        self.bg_x = min(self.bg_x, 0)
+        self.screen.blit(self.background_image, (self.bg_x, 0))
 
     def run(self):
         while True:
@@ -51,7 +51,6 @@ class Game():
             pygame.display.flip()  # redraw the screen
 
             self.clock.tick(60)  # 60 fps
-
 
 if __name__ == "__main__":
     Game().run()
