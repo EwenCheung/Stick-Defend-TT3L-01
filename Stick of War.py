@@ -1,10 +1,9 @@
-# coding : utf-8
+# coding: utf-8
 
 import pygame
 from sys import exit
 
 pygame.init()
-
 
 class Button:
     def __init__(self, image, size, position):
@@ -29,7 +28,6 @@ class Button:
     def reset(self):
         self.clicked = False
 
-
 class Game:
     def __init__(self):
         self.clock = pygame.time.Clock()
@@ -45,7 +43,6 @@ class Game:
         self.troop_one_button = Button(self.troop_one_image, (50, 50), (100, 100))
 
         self.background_image = pygame.image.load('War of stick/map_bg.jpg')
-
     def event_handling(self):
         # Event handling
         for event in pygame.event.get():
@@ -67,11 +64,14 @@ class Game:
         if pygame.mouse.get_pressed()[0]:
             if self.troop_one_button.is_clicked(mouse_pos):
                 print("Troop One button clicked!")  # Add your button functionality here
-        self.troop_one_button.reset()  # Reset button appearance after click
+                self.screen.blit(self.background_image, (100, 100))
+            # self.troop_one_button.reset()  # Reset button appearance after click
 
     def game_start(self):
         self.screen.blit(self.background_image, (self.bg_x, 0))
+
         self.troop_one_button.draw(self.screen)
+
 
     def run(self):
         while True:
@@ -82,7 +82,6 @@ class Game:
 
             pygame.display.update()  # Update the display
             self.clock.tick(60)  # Limit frame rate to 60 FPS
-
 
 if __name__ == "__main__":
     Game().run()
