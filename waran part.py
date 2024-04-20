@@ -2,37 +2,49 @@ import pygame
 from sys import exit
 
 pygame.init()
-class Button():
-    def __init__(self, image, x_pos, y_pos):
+
+class Button:
+    def __init__(self, image, size, position):
         self.image = image
-        self.x_pos = x_pos
-        self.y_pos = y_pos
-        self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
+        self.image = pygame.transform.scale(self.image, size)
+        self.rect = self.image.get_rect(center=position)
+        self.clicked_image = pygame.transform.scale(image, (20, 20))  # Adjust size for clicked appearance
+        self.clicked = False
 
-    def update(self):
-        # screen.blit(self.image, self.rect)
-        self.screen.blit(self.image, self.rect)
+    def draw(self, screen):
+        if self.clicked:
+            screen.blit(self.clicked_image, self.rect)
+        else:
+            screen.blit(self.image, self.rect)
 
-    def checkForInput(self, position):
-        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            print('Button press')
+    def is_clicked(self, mouse_pos):
+        if self.rect.collidepoint(mouse_pos):
+            self.clicked = True
+            return True
+        return False
 
-troop_one = pygame.image.load("War of stick/background_photo.jpg")
-troop_one = pygame.transform.scale(troop_one, (100, 100))
+    def reset(self):
+        self.clicked = False
 
-class Game():
+class Game:
     def __init__(self):
         self.clock = pygame.time.Clock()
         pygame.display.set_caption('Tower Defend')  # title name
         self.screen = pygame.display.set_mode((1000, 600))
         self.bg_x = 0
         self.scroll_speed = 5
-        self.set_up()  # Load the background image outside the loop
+        self.set_up()
+        self.show_background = False  # Flag to control background image display
+
+    def set_up(self):
+        #this two part later mok done ready only i can proceed
+        self.troop_one_image = pygame.image.load('War of stick/background_photo.jpg')
+        self.troop_one_image = pygame.transform.scale(self.troop_one_image, (500,500))
+        self.troop_one_button = Button(self.troop_one_image, (50, 50), (100, 100))
+        self.background_image = pygame.image.load('War of stick/map_bg.jpg')
 
     def event_handling(self):
-        # Event handling
         for event in pygame.event.get():
-            # press 'x' to quit the game
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
@@ -46,16 +58,24 @@ class Game():
         self.bg_x = max(self.bg_x, 1000 - self.background_image.get_width())
         self.bg_x = min(self.bg_x, 0)
 
-    def set_up(self):
-        self.background_image = pygame.image.load('War of stick/map_bg.jpg')
+        mouse_pos = pygame.mouse.get_pos()
+        if pygame.mouse.get_pressed()[0]:
+            if self.troop_one_button.is_clicked(mouse_pos):
+                print("Troop One button clicked!")  # Add your button functionality here
+                self.show_background = True  # Set flag to show background image
+        self.troop_one_button.reset() # make sure the button doesnt become small when i press
 
     def game_start(self):
+        self.screen.fill((255, 255, 255))  # Clear screen
         self.screen.blit(self.background_image, (self.bg_x, 0))
+
+        if self.show_background:
+            self.screen.blit(self.troop_one_image, (100, 100)) #blit army on the screen
+
+        self.troop_one_button.draw(self.screen)
 
     def run(self):
         while True:
-            self.screen.fill((255, 255, 255))  # Clear screen
-
             self.event_handling()
             self.game_start()
 
