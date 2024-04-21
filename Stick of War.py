@@ -65,10 +65,10 @@ class Game:
 
     def set_up(self):
         # Scrolling Background
-        self.background_image = pygame.image.load('War of stick/map_bg.jpg')
+        self.background_image = pygame.image.load('War of stick/Picture/utlis/map_bg.jpg')
 
         # Gold assets
-        self.pic_gold = pygame.image.load('War of stick/background_photo.jpg').convert_alpha()
+        self.pic_gold = pygame.image.load('War of stick/Picture/utlis/gold.png').convert_alpha()
         self.pic_gold_surf = pygame.transform.scale(self.pic_gold, (25, 25))
         self.pic_gold_rect = self.pic_gold_surf.get_rect(center=(760, 50))
 
@@ -77,7 +77,7 @@ class Game:
         self.num_gold_rect = self.num_gold_surf.get_rect(center=(800, 50))
 
         # Diamond assets
-        self.pic_diamond = pygame.image.load('War of stick/background_photo.jpg').convert_alpha()
+        self.pic_diamond = pygame.image.load('War of stick/Picture/utlis/diamond.png').convert_alpha()
         self.pic_diamond_surf = pygame.transform.scale(self.pic_diamond, (50, 25))
         self.pic_diamond_rect = self.pic_diamond_surf.get_rect(center=(760, 80))
 
@@ -86,27 +86,27 @@ class Game:
         self.num_diamond_rect = self.num_diamond_surf.get_rect(center=(800, 80))
 
         # Troop One
-        self.warrior_image = pygame.image.load('War of stick/background_photo.jpg')
+        self.warrior_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
         self.warrior_image = pygame.transform.scale(self.warrior_image, (100, 100))
         self.warrior_button = TroopButton(self.warrior_image, (50, 50), (100, 100))
 
         # Troop Two
-        self.archer_image = pygame.image.load('War of stick/background_photo.jpg')
+        self.archer_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
         self.archer_image = pygame.transform.scale(self.archer_image, (100, 100))
         self.archer_button = TroopButton(self.archer_image, (50, 50), (200, 100))
 
         # Troop Three
-        self.wizard_image = pygame.image.load('War of stick/background_photo.jpg')
+        self.wizard_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
         self.wizard_image = pygame.transform.scale(self.wizard_image, (100, 100))
         self.wizard_button = TroopButton(self.wizard_image, (50, 50), (300, 100))
 
         # Troop Four
-        self.sparta_image = pygame.image.load('War of stick/background_photo.jpg')
+        self.sparta_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
         self.sparta_image = pygame.transform.scale(self.sparta_image, (100, 100))
         self.sparta_button = TroopButton(self.sparta_image, (50, 50), (400, 100))
 
         # Troop Five
-        self.giant_image = pygame.image.load('War of stick/background_photo.jpg')
+        self.giant_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
         self.giant_image = pygame.transform.scale(self.giant_image, (100, 100))
         self.giant_button = TroopButton(self.giant_image, (50, 50), (500, 100))
 
