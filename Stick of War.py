@@ -11,6 +11,7 @@ class Button:
         self.clicked_image = pygame.transform.scale(image, (20, 20))  # Adjust size for clicked appearance
         self.clicked = False
 
+    # this function make sure that when i press the button, the button will become small and become normal size again
     def draw(self, screen):
         if self.clicked:
             screen.blit(self.clicked_image, self.rect)
@@ -34,7 +35,11 @@ class Game:
         self.bg_x = 0
         self.scroll_speed = 5
         self.set_up()
-        self.show_background = False  # Flag to control background image display
+        self.show_one_background = False  # Flag to control background image display
+        self.show_two_background = False
+        self.show_three_background = False
+        self.show_four_background = False
+        self.show_five_background = False
         self.currency = 500
 
     def set_up(self):
@@ -66,6 +71,8 @@ class Game:
         self.troop_five_image = pygame.transform.scale(self.troop_five_image, (100,100))
         self.troop_five_button = Button(self.troop_five_image, (50, 50), (500, 100))    
 
+        self.troop_coordinate = [(500,500), (600,100)]
+
     def event_handling(self):
         clicked = False
 
@@ -87,61 +94,71 @@ class Game:
         self.bg_x = min(self.bg_x, 0)
 
         # Check if the left mouse button was clicked and handle accordingly
+        mouse_pos = pygame.mouse.get_pos()
+
         if clicked:
-            mouse_pos = pygame.mouse.get_pos()
             if self.troop_one_button.is_clicked(mouse_pos):
                 if self.currency >= 50:
                     self.currency -= 50
-                    self.show_background = True  # Set flag to show background image
+                    self.show_one_background = True  # Set flag to show background image
         self.troop_one_button.reset()   # Reset the button to make it make to the size i set
 
         if clicked:
             if self.troop_two_button.is_clicked(mouse_pos):
                 if self.currency >= 50:
                     self.currency -= 50
-                    self.show_background = True  # Set flag to show background image
+                    self.show_two_background = True  # Set flag to show background image
         self.troop_two_button.reset()
 
         if clicked:
             if self.troop_three_button.is_clicked(mouse_pos):
                 if self.currency >= 50:
                     self.currency -= 50
-                    self.show_background = True  # Set flag to show background image
+                    self.show_three_background = True  # Set flag to show background image
         self.troop_three_button.reset()    
 
         if clicked:
             if self.troop_four_button.is_clicked(mouse_pos):
                 if self.currency >= 50:
                     self.currency -= 50
-                    self.show_background = True  # Set flag to show background image
+                    self.show_four_background = True  # Set flag to show background image
         self.troop_four_button.reset()
 
         if clicked:
             if self.troop_five_button.is_clicked(mouse_pos):
                 if self.currency >= 50:
                     self.currency -= 50
-                    self.show_background = True  # Set flag to show background image
+                    self.show_five_background = True  # Set flag to show background image
         self.troop_five_button.reset()
 
     def game_start(self):
         self.screen.fill((255, 255, 255))  # Clear screen
         self.screen.blit(self.background_image, (self.bg_x, 0))
 
-        if self.show_background:
-            self.screen.blit(self.troop_one_image, (100, 100))  # Blit army on the screen
+        if self.show_one_background == True:
+            x ,y = self.troop_coordinate[0] or self.troop_coordinate[1]
+            self.screen.blit(self.troop_one_image, (x, y))
+            print('troop one')
+            self.show_one_background = False
+        self.show_one_background = True
 
-        if self.show_background:
-            self.screen.blit(self.troop_two_image, (200, 100))  # Blit army on the screen
 
-        if self.show_background:
-            self.screen.blit(self.troop_three_image, (300, 100))  # Blit army on the screen
+        if self.show_two_background == True:
+            self.screen.blit(self.troop_two_image, (200, 465))  # Blit army on the screen
+            print('troop two')
 
-        if self.show_background:
-            self.screen.blit(self.troop_four_image, (400, 100))  # Blit army on the screen
+        if self.show_three_background == True:
+            self.screen.blit(self.troop_three_image, (300, 465))  # Blit army on the screen
+            print('troop three')
 
-        if self.show_background:
-            self.screen.blit(self.troop_five_image, (500, 100))  # Blit army on the screen
+        if self.show_four_background == True:
+            self.screen.blit(self.troop_four_image, (400, 465))  # Blit army on the screen
+            print('troop four')
 
+        if self.show_five_background == True:
+            self.screen.blit(self.troop_five_image, (500, 465))  # Blit army on the screen
+            print('troop five')
+            
 
         self.troop_one_button.draw(self.screen)
         self.troop_two_button.draw(self.screen)
@@ -164,4 +181,3 @@ class Game:
 
 if __name__ == "__main__":
     Game().run()
-
