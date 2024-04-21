@@ -34,17 +34,40 @@ class Game:
         self.screen = pygame.display.set_mode((1000, 600))
         self.bg_x = 0
         self.scroll_speed = 5
+        self.num_gold = 500
+        self.num_diamond = 50
+        self.gold_time = pygame.time.get_ticks()
+        self.diamond_time = pygame.time.get_ticks()
+        self.gold_interval = 2000
+        self.diamond_interval = 2000
         self.set_up()
         self.show_one_background = False  # Flag to control background image display
         self.show_two_background = False
         self.show_three_background = False
         self.show_four_background = False
         self.show_five_background = False
-        self.currency = 500
 
     def set_up(self):
         # Scrolling Background
         self.background_image = pygame.image.load('War of stick/map_bg.jpg')
+
+        #Gold assets
+        self.pic_gold = pygame.image.load('War of stick/background_photo.jpg').convert_alpha()
+        self.pic_gold_surf = pygame.transform.scale(self.pic_gold,(25,25))
+        self.pic_gold_rect = self.pic_gold_surf.get_rect(center=(760,50))
+
+        self.num_gold_font = pygame.font.Font(None,30)
+        self.num_gold_surf = self.num_gold_font.render(str(self.num_gold), True, 'Black')
+        self.num_gold_rect = self.num_gold_surf.get_rect(center=(800,50))
+
+        #Diamond assets
+        self.pic_diamond = pygame.image.load('War of stick/background_photo.jpg').convert_alpha()
+        self.pic_diamond_surf = pygame.transform.scale(self.pic_diamond,(50,25))
+        self.pic_diamond_rect = self.pic_diamond_surf.get_rect(center=(760,80))
+
+        self.num_diamond_font = pygame.font.Font(None,30)
+        self.num_diamond_surf = self.num_diamond_font.render(str(self.num_diamond), True, 'Black')
+        self.num_diamond_rect = self.num_diamond_surf.get_rect(center=(800,80))
 
         # Troop One
         self.troop_one_image = pygame.image.load('War of stick/background_photo.jpg')
@@ -71,8 +94,6 @@ class Game:
         self.troop_five_image = pygame.transform.scale(self.troop_five_image, (100,100))
         self.troop_five_button = Button(self.troop_five_image, (50, 50), (500, 100))    
 
-        self.troop_coordinate = [(500,500), (600,100)]
-
     def event_handling(self):
         clicked = False
 
@@ -93,41 +114,50 @@ class Game:
         self.bg_x = max(self.bg_x, 1000 - self.background_image.get_width())
         self.bg_x = min(self.bg_x, 0)
 
+        current_time = pygame.time.get_ticks()
+        if current_time - self.gold_time >= self.gold_interval:
+            self.num_gold += 10
+            self.gold_time = current_time
+
+        if current_time - self.diamond_time >= self.diamond_interval:
+            self.num_diamond += 5
+            self.diamond_time = current_time
+        
         # Check if the left mouse button was clicked and handle accordingly
         mouse_pos = pygame.mouse.get_pos()
 
         if clicked:
             if self.troop_one_button.is_clicked(mouse_pos):
-                if self.currency >= 50:
-                    self.currency -= 50
+                if self.num_gold >= 50:
+                    self.num_gold -= 50
                     self.show_one_background = True  # Set flag to show background image
         self.troop_one_button.reset()   # Reset the button to make it make to the size i set
 
         if clicked:
             if self.troop_two_button.is_clicked(mouse_pos):
-                if self.currency >= 50:
-                    self.currency -= 50
+                if self.num_gold >= 50:
+                    self.num_gold -= 50
                     self.show_two_background = True  # Set flag to show background image
         self.troop_two_button.reset()
 
         if clicked:
             if self.troop_three_button.is_clicked(mouse_pos):
-                if self.currency >= 50:
-                    self.currency -= 50
+                if self.num_gold >= 50:
+                    self.num_gold -= 50
                     self.show_three_background = True  # Set flag to show background image
         self.troop_three_button.reset()    
 
         if clicked:
             if self.troop_four_button.is_clicked(mouse_pos):
-                if self.currency >= 50:
-                    self.currency -= 50
+                if self.num_gold >= 50:
+                    self.num_gold -= 50
                     self.show_four_background = True  # Set flag to show background image
         self.troop_four_button.reset()
 
         if clicked:
             if self.troop_five_button.is_clicked(mouse_pos):
-                if self.currency >= 50:
-                    self.currency -= 50
+                if self.num_gold >= 50:
+                    self.num_gold -= 50
                     self.show_five_background = True  # Set flag to show background image
         self.troop_five_button.reset()
 
@@ -135,13 +165,17 @@ class Game:
         self.screen.fill((255, 255, 255))  # Clear screen
         self.screen.blit(self.background_image, (self.bg_x, 0))
 
-        if self.show_one_background == True:
-            x ,y = self.troop_coordinate[0] or self.troop_coordinate[1]
-            self.screen.blit(self.troop_one_image, (x, y))
-            print('troop one')
-            self.show_one_background = False
-        self.show_one_background = True
+        self.screen.blit(self.pic_gold_surf,self.pic_gold_rect)
+        self.num_gold_surf = self.num_gold_font.render(str(self.num_gold), True, 'Black')
+        self.screen.blit(self.num_gold_surf,self.num_gold_rect)
 
+        self.screen.blit(self.pic_diamond_surf,self.pic_diamond_rect)
+        self.num_diamond_surf = self.num_diamond_font.render(str(self.num_diamond), True, 'Black')
+        self.screen.blit(self.num_diamond_surf,self.num_diamond_rect)
+
+        if self.show_one_background == True:
+            self.screen.blit(self.troop_one_image, (100, 465))
+            print('troop one')
 
         if self.show_two_background == True:
             self.screen.blit(self.troop_two_image, (200, 465))  # Blit army on the screen
@@ -166,11 +200,6 @@ class Game:
         self.troop_four_button.draw(self.screen)
         self.troop_five_button.draw(self.screen)
 
-        font = pygame.font.Font(None, 36)
-        currency_text = f"Currency = {self.currency}"
-        currency_text = font.render(currency_text, True, (0, 0, 0))
-        self.screen.blit(currency_text, (10, 10))  # Display currency at top left corner
-
     def run(self):
         while True:
             self.event_handling()
@@ -181,3 +210,5 @@ class Game:
 
 if __name__ == "__main__":
     Game().run()
+
+    
