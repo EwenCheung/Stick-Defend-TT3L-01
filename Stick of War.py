@@ -5,6 +5,7 @@ from sys import exit
 
 pygame.init()
 
+
 class TroopButton:
     def __init__(self, image, size, position):
         self.image = image
@@ -33,63 +34,24 @@ class TroopButton:
         self.clicked = False
 
 
-class Troop(pygame.sprite.Sprite):
-    def __init__(self, image):
-        super().__init__()
-
-# load stickman normal image
-# stickman_warrior_image = [pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 1.png').convert_alpha(),
-#                         pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 2.png').convert_alpha(),
-#                         pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 3.png').convert_alpha(),
-#                         pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 4.png').convert_alpha(),
-#                         pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 5.png').convert_alpha()]
-        
-# stickman_sparta_image = [pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 1.png').convert_alpha(),
-#                         pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 2.png').convert_alpha(),
-#                         pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 3.png').convert_alpha(),
-#                         pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 4.png').convert_alpha(),
-#                         pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 5.png').convert_alpha()]
-
-# stickman_archer_image = [pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
-#                             pygame.image.load('War of stick/Picture/stickman archer/stickman archer 2.png').convert_alpha()]
-
-# stickman_wizard_image = [pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 1.png').convert_alpha(),
-#                             pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 2.png').convert_alpha(),
-#                             pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 3.png').convert_alpha(),
-#                             pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 4.png').convert_alpha(),
-#                             pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 5.png').convert_alpha()]
-
-# stickman_giant_image = [pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 1.png').convert_alpha(),
-#                         pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 2.png').convert_alpha(),
-#                         pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 3.png').convert_alpha(),
-#                         pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 4.png').convert_alpha(),
-#                         pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 5.png').convert_alpha()]
-
-# # load stickman attack image
-# stickman_sword_attack = [pygame.image.load('War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 1.png').convert_alpha(),
-#                             pygame.image.load('War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 2.png').convert_alpha(),
-#                             pygame.image.load('War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 3.png').convert_alpha()]
-
-# stickman_sparta_attack = [pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta attack/stickman sparta 1.png').convert_alpha(),
-#                             pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta attack/stickman sparta 2.png').convert_alpha()]
-
-# stickman_wizard_attack = [pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 1.png').convert_alpha(),
-#                             pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 2.png').convert_alpha(),
-#                             pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 3.png').convert_alpha()]
-
-# stickman_giant_attack = [pygame.image.load('War of stick/Picture/stickman giant/stickman giant attack/stickman giant attack 1.png').convert_alpha(),
-#                             pygame.image.load('War of stick/Picture/stickman giant/stickman giant attack/stickman giant attack 2.png').convert_alpha()]
-
-
-        self.image = image   
+class Troop:
+    def __init__(self, frame_storage):
         self.coordinate_x = 0
+        self.animation_index = 0
+        self.frame_storage = frame_storage
+        self.image = self.frame_storage[self.animation_index]
 
     def spawn_troop(self, screen, bg_x):
         screen.blit(self.image, (self.coordinate_x + bg_x, 450))
 
     def update(self):
         self.coordinate_x += 2
-       
+        self.animation_index += 0.2
+        if self.animation_index >= len(self.frame_storage):
+            self.animation_index = 0
+        self.image = self.frame_storage[int(self.animation_index)]
+
+
 class Game:
     def __init__(self):
         self.clock = pygame.time.Clock()
@@ -101,8 +63,8 @@ class Game:
         self.num_diamond = 300
         self.gold_time = pygame.time.get_ticks()
         self.diamond_time = pygame.time.get_ticks()
-        self.gold_interval = 1000
-        self.diamond_interval = 1000
+        self.gold_interval = 100
+        self.diamond_interval = 100
         self.troop_on_court = []
 
         self.set_up()
@@ -130,44 +92,81 @@ class Game:
         self.num_diamond_rect = self.num_diamond_surf.get_rect(center=(800, 80))
 
         # Troop One
-        self.warrior_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
-        self.warrior_image = pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 1.png').convert_alpha()
-        self.warrior_image = pygame.transform.scale(self.warrior_image, (100, 100))
-        self.warrior_button = TroopButton(self.warrior_image, (50, 50), (100, 100))
+        self.warrior_all_image = [
+            pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 1.png').convert_alpha(),
+            pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 2.png').convert_alpha(),
+            pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 3.png').convert_alpha(),
+            pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 4.png').convert_alpha(),
+            pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 5.png').convert_alpha()]
+        self.warrior_frame_storage = [pygame.transform.scale(frame, (75, 55)) for frame in self.warrior_all_image]
+
+        self.warrior_button_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
+        self.warrior_button = TroopButton(self.warrior_button_image, (50, 50), (100, 100))
 
         # Troop Two
-        self.archer_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
-        self.archer_image = pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha()
-        self.archer_image = pygame.transform.scale(self.archer_image, (100, 100))
-        self.archer_button = TroopButton(self.archer_image, (50, 50), (200, 100))
+        self.archer_all_image = [pygame.image.load('War of stick/Picture/archer/archer 1.png').convert_alpha(),
+                                 pygame.image.load('War of stick/Picture/archer/archer 2.png').convert_alpha()]
+        self.archer_frame_storage = [pygame.transform.scale(frame, (75, 55)) for frame in self.archer_all_image]
+
+        self.archer_button_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
+        self.archer_button = TroopButton(self.archer_button_image, (50, 50), (200, 100))
 
         # Troop Three
-        self.wizard_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
-        self.wizard_image = pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 1.png').convert_alpha()
-        self.wizard_image = pygame.transform.scale(self.wizard_image, (100, 100))
-        self.wizard_button = TroopButton(self.wizard_image, (50, 50), (300, 100))
+        self.wizard_all_image = [
+            pygame.image.load(
+                'War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 1.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 2.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 3.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 4.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 5.png').convert_alpha()
+        ]
+        self.wizard_frame_storage = [pygame.transform.scale(frame, (75, 55)) for frame in self.wizard_all_image]
+
+        self.wizard_button_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
+        self.wizard_button = TroopButton(self.wizard_button_image, (50, 50), (300, 100))
 
         # Troop Four
-        self.sparta_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
-        self.sparta_image = pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 1.png').convert_alpha()
-        self.sparta_image = pygame.transform.scale(self.sparta_image, (100, 100))
-        self.sparta_button = TroopButton(self.sparta_image, (50, 50), (400, 100))
+        self.sparta_all_image = [
+            pygame.image.load(
+                'War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 1.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 2.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 3.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 4.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 5.png').convert_alpha()
+        ]
+        self.sparta_frame_storage = [pygame.transform.scale(frame, (75, 55)) for frame in self.sparta_all_image]
+
+        self.sparta_button_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
+        self.sparta_button = TroopButton(self.sparta_button_image, (50, 50), (400, 100))
 
         # Troop Five
-        self.giant_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
-        self.giant_image = pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 1.png').convert_alpha()
-        self.giant_image = pygame.transform.scale(self.giant_image, (100, 100))
-        self.giant_button = TroopButton(self.giant_image, (50, 50), (500, 100))
+        self.giant_all_image = [
+            pygame.image.load('War of stick/Picture/giant/giant walk/stickman Giant walk 1.png').convert_alpha(),
+            pygame.image.load('War of stick/Picture/giant/giant walk/stickman Giant walk 2.png').convert_alpha(),
+            pygame.image.load('War of stick/Picture/giant/giant walk/stickman Giant walk 3.png').convert_alpha(),
+            pygame.image.load('War of stick/Picture/giant/giant walk/stickman Giant walk 4.png').convert_alpha(),
+            pygame.image.load('War of stick/Picture/giant/giant walk/stickman Giant walk 5.png').convert_alpha()]
+        self.giant_frame_storage = [pygame.transform.scale(frame, (120, 80)) for frame in self.giant_all_image]
+        self.giant_button_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
+        self.giant_button = TroopButton(self.giant_button_image, (50, 50), (500, 100))
 
     def event_handling(self):
-        def clicked_troop(gold_cost, diamond_cost, button_name, troop_image):
+        def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage):
             mouse_pos = pygame.mouse.get_pos()  # Check if the left mouse button was clicked and handle accordingly
 
             if button_name.is_clicked(mouse_pos):
                 if self.num_gold >= gold_cost and self.num_diamond >= diamond_cost:
                     self.num_gold -= gold_cost
                     self.num_diamond -= diamond_cost
-                    new_troop = Troop(troop_image)
+                    new_troop = Troop(frame_storage)
                     self.troop_on_court.append(new_troop)
             button_name.reset()  # Reset the button to make it make to the size I set
 
@@ -177,11 +176,11 @@ class Game:
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Check if left mouse button is pressed
-                    clicked_troop(10, 20, self.warrior_button, self.warrior_image)
-                    clicked_troop(30, 20, self.archer_button, self.archer_image)
-                    clicked_troop(50, 50, self.wizard_button, self.wizard_image)
-                    clicked_troop(70, 20, self.sparta_button, self.sparta_image)
-                    clicked_troop(70, 20, self.giant_button, self.giant_image)
+                    clicked_troop(10, 20, self.warrior_button, self.warrior_frame_storage)
+                    clicked_troop(30, 20, self.archer_button, self.archer_frame_storage)
+                    clicked_troop(50, 50, self.wizard_button, self.wizard_frame_storage)
+                    clicked_troop(70, 20, self.sparta_button, self.sparta_frame_storage)
+                    clicked_troop(70, 20, self.giant_button, self.giant_frame_storage)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a] or keys[pygame.K_LEFT]:
