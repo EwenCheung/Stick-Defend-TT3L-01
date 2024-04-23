@@ -33,11 +33,6 @@ class TroopButton:
     def reset(self):
         self.clicked = False
 
-
-<<<<<<< Updated upstream
-class Troop:
-    def __init__(self, image):
-=======
 class Troop(pygame.sprite.Sprite):
     def __init__(self, image):
         super().__init__()
@@ -85,7 +80,6 @@ class Troop(pygame.sprite.Sprite):
         # stickman_giant_attakc = [pygame.image.load('War of stick/Picture/stickman giant/stickman giant attack/stickman giant attack 1.png').convert_alpha(),
         #                          pygame.image.load('War of stick/Picture/stickman giant/stickman giant attack/stickman giant attack 2.png').convert_alpha()]
 
->>>>>>> Stashed changes
         self.image = image
         self.coordinate_x = 0
 
@@ -94,12 +88,7 @@ class Troop(pygame.sprite.Sprite):
 
     def update(self):
         self.coordinate_x += 2
-<<<<<<< Updated upstream
 
-
-=======
-    
->>>>>>> Stashed changes
 class Game:
     def __init__(self):
         self.clock = pygame.time.Clock()
@@ -111,13 +100,8 @@ class Game:
         self.num_diamond = 300
         self.gold_time = pygame.time.get_ticks()
         self.diamond_time = pygame.time.get_ticks()
-<<<<<<< Updated upstream
-        self.gold_interval = 100
-        self.diamond_interval = 100
-=======
-        self.gold_interval = 10000
-        self.diamond_interval = 10000
->>>>>>> Stashed changes
+        self.gold_interval = 1000
+        self.diamond_interval = 1000
         self.troop_on_court = []
 
         self.set_up()
@@ -145,47 +129,27 @@ class Game:
         self.num_diamond_rect = self.num_diamond_surf.get_rect(center=(800, 80))
 
         # Troop One
-<<<<<<< Updated upstream
-        self.warrior_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
-=======
         self.warrior_image = pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 1.png').convert_alpha()
->>>>>>> Stashed changes
         self.warrior_image = pygame.transform.scale(self.warrior_image, (100, 100))
         self.warrior_button = TroopButton(self.warrior_image, (50, 50), (100, 100))
 
         # Troop Two
-<<<<<<< Updated upstream
-        self.archer_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
-=======
         self.archer_image = pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha()
->>>>>>> Stashed changes
         self.archer_image = pygame.transform.scale(self.archer_image, (100, 100))
         self.archer_button = TroopButton(self.archer_image, (50, 50), (200, 100))
 
         # Troop Three
-<<<<<<< Updated upstream
-        self.wizard_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
-=======
         self.wizard_image = pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 1.png').convert_alpha()
->>>>>>> Stashed changes
         self.wizard_image = pygame.transform.scale(self.wizard_image, (100, 100))
         self.wizard_button = TroopButton(self.wizard_image, (50, 50), (300, 100))
 
         # Troop Four
-<<<<<<< Updated upstream
-        self.sparta_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
-=======
         self.sparta_image = pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 1.png').convert_alpha()
->>>>>>> Stashed changes
         self.sparta_image = pygame.transform.scale(self.sparta_image, (100, 100))
         self.sparta_button = TroopButton(self.sparta_image, (50, 50), (400, 100))
 
         # Troop Five
-<<<<<<< Updated upstream
-        self.giant_image = pygame.image.load('War of stick/Picture/utlis/background_photo.jpg')
-=======
         self.giant_image = pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 1.png').convert_alpha()
->>>>>>> Stashed changes
         self.giant_image = pygame.transform.scale(self.giant_image, (100, 100))
         self.giant_button = TroopButton(self.giant_image, (50, 50), (500, 100))
 
