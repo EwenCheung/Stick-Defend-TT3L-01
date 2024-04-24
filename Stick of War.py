@@ -13,6 +13,7 @@ class TroopButton:
         self.image_dim = image_dim
         self.image = pygame.transform.scale(self.image, self.size)
         self.image_dim = pygame.transform.scale(self.image_dim, self.size)
+        #####
         self.name = name
         self.cooldown_time = cooldown_time
         self.rect = self.image.get_rect(center=self.position)
