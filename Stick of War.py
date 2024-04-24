@@ -99,7 +99,12 @@ class Game:
 
     def set_up(self):
         # Scrolling Background
-        self.background_image = pygame.image.load('War of stick/Picture/utlis/map_bg.jpg')
+        self.background_image = pygame.image.load('War of stick/Picture/utlis/map.jpg')
+
+        # spell equipment
+        self.box = pygame.image.load('War of stick/Picture/utlis/box.png')
+        self.box_surf = pygame.transform.scale(self.box, (1000, 100))
+        self.box_rect = self.box_surf.get_rect(center=(500,550))
 
         # Gold assets
         self.pic_gold = pygame.image.load('War of stick/Picture/utlis/gold.png').convert_alpha()
@@ -230,6 +235,7 @@ class Game:
     def game_start(self):
         self.screen.fill((255, 255, 255))  # Clear screen
         self.screen.blit(self.background_image, (self.bg_x, 0))
+        self.screen.blit(self.box_surf, self.box_rect)
 
         self.screen.blit(self.pic_gold_surf, self.pic_gold_rect)
         self.num_gold_surf = self.num_gold_font.render(str(self.num_gold), True, 'Black')
