@@ -29,11 +29,12 @@ class TroopButton:
         # Display cooldown time if the button is on cooldown
         current_time = pygame.time.get_ticks()
         remaining_cooldown = max(0, self.cooldown_time - (current_time - self.last_clicked_time)) // 1000
-        cooldown_font = pygame.font.Font(None, 20)
-        cooldown_text = cooldown_font.render(f"{remaining_cooldown}s", True, (255, 255, 255))
-        cooldown_text_rect = cooldown_text.get_rect(center=(self.position[0], self.position[1] + 60))
+        cooldown_font = pygame.font.Font(None, 70)
+        cooldown_text = cooldown_font.render(f"{remaining_cooldown}", True, (255, 255, 255))
+        cooldown_text_rect = cooldown_text.get_rect(center=(self.position[0], self.position[1]))
         screen.blit(cooldown_text, cooldown_text_rect)
 
+    # for the price in the button
     def render_name(self, screen):
         font = pygame.font.Font(None, 15)
         lines = self.name.split('\n')
@@ -68,9 +69,11 @@ class Troop:
         self.animation_index = 0
         self.frame_storage = frame_storage
         self.image = self.frame_storage[self.animation_index]
+        
 
     def spawn_troop(self, screen, bg_x):
-        screen.blit(self.image, (self.coordinate_x + bg_x, 450))
+        self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 500))
+        screen.blit(self.image, self.rect)
 
     def update(self):
         self.coordinate_x += 2
@@ -103,8 +106,8 @@ class Game:
 
         # spell equipment
         self.box = pygame.image.load('War of stick/Picture/utlis/box.png')
-        self.box_surf = pygame.transform.scale(self.box, (1000, 100))
-        self.box_rect = self.box_surf.get_rect(center=(500,550))
+        self.box_surf = pygame.transform.scale(self.box, (600, 80))
+        self.box_rect = self.box_surf.get_rect(center=(300,550))
 
         # Gold assets
         self.pic_gold = pygame.image.load('War of stick/Picture/utlis/gold.png').convert_alpha()
