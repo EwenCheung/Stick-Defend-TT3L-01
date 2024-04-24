@@ -7,18 +7,33 @@ pygame.init()
 
 class TroopButton:
     def __init__(self, image,image_dim, size, position, name, cooldown_time = 3000):
-        self.image = image
-        self.image_dim = image_dim
         self.size = size
         self.position = position
-        self.name = name
+        self.image = image
+        self.image_dim = image_dim
         self.image = pygame.transform.scale(self.image, self.size)
         self.image_dim = pygame.transform.scale(self.image_dim, self.size)
+        self.name = name
+        self.cooldown_time = cooldown_time
         self.rect = self.image.get_rect(center=self.position)
         self.clicked = False
         self.coordinate_x = 0
-        self.cooldown_time = cooldown_time
         self.last_clicked_time = 0
+        self.remaining_cooldown = 0
+
+    def render_name(self, screen):
+        font = pygame.font.Font(None, 15)
+        lines = self.name.split('\n')
+        total_height = len(lines) * 15
+        y_offset = -total_height / 2
+
+        colors = [(255, 215, 0), (56, 182, 255)]  # gold, blue
+        for line, color in zip(lines, colors):
+            text = font.render(line, True, color)
+            text_rect = text.get_rect(center=(self.position[0], self.position[1] + y_offset))
+            text_rect.y += 46
+            screen.blit(text, text_rect)
+            y_offset += 8
 
     def draw(self, screen):
         if self.clicked:
@@ -31,30 +46,11 @@ class TroopButton:
             screen.blit(self.image_dim, self.rect)
             screen.blit(cooldown_text, cooldown_text_rect)
 
-        if  cooldown_text==0:
+        if self.remaining_cooldown == 0:
             screen.blit(self.image, self.rect)
-
-        # if remaining_cooldown == 0:
-        #     screen.blit(self.image, self.rect)
+            self.clicked = False
             
         self.render_name(screen)
-
-
-
-    # for the price in the button
-    def render_name(self, screen):
-        font = pygame.font.Font(None, 15)
-        lines = self.name.split('\n')
-        total_height = len(lines) * 15
-        y_offset = -total_height / 2
-
-        colors = [(255, 215, 0), (56,182,255)]  # gold, blue
-        for line, color in zip(lines, colors):
-            text = font.render(line, True, color)  
-            text_rect = text.get_rect(center=(self.position[0], self.position[1] + y_offset))
-            text_rect.y += 46
-            screen.blit(text, text_rect)
-            y_offset += 8
 
     def is_clicked(self, mouse_pos):
         current_time = pygame.time.get_ticks()
@@ -64,10 +60,6 @@ class TroopButton:
                 self.last_clicked_time = current_time
                 return True
         return False
-
-    def reset(self):
-        self.clicked = False
-
 
 
 class Troop:
@@ -141,7 +133,7 @@ class Game:
             pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 3.png').convert_alpha(),
             pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 4.png').convert_alpha(),
             pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 5.png').convert_alpha()]
-        self.warrior_frame_storage = [pygame.transform.scale(frame, (75, 55)) for frame in self.warrior_all_image]
+        self.warrior_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.warrior_all_image]
 
         self.warrior_button_image = pygame.image.load('War of stick/Picture/button/sword_button.png')
         self.wizard_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/wizard_dim.png')
@@ -150,7 +142,7 @@ class Game:
         # Troop Two
         self.archer_all_image = [pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
                                  pygame.image.load('War of stick/Picture/stickman archer/stickman archer 2.png').convert_alpha()]
-        self.archer_frame_storage = [pygame.transform.scale(frame, (75, 55)) for frame in self.archer_all_image]
+        self.archer_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.archer_all_image]
 
         self.archer_button_image = pygame.image.load('War of stick/Picture/button/archer_button.png')
         self.wizard_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/wizard_dim.png')
@@ -169,7 +161,7 @@ class Game:
             pygame.image.load(
                 'War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 5.png').convert_alpha()
         ]
-        self.wizard_frame_storage = [pygame.transform.scale(frame, (75, 55)) for frame in self.wizard_all_image]
+        self.wizard_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.wizard_all_image]
 
         self.wizard_button_image = pygame.image.load('War of stick/Picture/button/wizard_button.png')
         self.wizard_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/wizard_dim.png')
@@ -189,7 +181,7 @@ class Game:
             pygame.image.load(
                 'War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 5.png').convert_alpha()
         ]
-        self.sparta_frame_storage = [pygame.transform.scale(frame, (75, 55)) for frame in self.sparta_all_image]
+        self.sparta_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.sparta_all_image]
 
         self.sparta_button_image = pygame.image.load('War of stick/Picture/button/sparta_button.png')
         self.wizard_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/wizard_dim.png')
@@ -202,7 +194,7 @@ class Game:
             pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 3.png').convert_alpha(),
             pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 4.png').convert_alpha(),
             pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 5.png').convert_alpha()]
-        self.giant_frame_storage = [pygame.transform.scale(frame, (120, 80)) for frame in self.giant_all_image]
+        self.giant_frame_storage = [pygame.transform.scale(frame, (150, 200)) for frame in self.giant_all_image]
         self.giant_button_image = pygame.image.load('War of stick/Picture/button/giant_button.png').convert_alpha()
         self.wizard_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/wizard_dim.png')
         self.giant_button = TroopButton(self.giant_button_image, self.wizard_button_dim_image, (100, 100), (500, 70), '70\n20')
@@ -217,7 +209,7 @@ class Game:
                     self.num_diamond -= diamond_cost
                     new_troop = Troop(frame_storage)
                     self.troop_on_court.append(new_troop)
-            button_name.reset()  # Reset the button to make it make to the size I set
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
