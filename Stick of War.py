@@ -5,10 +5,30 @@
 
 # pygame.init()
 
+<<<<<<< HEAD
 # class TroopButton:
 #     def __init__(self, image,image_dim, size, position, name, cooldown_time = 3000):
 #         self.size = size
 #         self.position = position
+=======
+class TroopButton:
+    def __init__(self, image,image_dim, size, position, name, cooldown_time = 3000):
+        self.size = size
+        self.position = position
+        self.image = image
+        self.image_dim = image_dim
+
+        # ?????
+        self.image = pygame.transform.scale(self.image, self.size)
+        self.image_dim = pygame.transform.scale(self.image_dim, self.size)
+        self.name = name
+        self.cooldown_time = cooldown_time
+        self.rect = self.image.get_rect(center=self.position)
+        self.clicked = False
+        self.coordinate_x = 0
+        self.last_clicked_time = 0
+        self.remaining_cooldown = 0
+>>>>>>> a25698d02a87666fe3323bfe4c46709320ebd981
 
 #         self.cooldown_time = cooldown_time
 #         self.r
