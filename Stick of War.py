@@ -6,14 +6,15 @@ from sys import exit
 pygame.init()
 
 class TroopButton:
-    def __init__(self, image, size, position, name, cooldown_time = 3000):
+    def __init__(self, image,image_dim, size, position, name, cooldown_time = 3000):
         self.image = image
+        self.image_dim = image_dim
         self.size = size
         self.position = position
         self.name = name
         self.image = pygame.transform.scale(self.image, self.size)
+        self.image_dim = pygame.transform.scale(self.image_dim, self.size)
         self.rect = self.image.get_rect(center=self.position)
-        self.clicked_image = pygame.transform.scale(image, (20, 20))  # Adjust size for clicked appearance
         self.clicked = False
         self.coordinate_x = 0
         self.cooldown_time = cooldown_time
@@ -21,18 +22,24 @@ class TroopButton:
 
     def draw(self, screen):
         if self.clicked:
-            screen.blit(self.clicked_image, self.rect)
-        else:
+            # Display cooldown time if the button is on cooldown
+            current_time = pygame.time.get_ticks()
+            self.remaining_cooldown = max(0, self.cooldown_time - (current_time - self.last_clicked_time)) // 1000
+            cooldown_font = pygame.font.Font(None, 70)
+            cooldown_text = cooldown_font.render(f"{self.remaining_cooldown}", True, (255, 255, 255))
+            cooldown_text_rect = cooldown_text.get_rect(center=(self.position[0], self.position[1]))
+            screen.blit(self.image_dim, self.rect)
+            screen.blit(cooldown_text, cooldown_text_rect)
+
+        if  cooldown_text==0:
             screen.blit(self.image, self.rect)
+
+        # if remaining_cooldown == 0:
+        #     screen.blit(self.image, self.rect)
+            
         self.render_name(screen)
 
-        # Display cooldown time if the button is on cooldown
-        current_time = pygame.time.get_ticks()
-        remaining_cooldown = max(0, self.cooldown_time - (current_time - self.last_clicked_time)) // 1000
-        cooldown_font = pygame.font.Font(None, 70)
-        cooldown_text = cooldown_font.render(f"{remaining_cooldown}", True, (255, 255, 255))
-        cooldown_text_rect = cooldown_text.get_rect(center=(self.position[0], self.position[1]))
-        screen.blit(cooldown_text, cooldown_text_rect)
+
 
     # for the price in the button
     def render_name(self, screen):
@@ -137,7 +144,8 @@ class Game:
         self.warrior_frame_storage = [pygame.transform.scale(frame, (75, 55)) for frame in self.warrior_all_image]
 
         self.warrior_button_image = pygame.image.load('War of stick/Picture/button/sword_button.png')
-        self.warrior_button = TroopButton(self.warrior_button_image, (100, 100), (100, 70), '10\n20')
+        self.wizard_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/wizard_dim.png')
+        self.warrior_button = TroopButton(self.warrior_button_image, self.wizard_button_dim_image, (100, 100), (100, 70), '10\n20')
 
         # Troop Two
         self.archer_all_image = [pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
@@ -145,7 +153,8 @@ class Game:
         self.archer_frame_storage = [pygame.transform.scale(frame, (75, 55)) for frame in self.archer_all_image]
 
         self.archer_button_image = pygame.image.load('War of stick/Picture/button/archer_button.png')
-        self.archer_button = TroopButton(self.archer_button_image, (100, 100), (200, 70), '30\n20')
+        self.wizard_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/wizard_dim.png')
+        self.archer_button = TroopButton(self.archer_button_image, self.wizard_button_dim_image, (100, 100), (200, 70), '30\n20')
 
         # Troop Three
         self.wizard_all_image = [
@@ -163,7 +172,9 @@ class Game:
         self.wizard_frame_storage = [pygame.transform.scale(frame, (75, 55)) for frame in self.wizard_all_image]
 
         self.wizard_button_image = pygame.image.load('War of stick/Picture/button/wizard_button.png')
-        self.wizard_button = TroopButton(self.wizard_button_image, (100, 100), (300, 70), '50\n50')
+        self.wizard_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/wizard_dim.png')
+        self.wizard_button = TroopButton(self.wizard_button_image,self.wizard_button_dim_image, (100, 100), (300, 70), '50\n50')
+
 
         # Troop Four
         self.sparta_all_image = [
@@ -181,7 +192,8 @@ class Game:
         self.sparta_frame_storage = [pygame.transform.scale(frame, (75, 55)) for frame in self.sparta_all_image]
 
         self.sparta_button_image = pygame.image.load('War of stick/Picture/button/sparta_button.png')
-        self.sparta_button = TroopButton(self.sparta_button_image, (100, 100), (400, 70), '70\n20')
+        self.wizard_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/wizard_dim.png')
+        self.sparta_button = TroopButton(self.sparta_button_image, self.wizard_button_dim_image, (100, 100), (400, 70), '70\n20')
 
         # Troop Five
         self.giant_all_image = [
@@ -192,7 +204,8 @@ class Game:
             pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 5.png').convert_alpha()]
         self.giant_frame_storage = [pygame.transform.scale(frame, (120, 80)) for frame in self.giant_all_image]
         self.giant_button_image = pygame.image.load('War of stick/Picture/button/giant_button.png').convert_alpha()
-        self.giant_button = TroopButton(self.giant_button_image, (100, 100), (500, 70), '70\n20')
+        self.wizard_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/wizard_dim.png')
+        self.giant_button = TroopButton(self.giant_button_image, self.wizard_button_dim_image, (100, 100), (500, 70), '70\n20')
 
     def event_handling(self):
         def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage):
