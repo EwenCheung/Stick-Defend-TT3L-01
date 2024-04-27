@@ -39,9 +39,7 @@ class Game():
         self.backpack = False
         self.store = True
         self.font = pygame.font.Font(None, 30)
-
-        self.gold_image_surf = pygame.image.load('War of stick/Picture/utlis/Gold.png')
-        self.gold_image_surf = pygame.transform.scale(self.gold_image_surf, (10,10))
+        self.price_font = pygame.font.Font(None, 25)
             
         self.set_up()
         
@@ -77,15 +75,19 @@ class Game():
         self.wizard_button_rect = self.wizard_button_surf.get_rect(center=(700,220))
         self.giant_button_rect = self.giant_button_surf.get_rect(center=(900,220))        
 
+        #money for purchase 
+        self.money_image_surf = pygame.image.load('War of stick/Picture/store/money.png')
+        self.money_image_surf = pygame.transform.scale(self.money_image_surf, (15,10))
+
         #Create word
         self.unlock_text_surf = self.font.render('Unlock', True, 'Black')
         self.unlock_text_rect = self.unlock_text_surf.get_rect()
 
         self.store_list = [
-            {'image' : self.cards.archer_card_surf_small, 'name' : 'archer','button': self.button_background_surf, 'locked' : True, 'gold' : self.gold_image_surf, 'price' : '200'},
-            {'image' : self.cards.sparta_card_surf_small, 'name' : 'sparta','button': self.button_background_surf, 'locked' : True, 'gold' : self.gold_image_surf, 'price' : '350'},
-            {'image' : self.cards.wizard_card_surf_small, 'name' : 'wizard','button': self.button_background_surf, 'locked' : True, 'gold' : self.gold_image_surf, 'price' : '450'},
-            {'image' : self.cards.giant_card_surf_small, 'name' : 'giant','button': self.button_background_surf, 'locked' : True,  'gold' : self.gold_image_surf, 'price' : '550'}
+            {'image' : self.cards.archer_card_surf_small, 'name' : 'archer','button': self.button_background_surf, 'locked' : True, 'money' : self.money_image_surf, 'price' : '200'},
+            {'image' : self.cards.sparta_card_surf_small, 'name' : 'sparta','button': self.button_background_surf, 'locked' : True, 'money' : self.money_image_surf, 'price' : '350'},
+            {'image' : self.cards.wizard_card_surf_small, 'name' : 'wizard','button': self.button_background_surf, 'locked' : True, 'money' : self.money_image_surf, 'price' : '450'},
+            {'image' : self.cards.giant_card_surf_small, 'name' : 'giant','button': self.button_background_surf, 'locked' : True,  'money' : self.money_image_surf, 'price' : '550'}
         ]
 
     def event_handling(self):
@@ -94,8 +96,17 @@ class Game():
                 pygame.quit()
                 exit()
 
-            # keys=pygame.MOUSEBUTTONDOWN
-            # if self.
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+
+                #check if the refreash button is clicked
+                if self.refresh_button_rect.collidepoint(mouse_pos):
+                    print('refresh button clicked')
+
+                for item in self.store_list:
+                    if item['locked']:
+                        if button_background_rect.collidepoint(mouse_pos):
+                            print('halo')
             # if click on backpack:
             #     self.store = False
             #     self.backpack = True
@@ -103,7 +114,7 @@ class Game():
             #     self.backpack = False
             #     self.store =True
 
-    def game_start(self, x, y):
+    def game_start(self):
         if self.store:
             self.screen.blit(self.background_surf, (0, 0))
             self.screen.blit(self.topic_word_surf, self.topic_word_rect) 
@@ -124,13 +135,17 @@ class Game():
                     text_rect = text.get_rect(center=(x_coords[index], y_coords[index] -50))
                     self.screen.blit(text,text_rect)
 
-                    button_image_surf = item['button']
-                    button_image_rect = button_image_surf.get_rect(center=(x_coords[index], y_coords[index]+45))
-                    self.screen.blit(button_image_surf,button_image_rect)
+                    button_background_surf = item['button']
+                    button_background_rect = button_background_surf.get_rect(center=(x_coords[index], y_coords[index]+45))
+                    self.screen.blit(button_background_surf,button_background_rect)
 
-                    gold_image_surf = item['gold']
-                    gold_image_rect = gold_image_surf.get_rect(center=(x_coords[index], y_coords[index] +45))
-                    self.screen.blit(gold_image_surf,gold_image_rect)
+                    money_image_surf = item['money']
+                    money_image_rect = money_image_surf.get_rect(center=(x_coords[index] +20, y_coords[index] +45))
+                    self.screen.blit(money_image_surf,money_image_rect)
+
+                    price_text_surf = self.price_font.render(item['price'].capitalize(), True, 'Black')
+                    price_text_rect = price_text_surf.get_rect(center=(x_coords[index] -7, y_coords[index] +46))
+                    self.screen.blit(price_text_surf,price_text_rect)
 
             # shuffle(list)
             # for _ in list :
@@ -161,13 +176,11 @@ class Game():
             self.screen.blit(self.unlock_text_surf, self.unlock_text_rect.move(665, 210))  
             self.screen.blit(self.unlock_text_surf, self.unlock_text_rect.move(865, 210))  
     def run(self):
-        x=0
-        y=0
         while True:
             self.screen.fill((255, 255, 255))
 
             self.event_handling()
-            self.game_start(x, y)
+            self.game_start()
 
             pygame.display.update()
             self.clock.tick(60)
