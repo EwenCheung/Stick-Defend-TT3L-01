@@ -60,7 +60,7 @@ class TroopButton:
         return False
 
 class Troop:
-    def __init__(self, frame_storage, attack_frame_storage, health, damage, speed):
+    def __init__(self,frame_storage, attack_frame_storage, health, damage, speed):
         self.coordinate_x = 0
         self.animation_index = 0
         self.frame_storage = frame_storage
@@ -84,7 +84,6 @@ class Troop:
         self.animation_index += 0.2
         if self.animation_index >= len(self.frame_storage):
             self.animation_index = 0
-        self.image = self.frame_storage[int(self.animation_index)]
 
     def attack(self):
         self.attacking = True
@@ -116,8 +115,9 @@ class Game:
         self.gold_interval = 100
         self.diamond_interval = 100
         self.troop_on_court = []
-        self.max_health_user = 100
-        self.max_health_enemy = 100
+        self.bullet_on_court = []
+        self.max_health_user = 10000
+        self.max_health_enemy = 10000
         self.current_health_user = self.max_health_user
         self.current_health_enemy = self.max_health_enemy
         self.health_bar_width = 200
@@ -181,7 +181,7 @@ class Game:
         # Troop Two
         # Archer walk
         self.archer_all_image = [pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
-                                 pygame.image.load('War of stick/Picture/stickman archer/stickman archer 2.png').convert_alpha()]
+                                pygame.image.load('War of stick/Picture/stickman archer/stickman archer 2.png').convert_alpha()]
         self.archer_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.archer_all_image]
 
         # archer attack
@@ -291,11 +291,11 @@ class Game:
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Check if left mouse button is pressed
-                    clicked_troop(100, 200, self.warrior_button, self.warrior_frame_storage, self.warrior_attack_frame_storage, 100, 20, 1)
-                    clicked_troop(300, 200, self.archer_button, self.archer_frame_storage, self.archer_attack_frame_storage, 100, 20, 1)
-                    clicked_troop(500, 500, self.wizard_button, self.wizard_frame_storage, self.wizard_attack_frame_storage, 100, 20, 1)
-                    clicked_troop(700, 200, self.sparta_button, self.sparta_frame_storage, self.sparta_attack_frame_storage, 100, 20, 1)
-                    clicked_troop(700, 200, self.giant_button, self.giant_frame_storage, self.giant_attack_frame_storage, 100, 20, 1)
+                    clicked_troop(100, 200, self.warrior_button,self.warrior_frame_storage, self.warrior_attack_frame_storage, 100, 20, 1)
+                    clicked_troop(300, 200, self.archer_button,self.archer_frame_storage, self.archer_attack_frame_storage, 100, 20, 1)
+                    clicked_troop(500, 500, self.wizard_button,self.wizard_frame_storage, self.wizard_attack_frame_storage, 100, 20, 1)
+                    clicked_troop(700, 200, self.sparta_button,self.sparta_frame_storage, self.sparta_attack_frame_storage, 100, 20, 1)
+                    clicked_troop(700, 200, self.giant_button,self.giant_frame_storage, self.giant_attack_frame_storage, 100, 20, 1)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a] or keys[pygame.K_LEFT]:
@@ -318,7 +318,7 @@ class Game:
         # Check collision with right castle rectangle and trigger attack
         for troop in self.troop_on_court:
             if self.check_collision(troop, self.right_rect_castle): 
-                damage = 10
+                damage = troop.damage
                 self.update_health("enemy", damage)  # Update castle health
                 troop.attack()                
 
@@ -364,14 +364,14 @@ class Game:
         # Clear screen
         self.screen.fill((255, 255, 255))  
 
-        # background
-        self.screen.blit(self.background_image, (self.bg_x, 0))
-
         # Draw rectangles on both sides of the scrolling background
         left_rect_castle = pygame.Rect(self.bg_x, 90, 170, 390)
         right_rect_castle = pygame.Rect(self.bg_x + self.background_image.get_width() - 170, 90, 170, 390)
         pygame.draw.rect(self.screen, (0, 255, 0), left_rect_castle)
         pygame.draw.rect(self.screen, (255, 0, 0), right_rect_castle)
+
+        # background
+        self.screen.blit(self.background_image, (self.bg_x, 0))
 
         # Draw border for health bars
         health_bar_border_user = pygame.Rect(self.health_bar_user_pos[0] - 2, self.health_bar_user_pos[1] - 2, self.health_bar_width + 4, self.health_bar_height + 4)
@@ -402,13 +402,13 @@ class Game:
 
         self.check_game_over()
         if self.game_over:
-            self.screen.fill((0, 0, 0))  # Black screen
-            font = pygame.font.Font(None, 36)
+            self.screen.fill((0, 0, 0)) 
+            font = pygame.font.Font(None, 68)
             if self.winner == "User":
                 text = font.render("You've won!", True, (255, 255, 255))
             else:
                 text = font.render("You've lost!", True, (255, 255, 255))
-            text_rect = text.get_rect(center=(self.screen.get_width() // 2, self.screen.get_height() // 2))
+            text_rect = text.get_rect(center=(500,300))
             self.screen.blit(text, text_rect)
             return  # End the game
 
