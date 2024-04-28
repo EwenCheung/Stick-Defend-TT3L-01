@@ -80,16 +80,18 @@ class Troop:
         self.communication = self
 
     def update(self):
-        self.coordinate_x += 2
-        self.animation_index += 0.2
+        self.coordinate_x += self.speed  
+        self.animation_index += 0.2  
         if self.animation_index >= len(self.frame_storage):
-            self.animation_index = 0
+            self.animation_index = 0  
+        self.image = self.frame_storage[int(self.animation_index)] 
+
 
     def attack(self):
         self.attacking = True
         if self.attacking:
             self.coordinate_x -= 2
-            self.attack_frame_index += 0.1
+            self.attack_frame_index += 0.2
             if self.attack_frame_index >= len(self.attack_frame_storage):
                 self.attack_frame_index = 0
                 self.attacking = False
@@ -291,11 +293,11 @@ class Game:
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Check if left mouse button is pressed
-                    clicked_troop(100, 200, self.warrior_button,self.warrior_frame_storage, self.warrior_attack_frame_storage, 100, 20, 1)
-                    clicked_troop(300, 200, self.archer_button,self.archer_frame_storage, self.archer_attack_frame_storage, 100, 20, 1)
-                    clicked_troop(500, 500, self.wizard_button,self.wizard_frame_storage, self.wizard_attack_frame_storage, 100, 20, 1)
-                    clicked_troop(700, 200, self.sparta_button,self.sparta_frame_storage, self.sparta_attack_frame_storage, 100, 20, 1)
-                    clicked_troop(700, 200, self.giant_button,self.giant_frame_storage, self.giant_attack_frame_storage, 100, 20, 1)
+                    clicked_troop(100, 200, self.warrior_button, self.warrior_frame_storage, self.warrior_attack_frame_storage, 100, 20, 1)
+                    clicked_troop(300, 200, self.archer_button, self.archer_frame_storage, self.archer_attack_frame_storage, 100, 20, 1)
+                    clicked_troop(500, 500, self.wizard_button, self.wizard_frame_storage, self.wizard_attack_frame_storage, 100, 20, 1)
+                    clicked_troop(700, 200, self.sparta_button, self.sparta_frame_storage, self.sparta_attack_frame_storage, 100, 20, 1)
+                    clicked_troop(700, 200, self.giant_button, self.giant_frame_storage, self.giant_attack_frame_storage, 100, 20, 1)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a] or keys[pygame.K_LEFT]:
