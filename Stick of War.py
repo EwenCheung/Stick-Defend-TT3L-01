@@ -19,6 +19,7 @@ class TroopButton:
         self.coordinate_x = 0
         self.last_clicked_time = 0
         self.remaining_cooldown = 0
+        self.insufficient_currency = False
 
     def render_name(self, screen):
         font = pygame.font.Font(None, 15)
@@ -35,8 +36,7 @@ class TroopButton:
             y_offset += 8
 
     def draw(self, screen):
-        if self.clicked:
-            # Display cooldown time if the button is on cooldown
+        if self.clicked:  
             current_time = pygame.time.get_ticks()
             self.remaining_cooldown = max(0, self.cooldown_time - (current_time - self.last_clicked_time)) // 1000
             cooldown_font = pygame.font.Font(None, 70)
@@ -45,7 +45,7 @@ class TroopButton:
             screen.blit(self.image_dim, self.rect)
             screen.blit(cooldown_text, cooldown_text_rect)
 
-        if self.remaining_cooldown == 0:
+        if self.remaining_cooldown == 0: 
             screen.blit(self.image, self.rect)
             self.clicked = False
         self.render_name(screen)
@@ -58,7 +58,7 @@ class TroopButton:
                 self.last_clicked_time = current_time
                 return True
         return False
-
+    
 class Troop:
     def __init__(self,frame_storage, attack_frame_storage, health, damage, speed):
         self.coordinate_x = 0
