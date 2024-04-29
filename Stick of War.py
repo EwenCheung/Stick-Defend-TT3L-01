@@ -97,12 +97,11 @@ class Troop:
             self.animation_index = 0  
         self.image = self.frame_storage[int(self.animation_index)] 
 
-
     def attack(self):
         self.attacking = True
         if self.attacking:
-            self.coordinate_x -= 2
-            self.attack_frame_index += 0.2
+            self.coordinate_x -= 5
+            self.attack_frame_index += 0.1
             if self.attack_frame_index >= len(self.attack_frame_storage):
                 self.attack_frame_index = 0
                 self.attacking = False
@@ -312,7 +311,7 @@ class Game:
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Check if left mouse button is pressed
-                    clicked_troop(100, 200, self.warrior_button, self.warrior_frame_storage, self.warrior_attack_frame_storage, 100, 20, 1)
+                    clicked_troop(100, 200, self.warrior_button, self.warrior_frame_storage, self.warrior_attack_frame_storage, 100, 20, 5)
                     clicked_troop(300, 200, self.archer_button, self.archer_frame_storage, self.archer_attack_frame_storage, 100, 20, 1)
                     clicked_troop(500, 500, self.wizard_button, self.wizard_frame_storage, self.wizard_attack_frame_storage, 100, 20, 1)
                     clicked_troop(700, 200, self.sparta_button, self.sparta_frame_storage, self.sparta_attack_frame_storage, 100, 20, 1)
