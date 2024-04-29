@@ -113,6 +113,29 @@ class Troop:
             if self in self.communication.troop_on_court:
                 self.communication.troop_on_court.remove(self)
 
+class HealthBar:
+    def __init__(self, max_health, initial_health, position, width, height, color):
+        self.max_health = max_health
+        self.current_health = initial_health
+        self.position = position
+        self.width = width
+        self.height = height
+        self.color = color
+
+    def draw(self, screen):
+        # Draw inside the border box
+        health_width = self.current_health / self.max_health * self.width
+        health_bar_rect = pygame.Rect(self.position[0], self.position[1], health_width, self.height)
+        pygame.draw.rect(screen, self.color, health_bar_rect)
+
+        # Draw border line
+        health_bar_border_rect = pygame.Rect(self.position[0] - 2, self.position[1] - 2, self.width + 4, self.height + 4)
+        pygame.draw.rect(screen, (0, 0, 0), health_bar_border_rect, 2)
+
+    def update_health(self, damage):
+        self.current_health -= damage
+        self.current_health = max(0, self.current_health)
+
 class Game:
     def __init__(self):
         self.clock = pygame.time.Clock()
@@ -128,16 +151,8 @@ class Game:
         self.diamond_interval = 100
         self.troop_on_court = []
         self.bullet_on_court = []
-        self.max_health_user = 10000
-        self.max_health_enemy = 10000
-        self.current_health_user = self.max_health_user
-        self.current_health_enemy = self.max_health_enemy
-        self.health_bar_width = 200
-        self.health_bar_height = 20
-        self.health_bar_user_border_pos = (620, 530)
-        self.health_bar_enemy_border_pos = (620, 560)
-        self.health_bar_user_pos = (620, 530)
-        self.health_bar_enemy_pos = (620, 560)
+        self.health_bar_user = HealthBar(10000, 10000, (620, 530), 200, 20, (0, 255, 0)) # health bar
+        self.health_bar_enemy = HealthBar(10000, 10000, (620, 560), 200, 20, (255, 0, 0))
         self.game_over = False
         self.winner = None
         self.set_up()
@@ -348,35 +363,21 @@ class Game:
         return troop_rect.colliderect(rect)
     
     def draw_health_bar(self):
-        # # Draw health bars
-        # pygame.draw.rect(self.screen, (0, 255, 0), (self.health_bar_user_pos[0], self.health_bar_user_pos[1], self.current_health_user / self.max_health_user * self.health_bar_width, self.health_bar_height))
-        # pygame.draw.rect(self.screen, (255, 0, 0), (self.health_bar_enemy_pos[0] + (1 - self.current_health_enemy / self.max_health_enemy) * self.health_bar_width, self.health_bar_enemy_pos[1], self.current_health_enemy / self.max_health_enemy * self.health_bar_width, self.health_bar_height))
-        # or this not sure which one okay in the future, dont delete, later code finish i will test both
-        # Draw health bars for the user's castle (left)
-        user_health_width = self.current_health_user / self.max_health_user * self.health_bar_width
-        user_health_x = self.health_bar_user_pos[0]
-        pygame.draw.rect(self.screen, (0, 255, 0), (user_health_x, self.health_bar_user_pos[1], user_health_width, self.health_bar_height))
-
-        # Draw health bars for the enemy's castle (right)
-        enemy_health_width = self.current_health_enemy / self.max_health_enemy * self.health_bar_width
-        enemy_health_x = self.health_bar_enemy_pos[0] + (1 - self.current_health_enemy / self.max_health_enemy) * self.health_bar_width
-        pygame.draw.rect(self.screen, (255, 0, 0), (enemy_health_x, self.health_bar_enemy_pos[1], enemy_health_width, self.health_bar_height))
+        # Draw health bars
+        self.health_bar_user.draw(self.screen)
+        self.health_bar_enemy.draw(self.screen)
 
     def update_health(self, side, damage):
         if side == "user":
-            self.current_health_user -= damage
+            self.health_bar_user.update_health(damage)
         elif side == "enemy":
-            self.current_health_enemy -= damage
-
-        # Ensure health doesn't go below 0
-        self.current_health_user = max(0, self.current_health_user)
-        self.current_health_enemy = max(0, self.current_health_enemy)
+            self.health_bar_enemy.update_health(damage)
 
     def check_game_over(self):
-        if self.current_health_user <= 0:
+        if self.health_bar_user.current_health <= 0:
             self.game_over = True
             self.winner = "Enemy"
-        elif self.current_health_enemy <= 0:
+        elif self.health_bar_enemy.current_health <= 0:
             self.game_over = True
             self.winner = "User"
 
@@ -393,11 +394,6 @@ class Game:
         # background
         self.screen.blit(self.background_image, (self.bg_x, 0))
 
-        # Draw border for health bars
-        health_bar_border_user = pygame.Rect(self.health_bar_user_pos[0] - 2, self.health_bar_user_pos[1] - 2, self.health_bar_width + 4, self.health_bar_height + 4)
-        health_bar_border_enemy = pygame.Rect(self.health_bar_enemy_pos[0] - 2, self.health_bar_enemy_pos[1] - 2, self.health_bar_width + 4, self.health_bar_height + 4)
-        pygame.draw.rect(self.screen, (0, 0, 0), health_bar_border_user, 2)  # Border for left health bar
-        pygame.draw.rect(self.screen, (0, 0, 0), health_bar_border_enemy, 2)  # Border for right health bar
         self.draw_health_bar()
 
         # box for spell
@@ -443,7 +439,6 @@ class Game:
 
             pygame.display.update()  # Update the display
             self.clock.tick(60)  # Limit frame rate to 60 FPS
-
 
 if __name__ == "__main__":
     Game().run()
