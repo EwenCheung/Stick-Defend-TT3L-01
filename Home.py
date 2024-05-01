@@ -37,7 +37,8 @@ class Game:
 
         self.wood_plank_surface = pygame.image.load('Plant vs Stick/Picture/utils/wood.png').convert()
         self.wood_plank_surface = pygame.transform.scale(self.wood_plank_surface, (140, 50))
-        self.wood_plank_rectangle = self.wood_plank_surface.get_rect(topleft=(850, 10))
+        self.pokemon_vs_naruto_rect = None
+        self.stick_of_war_rect = None
 
         self.loading = True
         self.finish_loading = False
@@ -67,17 +68,17 @@ class Game:
         self.loading_bar.draw_bar(self.screen)
 
     def choose_game(self):
-        self.wood_plank_rectangle = self.wood_plank_surface.get_rect(center=(350, 430))
-        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle)
-        pvz = pygame.font.Font(None, 40).render('Plant vs Zombie', True, (255, 255, 255))
-        pvz_rect = pvz.get_rect(center=(350, 430))
-        self.screen.blit(pvz, pvz_rect)
+        wood_plank_rectangle = self.wood_plank_surface.get_rect(center=(350, 430))
+        self.screen.blit(self.wood_plank_surface, wood_plank_rectangle)
+        pokemon_vs_naruto = pygame.font.Font(None, 40).render('Plant vs Zombie', True, (255, 255, 255))
+        self.pokemon_vs_naruto_rect = pokemon_vs_naruto.get_rect(center=(350, 430))
+        self.screen.blit(pokemon_vs_naruto, self.pokemon_vs_naruto_rect)
 
-        self.wood_plank_rectangle = self.wood_plank_surface.get_rect(center=(650, 430))
-        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle)
+        wood_plank_rectangle = self.wood_plank_surface.get_rect(center=(650, 430))
+        self.screen.blit(self.wood_plank_surface, wood_plank_rectangle)
         stick_of_war = pygame.font.Font(None, 40).render("Stick of War", True, (255, 255, 255))
-        stick_of_war_rect = stick_of_war.get_rect(center=(650, 430))
-        self.screen.blit(stick_of_war, stick_of_war_rect)
+        self.stick_of_war_rect = stick_of_war.get_rect(center=(650, 430))
+        self.screen.blit(stick_of_war, self.stick_of_war_rect)
 
     def run(self):
         while True:
