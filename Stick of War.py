@@ -71,7 +71,6 @@ class TroopButton:
             self.clicked = False
             self.cooldown_flag = False
 
-
 class Troop:
     def __init__(self, frame_storage, attack_frame_storage, health, attack_damage, speed):
         self.coordinate_x = 0
@@ -147,8 +146,8 @@ class Game:
         self.screen = pygame.display.set_mode((1000, 600))
         self.bg_x = 0
         self.scroll_speed = 10
-        self.num_gold = 500
-        self.num_diamond = 300
+        self.num_gold = 1000000
+        self.num_diamond = 100000
         self.gold_time = pygame.time.get_ticks()
         self.diamond_time = pygame.time.get_ticks()
         self.gold_interval = 100
@@ -221,12 +220,8 @@ class Game:
 
         # archer attack
         self.archer_attack_image = [
-            pygame.image.load(
-                'War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 1.png').convert_alpha(),
-            pygame.image.load(
-                'War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 2.png').convert_alpha(),
-            pygame.image.load(
-                'War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 3.png').convert_alpha()]
+            pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
+            pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha()]
         self.archer_attack_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.archer_attack_image]
 
         self.archer_button_image = pygame.image.load('War of stick/Picture/button/archer_button.png')
@@ -306,7 +301,7 @@ class Game:
             pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 3.png').convert_alpha(),
             pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 4.png').convert_alpha(),
             pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 5.png').convert_alpha()]
-        self.giant_frame_storage = [pygame.transform.scale(frame, (150, 200)) for frame in self.giant_all_image]
+        self.giant_frame_storage = [pygame.transform.scale(frame, (75, 200)) for frame in self.giant_all_image]
 
         # Giant Attack
         self.giant_attack_image = [
@@ -314,7 +309,7 @@ class Game:
                 'War of stick/Picture/stickman giant/stickman giant attack/stickman Giant attack 1.png').convert_alpha(),
             pygame.image.load(
                 'War of stick/Picture/stickman giant/stickman giant attack/stickman Giant attack 2.png').convert_alpha()]
-        self.giant_attack_frame_storage = [pygame.transform.scale(frame, (150, 200)) for frame in self.giant_attack_image]
+        self.giant_attack_frame_storage = [pygame.transform.scale(frame, (75, 200)) for frame in self.giant_attack_image]
 
         self.giant_button_image = pygame.image.load('War of stick/Picture/button/giant_button.png').convert_alpha()
         self.giant_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/giant_dim.png')
@@ -395,14 +390,14 @@ class Game:
         # Clear screen
         self.screen.fill((255, 255, 255))
 
+        # background
+        self.screen.blit(self.background_image, (self.bg_x, 0))
+
         # Draw rectangles on both sides of the scrolling background
         left_rect_castle = pygame.Rect(self.bg_x, 90, 170, 390)
         right_rect_castle = pygame.Rect(self.bg_x + self.background_image.get_width() - 170, 90, 170, 390)
         pygame.draw.rect(self.screen, (0, 255, 0), left_rect_castle)
         pygame.draw.rect(self.screen, (255, 0, 0), right_rect_castle)
-
-        # background
-        self.screen.blit(self.background_image, (self.bg_x, 0))
 
         self.health_bar_user.draw(self.screen)
         self.health_bar_enemy.draw(self.screen)
