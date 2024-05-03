@@ -513,7 +513,7 @@ class Game:
                     # can add deduct currency here
                     if not self.freeze_spell_rect.center == self.freeze_initial_position:
                         self.freeze_spell_rect.center = self.freeze_initial_position  # Snap back to initial position
-
+                self.chosen_spell = None
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a] or keys[pygame.K_LEFT]:
             self.bg_x += self.scroll_speed
