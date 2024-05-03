@@ -231,6 +231,7 @@ class Game:
         self.health_bar_enemy = HealthBar(10000, 10000, (620, 560), 200, 20, (255, 0, 0))
         self.game_over = False
         self.winner = None
+        self.chosen_spell = None
 
         # set up Ninja timer
         self.ninja_timer = pygame.USEREVENT + 1
@@ -250,13 +251,16 @@ class Game:
 
         self.healing_spell = pygame.image.load('War of stick/Picture/spell/healing_spell.png')
         self.healing_spell_surf = pygame.transform.scale(self.healing_spell, (70, 70))
-        self.healing_spell_rect = self.healing_spell_surf.get_rect(center=(35, 550))
+        self.healing_initial_position = (35, 550)
+        self.healing_spell_rect = self.healing_spell_surf.get_rect(center=self.healing_initial_position)
         self.freeze_spell = pygame.image.load('War of stick/Picture/spell/freeze_spell.png')
         self.freeze_spell_surf = pygame.transform.scale(self.freeze_spell, (70, 70))
-        self.freeze_spell_rect = self.freeze_spell_surf.get_rect(center=(105, 550))
+        self.freeze_initial_position = (105, 550)
+        self.freeze_spell_rect = self.freeze_spell_surf.get_rect(center=self.freeze_initial_position)
         self.rage_spell = pygame.image.load('War of stick/Picture/spell/rage_spell.png')
         self.rage_spell_surf = pygame.transform.scale(self.rage_spell, (70, 70))
-        self.rage_spell_rect = self.rage_spell_surf.get_rect(center=(175, 550))
+        self.rage_initial_position = (175, 550)
+        self.rage_spell_rect = self.rage_spell_surf.get_rect(center=self.rage_initial_position)
 
         # Gold assets
         self.pic_gold = pygame.image.load('War of stick/Picture/utils/gold.png').convert_alpha()
@@ -474,6 +478,41 @@ class Game:
                     new_ninja = Ninja(ninja_chosen, self.kakashi_frame_storage, self.kakashi_attack_frame_storage, 75, 2, 2,
                                       self.background_image.get_width())
                 self.enemy_on_court.append(new_ninja)
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # press pokemon card from the top , and chosen pokemon will be that
+                if self.healing_spell_rect.collidepoint(event.pos):
+                    self.chosen_spell = 'healing'
+                elif self.rage_spell_rect.collidepoint(event.pos):
+                    self.chosen_spell = 'rage'
+                elif self.freeze_spell_rect.collidepoint(event.pos):
+                    self.chosen_spell = 'freeze'
+
+            # drag the pokemon card chosen just now
+            if self.chosen_spell and event.type == pygame.MOUSEMOTION:
+                # card follow the mouse pos
+                if self.chosen_spell == 'healing':
+                    self.healing_spell_rect.move_ip(event.rel)
+                elif self.chosen_spell == 'rage':
+                    self.rage_spell_rect.move_ip(event.rel)
+                elif self.chosen_spell == 'freeze':
+                    self.freeze_spell_rect.move_ip(event.rel)
+
+            # button_up after dragging pokemon , pokemon planted and back to the initial position
+            if event.type == pygame.MOUSEBUTTONUP and self.chosen_spell is not None:
+                # can add check condition can rekease spell or not
+                if self.chosen_spell == 'healing':
+                    # can add deduct currency here
+                    if not self.healing_spell_rect.center == self.healing_initial_position:
+                        self.healing_spell_rect.center = self.healing_initial_position  # Snap back to initial position
+                if self.chosen_spell == 'rage':
+                    # can add deduct currency here
+                    if not self.rage_spell_rect.center == self.rage_initial_position:
+                        self.rage_spell_rect.center = self.rage_initial_position  # Snap back to initial position
+                if self.chosen_spell == 'freeze':
+                    # can add deduct currency here
+                    if not self.freeze_spell_rect.center == self.freeze_initial_position:
+                        self.freeze_spell_rect.center = self.freeze_initial_position  # Snap back to initial position
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a] or keys[pygame.K_LEFT]:
