@@ -72,6 +72,7 @@ class TroopButton:
             self.clicked = False
             self.cooldown_flag = False
 
+
 class Troop:
     def __init__(self, frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height):
         self.coordinate_x = 0
@@ -89,7 +90,7 @@ class Troop:
         self.troop_height = troop_height
         # communication between the Troop instance and the Game instance
         self.communication = self
-        self.rect = (0,0,0,0)
+        self.rect = (0, 0, 0, 0)
 
     def spawn_troop(self, screen, bg_x):
         self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 500))
@@ -140,7 +141,7 @@ class Ninja:
         self.communication = self
         self.coordinate_x = coordinate_x
         self.attacking = None
-        self.rect = (0,0,0,0)
+        self.rect = (0, 0, 0, 0)
 
     def spawn_ninja(self, screen, bg_x):
         self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 500))
@@ -404,7 +405,8 @@ class Game:
         self.kakashi_attack_frame_storage = [pygame.transform.scale(frame, (110, 85)) for frame in self.kakashi_attack]
 
     def event_handling(self):
-        def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height):
+        def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage, speed,
+                          troop_width, troop_height):
             mouse_pos = pygame.mouse.get_pos()  # Check if the left mouse button was clicked and handle accordingly
 
             if button_name.is_clicked(mouse_pos):
@@ -432,7 +434,8 @@ class Game:
                                   5, 200, 100)
                     clicked_troop(700, 200, self.sparta_button, self.sparta_frame_storage, self.sparta_attack_frame_storage, 100, 2,
                                   5, 75, 100)
-                    clicked_troop(700, 200, self.giant_button, self.giant_frame_storage, self.giant_attack_frame_storage, 100, 3, 5, 30, 200)
+                    clicked_troop(700, 200, self.giant_button, self.giant_frame_storage, self.giant_attack_frame_storage, 100, 3, 5,
+                                  30, 200)
 
             # spawned ninja
             if event.type == self.ninja_timer:
