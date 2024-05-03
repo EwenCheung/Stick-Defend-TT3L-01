@@ -72,7 +72,7 @@ class TroopButton:
             self.cooldown_flag = False
 
 class Troop:
-    def __init__(self, frame_storage, attack_frame_storage, health, attack_damage, speed):
+    def __init__(self, frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height):
         self.coordinate_x = 0
         self.animation_index = 0
         self.frame_storage = frame_storage
@@ -84,6 +84,8 @@ class Troop:
         self.health = health
         self.attack_damage = attack_damage
         self.speed = speed
+        self.troop_width = troop_width
+        self.troop_height = troop_height
         # communication between the Troop instance and the Game instance
         self.communication = self
 
@@ -301,7 +303,7 @@ class Game:
             pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 3.png').convert_alpha(),
             pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 4.png').convert_alpha(),
             pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 5.png').convert_alpha()]
-        self.giant_frame_storage = [pygame.transform.scale(frame, (75, 200)) for frame in self.giant_all_image]
+        self.giant_frame_storage = [pygame.transform.scale(frame, (150, 200)) for frame in self.giant_all_image]
 
         # Giant Attack
         self.giant_attack_image = [
@@ -309,7 +311,7 @@ class Game:
                 'War of stick/Picture/stickman giant/stickman giant attack/stickman Giant attack 1.png').convert_alpha(),
             pygame.image.load(
                 'War of stick/Picture/stickman giant/stickman giant attack/stickman Giant attack 2.png').convert_alpha()]
-        self.giant_attack_frame_storage = [pygame.transform.scale(frame, (75, 200)) for frame in self.giant_attack_image]
+        self.giant_attack_frame_storage = [pygame.transform.scale(frame, (150, 200)) for frame in self.giant_attack_image]
 
         self.giant_button_image = pygame.image.load('War of stick/Picture/button/giant_button.png').convert_alpha()
         self.giant_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/giant_dim.png')
@@ -318,14 +320,14 @@ class Game:
                                         (500, 70), '700\n200', 3000)
 
     def event_handling(self):
-        def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage, speed):
+        def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height):
             mouse_pos = pygame.mouse.get_pos()  # Check if the left mouse button was clicked and handle accordingly
 
             if button_name.is_clicked(mouse_pos):
                 if self.num_gold >= gold_cost and self.num_diamond >= diamond_cost:
                     self.num_gold -= gold_cost
                     self.num_diamond -= diamond_cost
-                    new_troop = Troop(frame_storage, attack_frame_storage, health, attack_damage, speed)
+                    new_troop = Troop(frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height)
                     self.troop_on_court.append(new_troop)
                 else:
                     button_name.insufficient_currency = True
@@ -338,14 +340,14 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Check if left mouse button is pressed
                     clicked_troop(100, 200, self.warrior_button, self.warrior_frame_storage, self.warrior_attack_frame_storage, 100,
-                                  1, 1)
+                                  1, 5, 75, 100)
                     clicked_troop(300, 200, self.archer_button, self.archer_frame_storage, self.archer_attack_frame_storage, 100, 1,
-                                  1)
+                                  5, 200, 100)
                     clicked_troop(500, 500, self.wizard_button, self.wizard_frame_storage, self.wizard_attack_frame_storage, 100, 2,
-                                  1)
+                                  5, 200, 100)
                     clicked_troop(700, 200, self.sparta_button, self.sparta_frame_storage, self.sparta_attack_frame_storage, 100, 2,
-                                  1)
-                    clicked_troop(700, 200, self.giant_button, self.giant_frame_storage, self.giant_attack_frame_storage, 100, 3, 1)
+                                  5, 75, 100)
+                    clicked_troop(700, 200, self.giant_button, self.giant_frame_storage, self.giant_attack_frame_storage, 100, 3, 5, 30, 200)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a] or keys[pygame.K_LEFT]:
@@ -375,7 +377,7 @@ class Game:
     @staticmethod
     def check_collision(troop, rect):
         # collision detection method
-        troop_rect = pygame.Rect(troop.coordinate_x, 0, troop.image.get_width(), troop.image.get_height())
+        troop_rect = pygame.Rect(troop.coordinate_x, 0, troop.troop_width, troop.troop_height)
         return troop_rect.colliderect(rect)
 
     def check_game_over(self):
@@ -390,14 +392,14 @@ class Game:
         # Clear screen
         self.screen.fill((255, 255, 255))
 
-        # background
-        self.screen.blit(self.background_image, (self.bg_x, 0))
-
         # Draw rectangles on both sides of the scrolling background
         left_rect_castle = pygame.Rect(self.bg_x, 90, 170, 390)
         right_rect_castle = pygame.Rect(self.bg_x + self.background_image.get_width() - 170, 90, 170, 390)
         pygame.draw.rect(self.screen, (0, 255, 0), left_rect_castle)
         pygame.draw.rect(self.screen, (255, 0, 0), right_rect_castle)
+
+        # background
+        self.screen.blit(self.background_image, (self.bg_x, 0))
 
         self.health_bar_user.draw(self.screen)
         self.health_bar_enemy.draw(self.screen)
