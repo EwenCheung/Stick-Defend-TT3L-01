@@ -1,6 +1,7 @@
 # coding : utf-8
 import pygame
 from sys import exit
+from random import choice
 
 pygame.init()
 
@@ -88,10 +89,11 @@ class Troop:
         self.troop_height = troop_height
         # communication between the Troop instance and the Game instance
         self.communication = self
+        self.rect = (0,0,0,0)
 
     def spawn_troop(self, screen, bg_x):
-        rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 500))
-        screen.blit(self.image, rect)
+        self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 500))
+        screen.blit(self.image, self.rect)
 
     def update(self):
         self.coordinate_x += self.speed
@@ -115,6 +117,57 @@ class Troop:
         if self.health == 0:
             if self in self.communication.troop_on_court:
                 self.communication.troop_on_court.remove(self)
+
+
+class Ninja:
+    # load image
+
+    def __init__(self, ninja_type, frame_storage, attack_frame_storage, health, speed, attack, coordinate_x):
+
+        self.ninja_type = ninja_type
+        self.frame_storage = frame_storage
+        self.attack_frame_storage = attack_frame_storage
+        self.health = health
+        self.speed = speed
+        self.attack = attack
+
+        self.animation_index = 0
+        self.image = self.frame_storage[self.animation_index]
+
+        self.animation_attack_index = 0
+        self.image = self.attack_frame_storage[self.animation_attack_index]
+
+        self.communication = self
+        self.coordinate_x = coordinate_x
+        self.attacking = None
+        self.rect = (0,0,0,0)
+
+    def spawn_ninja(self, screen, bg_x):
+        self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 500))
+        screen.blit(self.image, self.rect)
+
+    def update_ninja(self):
+        self.coordinate_x -= self.speed
+        self.animation_index += self.speed / 10
+        if self.animation_index >= len(self.attack_frame_storage):
+            self.animation_index = 0
+        self.image = self.frame_storage[int(self.animation_index)]
+
+    def ninja_attack(self):
+        self.attacking = True
+        if self.attacking:
+            self.coordinate_x -= self.speed
+            self.animation_attack_index += 0.2
+            if self.animation_attack_index >= len(self.attack_frame_storage):
+                self.animation_attack_index = 0
+                self.attacking = False
+            self.image = self.attack_frame_storage[int(self.animation_attack_index)]
+
+    def take_damage(self, taken_damage):
+        self.health -= taken_damage
+        if self.health == 0:
+            if self in self.communication.enemy_on_court:
+                self.communication.enemy_on_court.remove(self)
 
 
 class HealthBar:
@@ -155,11 +208,18 @@ class Game:
         self.gold_interval = 100
         self.diamond_interval = 100
         self.troop_on_court = []
+        self.enemy_on_court = []
         self.bullet_on_court = []
         self.health_bar_user = HealthBar(10000, 10000, (620, 530), 200, 20, (0, 255, 0))  # health bar
         self.health_bar_enemy = HealthBar(10000, 10000, (620, 560), 200, 20, (255, 0, 0))
         self.game_over = False
         self.winner = None
+
+        # set up Ninja timer
+        self.ninja_timer = pygame.USEREVENT + 1
+        self.spawn_time = 3000
+        pygame.time.set_timer(self.ninja_timer, self.spawn_time)
+        self.ninja_choice = ["naruto", "kakashi", "sasuke"]
 
         # Scrolling Background
         self.background_image = pygame.image.load('War of stick/Picture/utils/map.jpg')
@@ -319,6 +379,30 @@ class Game:
         self.giant_button = TroopButton(self.giant_button_image, self.giant_button_dim_image, self.giant_button_flash, (100, 100),
                                         (500, 70), '700\n200', 3000)
 
+        self.naruto_normal = [pygame.image.load('Plant vs Stick/Picture/naruto/naruto_walk_1.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/naruto/naruto_walk_2.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/naruto/naruto_walk_3.png').convert_alpha()]
+        self.naruto_attack = [pygame.image.load('Plant vs Stick/Picture/naruto/naruto_attack_1.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/naruto/naruto_attack_2.png').convert_alpha()]
+        self.naruto_frame_storage = [pygame.transform.scale(frame, (84, 45)) for frame in self.naruto_normal]
+        self.naruto_attack_frame_storage = [pygame.transform.scale(frame, (84, 45)) for frame in self.naruto_attack]
+
+        self.sasuke_normal = [pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_walk_1.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_walk_2.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_walk_3.png').convert_alpha()]
+        self.sasuke_attack = [pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_attack_1.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_attack_2.png').convert_alpha()]
+        self.sasuke_frame_storage = [pygame.transform.scale(frame, (75, 55)) for frame in self.sasuke_normal]
+        self.sasuke_attack_frame_storage = [pygame.transform.scale(frame, (75, 55)) for frame in self.sasuke_attack]
+
+        self.kakashi_normal = [pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_run_1.png').convert_alpha(),
+                               pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_run_2.png').convert_alpha(),
+                               pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_run_3.png').convert_alpha()]
+        self.kakashi_attack = [pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_attack_1.png').convert_alpha(),
+                               pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_attack_2.png').convert_alpha()]
+        self.kakashi_frame_storage = [pygame.transform.scale(frame, (110, 85)) for frame in self.kakashi_normal]
+        self.kakashi_attack_frame_storage = [pygame.transform.scale(frame, (110, 85)) for frame in self.kakashi_attack]
+
     def event_handling(self):
         def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height):
             mouse_pos = pygame.mouse.get_pos()  # Check if the left mouse button was clicked and handle accordingly
@@ -337,6 +421,7 @@ class Game:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Check if left mouse button is pressed
                     clicked_troop(100, 200, self.warrior_button, self.warrior_frame_storage, self.warrior_attack_frame_storage, 100,
@@ -348,6 +433,21 @@ class Game:
                     clicked_troop(700, 200, self.sparta_button, self.sparta_frame_storage, self.sparta_attack_frame_storage, 100, 2,
                                   5, 75, 100)
                     clicked_troop(700, 200, self.giant_button, self.giant_frame_storage, self.giant_attack_frame_storage, 100, 3, 5, 30, 200)
+
+            # spawned ninja
+            if event.type == self.ninja_timer:
+                new_ninja = None
+                ninja_chosen = choice(self.ninja_choice)
+                if ninja_chosen == "naruto":
+                    new_ninja = Ninja(ninja_chosen, self.naruto_frame_storage, self.naruto_attack_frame_storage, 100, 1, 2,
+                                      self.background_image.get_width())
+                elif ninja_chosen == "sasuke":
+                    new_ninja = Ninja(ninja_chosen, self.sasuke_frame_storage, self.sasuke_attack_frame_storage, 50, 1, 3,
+                                      self.background_image.get_width())
+                elif ninja_chosen == "kakashi":
+                    new_ninja = Ninja(ninja_chosen, self.kakashi_frame_storage, self.kakashi_attack_frame_storage, 75, 2, 2,
+                                      self.background_image.get_width())
+                self.enemy_on_court.append(new_ninja)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a] or keys[pygame.K_LEFT]:
@@ -373,6 +473,19 @@ class Game:
                 get_damage = troop.attack_damage
                 self.health_bar_enemy.update_health(get_damage)  # Update castle health
                 troop.attack()
+
+        # not working
+        # for enemy in self.enemy_on_court:
+        #     if self.check_collision(enemy, self.left_rect_castle):
+        #         get_damage = enemy.attack
+        #         self.health_bar_user.update_health(get_damage)  # Update castle health
+        #         enemy.ninja_attack()
+
+        # for enemy in self.enemy_on_court:
+        #     for troop in self.troop_on_court:
+        #         if self.check_collision(troop,enemy.rect):
+        #             troop.attack()
+        #             enemy.ninja_attack()
 
     @staticmethod
     def check_collision(troop, rect):
@@ -439,6 +552,10 @@ class Game:
         for troop in self.troop_on_court:
             troop.spawn_troop(self.screen, self.bg_x)
             troop.update()
+
+        for enemy in self.enemy_on_court:
+            enemy.spawn_ninja(self.screen, self.bg_x)
+            enemy.update_ninja()
 
     def run(self):
         while True:
