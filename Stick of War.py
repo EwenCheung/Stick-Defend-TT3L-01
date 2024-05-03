@@ -2,7 +2,6 @@
 import pygame
 from sys import exit
 from random import choice
-
 pygame.init()
 
 
@@ -72,7 +71,6 @@ class TroopButton:
             self.clicked = False
             self.cooldown_flag = False
 
-
 class Troop:
     def __init__(self, frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height):
         self.coordinate_x = 0
@@ -91,7 +89,6 @@ class Troop:
         # communication between the Troop instance and the Game instance
         self.communication = self
         self.rect = (0, 0, 0, 0)
-
     def spawn_troop(self, screen, bg_x):
         self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 500))
         screen.blit(self.image, self.rect)
@@ -119,6 +116,26 @@ class Troop:
             if self in self.communication.troop_on_court:
                 self.communication.troop_on_court.remove(self)
 
+# class Spell:
+#     def __init__(self, image, card_pos, card_type):
+#         self.image = image
+#         self.card_pos = card_pos
+#         self.card_type = card_type
+
+#         if self.card_type == 'healing_spell':
+#             self.healing_spell = pygame.image.load('War of stick/Picture/spell/healing_spell.png')
+#             self.healing_spell_surf = pygame.transform.scale(self.healing_spell, (70, 70))
+#             self.healing_spell_rect = self.healing_spell_surf.get_rect(center=(self.card_pos))
+#         elif self.card_type == 'freeze_spell':
+#             self.freeze_spell = pygame.image.load('War of stick/Picture/spell/freeze_spell.png')
+#             self.freeze_spell_surf = pygame.transform.scale(self.freeze_spell, (70, 70))
+#             self.freeze_spell_rect = self.freeze_spell_surf.get_rect(center=(self.card_pos))
+#         elif self.card_type == 'rage_spell':
+#             self.rage_spell = pygame.image.load('War of stick/Picture/spell/rage_spell.png')
+#             self.rage_spell_surf = pygame.transform.scale(self.rage_spell, (70, 70))
+#             self.rage_spell_rect = self.rage_spell_surf.get_rect(center=(self.card_pos))
+
+#         self.spell_used = []
 
 class Ninja:
     # load image
@@ -170,7 +187,6 @@ class Ninja:
             if self in self.communication.enemy_on_court:
                 self.communication.enemy_on_court.remove(self)
 
-
 class HealthBar:
     def __init__(self, max_health, initial_health, position, width, height, color):
         self.max_health = max_health
@@ -221,7 +237,6 @@ class Game:
         self.spawn_time = 3000
         pygame.time.set_timer(self.ninja_timer, self.spawn_time)
         self.ninja_choice = ["naruto", "kakashi", "sasuke"]
-
         # Scrolling Background
         self.background_image = pygame.image.load('War of stick/Picture/utils/map.jpg')
         self.left_rect_castle = pygame.Rect(self.bg_x, 90, 170, 390)
@@ -232,6 +247,16 @@ class Game:
         self.box = pygame.image.load('War of stick/Picture/utils/box.png')
         self.box_surf = pygame.transform.scale(self.box, (600, 80))
         self.box_rect = self.box_surf.get_rect(center=(300, 550))
+
+        self.healing_spell = pygame.image.load('War of stick/Picture/spell/healing_spell.png')
+        self.healing_spell_surf = pygame.transform.scale(self.healing_spell, (70, 70))
+        self.healing_spell_rect = self.healing_spell_surf.get_rect(center=(35, 550))
+        self.freeze_spell = pygame.image.load('War of stick/Picture/spell/freeze_spell.png')
+        self.freeze_spell_surf = pygame.transform.scale(self.freeze_spell, (70, 70))
+        self.freeze_spell_rect = self.freeze_spell_surf.get_rect(center=(105, 550))
+        self.rage_spell = pygame.image.load('War of stick/Picture/spell/rage_spell.png')
+        self.rage_spell_surf = pygame.transform.scale(self.rage_spell, (70, 70))
+        self.rage_spell_rect = self.rage_spell_surf.get_rect(center=(175, 550))
 
         # Gold assets
         self.pic_gold = pygame.image.load('War of stick/Picture/utils/gold.png').convert_alpha()
@@ -403,7 +428,6 @@ class Game:
                                pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_attack_2.png').convert_alpha()]
         self.kakashi_frame_storage = [pygame.transform.scale(frame, (110, 85)) for frame in self.kakashi_normal]
         self.kakashi_attack_frame_storage = [pygame.transform.scale(frame, (110, 85)) for frame in self.kakashi_attack]
-
     def event_handling(self):
         def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage, speed,
                           troop_width, troop_height):
@@ -423,7 +447,6 @@ class Game:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Check if left mouse button is pressed
                     clicked_troop(100, 200, self.warrior_button, self.warrior_frame_storage, self.warrior_attack_frame_storage, 100,
@@ -522,6 +545,9 @@ class Game:
 
         # box for spell
         self.screen.blit(self.box_surf, self.box_rect)
+        self.screen.blit(self.healing_spell_surf, self.healing_spell_rect)
+        self.screen.blit(self.freeze_spell_surf, self.freeze_spell_rect)
+        self.screen.blit(self.rage_spell_surf, self.rage_spell_rect)
 
         # gold icon
         self.screen.blit(self.pic_gold_surf, self.pic_gold_rect)
@@ -559,7 +585,6 @@ class Game:
         for enemy in self.enemy_on_court:
             enemy.spawn_ninja(self.screen, self.bg_x)
             enemy.update_ninja()
-
     def run(self):
         while True:
             self.game_start()
