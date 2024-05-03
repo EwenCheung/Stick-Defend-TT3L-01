@@ -2,6 +2,7 @@
 import pygame
 from sys import exit
 from random import choice
+
 pygame.init()
 
 
@@ -71,6 +72,7 @@ class TroopButton:
             self.clicked = False
             self.cooldown_flag = False
 
+
 class Troop:
     def __init__(self, frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height):
         self.coordinate_x = 0
@@ -89,6 +91,7 @@ class Troop:
         # communication between the Troop instance and the Game instance
         self.communication = self
         self.rect = (0, 0, 0, 0)
+
     def spawn_troop(self, screen, bg_x):
         self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 500))
         screen.blit(self.image, self.rect)
@@ -121,6 +124,7 @@ class Troop:
         if self.health == 0:
             if self in self.communication.troop_on_court:
                 self.communication.troop_on_court.remove(self)
+
 
 # class Spell:
 #     def __init__(self, image, card_pos, card_type):
@@ -190,6 +194,7 @@ class Ninja:
             if self in self.communication.enemy_on_court:
                 self.communication.enemy_on_court.remove(self)
 
+
 class HealthBar:
     def __init__(self, max_health, initial_health, position, width, height, color):
         self.max_health = max_health
@@ -257,13 +262,13 @@ class Game:
 
         self.healing_spell = pygame.image.load('War of stick/Picture/spell/healing_spell.png')
         self.healing_spell_surf = pygame.transform.scale(self.healing_spell, (70, 70))
-        self.healing_spell_rect = self.healing_spell_surf.get_rect(center=(self.healing_initial_position))
+        self.healing_spell_rect = self.healing_spell_surf.get_rect(center=self.healing_initial_position)
         self.freeze_spell = pygame.image.load('War of stick/Picture/spell/freeze_spell.png')
         self.freeze_spell_surf = pygame.transform.scale(self.freeze_spell, (70, 70))
-        self.freeze_spell_rect = self.freeze_spell_surf.get_rect(center=(self.freeze_initial_position))
+        self.freeze_spell_rect = self.freeze_spell_surf.get_rect(center=self.freeze_initial_position)
         self.rage_spell = pygame.image.load('War of stick/Picture/spell/rage_spell.png')
         self.rage_spell_surf = pygame.transform.scale(self.rage_spell, (70, 70))
-        self.rage_spell_rect = self.rage_spell_surf.get_rect(center=(self.rage_initial_position))
+        self.rage_spell_rect = self.rage_spell_surf.get_rect(center=self.rage_initial_position)
 
         # Gold assets
         self.pic_gold = pygame.image.load('War of stick/Picture/utils/gold.png').convert_alpha()
@@ -482,7 +487,7 @@ class Game:
                                       self.background_image.get_width())
                 self.enemy_on_court.append(new_ninja)
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if self.chosen_spell is None and event.type == pygame.MOUSEBUTTONDOWN:
                 if self.healing_spell_rect.collidepoint(event.pos):
                     self.chosen_spell = 'healing'
                 elif self.rage_spell_rect.collidepoint(event.pos):
@@ -490,7 +495,7 @@ class Game:
                 elif self.freeze_spell_rect.collidepoint(event.pos):
                     self.chosen_spell = 'freeze'
 
-            if self.chosen_spell and event.type == pygame.MOUSEMOTION:
+            if self.chosen_spell is not None and event.type == pygame.MOUSEMOTION:
                 # card follow the mouse pos
                 if self.chosen_spell == 'healing':
                     self.healing_spell_rect.move_ip(event.rel)
@@ -560,7 +565,8 @@ class Game:
         # collision detection method
         troop_rect = pygame.Rect(troop.coordinate_x, 0, troop.troop_width, troop.troop_height)
         return troop_rect.colliderect(rect)
-    
+
+    @staticmethod
     def ninja_collision(ninja, rect):
         ninja_rect = pygame.Rect(ninja.coordinate_x, 0, 84, 45)
         return ninja_rect.colliderect(rect)
@@ -631,7 +637,7 @@ class Game:
         for enemy in self.enemy_on_court:
             enemy.spawn_ninja(self.screen, self.bg_x)
             enemy.update_ninja()
-            
+
     def run(self):
         while True:
             self.game_start()
@@ -639,6 +645,7 @@ class Game:
 
             pygame.display.update()  # Update the display
             self.clock.tick(60)  # Limit frame rate to 60 FPS
+
 
 if __name__ == "__main__":
     Game().run()
