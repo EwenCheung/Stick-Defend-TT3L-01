@@ -148,42 +148,42 @@ class Troop:
 #         self.spell_used = []
 
 class Ninja:
-    def __init__(self, ninja_type, frame_storage, attack_frame_storage, health, speed, attack, coordinate_x):
+    def __init__(self, ninja_type, frame_storage, ninja_attack_frame_storage, health, ninja_speed, attack, ninja_coordinate_x):
         self.ninja_type = ninja_type
         self.frame_storage = frame_storage
-        self.attack_frame_storage = attack_frame_storage
+        self.ninja_attack_frame_storage = ninja_attack_frame_storage
         self.health = health
-        self.speed = speed
+        self.ninja_speed = ninja_speed
         self.attack = attack
         self.animation_index = 0
         self.image = self.frame_storage[self.animation_index]
         self.animation_attack_index = 0
-        self.image = self.attack_frame_storage[self.animation_attack_index]
+        self.image = self.ninja_attack_frame_storage[self.animation_attack_index]
         self.communication = self
-        self.coordinate_x = coordinate_x
-        self.attacking = None
+        self.ninja_coordinate_x = ninja_coordinate_x
+        self.ninja_attacking = False
         self.rect = (0, 0, 0, 0)
 
     def spawn_ninja(self, screen, bg_x):
-        self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 500))
+        self.rect = self.image.get_rect(bottomright=(self.ninja_coordinate_x + bg_x, 500))
         screen.blit(self.image, self.rect)
 
     def update_ninja(self):
-        self.coordinate_x -= self.speed
-        self.animation_index += self.speed / 10
-        if self.animation_index >= len(self.attack_frame_storage):
+        self.ninja_coordinate_x -= self.ninja_speed
+        self.animation_index += self.ninja_speed / 10
+        if self.animation_index >= len(self.ninja_attack_frame_storage):
             self.animation_index = 0
         self.image = self.frame_storage[int(self.animation_index)]
 
     def ninja_attack(self):
-        self.attacking = True
-        if self.attacking:
-            self.coordinate_x -= self.speed
+        self.ninja_attacking = True
+        if self.ninja_attacking:
+            self.ninja_coordinate_x += self.ninja_speed
             self.animation_attack_index += 0.2
-            if self.animation_attack_index >= len(self.attack_frame_storage):
+            if self.animation_attack_index >= len(self.ninja_attack_frame_storage):
                 self.animation_attack_index = 0
-                self.attacking = False
-            self.image = self.attack_frame_storage[int(self.animation_attack_index)]
+                self.ninja_attacking = False
+            self.image = self.ninja_attack_frame_storage[int(self.animation_attack_index)]
 
     def speed_decrease(self):
         self.speed *= 0.3
@@ -217,7 +217,6 @@ class HealthBar:
     def update_health(self, get_damage):
         self.current_health -= get_damage
         self.current_health = max(0, self.current_health)
-
 
 class Game:
     def __init__(self):
@@ -507,18 +506,15 @@ class Game:
             if event.type == pygame.MOUSEBUTTONUP and self.chosen_spell is not None:
                 # can add check condition can release spell or not
                 if self.chosen_spell == 'healing':
-                    for troop in self.troop_on_court:
-                        troop.health_increase()
+                    #currency
                     if not self.healing_spell_rect.center == self.healing_initial_position:
                         self.healing_spell_rect.center = self.healing_initial_position  # Snap back to initial position
                 if self.chosen_spell == 'rage':
-                    for troop in self.troop_on_court:
-                        troop.speed_increase()
+                    # currency
                     if not self.rage_spell_rect.center == self.rage_initial_position:
                         self.rage_spell_rect.center = self.rage_initial_position  # Snap back to initial position
                 if self.chosen_spell == 'freeze':
-                    for enemy in self.enemy_on_court:
-                        enemy.speed_decrease()
+                    # currency
                     if not self.freeze_spell_rect.center == self.freeze_initial_position:
                         self.freeze_spell_rect.center = self.freeze_initial_position  # Snap back to initial position
                 self.chosen_spell = None
@@ -544,21 +540,24 @@ class Game:
         # Check collision with right castle rectangle and trigger attack
         for troop in self.troop_on_court:
             if self.check_collision(troop, self.right_rect_castle):
+                print('collide troop')
                 get_damage = troop.attack_damage
                 self.health_bar_enemy.update_health(get_damage)  # Update castle health
                 troop.attack()
 
-        for enemy in self.enemy_on_court:
-            if self.ninja_collision(enemy, self.left_rect_castle):
-                get_the_damage = enemy.attack
+        for ninja in self.enemy_on_court:
+            if self.ninja_collision(ninja, self.left_rect_castle):
+                print('ninja collide')
+                get_the_damage = ninja.attack
                 self.health_bar_user.update_health(get_the_damage)  # Update castle health
-                enemy.ninja_attack()
+                ninja.ninja_attack()
 
-        # for enemy in self.enemy_on_court:
-        #     for troop in self.troop_on_court:
-        #         if self.check_collision(troop,enemy.rect):
-        #             troop.attack()
-        #             enemy.ninja_attack()
+        for ninja in self.enemy_on_court:
+            for troop in self.troop_on_court:
+                if self.check_collision(troop,ninja.rect):
+                    print("both collide")
+                    troop.attack()
+                    ninja.ninja_attack()
 
     @staticmethod
     def check_collision(troop, rect):
@@ -568,7 +567,7 @@ class Game:
 
     @staticmethod
     def ninja_collision(ninja, rect):
-        ninja_rect = pygame.Rect(ninja.coordinate_x, 0, 84, 45)
+        ninja_rect = pygame.Rect(ninja.ninja_coordinate_x, 0, 75, 100)
         return ninja_rect.colliderect(rect)
 
     def check_game_over(self):
