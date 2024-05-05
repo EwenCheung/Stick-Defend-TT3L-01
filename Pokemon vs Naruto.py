@@ -5,82 +5,6 @@ from sys import exit
 from random import randint, choice
 
 
-class LogInMethod():
-    def sign_up(self, username, password):
-        with open('Plant vs Stick/Data/user.txt', mode='a') as f:
-            f.write(f'{username}----{password}\n')
-
-    def check_username_taken(self, input_username):
-        with open('Plant vs Stick/Data/user.txt', mode='rt', encoding='utf-8') as f:
-            for line in f:
-                username, password = line.strip().split('----')
-                if input_username == username:
-                    return False
-            return True
-
-    def check_user_pass(self, input_username, input_password):
-        with open('Plant vs Stick/Data/user.txt', mode='rt', encoding='utf-8') as f:
-            for line in f:
-                username, password = line.strip().split('----')
-                if input_username == username and input_password == password:
-                    return True
-            print('\nNo account found. Check your username and password. You have to register an account to sign in')
-            return False
-
-    def ask_log_in_method(self):
-        log_in_method = input('Sign up an account enter "U" \n'
-                              'Sign in an account enter "I"\n'
-                              'Log in as guest enter "G"\n\n'
-                              'Please enter your choice here :  ').strip().upper()
-        return log_in_method
-
-    def run(self):
-        while True:
-            log_in_method = self.ask_log_in_method()
-
-            if log_in_method == 'G':  # log in as guest
-                self.log_in_as = 'Guest'
-                print(f'Logged in as : {self.log_in_as.title()}')
-                return self.log_in_as
-
-            elif log_in_method == 'U':  # sign up an account
-                while True:
-                    print(" Press 'E' to quit ")
-                    input_username = input('Enter username for sign up : ').strip()
-                    res = self.check_username_taken(input_username)
-                    if input_username.upper() == 'E':
-                        print()
-                        break
-                    elif res:
-                        input_password = input('Enter your password: ').strip()
-                        print('Successfully registered')
-                        print(f'Username:  {input_username}')
-                        print(f'Password:  {input_password}')
-                        print('Now, you can sign in your account\n')
-                        self.sign_up(input_username, input_password)
-                        break
-                    else:
-                        print('Username Taken, Please choose an another one')
-
-            elif log_in_method == 'I':
-                while True:
-                    input_username = input('Enter your username: ').strip()
-                    input_password = input('Enter your password: ').strip()
-                    res = self.check_user_pass(input_username, input_password)
-                    if res:
-                        self.log_in_as = input_username
-                        print(f'Logged in as : {self.log_in_as.title()}')
-                        return self.log_in_as.title()
-                    else:
-                        print('Please try again.\n')
-                        break
-
-            else:
-                print('Please enter the correct symbol\n')
-
-
-logged_in_user = LogInMethod().run()
-
 # game start from here
 # have to initialise the pygame first
 pygame.init()
@@ -433,7 +357,7 @@ class Game():
         self.start_adventure_rect = self.start_adventure_surface.get_rect(topleft=(510, 70))
 
         username_font = pygame.font.Font(None, 30)
-        self.username_surface = username_font.render(logged_in_user, True, 'Green')
+        self.username_surface = username_font.render("logged_in_user", True, 'Green')
         self.username_rectangle = self.username_surface.get_rect(center=(257, 90))
 
         press_h_font = pygame.font.Font(None, 35)
