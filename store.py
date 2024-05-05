@@ -43,6 +43,8 @@ class Game():
         self.detail_page = False
         self.font = pygame.font.Font(None, 30)
         self.price_font = pygame.font.Font(None, 25)
+        self.selected_card = None
+        self.num_money = 500
         #define the x,y coordiante for the card
         self.x_coords = ([325,470,610,325,470,610,325,470,610])
         self.y_coords = ([200,200,200,336,336,336,477,477,477])
@@ -73,50 +75,61 @@ class Game():
         #money for purchase 
         self.money_image_surf = pygame.image.load('War of stick/Picture/store/money.png').convert_alpha()
         self.money_image_surf = pygame.transform.scale(self.money_image_surf, (15,10))
-        self.money_image_rect = self.money_image_surf.get_rect(topright =(750,5))
+        self.money_image_rect = self.money_image_surf.get_rect(topright =(920,10))
+
+        #load blank card image
+        self.blank_card_surf = pygame.image.load('War of stick/Picture/store/blank card image.png').convert_alpha()
+        self.blank_card_surf = pygame.transform.scale(self.blank_card_surf,(50,75))
 
         #load the store low opacity picture
         self.backpack_background_surf = pygame.image.load('War of stick/Picture/store/store background_backpack.png').convert_alpha()
         self.backpack_background_surf = pygame.transform.scale(self.backpack_background_surf,(1000,600))
+
+        self.backpack_background_image_surf = pygame.image.load('War of stick/Picture/store/backpack background image.png').convert_alpha()
+        self.backpack_background_image_surf = pygame.transform.scale(self.backpack_background_image_surf,(700,450))
         
         #load the back button image
         self.back_button_surf = pygame.image.load('WAr of stick/Picture/store/back button.png').convert_alpha()
         self.back_button_surf = pygame.transform.scale(self.back_button_surf, (50,50))
-        self.back_button_rect = self.back_button_surf.get_rect(bottomright=(850,450))
+        self.back_button_rect = self.back_button_surf.get_rect(bottomright=(900,100))
         
         #words for the topic
         self.topic_word_surf = pygame.font.Font(None, 60)
         self.topic_word_surf = self.topic_word_surf.render('War of stick store', True, 'Black')
         self.topic_word_rect = self.topic_word_surf.get_rect(center=(462,60))
 
-        #duplicate each of the troop has one background
-        self.warrior_button_surf = self.button_background_surf.copy()
-        self.archer_button_surf = self.button_background_surf.copy()
-        self.sparta_button_surf = self.button_background_surf.copy()
-        self.wizard_button_surf = self.button_background_surf.copy()
-        self.giant_button_surf = self.button_background_surf.copy()
+        self.backpack_word_surf = pygame.font.Font(None, 60)
+        self.backpack_word_surf = self.backpack_word_surf.render('Backpack', True, 'Black')
+        self.backpack_word_rect = self.backpack_word_surf.get_rect(center=(480,150))
 
-        #set the position for each button background
-        self.warrior_button_rect = self.warrior_button_surf.get_rect(center=(100,220))
-        self.archer_button_rect = self.archer_button_surf.get_rect(center=(300,220))
-        self.sparta_button_rect = self.sparta_button_surf.get_rect(center=(500,220))
-        self.wizard_button_rect = self.wizard_button_surf.get_rect(center=(700,220))
-        self.giant_button_rect = self.giant_button_surf.get_rect(center=(900,220))        
+        self.num_money_surf = self.font.render(str(self.num_money), True, 'Black')
+        self.num_money_rect = self.num_money_surf.get_rect(topright=(900,5))
 
         #Create word
         self.unlock_text_surf = self.font.render('Unlock', True, 'Black')
         self.unlock_text_rect = self.unlock_text_surf.get_rect()
 
         self.store_list = [
-            {'image' : self.cards.archer_card_surf_small, 'name' : 'archer','button': self.button_background_surf, 'locked' : True, 'money' : self.money_image_surf, 'price' : '200'},
-            {'image' : self.cards.sparta_card_surf_small, 'name' : 'sparta','button': self.button_background_surf, 'locked' : True, 'money' : self.money_image_surf, 'price' : '350'},
-            {'image' : self.cards.wizard_card_surf_small, 'name' : 'wizard','button': self.button_background_surf, 'locked' : True, 'money' : self.money_image_surf, 'price' : '450'},
-            {'image' : self.cards.giant_card_surf_small, 'name' : 'giant','button': self.button_background_surf, 'locked' : True,  'money' : self.money_image_surf, 'price' : '550'}
+            {'image' : self.cards.archer_card_surf_small, 'name' : 'archer','button': self.button_background_surf, 'locked' : True, 'money' : self.money_image_surf, 'price' : 200},
+            {'image' : self.cards.sparta_card_surf_small, 'name' : 'sparta','button': self.button_background_surf, 'locked' : True, 'money' : self.money_image_surf, 'price' : 350},
+            {'image' : self.cards.wizard_card_surf_small, 'name' : 'wizard','button': self.button_background_surf, 'locked' : True, 'money' : self.money_image_surf, 'price' : 450},
+            {'image' : self.cards.giant_card_surf_small, 'name' : 'giant','button': self.button_background_surf, 'locked' : True,  'money' : self.money_image_surf, 'price' : 550},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 2', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 300},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 3', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 4', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 378},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 5', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 320},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 6', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 330},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 7', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 870},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 8', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 500},
         ]
+        self.store_list = self.store_list[:len(self.x_coords)]
 
         self.backpack_list = [
             {'image' : self.cards.warrior_card_surf_small, 'name' : 'warrior','button' : self.button_background_surf, 'locked' : False, 'money' : self.money_image_surf, 'price' : '200', 'level': 'lv 1'}
         ]
+        
+        random.shuffle(self.store_list)
+
 
     def event_handling(self):
         for event in pygame.event.get():
@@ -129,36 +142,58 @@ class Game():
 
                 #check if the refreash button is clicked
                 if self.refresh_button_rect.collidepoint(mouse_pos):
-                    random.shuffle(self.store_list)
+                    if self.num_money >= 100:
+                        self.num_money -= 100
+                        random.shuffle(self.store_list)
+
+
+                if self.backpack_image_rect.collidepoint(mouse_pos):
+                    self.store = False
+                    self.backpack = True
+                    self.detail_page = False
 
                 if self.store:
                         for index, item in enumerate(self.store_list):
                             if item['locked']:
                                 button_background_rect = item['button'].get_rect(center=(self.x_coords[index], self.y_coords[index] + 45))
                                 if button_background_rect.collidepoint(mouse_pos):
-                                    item_copy = item.copy()
-                                    item_copy['level'] = 'lv 1'
-                                    self.backpack_list.append(item_copy)
-                                    item['locked'] = False
-                                    del self.store_list[index]
-
-
-                if self.backpack_image_rect.collidepoint(mouse_pos):
-                    self.store = False
-                    self.backpack = True
+                                    if self.num_money >= item['price']:
+                                        self.num_money -= item['price']
+                                        item_copy = item.copy()
+                                        item_copy['level'] = 'lv 1'
+                                        self.backpack_list.append(item_copy)
+                                        item['locked'] = False
+                                        del self.store_list[index]
 
                 if self.backpack:
                     if self.back_button_rect.collidepoint(mouse_pos):
                         self.store = True
                         self.backpack = False
                         self.detail_page = False
+
                     for index, item in enumerate(self.backpack_list):
-                        card_image = item['image']
-                        card_image_rect = card_image.get_rect(center=(self.x_coords[index], self.y_coords[index]))
-                        if card_image_rect.collidepoint(mouse_pos):
-                            self.store = False
-                            self.backpack = False
-                            self.detail_page = True 
+                        if self.backpack_image_rect.collidepoint(mouse_pos):
+                            card_image = item['image']
+                            card_image_rect = card_image.get_rect(center=(self.x_coords[index], self.y_coords[index]))
+                            if card_image_rect.collidepoint(mouse_pos):
+                                item_copy = item.copy()
+                                if item['name'] == 'warrior':
+                                    larger_card_surf = self.cards.warrior_card_surf
+                                elif item['name'] == 'archer':
+                                    larger_card_surf = self.cards.archer_card_surf
+                                elif item['name'] == 'sparta':
+                                    larger_card_surf = self.cards.sparta_card_surf
+                                elif item['name'] == 'wizard':
+                                    larger_card_surf = self.cards.wizard_card_surf
+                                elif item['name'] == 'giant':
+                                    larger_card_surf = self.cards.giant_card_surf
+
+                                item_copy['image'] = larger_card_surf
+                                self.selected_card = item_copy
+                                self.store = False
+                                self.backpack = False
+                                self.detail_page = True 
+                                break
 
     def game_start(self):
         if self.store:
@@ -168,42 +203,47 @@ class Game():
             self.screen.blit(self.refresh_button_surf, self.refresh_button_rect)
             self.screen.blit(self.backpack_image_surf,self.backpack_image_rect)
             self.screen.blit(self.money_image_surf,self.money_image_rect)
-            
+            self.num_money_surf = self.font.render(str(self.num_money), True, 'Black')
+            self.screen.blit(self.num_money_surf,self.num_money_rect)
+
+            coord_index = 0
             for index, item in enumerate(self.store_list):
-                if item['locked']:
+                if item['locked'] and index <len(self.x_coords):
                     card_image = item['image']
-                    card_rect = card_image.get_rect(center=(self.x_coords[index], self.y_coords[index]))
+                    card_rect = card_image.get_rect(center=(self.x_coords[coord_index], self.y_coords[coord_index]))
                     self.screen.blit(card_image, card_rect)
 
                     text=self.font.render(f"{item['name'].capitalize()}", True, 'Red')
-                    text_rect = text.get_rect(center=(self.x_coords[index], self.y_coords[index] -50))
+                    text_rect = text.get_rect(center=(self.x_coords[coord_index], self.y_coords[coord_index] -50))
                     self.screen.blit(text,text_rect)
 
                     button_background_surf = item['button']
-                    button_background_rect = button_background_surf.get_rect(center=(self.x_coords[index], self.y_coords[index]+45))
+                    button_background_rect = button_background_surf.get_rect(center=(self.x_coords[coord_index], self.y_coords[coord_index]+45))
                     self.screen.blit(button_background_surf,button_background_rect)
 
                     money_image_surf = item['money']
-                    money_image_rect = money_image_surf.get_rect(center=(self.x_coords[index] +20, self.y_coords[index] +45))
+                    money_image_rect = money_image_surf.get_rect(center=(self.x_coords[coord_index] +20, self.y_coords[coord_index] +45))
                     self.screen.blit(money_image_surf,money_image_rect)
 
-                    price_text_surf = self.price_font.render(item['price'].capitalize(), True, 'Black')
-                    price_text_rect = price_text_surf.get_rect(center=(self.x_coords[index] -7, self.y_coords[index] +46))
+                    price_text_surf = self.price_font.render(str(item['price']), True, 'Black')
+                    price_text_rect = price_text_surf.get_rect(center=(self.x_coords[coord_index] -7, self.y_coords[coord_index] +46))
                     self.screen.blit(price_text_surf,price_text_rect)
+
+                    coord_index +=1
 
         elif self.backpack:
             self.screen.blit(self.backpack_background_surf,(0,0))
-            self.backpack_screen.fill((0,0,0))  
-            self.screen.blit(self.backpack_screen, (150, 75))  # Adjust position as needed
+            self.screen.blit(self.backpack_background_image_surf, (135,60))
+            self.screen.blit(self.backpack_word_surf,self.backpack_word_rect)
             self.screen.blit(self.back_button_surf, self.back_button_rect)
             for index, item in enumerate(self.backpack_list):
                 card_image = item['image']
-                card_rect = card_image.get_rect(center=(self.x_coords[index], self.y_coords[index]))
+                card_rect = card_image.get_rect(center=(self.x_coords[index], self.y_coords[index]+35))
                 self.screen.blit(card_image, card_rect)
 
                 level_display = item['level']  
                 level_display_surf = self.font.render(level_display, True, 'White')
-                level_display_rect = level_display_surf.get_rect(center=(self.x_coords[index], self.y_coords[index]+50))
+                level_display_rect = level_display_surf.get_rect(center=(self.x_coords[index], self.y_coords[index]+85))
                 self.screen.blit(level_display_surf, level_display_rect)
 
 
@@ -212,7 +252,10 @@ class Game():
             self.screen.blit(self.detail_page_screen, (200,100))
             self.detail_page_screen.fill((0, 255, 255))
 
-
+            if self.selected_card:
+                card_image = self.selected_card['image']
+                card_rect = card_image.get_rect(center=(500,200))
+                self.screen.blit(card_image,card_rect)
 
     def run(self):
         while True:
