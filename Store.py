@@ -102,9 +102,9 @@ class Game():
         self.back_button_surf = pygame.transform.scale(self.back_button_surf, (50,50))
         self.back_button_rect = self.back_button_surf.get_rect(bottomright=(900,100))
 
-        self.troop_equipment_box_surf = pygame.image.load('War of stick/Picture/store/equipment box.png').convert_alpha()
-        self.troop_equipment_box_surf = pygame.transform.scale(self.troop_equipment_box_surf,(600,85))
-        self.troop_equipment_box_rect = self.troop_equipment_box_surf.get_rect(center=(380,100))
+        # self.troop_equipment_box_surf = pygame.image.load('War of stick/Picture/store/equipment box.png').convert_alpha()
+        # self.troop_equipment_box_surf = pygame.transform.scale(self.troop_equipment_box_surf,(600,85))
+        # self.troop_equipment_box_rect = self.troop_equipment_box_surf.get_rect(center=(380,100))
 
         # word
         self.unlock_text_surf = self.font.render('Unlock', True, 'Black')
@@ -271,7 +271,7 @@ class Game():
                     self.screen.blit(self.money_image_surf,(465,168))
                     self.num_money_surf = self.font.render(str(self.num_money), True, 'Black')
                     self.screen.blit(self.num_money_surf,(400,165))
-                    self.screen.blit(self.troop_equipment_box_surf,self.troop_equipment_box_rect)
+                    # self.screen.blit(self.troop_equipment_box_surf,self.troop_equipment_box_rect)
 
                     for index, surface in enumerate(self.button_surf):
                         x_coord = self.x_button_coordinate[index]
