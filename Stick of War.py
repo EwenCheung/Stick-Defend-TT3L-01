@@ -24,6 +24,9 @@ class TroopButton:
         self.last_clicked_time = 0
         self.remaining_cooldown = 0
         self.insufficient_currency = False
+        self.flash_timer = 0
+        self.flash_duration = 500
+        self.flash_toggle = False
 
     def render_name(self, screen):
         font = pygame.font.Font(None, 15)
@@ -50,6 +53,16 @@ class TroopButton:
             screen.blit(self.image_dim, self.rect)
             screen.blit(cooldown_text, cooldown_text_rect)
 
+        if self.insufficient_currency and self.flash_toggle:
+            if self.flash_timer <= self.flash_duration:
+                screen.blit(self.flash, self.rect)
+                self.flash_timer += 1
+            else:
+                self.flash_timer = 0
+                self.insufficient_currency = False
+                self.clicked = False
+                self.cooldown_flag = False
+
         if self.remaining_cooldown == 0 and not self.insufficient_currency:
             screen.blit(self.image, self.rect)
             self.clicked = False
@@ -61,15 +74,20 @@ class TroopButton:
             if self.rect.collidepoint(mouse_pos):
                 self.clicked = True
                 self.last_clicked_time = current_time
+                if self.insufficient_currency:
+                    self.flash_visible = not self.flash_visible
+                    self.insufficient_currency = False
+                    self.flash_visible = False
                 return True
         return False
     
     def lack_currency(self, screen):
-        if self.insufficient_currency:
-            screen.blit(self.flash, self.rect)
-            self.insufficient_currency = False
-            self.clicked = False
-            self.cooldown_flag = False
+        if self.insufficient_currency and self.flash_toggle:
+            self.draw(screen)
+            # screen.blit(self.flash, self.rect)
+            # self.insufficient_currency = False
+            # self.clicked = False
+            # self.cooldown_flag = False
 
 class Troop:
     def __init__(self, frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height):
@@ -464,6 +482,7 @@ class Game:
                         self.troop_on_court.append(new_troop)
                     else:
                         button_name.insufficient_currency = True
+                        button_name.false_toggle = True
                         button_name.lack_currency(self.screen)
                 else:
                     self.max_troop(button_name)
