@@ -108,7 +108,7 @@ class Game():
 
         self.spell_equipment_box_surf = self.troop_equipment_box_surf.copy()
         self.spell_equipment_box_rect = self.spell_equipment_box_surf.get_rect(center=(500,87))
-
+ 
         # word
         self.unlock_text_surf = self.font.render('Unlock', True, 'Black')
         self.unlock_text_rect = self.unlock_text_surf.get_rect()
@@ -177,6 +177,8 @@ class Game():
     def button(self):
         self.title_background_surf = pygame.image.load('War of stick/Picture/store/coklat background.jpg').convert_alpha()
         self.title_background_surf = pygame.transform.scale(self.title_background_surf,(90,40))
+        self.title_background_dark_surf = pygame.image.load('War of stick/Picture/store/choc_bg_dark.png').convert_alpha()
+        self.title_background_dark_surf = pygame.transform.scale(self.title_background_dark_surf,(90,40))
         self.button_surf = [
             self.title_background_surf.copy(),
             self.title_background_surf.copy(),
@@ -240,10 +242,13 @@ class Game():
                     surface_rect = surface.get_rect(center=(x_coord, y_coord))
                     if surface_rect.collidepoint(mouse_pos):
                         if index == 1 :
+                            self.screen.blit(self.title_background_dark_surf, surface_rect)
                             self.selected_category = "Troop"
                         elif index == 2 :
+                            self.screen.blit(self.title_background_dark_surf, surface_rect)
                             self.selected_category = 'Spell'
                         elif index == 3 :
+                            self.screen.blit(self.title_background_dark_surf, surface_rect)
                             self.selected_category = 'Others'
 
                 if self.backpack and self.selected_category == 'Castle':
@@ -283,10 +288,10 @@ class Game():
                         surface_rect = surface.get_rect(center=(x_coord, y_coord))
                         self.screen.blit(surface, surface_rect) 
 
+
                     for item in self.castle_detail:
                         #display castle image
                         self.screen.blit(item['image'],(80,180))
-
                         #Display the health icon
                         health_icon_surf = item['health icon']
                         health_icon_rect = health_icon_surf.get_rect(midleft=(375,293))
