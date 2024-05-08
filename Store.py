@@ -48,7 +48,7 @@ class Game():
         self.x_coords = ([325,470,610,325,470,610,325,470,610])
         self.y_coords = ([200,200,200,336,336,336,477,477,477])
         self.x_button_coordinate = ([547,647,747,847])
-        self.y_button_coordinate = ([173,173,173,173])
+        self.y_button_coordinate = ([218,218,218,218])
         self.selected_category = 'Castle'
         self.set_up()
         
@@ -102,16 +102,19 @@ class Game():
         self.back_button_surf = pygame.transform.scale(self.back_button_surf, (50,50))
         self.back_button_rect = self.back_button_surf.get_rect(bottomright=(900,100))
 
-        # self.troop_equipment_box_surf = pygame.image.load('War of stick/Picture/store/equipment box.png').convert_alpha()
-        # self.troop_equipment_box_surf = pygame.transform.scale(self.troop_equipment_box_surf,(600,85))
-        # self.troop_equipment_box_rect = self.troop_equipment_box_surf.get_rect(center=(380,100))
+        self.troop_equipment_box_surf = pygame.image.load('War of stick/Picture/store/equipment box.png').convert_alpha()
+        self.troop_equipment_box_surf = pygame.transform.scale(self.troop_equipment_box_surf,(500,100))
+        self.troop_equipment_box_rect = self.troop_equipment_box_surf.get_rect(center=(500,158))
+
+        self.spell_equipment_box_surf = self.troop_equipment_box_surf.copy()
+        self.spell_equipment_box_rect = self.spell_equipment_box_surf.get_rect(center=(500,87))
 
         # word
         self.unlock_text_surf = self.font.render('Unlock', True, 'Black')
         self.unlock_text_rect = self.unlock_text_surf.get_rect()
 
         self.backpack_word_surf = pygame.font.Font(None, 60)
-        self.backpack_word_surf = self.backpack_word_surf.render('Backpack', True, 'Black')
+        self.backpack_word_surf = self.backpack_word_surf.render('Backpack', True, 'White')
         self.backpack_word_rect = self.backpack_word_surf.get_rect(center=(480,27))
         
         #words for the topic
@@ -120,20 +123,20 @@ class Game():
         self.topic_word_rect = self.topic_word_surf.get_rect(center=(462,60))
 
         #money word
-        self.num_money_surf = self.font.render(str(self.num_money), True, 'Black')
+        self.num_money_surf = self.font.render(str(self.num_money), True, 'White')
         self.num_money_rect = self.num_money_surf.get_rect(topright=(900,5))
 
-        self.castle_word_surf = self.font.render('Castle', True, 'Black')
-        self.castle_word_rect = self.castle_word_surf.get_rect(center=(545,175))
+        self.castle_word_surf = self.font.render('Castle', True, 'White')
+        self.castle_word_rect = self.castle_word_surf.get_rect(center=(545,220))
 
-        self.troop_word_surf = self.font.render('Troop', True, 'Black')
-        self.troop_word_rect = self.troop_word_surf.get_rect(center=(645,175))
+        self.troop_word_surf = self.font.render('Troop', True, 'White')
+        self.troop_word_rect = self.troop_word_surf.get_rect(center=(645,220))
 
-        self.spell_word_surf = self.font.render('Spell', True, 'Black')
-        self.spell_word_rect = self.spell_word_surf.get_rect(center=(745,175))
+        self.spell_word_surf = self.font.render('Spell', True, 'White')
+        self.spell_word_rect = self.spell_word_surf.get_rect(center=(745,220))
 
-        self.others_word_surf = self.font.render('Others', True, 'Black')
-        self.others_word_rect = self.others_word_surf.get_rect(center=(845,175))
+        self.others_word_surf = self.font.render('Others', True, 'White')
+        self.others_word_rect = self.others_word_surf.get_rect(center=(845,220))
 
         self.store_list = [
             {'image' : self.cards.archer_card_surf_small, 'name' : 'archer','button': self.button_background_surf, 'locked' : True, 'money' : self.money_image_surf, 'price' : 200},
@@ -265,13 +268,14 @@ class Game():
         self.button() 
         if self.backpack and self.selected_category == 'Castle':
                     self.screen.fill((50,49,47))
-                    self.screen.blit(self.backpack_background_surf, (100, 150))
+                    self.screen.blit(self.backpack_background_surf, (100, 195))
                     self.screen.blit(self.backpack_word_surf,self.backpack_word_rect)
                     self.screen.blit(self.back_button_surf, self.back_button_rect)
-                    self.screen.blit(self.money_image_surf,(465,168))
+                    self.screen.blit(self.money_image_surf,(465,213))
                     self.num_money_surf = self.font.render(str(self.num_money), True, 'Black')
-                    self.screen.blit(self.num_money_surf,(400,165))
-                    # self.screen.blit(self.troop_equipment_box_surf,self.troop_equipment_box_rect)
+                    self.screen.blit(self.num_money_surf,(400,210))
+                    self.screen.blit(self.troop_equipment_box_surf,self.troop_equipment_box_rect)
+                    self.screen.blit(self.spell_equipment_box_surf,self.spell_equipment_box_rect)
 
                     for index, surface in enumerate(self.button_surf):
                         x_coord = self.x_button_coordinate[index]
@@ -281,65 +285,65 @@ class Game():
 
                     for item in self.castle_detail:
                         #display castle image
-                        self.screen.blit(item['image'],(80,135))
+                        self.screen.blit(item['image'],(80,180))
 
                         #Display the health icon
                         health_icon_surf = item['health icon']
-                        health_icon_rect = health_icon_surf.get_rect(midleft=(375,248))
+                        health_icon_rect = health_icon_surf.get_rect(midleft=(375,293))
                         self.screen.blit(health_icon_surf,health_icon_rect)
 
                         #display the health msg
                         health_text = self.font.render(f"{str(item['health'])}", True, 'Black')    
-                        health_text_rect = health_text.get_rect(midleft=(400,250))    
+                        health_text_rect = health_text.get_rect(midleft=(400,295))    
                         self.screen.blit(health_text,health_text_rect)        
 
                         #display mining icon
                         mining_icon_surf = item['mining icon']
-                        mining_icon_rect = mining_icon_surf.get_rect(midleft=(366,290))
+                        mining_icon_rect = mining_icon_surf.get_rect(midleft=(366,335))
                         self.screen.blit(mining_icon_surf,mining_icon_rect)
 
                         #display mining speed msg
                         mining_speed_text = self.font.render(f"{str(item['mining speed'])}", True, 'Black')
-                        mining_speed_text_rect = mining_speed_text.get_rect(midleft=(402,292))
+                        mining_speed_text_rect = mining_speed_text.get_rect(midleft=(402,337))
                         self.screen.blit(mining_speed_text,mining_speed_text_rect)
 
                         #display health upgrades button
                         health_button_surf = item['upgrades button']
-                        health_button_rect = health_button_surf.get_rect(bottomleft=(118,520))
+                        health_button_rect = health_button_surf.get_rect(bottomleft=(118,565))
                         self.screen.blit(health_button_surf,health_button_rect)
 
                         mining_button_surf = item['upgrades button']
-                        mining_button_rect = mining_button_surf.get_rect(bottomleft=(338,520))
+                        mining_button_rect = mining_button_surf.get_rect(bottomleft=(338,565))
                         self.screen.blit(mining_button_surf,mining_button_rect)
 
                         #health upgrades detail
                         health_upgrades_msg_surf = self.font.render(f"Health: Lv{str(item['health level'])}", True , 'Black')
-                        health_upgrades_msg_rect = health_upgrades_msg_surf.get_rect(bottomleft=(132,485))
+                        health_upgrades_msg_rect = health_upgrades_msg_surf.get_rect(bottomleft=(132,530))
                         self.screen.blit(health_upgrades_msg_surf,health_upgrades_msg_rect)
 
                         health_upgrades_surf = self.price_font.render(f"Upgrade {str(item['health price'])}",True, 'Black')
-                        health_upgrades_rect = health_upgrades_surf.get_rect(bottomleft=(130,510))
+                        health_upgrades_rect = health_upgrades_surf.get_rect(bottomleft=(130,555))
                         self.screen.blit(health_upgrades_surf,health_upgrades_rect)
 
                         health_money_icon_surf = item['money image']
-                        health_money_icon_rect = health_money_icon_surf.get_rect(bottomleft=(237,504))
+                        health_money_icon_rect = health_money_icon_surf.get_rect(bottomleft=(237,549))
                         self.screen.blit(health_money_icon_surf,health_money_icon_rect)
 
                         mining_upgrades_msg_surf = self.font.render(f"Mining: Lv{str(item['mining speed level'])}", True, 'Black')
-                        mining_upgrades_msg_rect = mining_upgrades_msg_surf.get_rect(bottomleft=(352,485))
+                        mining_upgrades_msg_rect = mining_upgrades_msg_surf.get_rect(bottomleft=(352,530))
                         self.screen.blit(mining_upgrades_msg_surf,mining_upgrades_msg_rect)
 
                         mining_upgrades_surf = self.price_font.render(f"Upgrade {str(item['mining speed price'])}", True, 'Black')
-                        mining_upgrades_rect = mining_upgrades_surf.get_rect(bottomleft=(350,510))
+                        mining_upgrades_rect = mining_upgrades_surf.get_rect(bottomleft=(350,555))
                         self.screen.blit(mining_upgrades_surf,mining_upgrades_rect)
 
                         mining_money_icon_surf = item['money image']
-                        mining_money_icon_rect = mining_money_icon_surf.get_rect(bottomleft=(457,504))
+                        mining_money_icon_rect = mining_money_icon_surf.get_rect(bottomleft=(457,549))
                         self.screen.blit(mining_money_icon_surf,mining_money_icon_rect)
 
                         right_part_castle_surf = item['image']
                         right_part_castle_surf = pygame.transform.scale(right_part_castle_surf,(120,120))
-                        right_part_castle_rect = right_part_castle_surf.get_rect(center=(565,250))
+                        right_part_castle_rect = right_part_castle_surf.get_rect(center=(565,295))
                         self.screen.blit(right_part_castle_surf,right_part_castle_rect)
 
                     self.screen.blit(self.castle_word_surf,self.castle_word_rect)
