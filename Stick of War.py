@@ -191,16 +191,16 @@ class Ninja:
     #     self.freeze_active = True
     #     self.freeze_start_time = pygame.time.get_ticks()
 
-    def ninja_speed_decrease(self):
-        if Game().spell_active:
-            self.ninja_speed *= 0.5
-            self.freeze_over()
+    # def ninja_speed_decrease(self):
+    #     if Game().spell_active:
+    #         self.ninja_speed *= 0.5
+    #         self.freeze_over()
 
-    def freeze_over(self):
-        current_time = pygame.time.get_ticks()
-        if current_time - Game().start_time >= Game().spell_duration:
-                self.ninja_speed *= 2
-                return Game().spell_active == False
+    # def freeze_over(self):
+    #     current_time = pygame.time.get_ticks()
+    #     if current_time - Game().start_time >= Game().spell_duration:
+    #             self.ninja_speed *= 2
+    #             return Game().spell_active == False
 
     def ninja_take_damage(self, taken_damage):
         self.ninja_health -= taken_damage               
@@ -252,9 +252,6 @@ class Game:
         self.game_over = False
         self.winner = None
         self.chosen_spell = None
-        self.spell_duration = 5000
-        self.spell_active = False
-        self.spell_start_time = 0
 
         # set up Ninja timer
         self.ninja_timer = pygame.USEREVENT + 1
@@ -535,9 +532,8 @@ class Game:
                     if not self.rage_spell_rect.center == self.rage_initial_position:
                         self.rage_spell_rect.center = self.rage_initial_position  # Snap back to initial position
                 if self.chosen_spell == 'freeze':
-                    self.cast_spell()
-                    for ninja in self.enemy_on_court:
-                        ninja.ninja_speed_decrease()
+                    # for ninja in self.enemy_on_court:
+                    #     ninja.ninja_speed_decrease()
                     if not self.freeze_spell_rect.center == self.freeze_initial_position:
                         self.freeze_spell_rect.center = self.freeze_initial_position  # Snap back to initial position
                 self.chosen_spell = None
@@ -584,11 +580,6 @@ class Game:
                     ninja.ninja_take_damage(troop.attack_damage)
                     if ninja.ninja_health <= 0:
                         self.enemy_on_court.remove(ninja)
-
-    def cast_spell(self):
-        self.spell_active = True
-        if self.spell_active:
-            self.spell_start_time = pygame.time.get_ticks()
 
     def max_troop(self, button_name):
         if button_name == self.warrior_button:
