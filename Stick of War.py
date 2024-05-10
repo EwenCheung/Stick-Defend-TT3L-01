@@ -71,6 +71,7 @@ class TroopButton:
             self.clicked = False
             self.cooldown_flag = False
 
+
 class Troop:
     def __init__(self, frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height):
         self.previous_coor = 0
