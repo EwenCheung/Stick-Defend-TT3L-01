@@ -386,6 +386,7 @@ class Game():
                         surface_rect = surface.get_rect(center=(button_x_coords, button_y_coords))
                         self.screen.blit(surface, surface_rect) 
 
+
                     for item in self.castle_detail:
                         #display castle image
                         self.screen.blit(item['image'],(80,180))
