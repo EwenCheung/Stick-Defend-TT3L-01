@@ -90,11 +90,12 @@ class TroopButton:
             self.cooldown_flag = False
 
 class Troop:
-    def __init__(self, frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height):
+    def __init__(self, frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height, troop_name):
         self.previous_coor = 0
         self.coordinate_x = 0
         self.animation_index = 0
         self.frame_storage = frame_storage
+        self.troop_name = troop_name
         self.image = self.frame_storage[self.animation_index]
         self.attacking = False
         self.attack_frame_index = 0
@@ -114,6 +115,7 @@ class Troop:
         # communication between the Troop instance and the Game instance
         self.communication = self
         self.rect = (0, 0, 0, 0)
+        self.bullet_on_court = []
 
     def spawn_troop(self, screen, bg_x):
         self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 500))
@@ -127,15 +129,44 @@ class Troop:
             self.animation_index = 0
         self.image = self.frame_storage[int(self.animation_index)]
 
+    def troop_attack(self):
+        if self.troop_name == 'Archer' or self.troop_name == 'Wizard':
+            self.create_bullet(0)
+            self.coordinate_x = self.previous_coor
+            self.attack_frame_index += 0.2
+        else:
+            self.coordinate_x = self.previous_coor
+            self.attack_frame_index += 0.2
+
     def attack(self):
         self.attacking = True
         if self.attacking:
-            self.coordinate_x = self.previous_coor
-            self.attack_frame_index += 0.2
+            self.troop_attack()
             if self.attack_frame_index >= len(self.attack_frame_storage):
                 self.attack_frame_index = 0
                 self.attacking = False
             self.image = self.attack_frame_storage[int(self.attack_frame_index)]
+
+    def create_bullet(self, bg_x):
+        self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 500))
+        if self.troop_name == 'Archer':
+            self.bullet = pygame.image.load('War of stick/Picture/utils/archer_bullet.png')
+            self.bullet_surf = pygame.transform.scale(self.bullet, (50,50))
+            self.bullet_surf = self.bullet_surf.get_rect(center=self.rect.center)     
+            new_bullet = self.bullet_surf
+        elif self.troop_name == 'Wizard':
+            self.bullet = pygame.image.load('War of stick/Picture/utils/wizard_bullet.png')
+            self.bullet_surf = pygame.transform.scale(self.bullet, (50,50))
+            self.bullet_surf = self.bullet_surf.get_rect(center=self.rect.center)     
+            new_bullet = self.bullet_surf
+        self.bullet_on_court.append(new_bullet)
+
+    def move_bullet(self):
+        for bullet_rect in self.bullet_on_court:
+            bullet_rect.x += 5  # Move the bullet to the right of troop
+            if bullet_rect.x > 1030:
+                # Remove bullets that have moved off-screen
+                self.bullet_on_court.remove(bullet_rect)
 
     # def cast_health(self):
     #     self.health_active = True
@@ -470,7 +501,7 @@ class Game:
 
     def event_handling(self):
         def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage, speed,
-                          troop_width, troop_height):
+                          troop_width, troop_height, troop_name):
             mouse_pos = pygame.mouse.get_pos()  # Check if the left mouse button was clicked and handle accordingly
 
             if button_name.is_clicked(mouse_pos):
@@ -478,7 +509,7 @@ class Game:
                     if self.num_gold >= gold_cost and self.num_diamond >= diamond_cost:
                         self.num_gold -= gold_cost
                         self.num_diamond -= diamond_cost
-                        new_troop = Troop(frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height)
+                        new_troop = Troop(frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height, troop_name)
                         self.troop_on_court.append(new_troop)
                     else:
                         button_name.insufficient_currency = True
@@ -494,15 +525,15 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Check if left mouse button is pressed
                     clicked_troop(100, 200, self.warrior_button, self.warrior_frame_storage, self.warrior_attack_frame_storage, 100,
-                                  1, 1, 75, 100)
+                                  1, 1, 75, 100, 'Warrior')
                     clicked_troop(300, 200, self.archer_button, self.archer_frame_storage, self.archer_attack_frame_storage, 200, 2,
-                                  1, 200, 100)
+                                  1, 200, 100, 'Archer')
                     clicked_troop(500, 500, self.wizard_button, self.wizard_frame_storage, self.wizard_attack_frame_storage, 250, 2,
-                                  2, 200, 100)
+                                  2, 200, 100, 'Wizard')
                     clicked_troop(700, 200, self.sparta_button, self.sparta_frame_storage, self.sparta_attack_frame_storage, 300, 3,
-                                  2, 75, 100)
+                                  2, 75, 100, 'Sparta')
                     clicked_troop(700, 200, self.giant_button, self.giant_frame_storage, self.giant_attack_frame_storage, 350, 4, 1,
-                                  30, 200)
+                                  30, 200, 'Giant')
 
             if event.type == self.ninja_timer:
                 if len(self.enemy_on_court) <= 20:
