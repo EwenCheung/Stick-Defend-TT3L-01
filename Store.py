@@ -165,15 +165,19 @@ class Game():
             {'image' : self.blank_card_surf, 'name' : 'Blank 6', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 330},
             {'image' : self.blank_card_surf, 'name' : 'Blank 7', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 870},
             {'image' : self.blank_card_surf, 'name' : 'Blank 8', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 9', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 200},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 10', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 300},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 11', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 150},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 12', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 400},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 13', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 670},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 14', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 200},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 15', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 500},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 9', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 10', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 12', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 13', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 14', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 15', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 16', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 17', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 18', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 19', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
         ]
-        self.store_list = self.store_list[:len(self.x_coords)]
+        random.shuffle(self.store_list)
+        self.current_item = self.store_list[:len(self.x_coords)]
 
         self.backpack_troop_list = [
             {'image' : self.cards.warrior_image_surf, 
@@ -209,8 +213,6 @@ class Game():
                 'giant' :(695,450)
             }
         ]
-
-        random.shuffle(self.store_list)
 
         self.castle_detail = [{
             'image': self.castle_image_surf,
@@ -265,6 +267,7 @@ class Game():
                     if self.num_money >= 100:
                         self.num_money -= 100
                         random.shuffle(self.store_list)
+                        self.current_item = self.store_list[:len(self.x_coords)]
 
                 if self.backpack_image_rect.collidepoint(mouse_pos):
                     self.store = False
@@ -272,7 +275,7 @@ class Game():
                     self.selected_category = 'Castle'
 
                 if self.store:
-                        for index, item in enumerate(self.store_list):
+                        for index, item in enumerate(self.current_item):
                             if item['locked']:
                                 button_background_rect = item['button'].get_rect(center=(self.x_coords[index], self.y_coords[index] + 45))
                                 if button_background_rect.collidepoint(mouse_pos):
@@ -490,30 +493,27 @@ class Game():
             self.num_money_surf = self.font.render(str(self.num_money), True, 'Black')
             self.screen.blit(self.num_money_surf,self.num_money_rect)
 
-            coord_index = 0
-            for index, item in enumerate(self.store_list):
+            for index, item in enumerate(self.current_item):
                 if item['locked'] and index <len(self.x_coords):
                     card_image = item['image']
-                    card_rect = card_image.get_rect(center=(self.x_coords[coord_index], self.y_coords[coord_index]))
+                    card_rect = card_image.get_rect(center=(self.x_coords[index], self.y_coords[index]))
                     self.screen.blit(card_image, card_rect)
 
                     text=self.font.render(f"{item['name'].capitalize()}", True, 'Red')
-                    text_rect = text.get_rect(center=(self.x_coords[coord_index], self.y_coords[coord_index] -50))
+                    text_rect = text.get_rect(center=(self.x_coords[index], self.y_coords[index] -50))
                     self.screen.blit(text,text_rect)
 
                     button_background_surf = item['button']
-                    button_background_rect = button_background_surf.get_rect(center=(self.x_coords[coord_index], self.y_coords[coord_index]+45))
+                    button_background_rect = button_background_surf.get_rect(center=(self.x_coords[index], self.y_coords[index]+45))
                     self.screen.blit(button_background_surf,button_background_rect)
 
                     money_image_surf = item['money']
-                    money_image_rect = money_image_surf.get_rect(center=(self.x_coords[coord_index] +20, self.y_coords[coord_index] +45))
+                    money_image_rect = money_image_surf.get_rect(center=(self.x_coords[index] +20, self.y_coords[index] +45))
                     self.screen.blit(money_image_surf,money_image_rect)
 
                     price_text_surf = self.price_font.render(str(item['price']), True, 'Black')
-                    price_text_rect = price_text_surf.get_rect(center=(self.x_coords[coord_index] -7, self.y_coords[coord_index] +46))
+                    price_text_rect = price_text_surf.get_rect(center=(self.x_coords[index] -7, self.y_coords[index] +46))
                     self.screen.blit(price_text_surf,price_text_rect)
-
-                    coord_index +=1
 
         elif self.backpack:
             self.backpack_screen()

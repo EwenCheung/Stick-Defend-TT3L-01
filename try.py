@@ -34,10 +34,10 @@ class Item_card():
         self.sparta_image_surf = pygame.transform.scale(self.sparta_image_surf,(80,105))
 
         self.wizard_image_surf = pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 1.png').convert_alpha()
-        self.wizard_image_surf = pygame.transform.scale(self.wizard_image_surf,(85,110))
+        self.wizard_image_surf = pygame.transform.scale(self.wizard_image_surf,(85,100))
 
         self.giant_image_surf = pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman giant walk 1.png').convert_alpha()
-        self.giant_image_surf = pygame.transform.scale(self.giant_image_surf,(100,120))
+        self.giant_image_surf = pygame.transform.scale(self.giant_image_surf,(75,80))
 
     
 class Game():
@@ -165,9 +165,19 @@ class Game():
             {'image' : self.blank_card_surf, 'name' : 'Blank 6', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 330},
             {'image' : self.blank_card_surf, 'name' : 'Blank 7', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 870},
             {'image' : self.blank_card_surf, 'name' : 'Blank 8', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 9', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 200},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 9', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 10', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 12', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 13', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 14', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 15', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 16', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 17', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 18', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+            {'image' : self.blank_card_surf, 'name' : 'Blank 19', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
         ]
-        self.store_list = self.store_list[:len(self.x_coords)]
+        random.shuffle(self.store_list)
+        self.current_item = self.store_list[:len(self.x_coords)]
 
         self.backpack_troop_list = [
             {'image' : self.cards.warrior_image_surf, 
@@ -189,8 +199,8 @@ class Game():
             'warrior' : (558,290),
             'archer' : (695,278),
             'sparta' : (830,287),
-            'wizard' : (558,419),
-            'giant' : (695,420)
+            'wizard' : (558,410),
+            'giant' : (695,400)
             }
         ] 
 
@@ -199,12 +209,10 @@ class Game():
                 'warrior' : (558,320),
                 'archer' : (695,320),
                 'sparta' : (830,320),
-                'wizard' : (558,450),
-                'giant' :(695,450)
+                'wizard' : (558,438),
+                'giant' :(695,438)
             }
         ]
-
-        random.shuffle(self.store_list)
 
         self.castle_detail = [{
             'image': self.castle_image_surf,
@@ -259,6 +267,7 @@ class Game():
                     if self.num_money >= 100:
                         self.num_money -= 100
                         random.shuffle(self.store_list)
+                        self.current_item = self.store_list[:len(self.x_coords)]
 
                 if self.backpack_image_rect.collidepoint(mouse_pos):
                     self.store = False
@@ -266,46 +275,35 @@ class Game():
                     self.selected_category = 'Castle'
 
                 if self.store:
-                    index_to_remove = None
-                    for index, item in enumerate(self.store_list):
-                        if item['locked']:
-                            button_background_rect = item['button'].get_rect(center=(self.x_coords[index], self.y_coords[index] + 45))
-                            if button_background_rect.collidepoint(mouse_pos):
-                                if self.num_money >= item['price']:
-                                    self.num_money -= item['price']
-                                    # Add purchased item to the backpack list
-                                    item_copy = item.copy()
-                                    item_copy['level'] = 1
-                                    item_copy['health icon'] = self.health_image_surf
-                                    item_copy['damage icon'] = self.damage_image_surf
-                                    item_copy['gold icon'] = self.gold_image_surf_surf
-                                    item_copy['diamond icon'] = self.diamond_image_surf_surf
-                                    item_copy['upgrades price'] = 150
-                                    item_copy['upgrades button'] = self.upgrades_button_surf
+                        for index, item in enumerate(self.current_item):
+                            if item['locked']:
+                                button_background_rect = item['button'].get_rect(center=(self.x_coords[index], self.y_coords[index] + 45))
+                                if button_background_rect.collidepoint(mouse_pos):
+                                    if self.num_money >= item['price']:
+                                        self.num_money -= item['price']
+                                        item_copy = item.copy()
+                                        item_copy['level'] = 1
+                                        item_copy['health icon'] = self.health_image_surf
+                                        item_copy['damage icon'] = self.damage_image_surf
+                                        item_copy['gold icon'] = self.gold_image_surf_surf
+                                        item_copy['diamond icon'] = self.diamond_image_surf_surf
+                                        item_copy['upgrades price'] = 150
+                                        item_copy['upgrades button'] = self.upgrades_button_surf
 
-                                    if item['name'] == 'archer':
-                                        troop_image = self.cards.archer_image_surf
-                                    elif item['name'] == 'sparta':
-                                        troop_image = self.cards.sparta_image_surf
-                                    elif item['name'] == 'wizard':
-                                        troop_image = self.cards.wizard_image_surf
-                                    elif item['name'] == 'giant':
-                                        troop_image = self.cards.giant_image_surf
-                                    else:
-                                        break
-                                    item_copy['image'] = troop_image
-                                    self.backpack_troop_list.append(item_copy)
-                                    # Remove purchased item from the store list
-                                    index_to_remove = index
-                                    item['locked'] = False
-                                    break
-
-                    if index_to_remove is not None:
-                        del self.store_list[index_to_remove]
-                        for index, item in enumerate(self.store_list):
-                                item_x = self.x_coords[index]
-                                item_y = self.y_coords[index]
-                                item['position'] = (item_x, item_y)
+                                        if item['name'] == 'archer':
+                                            troop_image = self.cards.archer_image_surf
+                                        elif item['name'] == 'sparta':
+                                            troop_image = self.cards.sparta_image_surf
+                                        elif item['name'] == 'wizard':
+                                            troop_image = self.cards.wizard_image_surf
+                                        elif item['name'] == 'giant':
+                                            troop_image = self.cards.giant_image_surf
+                                        else:
+                                            break
+                                        item_copy['image'] = troop_image
+                                        self.backpack_troop_list.append(item_copy)
+                                        item['locked'] = False
+                                        del self.store_list[index]
 
                 if self.backpack:
                     if self.back_button_rect.collidepoint(mouse_pos):
@@ -345,6 +343,16 @@ class Game():
                                 item['mining speed level'] += 1
                                 item['mining speed price'] +=100
                                 item['mining speed '] += 1
+
+                # if self.backpack and self.selected_category == 'Troop':
+                #     for item in self.backpack_troop_list:
+                #         troop_type = item['name']
+                #         troop_image = item['image']
+                #         position = self.troop_position[0].get(troop_type, (0,0))
+                #         troop_rect = troop_image.get_rect(center=(position))
+                #         if troop_rect.collidepoint(mouse_pos):
+                #             pass
+                            # self.troop_detail()
 
     def backpack_screen(self):
         self.display_detail_info()
@@ -390,6 +398,7 @@ class Game():
                         button_y_coords = self.y_button_coordinate[index]
                         surface_rect = surface.get_rect(center=(button_x_coords, button_y_coords))
                         self.screen.blit(surface, surface_rect) 
+
 
                     for item in self.castle_detail:
                         #display castle image
@@ -472,6 +481,8 @@ class Game():
                 level_msg_surf = self.price_font.render(f"Level: {str(item['level'])}", True, 'White')
                 level_msg_rect = level_msg_surf.get_rect(center=(msg_position))
                 self.screen.blit(level_msg_surf, level_msg_rect)
+
+
             # for index, item in enumerate(self.backpack_troop_list):
             #     troop_image = item['image']
             #     troop_x_coords = [558,695,830,558,695]
@@ -494,8 +505,8 @@ class Game():
             self.num_money_surf = self.font.render(str(self.num_money), True, 'Black')
             self.screen.blit(self.num_money_surf,self.num_money_rect)
 
-            for index, item in enumerate(self.store_list):
-                if item['locked']:
+            for index, item in enumerate(self.current_item):
+                if item['locked'] and index <len(self.x_coords):
                     card_image = item['image']
                     card_rect = card_image.get_rect(center=(self.x_coords[index], self.y_coords[index]))
                     self.screen.blit(card_image, card_rect)
