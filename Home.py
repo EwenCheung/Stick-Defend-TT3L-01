@@ -1,8 +1,11 @@
 import pygame
+from pygame.locals import *
+from Stick_of_War import Game as StickGame, game_start as stick_game_start
+from Pokemon_vs_Naruto import Game as PokemonGame, game_start as pokemon_game_start
 from sys import exit
 
-pygame.init()
 
+pygame.init()  
 
 class LoadingBar:
     def __init__(self, x, y, height, width, colour, border_colour, border_width):
@@ -23,7 +26,7 @@ class LoadingBar:
         pygame.draw.rect(screen, self.colour, (self.x, self.y, self.width * self.progress, self.height))
 
 
-class Game:
+class Game_bg:
     def __init__(self):
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((1000, 600))
@@ -48,8 +51,13 @@ class Game:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if self.stick_of_war_rect.collidepoint(pygame.mouse.get_pos()):
+                    self.start_stick_of_war()  # Call a method to start Stick_of_war game
+                elif self.pokemon_vs_naruto_rect.collidepoint(pygame.mouse.get_pos()):
+                    self.start_pokemon_vs_naruto()  # Call a method to start Stick_of_war game
 
-    def game_start(self):
+    def game_start_bg(self):
         self.screen.blit(self.image, self.image_rect)
 
     def update_progress(self):
@@ -78,14 +86,22 @@ class Game:
         self.screen.blit(self.wood_plank_surface, wood_plank_rectangle)
         stick_of_war = pygame.font.Font(None, 40).render("Stick of War", True, (255, 255, 255))
         self.stick_of_war_rect = stick_of_war.get_rect(center=(650, 430))
-        self.screen.blit(stick_of_war, self.stick_of_war_rect)
+        self.screen.blit(stick_of_war, self.stick_of_war_rect)     
+
+    def start_stick_of_war(self):
+        pygame.quit()
+        StickGame().stick_game_start()
+
+    def start_pokemon_vs_naruto(self):
+        pygame.quit()
+        PokemonGame().pokemon_game_start()
 
     def run(self):
         while True:
             self.screen.fill((255, 255, 255))
 
             self.event_handling()
-            self.game_start()
+            self.game_start_bg()
             if self.loading:
                 self.update_progress()
             elif self.finish_loading:
@@ -96,4 +112,4 @@ class Game:
 
 
 if __name__ == '__main__':
-    Game().run()
+    Game_bg().run()

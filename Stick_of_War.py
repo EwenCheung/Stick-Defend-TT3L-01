@@ -1,10 +1,12 @@
 # coding : utf-8
 import pygame
+from pygame.locals import *
+from Home import *
 from sys import exit
 from random import choice
 
 pygame.init()
-
+pygame.font.init()
 
 class TroopButton:
     def __init__(self, image, image_dim, flash, size, position, name, cooldown_time):
