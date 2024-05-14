@@ -60,6 +60,7 @@ class Game():
         self.y_button_coordinate = ([218,218,218,218])
         self.selected_category = 'Castle'
         self.clicked_image_surf = 'warrior'
+        self.equipped_box = []
         self.set_up()
         
     def set_up(self):
@@ -534,177 +535,58 @@ class Game():
                 level_msg_rect = level_msg_surf.get_rect(center=(msg_position))
                 self.screen.blit(level_msg_surf, level_msg_rect)
 
-                if item['equip'] == False:
-                    equip_button_surf = item['equip button']
-                    equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
-                    self.screen.blit(equip_button_surf,equip_button_rect)
+                # if item['equip'] == False:
+                #     equip_button_surf = item['equip button']
+                #     equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
+                #     self.screen.blit(equip_button_surf,equip_button_rect)
+                #     equip_text = self.font.render("Equip", True, (255, 255, 255))  
+                #     equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
+                #     self.screen.blit(equip_text, equip_text_rect)
+                # elif item['equip'] == True:
+                #     unequip_button_surf = item['unequip button']
+                #     unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
+                #     self.screen.blit(unequip_button_surf,unequip_button_rect)
+                #     equip_text = self.font.render("Unequip", True, (0, 0, 0))  
+                #     equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
+                #     self.screen.blit(equip_text, equip_text_rect)
 
-                    equip_text = self.font.render("Equip", True, (255, 255, 255))  
-                    equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
-                    self.screen.blit(equip_text, equip_text_rect)
-                elif item['equip'] == True:
-                    unequip_button_surf = item['unequip button']
-                    unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
-                    self.screen.blit(unequip_button_surf,unequip_button_rect)
-
-                    equip_text = self.font.render("Unequip", True, (0, 0, 0))  
-                    equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
-                    self.screen.blit(equip_text, equip_text_rect)
-                    if item['equip'] == True:     
-                        if self.clicked_image_surf == 'warrior':
-                            if item['name'] == 'warrior':
-                                warrior_equipped_surf = pygame.image.load('War of stick/Picture/stickman sword/stickman warrior card.png')
-                                warrior_equipped_surf = pygame.transform.scale(warrior_equipped_surf, (50, 55))
-                                warrior_equipped_rect = warrior_equipped_surf.get_rect(topleft=(290,58))
-                                self.screen.blit(warrior_equipped_surf,warrior_equipped_rect)
-                        elif self.clicked_image_surf == 'archer':
-                             if item['name'] == 'archer' :
-                                archer_equipped_surf = pygame.image.load('War of stick/Picture/stickman archer/stickman archer card.png')
-                                archer_equipped_surf = pygame.transform.scale(archer_equipped_surf, (50, 55))
-                                archer_equipped_rect = archer_equipped_surf.get_rect(topleft=(375,58))
-                                self.screen.blit(archer_equipped_surf,archer_equipped_rect)
-                        elif self.clicked_image_surf == 'sparta':
-                            if item['name'] == 'sparta' :
-                                sparta_equipped_surf = pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta card.png')
-                                sparta_equipped_surf = pygame.transform.scale(sparta_equipped_surf, (50, 55))
-                                sparta_equipped_rect = sparta_equipped_surf.get_rect(topleft=(569,58))
-                                self.screen.blit(sparta_equipped_surf,sparta_equipped_rect)
-                        elif self.clicked_image_surf == 'wizard':
-                            if item['name'] == 'wizard' :
-                                wizard_equipped_surf = pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard card.png')
-                                wizard_equipped_surf = pygame.transform.scale(wizard_equipped_surf, (50, 55))
-                                wizard_equipped_rect = wizard_equipped_surf.get_rect(topleft=(473,58))
-                                self.screen.blit(wizard_equipped_surf,wizard_equipped_rect)
-                        elif self.clicked_image_surf == 'giant':
-                            if item['name'] == 'giant' :
-                                giant_equipped_surf = pygame.image.load('War of stick/Picture/stickman giant/stickman giant card.png')
-                                giant_equipped_surf = pygame.transform.scale(giant_equipped_surf, (50, 55))
-                                giant_equipped_rect = giant_equipped_surf.get_rect(topleft=(668,58))
-                                self.screen.blit(giant_equipped_surf,giant_equipped_rect)
+                if item['equip'] == True:     
+                    if item['name'] == 'warrior':
+                        warrior_equipped_surf = pygame.image.load('War of stick/Picture/stickman sword/stickman warrior card.png')
+                        warrior_equipped_surf = pygame.transform.scale(warrior_equipped_surf, (50, 55))
+                        warrior_equipped_rect = warrior_equipped_surf.get_rect(topleft=(290,58))
+                        self.screen.blit(warrior_equipped_surf,warrior_equipped_rect)
+                        equipped = [warrior_equipped_surf,warrior_equipped_rect]
+                    if item['name'] == 'archer' :
+                        archer_equipped_surf = pygame.image.load('War of stick/Picture/stickman archer/stickman archer card.png')
+                        archer_equipped_surf = pygame.transform.scale(archer_equipped_surf, (50, 55))
+                        archer_equipped_rect = archer_equipped_surf.get_rect(topleft=(375,58))
+                        self.screen.blit(archer_equipped_surf,archer_equipped_rect)
+                        equipped = [archer_equipped_surf,archer_equipped_rect]
+                    elif item['name'] == 'sparta' :
+                        sparta_equipped_surf = pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta card.png')
+                        sparta_equipped_surf = pygame.transform.scale(sparta_equipped_surf, (50, 55))
+                        sparta_equipped_rect = sparta_equipped_surf.get_rect(topleft=(569,58))
+                        self.screen.blit(sparta_equipped_surf,sparta_equipped_rect)
+                        equipped = [sparta_equipped_surf,sparta_equipped_rect]
+                    elif item['name'] == 'wizard' :
+                        wizard_equipped_surf = pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard card.png')
+                        wizard_equipped_surf = pygame.transform.scale(wizard_equipped_surf, (50, 55))
+                        wizard_equipped_rect = wizard_equipped_surf.get_rect(topleft=(473,58))
+                        self.screen.blit(wizard_equipped_surf,wizard_equipped_rect)
+                        equipped = [wizard_equipped_surf,wizard_equipped_rect]
+                    elif item['name'] == 'giant' :
+                        giant_equipped_surf = pygame.image.load('War of stick/Picture/stickman giant/stickman giant card.png')
+                        giant_equipped_surf = pygame.transform.scale(giant_equipped_surf, (50, 55))
+                        giant_equipped_rect = giant_equipped_surf.get_rect(topleft=(668,58))
+                        self.screen.blit(giant_equipped_surf,giant_equipped_rect)
+                        equipped = [giant_equipped_surf,giant_equipped_rect]
+                    self.equipped_box.append(equipped)
                 
         elif self.selected_category == 'Spell':
             pass
         elif self.selected_category == 'Others':
             pass
-
-    def equip_func(self):
-        for item in self.backpack_troop_list:
-            if self.clicked_image_surf == 'warrior':
-                if item['name'] == 'warrior' :
-                    if item['equip'] == False:
-                        equip_button_surf = item['equip button']
-                        equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
-                        self.screen.blit(equip_button_surf,equip_button_rect)
-
-                        equip_text = self.font.render("Equip", True, (255, 255, 255))  
-                        equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
-                        self.screen.blit(equip_text, equip_text_rect)
-                    elif item['equip'] == True:
-                        unequip_button_surf = item['unequip button']
-                        unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
-                        self.screen.blit(unequip_button_surf,unequip_button_rect)
-
-                        equip_text = self.font.render("Unequip", True, (0, 0, 0))  
-                        equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
-                        self.screen.blit(equip_text, equip_text_rect)
-                        if item['equip'] == True:                         
-                            warrior_equipped_surf = pygame.image.load('War of stick/Picture/stickman sword/stickman warrior card.png')
-                            warrior_equipped_surf = pygame.transform.scale(warrior_equipped_surf, (50, 55))
-                            warrior_equipped_rect = warrior_equipped_surf.get_rect(topleft=(290,58))
-                            self.screen.blit(warrior_equipped_surf,warrior_equipped_rect)
-
-            elif self.clicked_image_surf == 'archer':
-                if item['name'] == 'archer' :
-                    if item['equip'] == False:
-                        equip_button_surf = item['equip button']
-                        equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
-                        self.screen.blit(equip_button_surf,equip_button_rect)
-
-                        equip_text = self.font.render("Equip", True, (255, 255, 255))  
-                        equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
-                        self.screen.blit(equip_text, equip_text_rect)
-                    elif item['equip'] == True:
-                        unequip_button_surf = item['unequip button']
-                        unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
-                        self.screen.blit(unequip_button_surf,unequip_button_rect)
-
-                        equip_text = self.font.render("Unequip", True, (0, 0, 0))  
-                        equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
-                        self.screen.blit(equip_text, equip_text_rect)
-                        if item['equip'] == True:                         
-                            archer_equipped_surf = pygame.image.load('War of stick/Picture/stickman archer/stickman archer card.png')
-                            archer_equipped_surf = pygame.transform.scale(archer_equipped_surf, (50, 55))
-                            archer_equipped_rect = archer_equipped_surf.get_rect(topleft=(375,58))
-                            self.screen.blit(archer_equipped_surf,archer_equipped_rect)
-            elif self.clicked_image_surf == 'sparta':
-                if item['name'] == 'sparta' :
-                    if item['equip'] == False:
-                        equip_button_surf = item['equip button']
-                        equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
-                        self.screen.blit(equip_button_surf,equip_button_rect)
-
-                        equip_text = self.font.render("Equip", True, (255, 255, 255))  
-                        equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
-                        self.screen.blit(equip_text, equip_text_rect)
-                    elif item['equip'] == True:
-                        unequip_button_surf = item['unequip button']
-                        unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
-                        self.screen.blit(unequip_button_surf,unequip_button_rect)
-
-                        equip_text = self.font.render("Unequip", True, (0, 0, 0))  
-                        equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
-                        self.screen.blit(equip_text, equip_text_rect)
-                        if item['equip'] == True:                         
-                            sparta_equipped_surf = pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta card.png')
-                            sparta_equipped_surf = pygame.transform.scale(sparta_equipped_surf, (50, 55))
-                            sparta_equipped_rect = sparta_equipped_surf.get_rect(topleft=(569,58))
-                            self.screen.blit(sparta_equipped_surf,sparta_equipped_rect)
-            elif self.clicked_image_surf == 'wizard':
-                if item['name'] == 'wizard' :
-                    if item['equip'] == False:
-                            equip_button_surf = item['equip button']
-                            equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
-                            self.screen.blit(equip_button_surf,equip_button_rect)
-
-                            equip_text = self.font.render("Equip", True, (255, 255, 255))  
-                            equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
-                            self.screen.blit(equip_text, equip_text_rect)
-                    elif item['equip'] == True:
-                        unequip_button_surf = item['unequip button']
-                        unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
-                        self.screen.blit(unequip_button_surf,unequip_button_rect)
-
-                        equip_text = self.font.render("Unequip", True, (0, 0, 0))  
-                        equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
-                        self.screen.blit(equip_text, equip_text_rect)
-                        if item['equip'] == True:                         
-                            wizard_equipped_surf = pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard card.png')
-                            wizard_equipped_surf = pygame.transform.scale(wizard_equipped_surf, (50, 55))
-                            wizard_equipped_rect = wizard_equipped_surf.get_rect(topleft=(473,58))
-                            self.screen.blit(wizard_equipped_surf,wizard_equipped_rect)
-            elif self.clicked_image_surf == 'giant':
-                if item['name'] == 'giant' :
-                    if item['equip'] == False:
-                            equip_button_surf = item['equip button']
-                            equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
-                            self.screen.blit(equip_button_surf,equip_button_rect)
-
-                            equip_text = self.font.render("Equip", True, (255, 255, 255))  
-                            equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
-                            self.screen.blit(equip_text, equip_text_rect)
-                    elif item['equip'] == True:
-                        unequip_button_surf = item['unequip button']
-                        unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
-                        self.screen.blit(unequip_button_surf,unequip_button_rect)
-
-                        equip_text = self.font.render("Unequip", True, (0, 0, 0))  
-                        equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
-                        self.screen.blit(equip_text, equip_text_rect)
-                        if item['equip'] == True:                         
-                            giant_equipped_surf = pygame.image.load('War of stick/Picture/stickman giant/stickman giant card.png')
-                            giant_equipped_surf = pygame.transform.scale(giant_equipped_surf, (50, 55))
-                            giant_equipped_rect = giant_equipped_surf.get_rect(topleft=(668,58))
-                            self.screen.blit(giant_equipped_surf,giant_equipped_rect)
 
     def troop_screen_blit(self):
         if self.backpack and self.selected_category == 'Troop':
@@ -768,27 +650,22 @@ class Game():
                         money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
                         self.screen.blit(money_icon_surf,money_icon_rect)
 
-                        # if item['equip'] == False:
-                        #     equip_button_surf = item['equip button']
-                        #     equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
-                        #     self.screen.blit(equip_button_surf,equip_button_rect)
+                        if item['equip'] == False:
+                            equip_button_surf = item['equip button']
+                            equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
+                            self.screen.blit(equip_button_surf,equip_button_rect)
 
-                        #     equip_text = self.font.render("Equip", True, (255, 255, 255))  
-                        #     equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
-                        #     self.screen.blit(equip_text, equip_text_rect)
-                        # elif item['equip'] == True:
-                        #     unequip_button_surf = item['unequip button']
-                        #     unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
-                        #     self.screen.blit(unequip_button_surf,unequip_button_rect)
+                            equip_text = self.font.render("Equip", True, (255, 255, 255))  
+                            equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
+                            self.screen.blit(equip_text, equip_text_rect)
+                        elif item['equip'] == True:
+                            unequip_button_surf = item['unequip button']
+                            unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
+                            self.screen.blit(unequip_button_surf,unequip_button_rect)
 
-                        #     equip_text = self.font.render("Unequip", True, (0, 0, 0))  
-                        #     equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
-                        #     self.screen.blit(equip_text, equip_text_rect)
-                        #     if item['equip'] == True:                         
-                        #         warrior_equipped_surf = pygame.image.load('War of stick/Picture/stickman sword/stickman warrior card.png')
-                        #         warrior_equipped_surf = pygame.transform.scale(warrior_equipped_surf, (50, 55))
-                        #         warrior_equipped_rect = warrior_equipped_surf.get_rect(topleft=(290,58))
-                        #         self.screen.blit(warrior_equipped_surf,warrior_equipped_rect)
+                            equip_text = self.font.render("Unequip", True, (0, 0, 0))  
+                            equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
+                            self.screen.blit(equip_text, equip_text_rect)
 
                 elif self.clicked_image_surf == 'archer':
                     if item['name'] == 'archer':
@@ -849,27 +726,22 @@ class Game():
                         money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
                         self.screen.blit(money_icon_surf,money_icon_rect)
                         
-                        # if item['equip'] == False:
-                        #     equip_button_surf = item['equip button']
-                        #     equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
-                        #     self.screen.blit(equip_button_surf,equip_button_rect)
+                        if item['equip'] == False:
+                            equip_button_surf = item['equip button']
+                            equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
+                            self.screen.blit(equip_button_surf,equip_button_rect)
 
-                        #     equip_text = self.font.render("Equip", True, (255, 255, 255))  
-                        #     equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
-                        #     self.screen.blit(equip_text, equip_text_rect)
-                        # elif item['equip'] == True:
-                        #     unequip_button_surf = item['unequip button']
-                        #     unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
-                        #     self.screen.blit(unequip_button_surf,unequip_button_rect)
+                            equip_text = self.font.render("Equip", True, (255, 255, 255))  
+                            equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
+                            self.screen.blit(equip_text, equip_text_rect)
+                        elif item['equip'] == True:
+                            unequip_button_surf = item['unequip button']
+                            unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
+                            self.screen.blit(unequip_button_surf,unequip_button_rect)
 
-                        #     equip_text = self.font.render("Unequip", True, (0, 0, 0))  
-                        #     equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
-                        #     self.screen.blit(equip_text, equip_text_rect)
-                        #     if item['equip'] == True:                         
-                        #         archer_equipped_surf = pygame.image.load('War of stick/Picture/stickman archer/stickman archer card.png')
-                        #         archer_equipped_surf = pygame.transform.scale(archer_equipped_surf, (50, 55))
-                        #         archer_equipped_rect = archer_equipped_surf.get_rect(topleft=(375,58))
-                        #         self.screen.blit(archer_equipped_surf,archer_equipped_rect)
+                            equip_text = self.font.render("Unequip", True, (0, 0, 0))  
+                            equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
+                            self.screen.blit(equip_text, equip_text_rect)
 
                 elif self.clicked_image_surf == 'sparta':
                     if item['name'] == 'sparta':
@@ -930,27 +802,22 @@ class Game():
                         money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
                         self.screen.blit(money_icon_surf,money_icon_rect)
                        
-                        # if item['equip'] == False:
-                        #     equip_button_surf = item['equip button']
-                        #     equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
-                        #     self.screen.blit(equip_button_surf,equip_button_rect)
+                        if item['equip'] == False:
+                            equip_button_surf = item['equip button']
+                            equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
+                            self.screen.blit(equip_button_surf,equip_button_rect)
 
-                        #     equip_text = self.font.render("Equip", True, (255, 255, 255))  
-                        #     equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
-                        #     self.screen.blit(equip_text, equip_text_rect)
-                        # elif item['equip'] == True:
-                        #     unequip_button_surf = item['unequip button']
-                        #     unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
-                        #     self.screen.blit(unequip_button_surf,unequip_button_rect)
+                            equip_text = self.font.render("Equip", True, (255, 255, 255))  
+                            equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
+                            self.screen.blit(equip_text, equip_text_rect)
+                        elif item['equip'] == True:
+                            unequip_button_surf = item['unequip button']
+                            unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
+                            self.screen.blit(unequip_button_surf,unequip_button_rect)
 
-                        #     equip_text = self.font.render("Unequip", True, (0, 0, 0))  
-                        #     equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
-                        #     self.screen.blit(equip_text, equip_text_rect)
-                        #     if item['equip'] == True:                         
-                        #         sparta_equipped_surf = pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta card.png')
-                        #         sparta_equipped_surf = pygame.transform.scale(sparta_equipped_surf, (50, 55))
-                        #         sparta_equipped_rect = sparta_equipped_surf.get_rect(topleft=(569,58))
-                        #         self.screen.blit(sparta_equipped_surf,sparta_equipped_rect)
+                            equip_text = self.font.render("Unequip", True, (0, 0, 0))  
+                            equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
+                            self.screen.blit(equip_text, equip_text_rect)
 
                 elif self.clicked_image_surf == 'wizard':
                     if item['name'] == 'wizard':
@@ -1011,27 +878,22 @@ class Game():
                         money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
                         self.screen.blit(money_icon_surf,money_icon_rect)
                  
-                        # if item['equip'] == False:
-                        #     equip_button_surf = item['equip button']
-                        #     equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
-                        #     self.screen.blit(equip_button_surf,equip_button_rect)
+                        if item['equip'] == False:
+                            equip_button_surf = item['equip button']
+                            equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
+                            self.screen.blit(equip_button_surf,equip_button_rect)
 
-                        #     equip_text = self.font.render("Equip", True, (255, 255, 255))  
-                        #     equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
-                        #     self.screen.blit(equip_text, equip_text_rect)
-                        # elif item['equip'] == True:
-                        #     unequip_button_surf = item['unequip button']
-                        #     unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
-                        #     self.screen.blit(unequip_button_surf,unequip_button_rect)
+                            equip_text = self.font.render("Equip", True, (255, 255, 255))  
+                            equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
+                            self.screen.blit(equip_text, equip_text_rect)
+                        elif item['equip'] == True:
+                            unequip_button_surf = item['unequip button']
+                            unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
+                            self.screen.blit(unequip_button_surf,unequip_button_rect)
 
-                        #     equip_text = self.font.render("Unequip", True, (0, 0, 0))  
-                        #     equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
-                        #     self.screen.blit(equip_text, equip_text_rect)
-                        #     if item['equip'] == True:                         
-                        #         wizard_equipped_surf = pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard card.png')
-                        #         wizard_equipped_surf = pygame.transform.scale(wizard_equipped_surf, (50, 55))
-                        #         wizard_equipped_rect = wizard_equipped_surf.get_rect(topleft=(473,58))
-                        #         self.screen.blit(wizard_equipped_surf,wizard_equipped_rect)
+                            equip_text = self.font.render("Unequip", True, (0, 0, 0))  
+                            equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
+                            self.screen.blit(equip_text, equip_text_rect)
 
                 elif self.clicked_image_surf == 'giant':
                     if item['name'] == 'giant':
@@ -1092,27 +954,22 @@ class Game():
                         money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
                         self.screen.blit(money_icon_surf,money_icon_rect)
                     
-                        # if item['equip'] == False:
-                        #     equip_button_surf = item['equip button']
-                        #     equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
-                        #     self.screen.blit(equip_button_surf,equip_button_rect)
+                        if item['equip'] == False:
+                            equip_button_surf = item['equip button']
+                            equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
+                            self.screen.blit(equip_button_surf,equip_button_rect)
 
-                        #     equip_text = self.font.render("Equip", True, (255, 255, 255))  
-                        #     equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
-                        #     self.screen.blit(equip_text, equip_text_rect)
-                        # elif item['equip'] == True:
-                        #     unequip_button_surf = item['unequip button']
-                        #     unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
-                        #     self.screen.blit(unequip_button_surf,unequip_button_rect)
+                            equip_text = self.font.render("Equip", True, (255, 255, 255))  
+                            equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
+                            self.screen.blit(equip_text, equip_text_rect)
+                        elif item['equip'] == True:
+                            unequip_button_surf = item['unequip button']
+                            unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
+                            self.screen.blit(unequip_button_surf,unequip_button_rect)
 
-                        #     equip_text = self.font.render("Unequip", True, (0, 0, 0))  
-                        #     equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
-                        #     self.screen.blit(equip_text, equip_text_rect)
-                        #     if item['equip'] == True:                         
-                        #         giant_equipped_surf = pygame.image.load('War of stick/Picture/stickman giant/stickman giant card.png')
-                        #         giant_equipped_surf = pygame.transform.scale(giant_equipped_surf, (50, 55))
-                        #         giant_equipped_rect = giant_equipped_surf.get_rect(topleft=(668,58))
-                        #         self.screen.blit(giant_equipped_surf,giant_equipped_rect)
+                            equip_text = self.font.render("Unequip", True, (0, 0, 0))  
+                            equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
+                            self.screen.blit(equip_text, equip_text_rect)
 
     def game_start(self):
         if self.store:
@@ -1148,6 +1005,9 @@ class Game():
                     self.screen.blit(price_text_surf,price_text_rect)
 
         elif self.backpack:
+            for equipped in self.equipped_box:
+                self.screen.blit(equipped[0], equipped[1])
+                
             self.backpack_screen()
 
     def run(self):
