@@ -585,19 +585,19 @@ class Game():
                         self.screen.blit(damage_text_surf,damage_text_rect)
 
                         upgrades_button_surf = item['upgrades button']
-                        upgrades_button_rect = upgrades_button_surf.get_rect(midbottom=(250,565))
+                        upgrades_button_rect = upgrades_button_surf.get_rect(midbottom=(220,565))
                         self.screen.blit(upgrades_button_surf,upgrades_button_rect)
 
                         level_msg_surf = self.font.render(f"Level: {str(item['level'])}", True, 'Black')
-                        level_msg_rect = level_msg_surf.get_rect(bottomleft=(210,530))
+                        level_msg_rect = level_msg_surf.get_rect(bottomleft=(180,530))
                         self.screen.blit(level_msg_surf,level_msg_rect)
 
                         level_upgrades_surf = self.price_font.render(f"Upgrade {str(item['upgrades price'])}", True, 'Black')
-                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(193,555))
+                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(163,555))
                         self.screen.blit(level_upgrades_surf,level_upgrades_rect)
 
                         money_icon_surf = item['money']
-                        money_icon_rect = money_icon_surf.get_rect(midleft=(300,543))
+                        money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
                         self.screen.blit(money_icon_surf,money_icon_rect)
 
                         if item['equip'] == False:
@@ -675,6 +675,7 @@ class Game():
                         money_icon_surf = item['money']
                         money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
                         self.screen.blit(money_icon_surf,money_icon_rect)
+
 
                         if item['equip'] == False:
                             equip_button_surf = item['equip button']
@@ -830,6 +831,7 @@ class Game():
                         money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
                         self.screen.blit(money_icon_surf,money_icon_rect)
 
+
                         if item['equip'] == False:
                             equip_button_surf = item['equip button']
                             equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
@@ -889,6 +891,7 @@ class Game():
                         damage_text_surf = self.font.render(f"{str(item['attack damage'])}", True, 'White')
                         damage_text_rect = damage_text_surf.get_rect(midleft=(405,408))
                         self.screen.blit(damage_text_surf,damage_text_rect)
+
                         upgrades_button_surf = item['upgrades button']
                         upgrades_button_rect = upgrades_button_surf.get_rect(midbottom=(220,565))
                         self.screen.blit(upgrades_button_surf,upgrades_button_rect)
@@ -904,6 +907,7 @@ class Game():
                         money_icon_surf = item['money']
                         money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
                         self.screen.blit(money_icon_surf,money_icon_rect)
+
 
                         if item['equip'] == False:
                             equip_button_surf = item['equip button']
