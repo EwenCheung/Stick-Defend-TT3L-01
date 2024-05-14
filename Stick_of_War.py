@@ -5,7 +5,6 @@ from random import choice
 
 pygame.init()
 
-
 class TroopButton:
     def __init__(self, image, image_dim, flash, size, position, name, cooldown_time):
         self.size = size
@@ -92,7 +91,7 @@ class TroopButton:
 
 
 class Troop:
-    def __init__(self, frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height, troop_name):
+    def __init__(self, frame_storage, attack_frame_storage, health, attack_damage, bullet_damage, speed, troop_width, troop_height, troop_name):
         self.previous_coor = 0
         self.coordinate_x = 0
         self.animation_index = 0
@@ -106,6 +105,7 @@ class Troop:
         self.health = health
         self.attack_damage = attack_damage
         self.speed = speed
+        self.bullet_damage = bullet_damage
         self.troop_width = troop_width
         self.troop_height = troop_height
         # self.health_duration = 5000
@@ -135,6 +135,7 @@ class Troop:
         if self.troop_name == 'Archer' or self.troop_name == 'Wizard':
             self.create_bullet(0)
             self.move_bullet()
+            self.bullet_damage = 5
             self.coordinate_x = self.previous_coor
             self.attack_frame_index += 0.2
         else:
@@ -505,7 +506,7 @@ class Game:
         self.kakashi_attack_frame_storage = [pygame.transform.scale(frame, (110, 85)) for frame in self.kakashi_attack]
 
     def event_handling(self):
-        def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage, speed,
+        def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage, bullet_damage, speed,
                           troop_width, troop_height, troop_name):
             mouse_pos = pygame.mouse.get_pos()  # Check if the left mouse button was clicked and handle accordingly
 
@@ -514,7 +515,7 @@ class Game:
                     if self.num_gold >= gold_cost and self.num_diamond >= diamond_cost:
                         self.num_gold -= gold_cost
                         self.num_diamond -= diamond_cost
-                        new_troop = Troop(frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width,
+                        new_troop = Troop(frame_storage, attack_frame_storage, health, attack_damage, bullet_damage, speed, troop_width,
                                           troop_height, troop_name)
                         self.troop_on_court.append(new_troop)
                     else:
@@ -531,14 +532,14 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Check if left mouse button is pressed
                     clicked_troop(100, 200, self.warrior_button, self.warrior_frame_storage, self.warrior_attack_frame_storage, 100,
-                                  1, 1, 75, 100, 'Warrior')
-                    clicked_troop(300, 200, self.archer_button, self.archer_frame_storage, self.archer_attack_frame_storage, 200, 2,
-                                  1, 200, 100, 'Archer')
-                    clicked_troop(500, 500, self.wizard_button, self.wizard_frame_storage, self.wizard_attack_frame_storage, 250, 2,
-                                  2, 200, 100, 'Wizard')
+                                  1, None, 1, 75, 100, 'Warrior')
+                    clicked_troop(300, 200, self.archer_button, self.archer_frame_storage, self.archer_attack_frame_storage, 200, None,
+                                  2, 1, 200, 100, 'Archer')
+                    clicked_troop(500, 500, self.wizard_button, self.wizard_frame_storage, self.wizard_attack_frame_storage, 250, None,
+                                  2, 2, 200, 100, 'Wizard')
                     clicked_troop(700, 200, self.sparta_button, self.sparta_frame_storage, self.sparta_attack_frame_storage, 300, 3,
-                                  2, 75, 100, 'Sparta')
-                    clicked_troop(700, 200, self.giant_button, self.giant_frame_storage, self.giant_attack_frame_storage, 350, 4, 1,
+                                  None, 2, 75, 100, 'Sparta')
+                    clicked_troop(700, 200, self.giant_button, self.giant_frame_storage, self.giant_attack_frame_storage, 350, 4, None, 1,
                                   30, 200, 'Giant')
 
             if event.type == self.ninja_timer:
