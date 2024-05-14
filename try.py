@@ -377,16 +377,17 @@ class Game():
                             elif troop_type == 'giant':
                                 self.clicked_image_surf = 'giant'
 
-                if self.backpack and self.selected_category == 'Troop' :
+                if self.backpack and self.selected_category == 'Troop':
                     for item in self.backpack_troop_list :
-                        upgrades_button_rect = item['upgrades button'].get_rect(midbottom=(250,565))
-                        if upgrades_button_rect.collidepoint(mouse_pos):
-                            if self.num_money >= item['upgrades price'] :
-                                self.num_money -= item['upgrades price']
-                                item['upgrades price'] += 100
-                                item['health'] += 200
-                                item['attack damage'] += 100
-                                item['level'] += 1
+                        if item['name'] == self.clicked_image_surf:
+                            upgrades_button_rect = item['upgrades button'].get_rect(midbottom=(250,565))
+                            if upgrades_button_rect.collidepoint(mouse_pos):
+                                if self.num_money >= item['upgrades price'] :
+                                    self.num_money -= item['upgrades price']
+                                    item['upgrades price'] += 100
+                                    item['health'] += 200
+                                    item['attack damage'] += 100
+                                    item['level'] += 1
 
     def backpack_screen(self):
         self.display_detail_info()
