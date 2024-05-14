@@ -60,7 +60,6 @@ class Game():
         self.y_button_coordinate = ([218,218,218,218])
         self.selected_category = 'Castle'
         self.clicked_image_surf = None
-        self.item_equip = False
         self.set_up()
         
     def set_up(self):
@@ -527,30 +526,7 @@ class Game():
             pass
         elif self.selected_category == 'Others':
             pass
-
-    def equip_func(self):
-        if self.item_equip:
-            self.true_equip()
-        elif not self.item_equip:
-            self.false_equip()
-
-    def false_equip(self):
-        equip_box = pygame.Rect(320, 500, 120, 65)
-        pygame.draw.rect(self.screen, (1, 50, 32), equip_box)
-        equip_text = self.font.render("Equip", True, (255, 255, 255))  
-        equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
-        self.screen.blit(equip_text, equip_text_rect)
-
-    def true_equip(self):
-        equip_box = pygame.Rect(320, 500, 120, 65)
-        pygame.draw.rect(self.screen, (144, 238, 144), equip_box)
-        equip_text = self.font.render("Unequip", True, (0, 0, 0))  
-        equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
-        self.screen.blit(equip_text, equip_text_rect)
-
     def troop_screen_blit(self):
-        mouse_pos = pygame.mouse.get_pos()
-        mouse_clicked = pygame.mouse.get_pressed()[0]
         if self.backpack and self.selected_category == 'Troop':
             for item in self.backpack_troop_list:
                 if self.clicked_image_surf == 'warrior':
@@ -597,42 +573,20 @@ class Game():
                         self.screen.blit(damage_text_surf,damage_text_rect)
 
                         upgrades_button_surf = item['upgrades button']
-                        upgrades_button_rect = upgrades_button_surf.get_rect(midbottom=(220,565))
+                        upgrades_button_rect = upgrades_button_surf.get_rect(midbottom=(250,565))
                         self.screen.blit(upgrades_button_surf,upgrades_button_rect)
 
                         level_msg_surf = self.font.render(f"Level: {str(item['level'])}", True, 'Black')
-                        level_msg_rect = level_msg_surf.get_rect(bottomleft=(180,530))
+                        level_msg_rect = level_msg_surf.get_rect(bottomleft=(210,530))
                         self.screen.blit(level_msg_surf,level_msg_rect)
 
                         level_upgrades_surf = self.price_font.render(f"Upgrade {str(item['upgrades price'])}", True, 'Black')
-                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(163,555))
+                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(193,555))
                         self.screen.blit(level_upgrades_surf,level_upgrades_rect)
 
                         money_icon_surf = item['money']
-                        money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
+                        money_icon_rect = money_icon_surf.get_rect(midleft=(300,543))
                         self.screen.blit(money_icon_surf,money_icon_rect)
-
-                        equip_box = pygame.Rect(320, 500, 120, 65)
-                        self.equip_func()
-
-                        if not self.item_equip:
-                            if equip_box.collidepoint(mouse_pos) and mouse_clicked:
-                                self.item_equip = True
-                                self.equip_func() 
-                                if self.item_equip:
-                                    if equip_box.collidepoint(mouse_pos) and mouse_clicked:
-                                        self.item_equip = False
-                                        # self.equip_func()
-                                        
-                        # if equip_box.collidepoint(mouse_pos) and mouse_clicked:
-                        #     if not self.item_equip:
-                        #         self.item_equip = True
-                        #         self.equip_func()   
-                        #         if equip_box.collidepoint(mouse_pos) and mouse_clicked:  
-                        #             self.item_equip = False
-                        #     else:
-                        #         self.item_equip = False
-                        #         self.equip_func()    
 
                 elif self.clicked_image_surf == 'archer':
                     if item['name'] == 'archer':
