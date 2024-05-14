@@ -333,14 +333,14 @@ class Game():
                         if index == 0 :
                             self.selected_category = 'Castle'
                         if index == 1 :
+                            self.screen.blit(self.title_background_dark_surf, surface_rect)
                             self.selected_category = "Troop"
-                            self.screen.blit(self.title_background_dark_surf, surface_rect)
                         elif index == 2 :
+                            self.screen.blit(self.title_background_dark_surf, surface_rect)
                             self.selected_category = 'Spell'
-                            self.screen.blit(self.title_background_dark_surf, surface_rect)
                         elif index == 3 :
-                            self.selected_category = 'Others'
                             self.screen.blit(self.title_background_dark_surf, surface_rect)
+                            self.selected_category = 'Others'
 
                 if self.backpack and self.selected_category == 'Castle':
                     for item in self.castle_detail:
