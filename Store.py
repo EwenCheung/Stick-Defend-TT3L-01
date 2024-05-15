@@ -52,7 +52,7 @@ class Game():
         self.price_font = pygame.font.Font(None, 25)
         self.troop_font = pygame.font.Font(None,70)
         # self.selected_card = None
-        self.num_money = 50000
+        self.num_money = 5
         #define the x,y coordiante for the card
         self.x_coords = ([325,470,610,325,470,610,325,470,610])
         self.y_coords = ([200,200,200,336,336,336,477,477,477])
@@ -453,9 +453,12 @@ class Game():
         self.screen.blit(self.backpack_background_surf, (100, 195))
         self.screen.blit(self.backpack_word_surf,self.backpack_word_rect)
         self.screen.blit(self.back_button_surf, self.back_button_rect)
-        self.screen.blit(self.money_image_surf,(465,213))
+        self.money_icon_rect = self.money_image_surf.get_rect(topright=(480,214))
+        self.screen.blit(self.money_image_surf,self.money_icon_rect)
+        
         self.num_money_surf = self.font.render(str(self.num_money), True, 'Black')
-        self.screen.blit(self.num_money_surf,(400,210))
+        self.money_num_rect = self.num_money_surf.get_rect(topright=(460,210))
+        self.screen.blit(self.num_money_surf,self.money_num_rect)
         #equipment box
         self.screen.blit(self.troop_equipment_box_surf,self.troop_equipment_box_rect)
         self.screen.blit(self.spell_equipment_box_surf,self.spell_equipment_box_rect)
@@ -478,9 +481,14 @@ class Game():
                     self.screen.blit(self.backpack_background_surf, (100, 195))
                     self.screen.blit(self.backpack_word_surf,self.backpack_word_rect)
                     self.screen.blit(self.back_button_surf, self.back_button_rect)
-                    self.screen.blit(self.money_image_surf,(465,213))
+
+                    self.money_icon_rect = self.money_image_surf.get_rect(topright=(480,214))
+                    self.screen.blit(self.money_image_surf,self.money_icon_rect)
+
                     self.num_money_surf = self.font.render(str(self.num_money), True, 'Black')
-                    self.screen.blit(self.num_money_surf,(400,210))
+                    self.money_num_rect = self.num_money_surf.get_rect(topright=(460,210))
+                    self.screen.blit(self.num_money_surf,self.money_num_rect)
+
                     self.screen.blit(self.troop_equipment_box_surf,self.troop_equipment_box_rect)
                     self.screen.blit(self.spell_equipment_box_surf,self.spell_equipment_box_rect)
 
@@ -600,8 +608,6 @@ class Game():
                         equipped_text = self.price_font.render("Equipped", True, (255, 255, 255))  
                         equipped_text_rect = equipped_text.get_rect(midtop=(695, 445))  
                         self.screen.blit(equipped_text, equipped_text_rect)
-
-
                         
                 if self.clicked_image_surf == 'warrior':
                     if item['name'] == 'warrior' :
