@@ -410,6 +410,39 @@ class Game():
 
     def backpack_screen(self):
         self.display_detail_info()
+        for item in self.backpack_troop_list:
+            if item['equip'] == True:     
+                if item['name'] == 'warrior':
+                    warrior_equipped_surf = pygame.image.load('War of stick/Picture/stickman sword/stickman warrior card.png')
+                    warrior_equipped_surf = pygame.transform.scale(warrior_equipped_surf, (50, 55))
+                    warrior_equipped_rect = warrior_equipped_surf.get_rect(topleft=(290,58))
+                    self.screen.blit(warrior_equipped_surf,warrior_equipped_rect)
+                    equipped = [warrior_equipped_surf,warrior_equipped_rect]
+                if item['name'] == 'archer' :
+                    archer_equipped_surf = pygame.image.load('War of stick/Picture/stickman archer/stickman archer card.png')
+                    archer_equipped_surf = pygame.transform.scale(archer_equipped_surf, (50, 55))
+                    archer_equipped_rect = archer_equipped_surf.get_rect(topleft=(375,58))
+                    self.screen.blit(archer_equipped_surf,archer_equipped_rect)
+                    equipped = [archer_equipped_surf,archer_equipped_rect]
+                elif item['name'] == 'sparta' :
+                    sparta_equipped_surf = pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta card.png')
+                    sparta_equipped_surf = pygame.transform.scale(sparta_equipped_surf, (50, 55))
+                    sparta_equipped_rect = sparta_equipped_surf.get_rect(topleft=(569,58))
+                    self.screen.blit(sparta_equipped_surf,sparta_equipped_rect)
+                    equipped = [sparta_equipped_surf,sparta_equipped_rect]
+                elif item['name'] == 'wizard' :
+                    wizard_equipped_surf = pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard card.png')
+                    wizard_equipped_surf = pygame.transform.scale(wizard_equipped_surf, (50, 55))
+                    wizard_equipped_rect = wizard_equipped_surf.get_rect(topleft=(473,58))
+                    self.screen.blit(wizard_equipped_surf,wizard_equipped_rect)
+                    equipped = [wizard_equipped_surf,wizard_equipped_rect]
+                elif item['name'] == 'giant' :
+                    giant_equipped_surf = pygame.image.load('War of stick/Picture/stickman giant/stickman giant card.png')
+                    giant_equipped_surf = pygame.transform.scale(giant_equipped_surf, (50, 55))
+                    giant_equipped_rect = giant_equipped_surf.get_rect(topleft=(668,58))
+                    self.screen.blit(giant_equipped_surf,giant_equipped_rect)
+                    equipped = [giant_equipped_surf,giant_equipped_rect]
+                self.equipped_box.append(equipped)
         self.troop_screen_blit()
 
     def display_detail_info(self):
@@ -424,13 +457,14 @@ class Game():
         #equipment box
         self.screen.blit(self.troop_equipment_box_surf,self.troop_equipment_box_rect)
         self.screen.blit(self.spell_equipment_box_surf,self.spell_equipment_box_rect)
-
+            
         #button
         for index, surface in enumerate(self.button_surf):
             button_x_coords = self.x_button_coordinate[index]
             button_y_coords = self.y_button_coordinate[index]
             surface_rect = surface.get_rect(center=(button_x_coords, button_y_coords))
             self.screen.blit(surface, surface_rect) 
+
         #title word
         self.screen.blit(self.castle_word_surf,self.castle_word_rect)
         self.screen.blit(self.troop_word_surf,self.troop_word_rect)
@@ -535,39 +569,6 @@ class Game():
                 level_msg_rect = level_msg_surf.get_rect(center=(msg_position))
                 self.screen.blit(level_msg_surf, level_msg_rect)
 
-                if item['equip'] == True:     
-                    if item['name'] == 'warrior':
-                        warrior_equipped_surf = pygame.image.load('War of stick/Picture/stickman sword/stickman warrior card.png')
-                        warrior_equipped_surf = pygame.transform.scale(warrior_equipped_surf, (50, 55))
-                        warrior_equipped_rect = warrior_equipped_surf.get_rect(topleft=(290,58))
-                        self.screen.blit(warrior_equipped_surf,warrior_equipped_rect)
-                        equipped = [warrior_equipped_surf,warrior_equipped_rect]
-                    if item['name'] == 'archer' :
-                        archer_equipped_surf = pygame.image.load('War of stick/Picture/stickman archer/stickman archer card.png')
-                        archer_equipped_surf = pygame.transform.scale(archer_equipped_surf, (50, 55))
-                        archer_equipped_rect = archer_equipped_surf.get_rect(topleft=(375,58))
-                        self.screen.blit(archer_equipped_surf,archer_equipped_rect)
-                        equipped = [archer_equipped_surf,archer_equipped_rect]
-                    elif item['name'] == 'sparta' :
-                        sparta_equipped_surf = pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta card.png')
-                        sparta_equipped_surf = pygame.transform.scale(sparta_equipped_surf, (50, 55))
-                        sparta_equipped_rect = sparta_equipped_surf.get_rect(topleft=(569,58))
-                        self.screen.blit(sparta_equipped_surf,sparta_equipped_rect)
-                        equipped = [sparta_equipped_surf,sparta_equipped_rect]
-                    elif item['name'] == 'wizard' :
-                        wizard_equipped_surf = pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard card.png')
-                        wizard_equipped_surf = pygame.transform.scale(wizard_equipped_surf, (50, 55))
-                        wizard_equipped_rect = wizard_equipped_surf.get_rect(topleft=(473,58))
-                        self.screen.blit(wizard_equipped_surf,wizard_equipped_rect)
-                        equipped = [wizard_equipped_surf,wizard_equipped_rect]
-                    elif item['name'] == 'giant' :
-                        giant_equipped_surf = pygame.image.load('War of stick/Picture/stickman giant/stickman giant card.png')
-                        giant_equipped_surf = pygame.transform.scale(giant_equipped_surf, (50, 55))
-                        giant_equipped_rect = giant_equipped_surf.get_rect(topleft=(668,58))
-                        self.screen.blit(giant_equipped_surf,giant_equipped_rect)
-                        equipped = [giant_equipped_surf,giant_equipped_rect]
-                    self.equipped_box.append(equipped)
-                
         elif self.selected_category == 'Spell':
             pass
         elif self.selected_category == 'Others':
@@ -989,10 +990,7 @@ class Game():
                     price_text_rect = price_text_surf.get_rect(center=(self.x_coords[index] -7, self.y_coords[index] +46))
                     self.screen.blit(price_text_surf,price_text_rect)
 
-        elif self.backpack:
-            for equipped in self.equipped_box:
-                self.screen.blit(equipped[0], equipped[1])
-                
+        elif self.backpack:  
             self.backpack_screen()
 
     def run(self):
