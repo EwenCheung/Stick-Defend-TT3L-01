@@ -27,9 +27,9 @@ class TroopButton:
         self.last_clicked_time = 0
         self.remaining_cooldown = 0
         self.insufficient_currency = False
-        # self.flash_timer = 0
-        # self.flash_duration = 500
-        # self.flash_toggle = False
+        self.flash_timer = 0
+        self.flash_duration = 500
+        self.flash_toggle = False
 
     def render_name(self, screen):
         font = pygame.font.Font(None, 15)
@@ -56,15 +56,15 @@ class TroopButton:
             screen.blit(self.image_dim, self.rect)
             screen.blit(cooldown_text, cooldown_text_rect)
 
-        # if self.insufficient_currency and self.flash_toggle:
-        #     if self.flash_timer <= self.flash_duration:
-        #         screen.blit(self.flash, self.rect)
-        #         self.flash_timer += 1
-        #     else:
-        #         self.flash_timer = 0
-        #         self.insufficient_currency = False
-        #         self.clicked = False
-        #         self.cooldown_flag = False
+        if self.insufficient_currency and self.flash_toggle:
+            if self.flash_timer <= self.flash_duration:
+                screen.blit(self.flash, self.rect)
+                self.flash_timer += 1
+            else:
+                self.flash_timer = 0
+                self.insufficient_currency = False
+                self.clicked = False
+                self.cooldown_flag = False
 
         if self.remaining_cooldown == 0 and not self.insufficient_currency:
             screen.blit(self.image, self.rect)
@@ -77,10 +77,10 @@ class TroopButton:
             if self.rect.collidepoint(mouse_pos):
                 self.clicked = True
                 self.last_clicked_time = current_time
-                # if self.insufficient_currency:
-                #     self.flash_visible = not self.flash_visible
-                #     self.insufficient_currency = False
-                #     self.flash_visible = False
+                if self.insufficient_currency:
+                    self.flash_visible = not self.flash_visible
+                    self.insufficient_currency = False
+                    self.flash_visible = False
                 return True
         return False
 
@@ -111,12 +111,12 @@ class Troop:
         self.bullet_damage = bullet_damage
         self.troop_width = troop_width
         self.troop_height = troop_height
-        # self.health_duration = 5000
-        # self.health_start_time = 0
-        # self.health_active = False
-        # self.rage_duration = 5000
-        # self.rage_start_time = 0
-        # self.rage_active = False
+        self.health_duration = 5000
+        self.health_start_time = 0
+        self.health_active = False
+        self.rage_duration = 5000
+        self.rage_start_time = 0
+        self.rage_active = False
         # communication between the Troop instance and the Game instance
         self.communication = self
         self.rect = (0, 0, 0, 0)
@@ -175,27 +175,27 @@ class Troop:
                 # Remove bullets that have moved off-screen
                 self.bullet_on_court.remove(bullet)
 
-    # def cast_health(self):
-    #     self.health_active = True
-    #     self.health_start_time = pygame.time.get_ticks()
+    def cast_health(self):
+        self.health_active = True
+        self.health_start_time = pygame.time.get_ticks()
 
-    # def health_increase(self):
-    #     if self.health_active:
-    #         self.health *= 1.1
-    #         if self.health_start_time >= self.health_duration:
-    #             self.health /= 1.1
-    #         self.health_active = False
+    def health_increase(self):
+        if self.health_active:
+            self.health *= 1.1
+            if self.health_start_time >= self.health_duration:
+                self.health /= 1.1
+            self.health_active = False
 
-    # def cast_rage(self):
-    #     self.rage_active = True
-    #     self.rage_start_time = pygame.time.get_ticks()
+    def cast_rage(self):
+        self.rage_active = True
+        self.rage_start_time = pygame.time.get_ticks()
 
-    # def speed_increase(self):
-    #     if self.rage_active:
-    #         self.speed *= 2
-    #         if self.rage_start_time >= self.rage_duration:
-    #             self.speed *= 0.5
-    #         self.rage_active = False
+    def speed_increase(self):
+        if self.rage_active:
+            self.speed *= 2
+            if self.rage_start_time >= self.rage_duration:
+                self.speed *= 0.5
+            self.rage_active = False
 
     def take_damage(self, damage):
         self.health -= damage
@@ -218,9 +218,9 @@ class Ninja:
         self.ninja_prev_coor = self.ninja_coordinate_x
         self.ninja_attacking = False
         self.rect = (0, 0, 0, 0)
-        # self.freeze_duration = 5000
-        # self.freeze_start_time = 0
-        # self.freeze_active = False
+        self.freeze_duration = 5000
+        self.freeze_start_time = 0
+        self.freeze_active = False
 
     def spawn_ninja(self, screen, bg_x):
         self.rect = self.image.get_rect(bottomright=(self.ninja_coordinate_x + bg_x, 500))
@@ -244,20 +244,20 @@ class Ninja:
                 self.ninja_attacking = False
             self.image = self.ninja_attack_frame_storage[int(self.animation_attack_index)]
 
-    # def cast_freeze(self):
-    #     self.freeze_active = True
-    #     self.freeze_start_time = pygame.time.get_ticks()
+    def cast_freeze(self):
+        self.freeze_active = True
+        self.freeze_start_time = pygame.time.get_ticks()
 
-    # def ninja_speed_decrease(self):
-    #     if Game().spell_active:
-    #         self.ninja_speed *= 0.5
-    #         self.freeze_over()
+    def ninja_speed_decrease(self):
+        if Game().spell_active:
+            self.ninja_speed *= 0.5
+            self.freeze_over()
 
-    # def freeze_over(self):
-    #     current_time = pygame.time.get_ticks()
-    #     if current_time - Game().start_time >= Game().spell_duration:
-    #             self.ninja_speed *= 2
-    #             return Game().spell_active == False
+    def freeze_over(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - Game().start_time >= Game().spell_duration:
+                self.ninja_speed *= 2
+                return Game().spell_active == False
 
     def ninja_take_damage(self, taken_damage):
         self.ninja_health -= taken_damage
@@ -523,7 +523,7 @@ class Game:
                         self.troop_on_court.append(new_troop)
                     else:
                         button_name.insufficient_currency = True
-                        # button_name.false_toggle = True
+                        button_name.false_toggle = True
                         button_name.lack_currency(self.screen)
                 else:
                     self.max_troop(button_name)
@@ -582,18 +582,18 @@ class Game:
             if event.type == pygame.MOUSEBUTTONUP and self.chosen_spell is not None:
                 # can add check condition can release spell or not
                 if self.chosen_spell == 'healing':
-                    # for troop in self.troop_on_court:
-                    #     troop.health_increase()
+                    for troop in self.troop_on_court:
+                        troop.health_increase()
                     if not self.healing_spell_rect.center == self.healing_initial_position:
                         self.healing_spell_rect.center = self.healing_initial_position  # Snap back to initial position
                 if self.chosen_spell == 'rage':
-                    # for troop in self.troop_on_court:
-                    #     troop.speed_increase()
+                    for troop in self.troop_on_court:
+                        troop.speed_increase()
                     if not self.rage_spell_rect.center == self.rage_initial_position:
                         self.rage_spell_rect.center = self.rage_initial_position  # Snap back to initial position
                 if self.chosen_spell == 'freeze':
-                    # for ninja in self.enemy_on_court:
-                    #     ninja.ninja_speed_decrease()
+                    for ninja in self.enemy_on_court:
+                        ninja.ninja_speed_decrease()
                     if not self.freeze_spell_rect.center == self.freeze_initial_position:
                         self.freeze_spell_rect.center = self.freeze_initial_position  # Snap back to initial position
                 self.chosen_spell = None
