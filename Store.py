@@ -52,7 +52,7 @@ class Game():
         self.price_font = pygame.font.Font(None, 25)
         self.troop_font = pygame.font.Font(None,70)
         # self.selected_card = None
-        self.num_money = 5
+        self.num_money = 50000
         #define the x,y coordiante for the card
         self.x_coords = ([325,470,610,325,470,610,325,470,610])
         self.y_coords = ([200,200,200,336,336,336,477,477,477])
@@ -61,7 +61,6 @@ class Game():
         self.selected_category = 'Castle'
         self.clicked_image_surf = 'warrior'
         self.equipped_box = []
-        self.equipped_word_storage = []
         self.set_up()
         
     def set_up(self):
@@ -118,6 +117,12 @@ class Game():
         self.troop_equipment_box_surf = pygame.image.load('War of stick/Picture/store/equipment box.png').convert_alpha()
         self.troop_equipment_box_surf = pygame.transform.scale(self.troop_equipment_box_surf,(500,100))
         self.troop_equipment_box_rect = self.troop_equipment_box_surf.get_rect(center=(500,158))
+
+        self.troop_title_surf = self.font.render('TROOP', True, 'White')
+        self.troop_title_rect = self.troop_title_surf.get_rect(center=(210,88))
+
+        self.spell_title_surf = self.font.render('SPELL', True, 'White')
+        self.spell_title_rect = self.spell_title_surf.get_rect(center=(210,158))
 
         self.spell_equipment_box_surf = self.troop_equipment_box_surf.copy()
         self.spell_equipment_box_rect = self.spell_equipment_box_surf.get_rect(center=(500,87))
@@ -462,6 +467,8 @@ class Game():
         #equipment box
         self.screen.blit(self.troop_equipment_box_surf,self.troop_equipment_box_rect)
         self.screen.blit(self.spell_equipment_box_surf,self.spell_equipment_box_rect)
+        self.screen.blit(self.troop_title_surf, self.troop_title_rect)
+        self.screen.blit(self.spell_title_surf, self.spell_title_rect)
             
         #button
         for index, surface in enumerate(self.button_surf):
@@ -491,6 +498,8 @@ class Game():
 
                     self.screen.blit(self.troop_equipment_box_surf,self.troop_equipment_box_rect)
                     self.screen.blit(self.spell_equipment_box_surf,self.spell_equipment_box_rect)
+                    self.screen.blit(self.troop_title_surf, self.troop_title_rect)
+                    self.screen.blit(self.spell_title_surf, self.spell_title_rect)
 
                     for index, surface in enumerate(self.button_surf):
                         button_x_coords = self.x_button_coordinate[index]
