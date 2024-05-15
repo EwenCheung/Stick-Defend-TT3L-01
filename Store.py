@@ -417,30 +417,45 @@ class Game():
                     warrior_equipped_surf = pygame.transform.scale(warrior_equipped_surf, (50, 55))
                     warrior_equipped_rect = warrior_equipped_surf.get_rect(topleft=(290,58))
                     self.screen.blit(warrior_equipped_surf,warrior_equipped_rect)
+                    equipped_text = self.price_font.render("Equipped", True, (255, 255, 255))  
+                    equipped_text_rect = equipped_text.get_rect(midtop=(557, 330))  
+                    self.screen.blit(equipped_text, equipped_text_rect)
                     equipped = [warrior_equipped_surf,warrior_equipped_rect]
                 if item['name'] == 'archer' :
                     archer_equipped_surf = pygame.image.load('War of stick/Picture/stickman archer/stickman archer card.png')
                     archer_equipped_surf = pygame.transform.scale(archer_equipped_surf, (50, 55))
                     archer_equipped_rect = archer_equipped_surf.get_rect(topleft=(375,58))
                     self.screen.blit(archer_equipped_surf,archer_equipped_rect)
+                    equipped_text = self.price_font.render("Equipped", True, (255, 255, 255))  
+                    equipped_text_rect = equipped_text.get_rect(midtop=(695, 330))  
+                    self.screen.blit(equipped_text, equipped_text_rect)                    
                     equipped = [archer_equipped_surf,archer_equipped_rect]
                 elif item['name'] == 'sparta' :
                     sparta_equipped_surf = pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta card.png')
                     sparta_equipped_surf = pygame.transform.scale(sparta_equipped_surf, (50, 55))
                     sparta_equipped_rect = sparta_equipped_surf.get_rect(topleft=(569,58))
                     self.screen.blit(sparta_equipped_surf,sparta_equipped_rect)
+                    equipped_text = self.price_font.render("Equipped", True, (255, 255, 255))  
+                    equipped_text_rect = equipped_text.get_rect(midtop=(829, 330))  
+                    self.screen.blit(equipped_text, equipped_text_rect)
                     equipped = [sparta_equipped_surf,sparta_equipped_rect]
                 elif item['name'] == 'wizard' :
                     wizard_equipped_surf = pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard card.png')
                     wizard_equipped_surf = pygame.transform.scale(wizard_equipped_surf, (50, 55))
                     wizard_equipped_rect = wizard_equipped_surf.get_rect(topleft=(473,58))
                     self.screen.blit(wizard_equipped_surf,wizard_equipped_rect)
+                    equipped_text = self.price_font.render("Equipped", True, (255, 255, 255))  
+                    equipped_text_rect = equipped_text.get_rect(midtop=(560, 445))  
+                    self.screen.blit(equipped_text, equipped_text_rect)
                     equipped = [wizard_equipped_surf,wizard_equipped_rect]
                 elif item['name'] == 'giant' :
                     giant_equipped_surf = pygame.image.load('War of stick/Picture/stickman giant/stickman giant card.png')
                     giant_equipped_surf = pygame.transform.scale(giant_equipped_surf, (50, 55))
                     giant_equipped_rect = giant_equipped_surf.get_rect(topleft=(668,58))
                     self.screen.blit(giant_equipped_surf,giant_equipped_rect)
+                    equipped_text = self.price_font.render("Equipped", True, (255, 255, 255))  
+                    equipped_text_rect = equipped_text.get_rect(midtop=(695, 445))  
+                    self.screen.blit(equipped_text, equipped_text_rect)
                     equipped = [giant_equipped_surf,giant_equipped_rect]
                 self.equipped_box.append(equipped)
         self.troop_screen_blit()
