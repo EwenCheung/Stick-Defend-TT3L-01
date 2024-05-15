@@ -392,7 +392,7 @@ class Game():
                 if self.backpack and self.selected_category == 'Troop':
                     for item in self.backpack_troop_list :
                         if item['name'] == self.clicked_image_surf:
-                            upgrades_button_rect = item['upgrades button'].get_rect(midbottom=(250,565))
+                            upgrades_button_rect = item['upgrades button'].get_rect(midbottom=(220,565))
                             if upgrades_button_rect.collidepoint(mouse_pos):
                                 if self.num_money >= item['upgrades price'] :
                                     self.num_money -= item['upgrades price']
@@ -534,21 +534,6 @@ class Game():
                 level_msg_surf = self.price_font.render(f"Level: {str(item['level'])}", True, 'White')
                 level_msg_rect = level_msg_surf.get_rect(center=(msg_position))
                 self.screen.blit(level_msg_surf, level_msg_rect)
-
-                # if item['equip'] == False:
-                #     equip_button_surf = item['equip button']
-                #     equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
-                #     self.screen.blit(equip_button_surf,equip_button_rect)
-                #     equip_text = self.font.render("Equip", True, (255, 255, 255))  
-                #     equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
-                #     self.screen.blit(equip_text, equip_text_rect)
-                # elif item['equip'] == True:
-                #     unequip_button_surf = item['unequip button']
-                #     unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
-                #     self.screen.blit(unequip_button_surf,unequip_button_rect)
-                #     equip_text = self.font.render("Unequip", True, (0, 0, 0))  
-                #     equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
-                #     self.screen.blit(equip_text, equip_text_rect)
 
                 if item['equip'] == True:     
                     if item['name'] == 'warrior':
