@@ -370,6 +370,7 @@ class Game():
                                 self.num_money -= item['mining speed price']
                                 item['mining speed level'] += 1
                                 item['mining speed price'] +=100
+                                item['mining speed'] += 20
 
                 if self.backpack and self.selected_category == 'Troop':
                     for item in self.backpack_troop_list:
