@@ -38,7 +38,8 @@ class Item_card():
 
         self.giant_image_surf = pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman giant walk 1.png').convert_alpha()
         self.giant_image_surf = pygame.transform.scale(self.giant_image_surf,(75,80))
-   
+
+    
 class Game():
     def __init__(self):
         self.clock = pygame.time.Clock()
@@ -51,16 +52,14 @@ class Game():
         self.price_font = pygame.font.Font(None, 25)
         self.troop_font = pygame.font.Font(None,70)
         # self.selected_card = None
-        self.num_money = 500000000000
+        self.num_money = 50000
         #define the x,y coordiante for the card
         self.x_coords = ([325,470,610,325,470,610,325,470,610])
         self.y_coords = ([200,200,200,336,336,336,477,477,477])
         self.x_button_coordinate = ([547,647,747,847])
         self.y_button_coordinate = ([218,218,218,218])
         self.selected_category = 'Castle'
-        self.clicked_image_surf = 'warrior'
-        self.equipped_box = []
-        self.equipped_word_storage = []
+        self.clicked_image_surf = None
         self.set_up()
         
     def set_up(self):
@@ -331,7 +330,7 @@ class Game():
                                         item_copy['image'] = troop_image
                                         self.backpack_troop_list.append(item_copy)
                                         item['locked'] = False
-                                        self.store_list.pop(index)
+                                        del self.store_list[index]
 
                 if self.backpack:
                     if self.back_button_rect.collidepoint(mouse_pos):
@@ -370,7 +369,6 @@ class Game():
                                 self.num_money -= item['mining speed price']
                                 item['mining speed level'] += 1
                                 item['mining speed price'] +=100
-                                item['mining speed'] += 20
 
                 if self.backpack and self.selected_category == 'Troop':
                     for item in self.backpack_troop_list:
@@ -393,7 +391,7 @@ class Game():
                 if self.backpack and self.selected_category == 'Troop':
                     for item in self.backpack_troop_list :
                         if item['name'] == self.clicked_image_surf:
-                            upgrades_button_rect = item['upgrades button'].get_rect(midbottom=(220,565))
+                            upgrades_button_rect = item['upgrades button'].get_rect(midbottom=(250,565))
                             if upgrades_button_rect.collidepoint(mouse_pos):
                                 if self.num_money >= item['upgrades price'] :
                                     self.num_money -= item['upgrades price']
@@ -411,39 +409,6 @@ class Game():
 
     def backpack_screen(self):
         self.display_detail_info()
-        for item in self.backpack_troop_list:
-            if item['equip'] == True:     
-                if item['name'] == 'warrior':
-                    warrior_equipped_surf = pygame.image.load('War of stick/Picture/stickman sword/stickman warrior card.png')
-                    warrior_equipped_surf = pygame.transform.scale(warrior_equipped_surf, (50, 55))
-                    warrior_equipped_rect = warrior_equipped_surf.get_rect(topleft=(290,58))
-                    self.screen.blit(warrior_equipped_surf,warrior_equipped_rect) 
-                    equipped = [warrior_equipped_surf,warrior_equipped_rect]
-                if item['name'] == 'archer' :
-                    archer_equipped_surf = pygame.image.load('War of stick/Picture/stickman archer/stickman archer card.png')
-                    archer_equipped_surf = pygame.transform.scale(archer_equipped_surf, (50, 55))
-                    archer_equipped_rect = archer_equipped_surf.get_rect(topleft=(375,58))
-                    self.screen.blit(archer_equipped_surf,archer_equipped_rect)                  
-                    equipped = [archer_equipped_surf,archer_equipped_rect]
-                elif item['name'] == 'sparta' :
-                    sparta_equipped_surf = pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta card.png')
-                    sparta_equipped_surf = pygame.transform.scale(sparta_equipped_surf, (50, 55))
-                    sparta_equipped_rect = sparta_equipped_surf.get_rect(topleft=(569,58))
-                    self.screen.blit(sparta_equipped_surf,sparta_equipped_rect)
-                    equipped = [sparta_equipped_surf,sparta_equipped_rect]
-                elif item['name'] == 'wizard' :
-                    wizard_equipped_surf = pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard card.png')
-                    wizard_equipped_surf = pygame.transform.scale(wizard_equipped_surf, (50, 55))
-                    wizard_equipped_rect = wizard_equipped_surf.get_rect(topleft=(473,58))
-                    self.screen.blit(wizard_equipped_surf,wizard_equipped_rect)
-                    equipped = [wizard_equipped_surf,wizard_equipped_rect]
-                elif item['name'] == 'giant' :
-                    giant_equipped_surf = pygame.image.load('War of stick/Picture/stickman giant/stickman giant card.png')
-                    giant_equipped_surf = pygame.transform.scale(giant_equipped_surf, (50, 55))
-                    giant_equipped_rect = giant_equipped_surf.get_rect(topleft=(668,58))
-                    self.screen.blit(giant_equipped_surf,giant_equipped_rect)
-                    equipped = [giant_equipped_surf,giant_equipped_rect]
-                self.equipped_box.append(equipped)
         self.troop_screen_blit()
 
     def display_detail_info(self):
@@ -452,23 +417,19 @@ class Game():
         self.screen.blit(self.backpack_background_surf, (100, 195))
         self.screen.blit(self.backpack_word_surf,self.backpack_word_rect)
         self.screen.blit(self.back_button_surf, self.back_button_rect)
-        self.money_icon_rect = self.money_image_surf.get_rect(topright=(480,214))
-        self.screen.blit(self.money_image_surf,self.money_icon_rect)
-        
+        self.screen.blit(self.money_image_surf,(465,213))
         self.num_money_surf = self.font.render(str(self.num_money), True, 'Black')
-        self.money_num_rect = self.num_money_surf.get_rect(topright=(460,210))
-        self.screen.blit(self.num_money_surf,self.money_num_rect)
+        self.screen.blit(self.num_money_surf,(400,210))
         #equipment box
         self.screen.blit(self.troop_equipment_box_surf,self.troop_equipment_box_rect)
         self.screen.blit(self.spell_equipment_box_surf,self.spell_equipment_box_rect)
-            
+
         #button
         for index, surface in enumerate(self.button_surf):
             button_x_coords = self.x_button_coordinate[index]
             button_y_coords = self.y_button_coordinate[index]
             surface_rect = surface.get_rect(center=(button_x_coords, button_y_coords))
             self.screen.blit(surface, surface_rect) 
-
         #title word
         self.screen.blit(self.castle_word_surf,self.castle_word_rect)
         self.screen.blit(self.troop_word_surf,self.troop_word_rect)
@@ -480,14 +441,9 @@ class Game():
                     self.screen.blit(self.backpack_background_surf, (100, 195))
                     self.screen.blit(self.backpack_word_surf,self.backpack_word_rect)
                     self.screen.blit(self.back_button_surf, self.back_button_rect)
-
-                    self.money_icon_rect = self.money_image_surf.get_rect(topright=(480,214))
-                    self.screen.blit(self.money_image_surf,self.money_icon_rect)
-
+                    self.screen.blit(self.money_image_surf,(465,213))
                     self.num_money_surf = self.font.render(str(self.num_money), True, 'Black')
-                    self.money_num_rect = self.num_money_surf.get_rect(topright=(460,210))
-                    self.screen.blit(self.num_money_surf,self.money_num_rect)
-
+                    self.screen.blit(self.num_money_surf,(400,210))
                     self.screen.blit(self.troop_equipment_box_surf,self.troop_equipment_box_rect)
                     self.screen.blit(self.spell_equipment_box_surf,self.spell_equipment_box_rect)
 
@@ -577,37 +533,14 @@ class Game():
                 level_msg_surf = self.price_font.render(f"Level: {str(item['level'])}", True, 'White')
                 level_msg_rect = level_msg_surf.get_rect(center=(msg_position))
                 self.screen.blit(level_msg_surf, level_msg_rect)
-
+            
         elif self.selected_category == 'Spell':
             pass
         elif self.selected_category == 'Others':
             pass
-
     def troop_screen_blit(self):
         if self.backpack and self.selected_category == 'Troop':
             for item in self.backpack_troop_list:
-                if item['equip'] == True:     
-                    if item['name'] == 'warrior':
-                        equipped_text = self.price_font.render("Equipped", True, (255, 255, 255))  
-                        equipped_text_rect = equipped_text.get_rect(midtop=(557, 330))  
-                        self.screen.blit(equipped_text, equipped_text_rect)
-                    elif item['name'] == 'archer':
-                        equipped_text = self.price_font.render("Equipped", True, (255, 255, 255))  
-                        equipped_text_rect = equipped_text.get_rect(midtop=(695, 330))
-                        self.screen.blit(equipped_text, equipped_text_rect)
-                    elif item['name'] == 'sparta':
-                        equipped_text = self.price_font.render("Equipped", True, (255, 255, 255))  
-                        equipped_text_rect = equipped_text.get_rect(midtop=(829, 330))  
-                        self.screen.blit(equipped_text, equipped_text_rect)
-                    elif item['name'] == 'wizard':
-                        equipped_text = self.price_font.render("Equipped", True, (255, 255, 255))  
-                        equipped_text_rect = equipped_text.get_rect(midtop=(560, 445))  
-                        self.screen.blit(equipped_text, equipped_text_rect)
-                    elif item['name'] == 'giant':
-                        equipped_text = self.price_font.render("Equipped", True, (255, 255, 255))  
-                        equipped_text_rect = equipped_text.get_rect(midtop=(695, 445))  
-                        self.screen.blit(equipped_text, equipped_text_rect)
-                        
                 if self.clicked_image_surf == 'warrior':
                     if item['name'] == 'warrior' :
                         warrior_troop_image_surf = item['image']
@@ -742,7 +675,8 @@ class Game():
                         money_icon_surf = item['money']
                         money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
                         self.screen.blit(money_icon_surf,money_icon_rect)
-                        
+
+
                         if item['equip'] == False:
                             equip_button_surf = item['equip button']
                             equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
@@ -759,6 +693,7 @@ class Game():
                             equip_text = self.font.render("Unequip", True, (0, 0, 0))  
                             equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
                             self.screen.blit(equip_text, equip_text_rect)
+
 
                 elif self.clicked_image_surf == 'sparta':
                     if item['name'] == 'sparta':
@@ -818,7 +753,7 @@ class Game():
                         money_icon_surf = item['money']
                         money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
                         self.screen.blit(money_icon_surf,money_icon_rect)
-                       
+
                         if item['equip'] == False:
                             equip_button_surf = item['equip button']
                             equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
@@ -835,6 +770,7 @@ class Game():
                             equip_text = self.font.render("Unequip", True, (0, 0, 0))  
                             equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
                             self.screen.blit(equip_text, equip_text_rect)
+
 
                 elif self.clicked_image_surf == 'wizard':
                     if item['name'] == 'wizard':
@@ -894,7 +830,8 @@ class Game():
                         money_icon_surf = item['money']
                         money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
                         self.screen.blit(money_icon_surf,money_icon_rect)
-                 
+
+
                         if item['equip'] == False:
                             equip_button_surf = item['equip button']
                             equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
@@ -970,7 +907,8 @@ class Game():
                         money_icon_surf = item['money']
                         money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
                         self.screen.blit(money_icon_surf,money_icon_rect)
-                    
+
+
                         if item['equip'] == False:
                             equip_button_surf = item['equip button']
                             equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
@@ -1021,7 +959,7 @@ class Game():
                     price_text_rect = price_text_surf.get_rect(center=(self.x_coords[index] -7, self.y_coords[index] +46))
                     self.screen.blit(price_text_surf,price_text_rect)
 
-        elif self.backpack:  
+        elif self.backpack:
             self.backpack_screen()
 
     def run(self):
