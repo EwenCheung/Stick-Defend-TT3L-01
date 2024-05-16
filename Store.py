@@ -38,8 +38,7 @@ class Item_card():
 
         self.giant_image_surf = pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman giant walk 1.png').convert_alpha()
         self.giant_image_surf = pygame.transform.scale(self.giant_image_surf,(75,80))
-
-    
+   
 class Game():
     def __init__(self):
         self.clock = pygame.time.Clock()
@@ -52,7 +51,7 @@ class Game():
         self.price_font = pygame.font.Font(None, 25)
         self.troop_font = pygame.font.Font(None,70)
         # self.selected_card = None
-        self.num_money = 5
+        self.num_money = 500000000000
         #define the x,y coordiante for the card
         self.x_coords = ([325,470,610,325,470,610,325,470,610])
         self.y_coords = ([200,200,200,336,336,336,477,477,477])
@@ -332,7 +331,7 @@ class Game():
                                         item_copy['image'] = troop_image
                                         self.backpack_troop_list.append(item_copy)
                                         item['locked'] = False
-                                        del self.store_list[index]
+                                        self.store_list.pop(index)
 
                 if self.backpack:
                     if self.back_button_rect.collidepoint(mouse_pos):
