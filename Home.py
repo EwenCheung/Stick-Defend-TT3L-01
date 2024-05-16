@@ -1,10 +1,5 @@
 import pygame
-from pygame.locals import *
-from Stick_of_War import Game as StickGame, game_start as stick_game_start
-from Pokemon_vs_Naruto import Game as PokemonGame, game_start as pokemon_game_start
 from sys import exit
-
-
 pygame.init()  
 
 class LoadingBar:
@@ -88,13 +83,7 @@ class Game_bg:
         self.stick_of_war_rect = stick_of_war.get_rect(center=(650, 430))
         self.screen.blit(stick_of_war, self.stick_of_war_rect)     
 
-    def start_stick_of_war(self):
-        pygame.quit()
-        StickGame().stick_game_start()
 
-    def start_pokemon_vs_naruto(self):
-        pygame.quit()
-        PokemonGame().pokemon_game_start()
 
     def run(self):
         while True:

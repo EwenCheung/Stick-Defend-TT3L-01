@@ -1,7 +1,5 @@
 # coding : utf-8
 import pygame
-from pygame.locals import *
-from Home import *
 from sys import exit
 from random import choice
 
@@ -535,14 +533,14 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Check if left mouse button is pressed
                     clicked_troop(100, 200, self.warrior_button, self.warrior_frame_storage, self.warrior_attack_frame_storage, 100,
-                                  1, None, 1, 75, 100, 'Warrior')
-                    clicked_troop(300, 200, self.archer_button, self.archer_frame_storage, self.archer_attack_frame_storage, 200, None,
+                                  1, 1, 1, 75, 100, 'Warrior')
+                    clicked_troop(300, 200, self.archer_button, self.archer_frame_storage, self.archer_attack_frame_storage, 200, 1,
                                   2, 1, 200, 100, 'Archer')
-                    clicked_troop(500, 500, self.wizard_button, self.wizard_frame_storage, self.wizard_attack_frame_storage, 250, None,
+                    clicked_troop(500, 500, self.wizard_button, self.wizard_frame_storage, self.wizard_attack_frame_storage, 250, 1,
                                   2, 2, 200, 100, 'Wizard')
                     clicked_troop(700, 200, self.sparta_button, self.sparta_frame_storage, self.sparta_attack_frame_storage, 300, 3,
-                                  None, 2, 75, 100, 'Sparta')
-                    clicked_troop(700, 200, self.giant_button, self.giant_frame_storage, self.giant_attack_frame_storage, 350, 4, None, 1,
+                                  1, 2, 75, 100, 'Sparta')
+                    clicked_troop(700, 200, self.giant_button, self.giant_frame_storage, self.giant_attack_frame_storage, 350, 4, 1, 1,
                                   30, 200, 'Giant')
 
             if event.type == self.ninja_timer:
