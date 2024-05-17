@@ -1,6 +1,9 @@
 import pygame
 from sys import exit
-pygame.init()  
+import importlib
+
+pygame.init()
+
 
 class LoadingBar:
     def __init__(self, x, y, height, width, colour, border_colour, border_width):
@@ -21,7 +24,7 @@ class LoadingBar:
         pygame.draw.rect(screen, self.colour, (self.x, self.y, self.width * self.progress, self.height))
 
 
-class Game_bg:
+class GameHome:
     def __init__(self):
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((1000, 600))
@@ -48,9 +51,25 @@ class Game_bg:
                 exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if self.stick_of_war_rect.collidepoint(pygame.mouse.get_pos()):
-                    self.start_stick_of_war()  # Call a method to start Stick_of_war game
+                    self.go_level_py()
                 elif self.pokemon_vs_naruto_rect.collidepoint(pygame.mouse.get_pos()):
-                    self.start_pokemon_vs_naruto()  # Call a method to start Stick_of_war game
+                    self.go_pokemon_py()
+
+
+    def go_pokemon_py(self):
+        pygame.quit()  # Cleanup before switching
+        importlib.invalidate_caches()  # Clear any cached importlib entries
+        pokemon_module = importlib.import_module("Pokemon_vs_Stick")
+        game_pokemon = pokemon_module.GamePokemonVsStick()
+        game_pokemon.run()  # Call a method to start Stick_of_war game
+        exit()
+    def go_level_py(self):
+        pygame.quit()  # Cleanup before switching
+        importlib.invalidate_caches()  # Clear any cached importlib entries
+        level_module = importlib.import_module('Level')
+        game_level = level_module.GameLevel()
+        game_level.run()
+        exit()
 
     def game_start_bg(self):
         self.screen.blit(self.image, self.image_rect)
@@ -81,9 +100,7 @@ class Game_bg:
         self.screen.blit(self.wood_plank_surface, wood_plank_rectangle)
         stick_of_war = pygame.font.Font(None, 40).render("Stick of War", True, (255, 255, 255))
         self.stick_of_war_rect = stick_of_war.get_rect(center=(650, 430))
-        self.screen.blit(stick_of_war, self.stick_of_war_rect)     
-
-
+        self.screen.blit(stick_of_war, self.stick_of_war_rect)
 
     def run(self):
         while True:
@@ -101,4 +118,4 @@ class Game_bg:
 
 
 if __name__ == '__main__':
-    Game_bg().run()
+    GameHome().run()

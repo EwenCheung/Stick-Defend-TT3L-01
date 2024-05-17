@@ -1,8 +1,6 @@
 # coding: utf-8
 
 import pygame
-from pygame.locals import *
-from Home import *
 from sys import exit
 from random import randint, choice
 
@@ -285,7 +283,7 @@ class Ninja(pygame.sprite.Sprite):
             return True
 
 
-class Game():
+class GamePokemonVsStick:
     def __init__(self):
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((1000, 600))  # screen size
@@ -695,4 +693,4 @@ class Game():
 
 
 if __name__ == "__main__":
-    Game().run()
+    GamePokemonVsStick().run()

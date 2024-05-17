@@ -251,7 +251,7 @@ class HealthBar:
         self.current_health = max(0, self.current_health)
 
 
-class Game:
+class GameStickOfWar:
     def __init__(self):
         self.clock = pygame.time.Clock()
         pygame.display.set_caption('Tower Defend')  # title name
@@ -781,4 +781,4 @@ class Game:
 
 
 if __name__ == "__main__":
-    Game().run()
+    GameStickOfWar().run()

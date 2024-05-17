@@ -45,7 +45,7 @@ class Item_card():
         self.giant_image_surf = pygame.transform.scale(self.giant_image_surf, (75, 80))
 
 
-class Game():
+class Game_Store:
     def __init__(self):
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((1000, 600))
@@ -1065,4 +1065,4 @@ class Game():
 
 
 if __name__ == '__main__':
-    Game().run()
+    Game_Store().run()
