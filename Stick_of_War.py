@@ -614,9 +614,10 @@ class Game:
                         troop.attack(self.bg_x)
                         if ninja.ninja_health <= 0:
                             self.enemy_on_court.remove(ninja)
-                            troop.bullet_on_court = []
                         break
-
+                    else:
+                        troop.move_bullet(self.bg_x)
+                        break
             else:
                 for ninja in self.enemy_on_court:
                     if self.both_collide(troop, ninja):
