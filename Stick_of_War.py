@@ -1,10 +1,11 @@
 # coding : utf-8
 import pygame
 from sys import exit
-from random import choice
+from random import choice, randint
 
 pygame.init()
 pygame.font.init()
+
 
 class TroopButton:
     def __init__(self, image, image_dim, flash, size, position, name, cooldown_time):
@@ -76,9 +77,7 @@ class TroopButton:
                 self.clicked = True
                 self.last_clicked_time = current_time
                 if self.insufficient_currency:
-                    self.flash_visible = not self.flash_visible
                     self.insufficient_currency = False
-                    self.flash_visible = False
                 return True
         return False
 
@@ -92,7 +91,9 @@ class TroopButton:
 
 
 class Troop:
-    def __init__(self, frame_storage, attack_frame_storage, health, attack_damage, bullet_damage, speed, troop_width, troop_height, troop_name):
+    def __init__(self, game_instance, frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width,
+                 troop_height,
+                 troop_name):
         self.previous_coor = 0
         self.coordinate_x = 0
         self.animation_index = 0
@@ -106,7 +107,6 @@ class Troop:
         self.health = health
         self.attack_damage = attack_damage
         self.speed = speed
-        self.bullet_damage = bullet_damage
         self.troop_width = troop_width
         self.troop_height = troop_height
         self.health_duration = 5000
@@ -116,9 +116,10 @@ class Troop:
         self.rage_start_time = 0
         self.rage_active = False
         # communication between the Troop instance and the Game instance
-        self.communication = self
+        self.game = game_instance
         self.rect = (0, 0, 0, 0)
         self.bullet_on_court = []
+        self.bullet_cooldown = 0
 
     def spawn_troop(self, screen, bg_x):
         self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 500))
@@ -132,68 +133,56 @@ class Troop:
             self.animation_index = 0
         self.image = self.frame_storage[int(self.animation_index)]
 
-    def troop_attack(self):
+    def troop_attack(self, bg_x):
         if self.troop_name == 'Archer' or self.troop_name == 'Wizard':
-            self.create_bullet(0)
-            self.move_bullet()
-            self.bullet_damage = 5
+            self.bullet_cooldown += 1
+            if self.bullet_cooldown >= 20:
+                self.create_bullet(bg_x)
+                self.bullet_cooldown = 0
+            self.move_bullet(bg_x)
             self.coordinate_x = self.previous_coor
             self.attack_frame_index += 0.2
         else:
             self.coordinate_x = self.previous_coor
             self.attack_frame_index += 0.2
 
-    def attack(self):
+    def attack(self, bg_x):
         self.attacking = True
         if self.attacking:
-            self.troop_attack()
+            self.troop_attack(bg_x)
             if self.attack_frame_index >= len(self.attack_frame_storage):
                 self.attack_frame_index = 0
                 self.attacking = False
             self.image = self.attack_frame_storage[int(self.attack_frame_index)]
 
     def create_bullet(self, bg_x):
-        self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 500))
         if self.troop_name == 'Archer':
-            self.bullet = pygame.image.load('War of stick/Picture/utils/archer_bullet.png')
-            self.bullet_surf = pygame.transform.scale(self.bullet, (50, 50))
-            self.bullet_rect = self.bullet_surf.get_rect(center=self.rect.center)
-            new_bullet = [self.bullet_surf, self.bullet_rect]
+            bullet = pygame.image.load('War of stick/Picture/utils/archer_bullet.png')
+            bullet_surf = pygame.transform.scale(bullet, (20, 20))
+            bullet_rect = bullet_surf.get_rect(center=(self.coordinate_x + bg_x, randint(435, 465)))
+            new_bullet = [bullet_surf, bullet_rect]
         elif self.troop_name == 'Wizard':
-            self.bullet = pygame.image.load('War of stick/Picture/utils/wizard_bullet.png')
-            self.bullet_surf = pygame.transform.scale(self.bullet, (50, 50))
-            self.bullet_rect = self.bullet_surf.get_rect(center=self.rect.center)
-            new_bullet = [self.bullet_surf, self.bullet_rect]
+            bullet = pygame.image.load('War of stick/Picture/utils/wizard_bullet.png')
+            bullet_surf = pygame.transform.scale(bullet, (50, 50))
+            bullet_rect = bullet_surf.get_rect(center=(self.coordinate_x + bg_x, randint(435, 465)))
+            new_bullet = [bullet_surf, bullet_rect]
         self.bullet_on_court.append(new_bullet)
 
-    def move_bullet(self):
+    def move_bullet(self, bg_x):
         for bullet in self.bullet_on_court:
             bullet[1].x += 5  # Move the bullet to the right of troop
-            if bullet[1].x > 1030:
-                # Remove bullets that have moved off-screen
+            for ninja in self.game.enemy_on_court:
+                if bullet[1].x > self.coordinate_x + bg_x + 600:
+                    # Remove bullets that a far from stick man
+                    self.bullet_on_court.remove(bullet)
+                    break
+                elif bullet[1].colliderect(ninja) :
+                    self.bullet_on_court.remove(bullet)
+                    ninja.ninja_health -= self.attack_damage
+                    break
+            if bullet[1].x >= self.game.right_rect_castle.x-350:
                 self.bullet_on_court.remove(bullet)
 
-    def cast_health(self):
-        self.health_active = True
-        self.health_start_time = pygame.time.get_ticks()
-
-    def health_increase(self):
-        if self.health_active:
-            self.health *= 1.1
-            if self.health_start_time >= self.health_duration:
-                self.health /= 1.1
-            self.health_active = False
-
-    def cast_rage(self):
-        self.rage_active = True
-        self.rage_start_time = pygame.time.get_ticks()
-
-    def speed_increase(self):
-        if self.rage_active:
-            self.speed *= 2
-            if self.rage_start_time >= self.rage_duration:
-                self.speed *= 0.5
-            self.rage_active = False
 
     def take_damage(self, damage):
         self.health -= damage
@@ -241,21 +230,6 @@ class Ninja:
                 self.animation_attack_index = 0
                 self.ninja_attacking = False
             self.image = self.ninja_attack_frame_storage[int(self.animation_attack_index)]
-
-    def cast_freeze(self):
-        self.freeze_active = True
-        self.freeze_start_time = pygame.time.get_ticks()
-
-    def ninja_speed_decrease(self):
-        if Game().spell_active:
-            self.ninja_speed *= 0.5
-            self.freeze_over()
-
-    def freeze_over(self):
-        current_time = pygame.time.get_ticks()
-        if current_time - Game().start_time >= Game().spell_duration:
-                self.ninja_speed *= 2
-                return Game().spell_active == False
 
     def ninja_take_damage(self, taken_damage):
         self.ninja_health -= taken_damage
@@ -487,28 +461,28 @@ class Game:
                               pygame.image.load('Plant vs Stick/Picture/naruto/naruto_walk_3.png').convert_alpha()]
         self.naruto_attack = [pygame.image.load('Plant vs Stick/Picture/naruto/naruto_attack_1.png').convert_alpha(),
                               pygame.image.load('Plant vs Stick/Picture/naruto/naruto_attack_2.png').convert_alpha()]
-        self.naruto_frame_storage = [pygame.transform.scale(frame, (84, 45)) for frame in self.naruto_normal]
-        self.naruto_attack_frame_storage = [pygame.transform.scale(frame, (84, 45)) for frame in self.naruto_attack]
+        self.naruto_frame_storage = [pygame.transform.scale(frame, (100, 55)) for frame in self.naruto_normal]
+        self.naruto_attack_frame_storage = [pygame.transform.scale(frame, (100,55)) for frame in self.naruto_attack]
 
         self.sasuke_normal = [pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_walk_1.png').convert_alpha(),
                               pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_walk_2.png').convert_alpha(),
                               pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_walk_3.png').convert_alpha()]
         self.sasuke_attack = [pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_attack_1.png').convert_alpha(),
                               pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_attack_2.png').convert_alpha()]
-        self.sasuke_frame_storage = [pygame.transform.scale(frame, (75, 55)) for frame in self.sasuke_normal]
-        self.sasuke_attack_frame_storage = [pygame.transform.scale(frame, (75, 55)) for frame in self.sasuke_attack]
+        self.sasuke_frame_storage = [pygame.transform.scale(frame, (100, 65)) for frame in self.sasuke_normal]
+        self.sasuke_attack_frame_storage = [pygame.transform.scale(frame, (100, 65)) for frame in self.sasuke_attack]
 
         self.kakashi_normal = [pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_run_1.png').convert_alpha(),
                                pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_run_2.png').convert_alpha(),
                                pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_run_3.png').convert_alpha()]
         self.kakashi_attack = [pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_attack_1.png').convert_alpha(),
                                pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_attack_2.png').convert_alpha()]
-        self.kakashi_frame_storage = [pygame.transform.scale(frame, (110, 85)) for frame in self.kakashi_normal]
-        self.kakashi_attack_frame_storage = [pygame.transform.scale(frame, (110, 85)) for frame in self.kakashi_attack]
+        self.kakashi_frame_storage = [pygame.transform.scale(frame, (120, 90)) for frame in self.kakashi_normal]
+        self.kakashi_attack_frame_storage = [pygame.transform.scale(frame, (120, 90)) for frame in self.kakashi_attack]
 
     def event_handling(self):
-        def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage, bullet_damage, speed,
-                          troop_width, troop_height, troop_name):
+        def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage,
+                          speed, troop_width, troop_height, troop_name):
             mouse_pos = pygame.mouse.get_pos()  # Check if the left mouse button was clicked and handle accordingly
 
             if button_name.is_clicked(mouse_pos):
@@ -516,7 +490,8 @@ class Game:
                     if self.num_gold >= gold_cost and self.num_diamond >= diamond_cost:
                         self.num_gold -= gold_cost
                         self.num_diamond -= diamond_cost
-                        new_troop = Troop(frame_storage, attack_frame_storage, health, attack_damage, bullet_damage, speed, troop_width,
+                        new_troop = Troop(self, frame_storage, attack_frame_storage, health, attack_damage, speed,
+                                          troop_width,
                                           troop_height, troop_name)
                         self.troop_on_court.append(new_troop)
                     else:
@@ -533,15 +508,15 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Check if left mouse button is pressed
                     clicked_troop(100, 200, self.warrior_button, self.warrior_frame_storage, self.warrior_attack_frame_storage, 100,
-                                  1, 1, 1, 75, 100, 'Warrior')
-                    clicked_troop(300, 200, self.archer_button, self.archer_frame_storage, self.archer_attack_frame_storage, 200, 1,
-                                  2, 1, 200, 100, 'Archer')
-                    clicked_troop(500, 500, self.wizard_button, self.wizard_frame_storage, self.wizard_attack_frame_storage, 250, 1,
-                                  2, 2, 200, 100, 'Wizard')
+                                  1, 1, 75, 100, 'Warrior')
+                    clicked_troop(300, 200, self.archer_button, self.archer_frame_storage, self.archer_attack_frame_storage, 200, 5,
+                                  1, 75, 100, 'Archer')
+                    clicked_troop(500, 500, self.wizard_button, self.wizard_frame_storage, self.wizard_attack_frame_storage, 250, 5,
+                                  1, 75, 100, 'Wizard')
                     clicked_troop(700, 200, self.sparta_button, self.sparta_frame_storage, self.sparta_attack_frame_storage, 300, 3,
-                                  1, 2, 75, 100, 'Sparta')
-                    clicked_troop(700, 200, self.giant_button, self.giant_frame_storage, self.giant_attack_frame_storage, 350, 4, 1, 1,
-                                  30, 200, 'Giant')
+                                  1, 75, 100, 'Sparta')
+                    clicked_troop(700, 200, self.giant_button, self.giant_frame_storage, self.giant_attack_frame_storage, 350, 4,
+                                  1, 30, 200, 'Giant')
 
             if event.type == self.ninja_timer:
                 if len(self.enemy_on_court) <= 20:
@@ -614,30 +589,52 @@ class Game:
             self.num_diamond += 2
             self.diamond_time = current_time
 
+        # troop attack tower
         for troop in self.troop_on_court:
-            if self.check_collision(troop, self.right_rect_castle):
-                get_damage = troop.attack_damage
-                self.health_bar_enemy.update_health(get_damage)  # Update castle health
-                troop.attack()
+            if troop.troop_name == "Archer" or troop.troop_name == "Wizard":
+                if self.check_far_collision(troop, self.right_rect_castle):
+                    self.health_bar_enemy.update_health(troop.attack_damage)  # Update castle health
+                    troop.attack(self.bg_x)
+            else:
+                if self.check_collision(troop, self.right_rect_castle):
+                    self.health_bar_enemy.update_health(troop.attack_damage)  # Update castle health
+                    troop.attack(self.bg_x)
 
+        #ninja attack tower
         for ninja in self.enemy_on_court:
             if self.ninja_collision(ninja, self.left_rect_castle):
-                get_the_damage = ninja.attack
-                self.health_bar_user.update_health(get_the_damage)  # Update castle health
+                self.health_bar_user.update_health(ninja.attack)  # Update castle health
                 ninja.ninja_attack()
 
+        # troop attack ninja
+        for troop in self.troop_on_court:
+            if troop.troop_name == "Archer" or troop.troop_name == "Wizard":
+                for ninja in self.enemy_on_court:
+                    if self.far_range_collide(troop, ninja):
+                        troop.attack(self.bg_x)
+                        if ninja.ninja_health <= 0:
+                            self.enemy_on_court.remove(ninja)
+                        break
+                    else:
+                        troop.bullet_on_court = []
+            else:
+                for ninja in self.enemy_on_court:
+                    if self.both_collide(troop, ninja):
+                        troop.attack(self.bg_x)
+                        ninja.ninja_take_damage(troop.attack_damage)
+                        if ninja.ninja_health <= 0:
+                            self.enemy_on_court.remove(ninja)
+                        break
+
+        # ninja attack troop
         for ninja in self.enemy_on_court:
             for troop in self.troop_on_court:
                 if self.both_collide(troop, ninja):
-                    troop.attack()
+                    ninja.ninja_attack()
                     troop.take_damage(ninja.attack)
                     if troop.health <= 0:
                         self.troop_on_court.remove(troop)
-                if self.both_collide(troop, ninja):
-                    ninja.ninja_attack()
-                    ninja.ninja_take_damage(troop.attack_damage)
-                    if ninja.ninja_health <= 0:
-                        self.enemy_on_court.remove(ninja)
+                    break
 
     def max_troop(self, button_name):
         if button_name == self.warrior_button:
@@ -662,8 +659,19 @@ class Game:
         return troop_rect.colliderect(rect)
 
     @staticmethod
+    def check_far_collision(troop, rect):
+        troop_rect = pygame.Rect(troop.coordinate_x, 0, troop.troop_width + 400, troop.troop_height)  # for right castle
+        return troop_rect.colliderect(rect)
+
+    @staticmethod
     def both_collide(troop, ninja):
         troop_rect = pygame.Rect(troop.coordinate_x, 0, troop.troop_width, troop.troop_height)
+        ninja_rect = pygame.Rect(ninja.ninja_coordinate_x, 0, 75, 100)  # for attack each other
+        return troop_rect.colliderect(ninja_rect)
+
+    @staticmethod
+    def far_range_collide(troop, ninja):
+        troop_rect = pygame.Rect(troop.coordinate_x, 0, troop.troop_width + 400, troop.troop_height)
         ninja_rect = pygame.Rect(ninja.ninja_coordinate_x, 0, 75, 100)  # for attack each other
         return troop_rect.colliderect(ninja_rect)
 
@@ -735,8 +743,7 @@ class Game:
             troop.spawn_troop(self.screen, self.bg_x)
             troop.update()
             for bullet in troop.bullet_on_court:
-                troop.move_bullet()
-                self.screen.blit(bullet[0],bullet[1])
+                self.screen.blit(bullet[0], bullet[1])
 
         for enemy in self.enemy_on_court:
             enemy.spawn_ninja(self.screen, self.bg_x)

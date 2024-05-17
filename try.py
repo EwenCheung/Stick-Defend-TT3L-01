@@ -1,976 +1,744 @@
+# coding : utf-8
 import pygame
 from sys import exit
-import random
+from random import choice, randint
 
 pygame.init()
+pygame.font.init()
 
-class Item_card():
-    def __init__(self):
-        #load store card image
-        self.warrior_card_image = pygame.image.load('War of stick/Picture/stickman sword/stickman warrior card.png').convert_alpha()
-        self.warrior_card_surf = pygame.transform.scale(self.warrior_card_image,(50,75))
 
-        self.archer_card_image = pygame.image.load('War of stick/Picture/stickman archer/stickman archer card.png').convert_alpha()
-        self.archer_card_surf = pygame.transform.scale(self.archer_card_image,(50,75))
+class TroopButton:
+    def __init__(self, image, image_dim, flash, size, position, name, cooldown_time):
+        self.size = size
+        self.position = position
+        self.image = image
+        self.image_dim = image_dim
+        self.flash = flash
+        self.image = pygame.transform.scale(self.image, self.size)
+        self.image_dim = pygame.transform.scale(self.image_dim, self.size)
+        self.flash = pygame.transform.scale(self.flash, self.size)
+        self.name = name
+        self.cooldown_time = cooldown_time
+        self.rect = self.image.get_rect(center=self.position)
+        self.clicked = False
+        self.cooldown_flag = False
+        self.coordinate_x = 0
+        self.last_clicked_time = 0
+        self.remaining_cooldown = 0
+        self.insufficient_currency = False
+        self.flash_timer = 0
+        self.flash_duration = 500
+        self.flash_toggle = False
 
-        self.sparta_card_image = pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta card.png').convert_alpha()
-        self.sparta_card_surf = pygame.transform.scale(self.sparta_card_image,(50,75))
+    def render_name(self, screen):
+        font = pygame.font.Font(None, 15)
+        lines = self.name.split('\n')
+        total_height = len(lines) * 15
+        y_offset = -total_height / 2
 
-        self.wizard_card_image = pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard card.png').convert_alpha()
-        self.wizard_card_surf = pygame.transform.scale(self.wizard_card_image,(50,75))
-        self.wizard_card_rect = self.wizard_card_surf.get_rect(center=(700,100))
+        colors = [(255, 215, 0), (56, 182, 255)]  # gold, blue
+        for line, color in zip(lines, colors):
+            text = font.render(line, True, color)
+            text_rect = text.get_rect(center=(self.position[0], self.position[1] + y_offset))
+            text_rect.y += 46
+            screen.blit(text, text_rect)
+            y_offset += 8
 
-        self.giant_card_image = pygame.image.load('War of stick/Picture/stickman giant/stickman giant card.png').convert_alpha()
-        self.giant_card_surf = pygame.transform.scale(self.giant_card_image,(50,75))
+    def draw(self, screen):
+        if self.clicked and not self.insufficient_currency:
+            self.cooldown_flag = True
+            current_time = pygame.time.get_ticks()
+            self.remaining_cooldown = max(0, self.cooldown_time - (current_time - self.last_clicked_time)) // 1000
+            cooldown_font = pygame.font.Font(None, 70)
+            cooldown_text = cooldown_font.render(f"{self.remaining_cooldown}", True, (255, 255, 255))
+            cooldown_text_rect = cooldown_text.get_rect(center=(self.position[0], self.position[1]))
+            screen.blit(self.image_dim, self.rect)
+            screen.blit(cooldown_text, cooldown_text_rect)
 
-        #load backpack stcik image
-        self.warrior_image_surf = pygame.image.load('War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 1.png').convert_alpha()
-        self.warrior_image_surf = pygame.transform.scale(self.warrior_image_surf,(100,120))
+        if self.insufficient_currency and self.flash_toggle:
+            if self.flash_timer <= self.flash_duration:
+                screen.blit(self.flash, self.rect)
+                self.flash_timer += 1
+            else:
+                self.flash_timer = 0
+                self.insufficient_currency = False
+                self.clicked = False
+                self.cooldown_flag = False
 
-        self.archer_image_surf = pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha()
-        self.archer_image_surf = pygame.transform.scale(self.archer_image_surf,(65,65))
+        if self.remaining_cooldown == 0 and not self.insufficient_currency:
+            screen.blit(self.image, self.rect)
+            self.clicked = False
+        self.render_name(screen)
 
-        self.sparta_image_surf = pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 1.png').convert_alpha()
-        self.sparta_image_surf = pygame.transform.scale(self.sparta_image_surf,(80,105))
+    def is_clicked(self, mouse_pos):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_clicked_time >= self.cooldown_time:
+            if self.rect.collidepoint(mouse_pos):
+                self.clicked = True
+                self.last_clicked_time = current_time
+                if self.insufficient_currency:
+                    self.insufficient_currency = False
+                return True
+        return False
 
-        self.wizard_image_surf = pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 1.png').convert_alpha()
-        self.wizard_image_surf = pygame.transform.scale(self.wizard_image_surf,(85,100))
+    def lack_currency(self, screen):
+        if self.insufficient_currency:
+            # self.draw(screen)
+            screen.blit(self.flash, self.rect)
+            self.insufficient_currency = False
+            self.clicked = False
+            self.cooldown_flag = False
 
-        self.giant_image_surf = pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman giant walk 1.png').convert_alpha()
-        self.giant_image_surf = pygame.transform.scale(self.giant_image_surf,(75,80))
 
-    
-class Game():
+class Troop:
+    def __init__(self, game_instance, frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width,
+                 troop_height,
+                 troop_name):
+        self.previous_coor = 0
+        self.coordinate_x = 0
+        self.animation_index = 0
+        self.frame_storage = frame_storage
+        self.troop_name = troop_name
+        self.image = self.frame_storage[self.animation_index]
+        self.attacking = False
+        self.attack_frame_index = 0
+        self.attack_frame_storage = attack_frame_storage
+        self.image = self.attack_frame_storage[self.attack_frame_index]
+        self.health = health
+        self.attack_damage = attack_damage
+        self.speed = speed
+        self.troop_width = troop_width
+        self.troop_height = troop_height
+        self.health_duration = 5000
+        self.health_start_time = 0
+        self.health_active = False
+        self.rage_duration = 5000
+        self.rage_start_time = 0
+        self.rage_active = False
+        # communication between the Troop instance and the Game instance
+        self.game = game_instance
+        self.rect = (0, 0, 0, 0)
+        self.bullet_on_court = []
+        self.bullet_cooldown = 0
+
+    def spawn_troop(self, screen, bg_x):
+        self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 500))
+        screen.blit(self.image, self.rect)
+
+    def update(self):
+        self.previous_coor = self.coordinate_x
+        self.coordinate_x += self.speed
+        self.animation_index += self.speed / 5
+        if self.animation_index >= len(self.frame_storage):
+            self.animation_index = 0
+        self.image = self.frame_storage[int(self.animation_index)]
+
+    def troop_attack(self, bg_x):
+        if self.troop_name == 'Archer' or self.troop_name == 'Wizard':
+            self.bullet_cooldown += 1
+            if self.bullet_cooldown >= 10:
+                self.create_bullet(bg_x)
+                self.bullet_cooldown = 0
+            self.move_bullet(bg_x)
+            self.coordinate_x = self.previous_coor
+            self.attack_frame_index += 0.2
+        else:
+            self.coordinate_x = self.previous_coor
+            self.attack_frame_index += 0.2
+
+    def attack(self, bg_x):
+        self.attacking = True
+        if self.attacking:
+            self.troop_attack(bg_x)
+            if self.attack_frame_index >= len(self.attack_frame_storage):
+                self.attack_frame_index = 0
+                self.attacking = False
+            self.image = self.attack_frame_storage[int(self.attack_frame_index)]
+
+    def create_bullet(self, bg_x):
+        if self.troop_name == 'Archer':
+            bullet = pygame.image.load('War of stick/Picture/utils/archer_bullet.png')
+            self.bullet_surf = pygame.transform.scale(bullet, (20, 20))
+            bullet_rect = self.bullet_surf.get_rect(center=(self.coordinate_x + bg_x, randint(400, 500)))
+            new_bullet = [self.bullet_surf, bullet_rect]
+        elif self.troop_name == 'Wizard':
+            bullet = pygame.image.load('War of stick/Picture/utils/wizard_bullet.png')
+            self.bullet_surf = pygame.transform.scale(bullet, (50, 50))
+            bullet_rect = self.bullet_surf.get_rect(center=(self.coordinate_x + bg_x, randint(400, 500)))
+            new_bullet = [self.bullet_surf, bullet_rect]
+        self.bullet_on_court.append(new_bullet)
+
+    def move_bullet(self, bg_x):
+        for bullet in self.bullet_on_court:
+            bullet[1] = self.bullet_surf.get_rect(center=(self.coordinate_x + bg_x, randint(400, 500)))
+            bullet[1].x += 5   # Move the bullet to the right of troop
+            for ninja in self.game.enemy_on_court:
+                if bullet[1].x > self.coordinate_x + bg_x + 600:
+                    # Remove bullets that a far from stick man
+                    self.bullet_on_court.remove(bullet)
+                    return
+                elif bullet[1].colliderect(ninja):
+                    self.bullet_on_court.remove(bullet)
+                    ninja.ninja_health -= self.attack_damage
+                    return
+
+    def take_damage(self, damage):
+        self.health -= damage
+
+
+class Ninja:
+    def __init__(self, ninja_type, frame_storage, ninja_attack_frame_storage, ninja_health, ninja_speed, attack, ninja_coordinate_x):
+        self.ninja_type = ninja_type
+        self.frame_storage = frame_storage
+        self.ninja_attack_frame_storage = ninja_attack_frame_storage
+        self.ninja_health = ninja_health
+        self.ninja_speed = ninja_speed
+        self.attack = attack
+        self.animation_index = 0
+        self.image = self.frame_storage[self.animation_index]
+        self.animation_attack_index = 0
+        self.image = self.ninja_attack_frame_storage[self.animation_attack_index]
+        self.communication = self
+        self.ninja_coordinate_x = ninja_coordinate_x
+        self.ninja_prev_coor = self.ninja_coordinate_x
+        self.ninja_attacking = False
+        self.rect = (0, 0, 0, 0)
+        self.freeze_duration = 5000
+        self.freeze_start_time = 0
+        self.freeze_active = False
+
+    def spawn_ninja(self, screen, bg_x):
+        self.rect = self.image.get_rect(bottomright=(self.ninja_coordinate_x + bg_x, 500))
+        screen.blit(self.image, self.rect)
+
+    def update_ninja(self):
+        self.ninja_prev_coor = self.ninja_coordinate_x
+        self.ninja_coordinate_x -= self.ninja_speed
+        self.animation_index += self.ninja_speed / 10
+        if self.animation_index >= len(self.ninja_attack_frame_storage):
+            self.animation_index = 0
+        self.image = self.frame_storage[int(self.animation_index)]
+
+    def ninja_attack(self):
+        self.ninja_attacking = True
+        if self.ninja_attacking:
+            self.ninja_coordinate_x = self.ninja_prev_coor
+            self.animation_attack_index += 0.2
+            if self.animation_attack_index >= len(self.ninja_attack_frame_storage):
+                self.animation_attack_index = 0
+                self.ninja_attacking = False
+            self.image = self.ninja_attack_frame_storage[int(self.animation_attack_index)]
+
+    def ninja_take_damage(self, taken_damage):
+        self.ninja_health -= taken_damage
+
+
+class HealthBar:
+    def __init__(self, max_health, initial_health, position, width, height, color):
+        self.max_health = max_health
+        self.current_health = initial_health
+        self.position = position
+        self.width = width
+        self.height = height
+        self.color = color
+
+    def draw(self, screen):
+        # Draw inside the border box
+        health_width = self.current_health / self.max_health * self.width
+        health_bar_rect = pygame.Rect(self.position[0], self.position[1], health_width, self.height)
+        pygame.draw.rect(screen, self.color, health_bar_rect)
+
+        # Draw borderline
+        health_bar_border_rect = pygame.Rect(self.position[0] - 2, self.position[1] - 2, self.width + 4, self.height + 4)
+        pygame.draw.rect(screen, (0, 0, 0), health_bar_border_rect, 2)
+
+    def update_health(self, get_damage):
+        self.current_health -= get_damage
+        self.current_health = max(0, self.current_health)
+
+
+class Game:
     def __init__(self):
         self.clock = pygame.time.Clock()
-        self.screen = pygame.display.set_mode((1000,600))
-        pygame.display.set_caption('Store')
-        self.cards = Item_card()
-        self.store = True
-        self.backpack = False
-        self.font = pygame.font.Font(None, 30)
-        self.price_font = pygame.font.Font(None, 25)
-        self.troop_font = pygame.font.Font(None,70)
-        # self.selected_card = None
-        self.num_money = 50000
-        #define the x,y coordiante for the card
-        self.x_coords = ([325,470,610,325,470,610,325,470,610])
-        self.y_coords = ([200,200,200,336,336,336,477,477,477])
-        self.x_button_coordinate = ([547,647,747,847])
-        self.y_button_coordinate = ([218,218,218,218])
-        self.selected_category = 'Castle'
-        self.clicked_image_surf = None
-        self.set_up()
-        
-    def set_up(self):
-        self.upgrades_button_surf = self.button()
-        #store
-        #load background
-        self.background_image = pygame.image.load('War of stick/Picture/store/store background.png').convert_alpha()
-        self.background_surf = pygame.transform.scale(self.background_image,(1000,600))
+        pygame.display.set_caption('Tower Defend')  # title name
+        self.screen = pygame.display.set_mode((1000, 600))
+        self.bg_x = 0
+        self.scroll_speed = 10
+        self.num_gold = 1000000
+        self.num_diamond = 100000
+        self.gold_time = pygame.time.get_ticks()
+        self.diamond_time = pygame.time.get_ticks()
+        self.gold_interval = 100
+        self.diamond_interval = 100
+        self.troop_on_court = []
+        self.enemy_on_court = []
+        self.health_bar_user = HealthBar(10000, 10000, (620, 530), 200, 20, (0, 255, 0))  # health bar
+        self.health_bar_enemy = HealthBar(10000, 10000, (620, 560), 200, 20, (255, 0, 0))
+        self.healing_initial_position = (35, 550)
+        self.freeze_initial_position = (105, 550)
+        self.rage_initial_position = (175, 550)
+        self.game_over = False
+        self.winner = None
+        self.chosen_spell = None
 
-        self.button_background_surf = pygame.image.load('War of stick/Picture/store/button_for_store.png')
-        self.button_background_surf = pygame.transform.scale(self.button_background_surf, (150,75))
+        # set up Ninja timer
+        self.ninja_timer = pygame.USEREVENT + 1
+        self.spawn_time = 3000
+        pygame.time.set_timer(self.ninja_timer, self.spawn_time)
+        self.ninja_choice = ["naruto", "kakashi", "sasuke"]
+        # Scrolling Background
+        self.background_image = pygame.image.load('War of stick/Picture/utils/map.jpg')
+        self.left_rect_castle = pygame.Rect(self.bg_x, 90, 170, 390)
+        self.right_rect_castle = pygame.Rect(self.bg_x + self.background_image.get_width() - 100, 90, 170,
+                                             390)  # distance between troop and castle during time
 
-        #refresh button image
-        self.refresh_button_surf = pygame.image.load('War of stick/Picture/store/refresh button.png').convert_alpha()
-        self.refresh_button_surf = pygame.transform.scale(self.refresh_button_surf,(95,95))
-        self.refresh_button_rect = self.refresh_button_surf.get_rect(midright=(870,398))
+        # spell equipment
+        self.box = pygame.image.load('War of stick/Picture/utils/box.png')
+        self.box_surf = pygame.transform.scale(self.box, (600, 80))
+        self.box_rect = self.box_surf.get_rect(center=(300, 550))
 
-        #load the backpack image
-        self.backpack_image_surf = pygame.image.load('War of stick/Picture/store/backpack.png').convert_alpha()
-        self.backpack_image_surf = pygame.transform.scale(self.backpack_image_surf,(90,90))
-        self.backpack_image_rect = self.backpack_image_surf.get_rect(bottomright = (870,570))
-        
-        #money for purchase 
-        self.money_image_surf = pygame.image.load('War of stick/Picture/store/money.png').convert_alpha()
-        self.money_image_surf = pygame.transform.scale(self.money_image_surf, (15,10))
-        self.money_image_rect = self.money_image_surf.get_rect(topright =(920,10))
+        self.healing_spell = pygame.image.load('War of stick/Picture/spell/healing_spell.png')
+        self.healing_spell_surf = pygame.transform.scale(self.healing_spell, (70, 70))
+        self.healing_spell_rect = self.healing_spell_surf.get_rect(center=self.healing_initial_position)
+        self.freeze_spell = pygame.image.load('War of stick/Picture/spell/freeze_spell.png')
+        self.freeze_spell_surf = pygame.transform.scale(self.freeze_spell, (70, 70))
+        self.freeze_spell_rect = self.freeze_spell_surf.get_rect(center=self.freeze_initial_position)
+        self.rage_spell = pygame.image.load('War of stick/Picture/spell/rage_spell.png')
+        self.rage_spell_surf = pygame.transform.scale(self.rage_spell, (70, 70))
+        self.rage_spell_rect = self.rage_spell_surf.get_rect(center=self.rage_initial_position)
 
-        #load blank card image
-        self.blank_card_surf = pygame.image.load('War of stick/Picture/store/blank card image.png').convert_alpha()
-        self.blank_card_surf = pygame.transform.scale(self.blank_card_surf,(50,75))
+        # Gold assets
+        self.pic_gold = pygame.image.load('War of stick/Picture/utils/gold.png').convert_alpha()
+        self.pic_gold_surf = pygame.transform.scale(self.pic_gold, (25, 25))
+        self.pic_gold_rect = self.pic_gold_surf.get_rect(center=(760, 50))
+        self.num_gold_font = pygame.font.Font(None, 30)
+        self.num_gold_surf = self.num_gold_font.render(str(self.num_gold), True, 'Black')
+        self.num_gold_rect = self.num_gold_surf.get_rect(center=(800, 50))
 
-        #backpack 
-        #load backpack image
-        self.backpack_background_surf = pygame.image.load('War of stick/Picture/store/backpack background.png').convert_alpha()
-        self.backpack_background_surf = pygame.transform.scale(self.backpack_background_surf,(800,400))
+        # Diamond assets
+        self.pic_diamond = pygame.image.load('War of stick/Picture/utils/diamond.png').convert_alpha()
+        self.pic_diamond_surf = pygame.transform.scale(self.pic_diamond, (50, 25))
+        self.pic_diamond_rect = self.pic_diamond_surf.get_rect(center=(760, 80))
+        self.num_diamond_font = pygame.font.Font(None, 30)
+        self.num_diamond_surf = self.num_diamond_font.render(str(self.num_diamond), True, 'Black')
+        self.num_diamond_rect = self.num_diamond_surf.get_rect(center=(800, 80))
 
-        self.castle_image_surf = pygame.image.load('War of stick/Picture/store/castle.png').convert_alpha()
-        self.castle_image_surf = pygame.transform.scale(self.castle_image_surf,(300,300))
+        # Troop One
+        # Warrior run
+        self.warrior_all_image = [
+            pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 1.png').convert_alpha(),
+            pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 2.png').convert_alpha(),
+            pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 3.png').convert_alpha(),
+            pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 4.png').convert_alpha(),
+            pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 5.png').convert_alpha()]
+        self.warrior_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.warrior_all_image]
 
-        self.health_image_surf = pygame.image.load('War of stick/Picture/store/health.png').convert_alpha()
-        self.health_image_surf = pygame.transform.scale(self.health_image_surf,(20,20))
+        # Warrior attack
+        self.warrior_attack_image = [
+            pygame.image.load(
+                'War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 1.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 2.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 3.png').convert_alpha()]
+        self.warrior_attack_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.warrior_attack_image]
 
-        self.mining_image_surf = pygame.image.load('War of stick/Picture/store/pickaxe.png').convert_alpha()
-        self.mining_image_surf = pygame.transform.scale(self.mining_image_surf,(30,30))
+        self.warrior_button_image = pygame.image.load('War of stick/Picture/button/sword_button.png')
+        self.warrior_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/sword_dim.png')
+        self.warrior_button_flash = pygame.image.load('War of stick/Picture/button_flash/warrior_flash.png')
+        self.warrior_button = TroopButton(self.warrior_button_image, self.warrior_button_dim_image, self.warrior_button_flash,
+                                          (100, 100), (100, 70), '100\n200', 3000)
 
-        self.damage_image_surf = pygame.image.load('WAr of stick/Picture/store/damage.png').convert_alpha()
-        self.damage_image_surf = pygame.transform.scale(self.damage_image_surf,(25,25))
+        # Troop Two
+        # Archer walk
+        self.archer_all_image = [pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
+                                 pygame.image.load('War of stick/Picture/stickman archer/stickman archer 2.png').convert_alpha()]
+        self.archer_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.archer_all_image]
 
-        #load the back button image
-        self.back_button_surf = pygame.image.load('War of stick/Picture/store/back button.png').convert_alpha()
-        self.back_button_surf = pygame.transform.scale(self.back_button_surf, (50,50))
-        self.back_button_rect = self.back_button_surf.get_rect(bottomright=(900,100))
+        # archer attack
+        self.archer_attack_image = [
+            pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
+            pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha()]
+        self.archer_attack_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.archer_attack_image]
 
-        self.troop_equipment_box_surf = pygame.image.load('War of stick/Picture/store/equipment box.png').convert_alpha()
-        self.troop_equipment_box_surf = pygame.transform.scale(self.troop_equipment_box_surf,(500,100))
-        self.troop_equipment_box_rect = self.troop_equipment_box_surf.get_rect(center=(500,158))
+        self.archer_button_image = pygame.image.load('War of stick/Picture/button/archer_button.png')
+        self.archer_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/archer_dim.png')
+        self.archer_button_flash = pygame.image.load('War of stick/Picture/button_flash/archer_flash.png')
+        self.archer_button = TroopButton(self.archer_button_image, self.archer_button_dim_image, self.archer_button_flash,
+                                         (100, 100), (200, 70), '300\n200', 3000)
 
-        self.spell_equipment_box_surf = self.troop_equipment_box_surf.copy()
-        self.spell_equipment_box_rect = self.spell_equipment_box_surf.get_rect(center=(500,87))
-        
-        self.gold_image_surf = pygame.image.load('War of stick/Picture/utils/gold.png').convert_alpha()
-        self.gold_image_surf_surf = pygame.transform.scale(self.gold_image_surf, (25, 25))
-
-        self.diamond_image_surf = pygame.image.load('War of stick/Picture/utils/diamond.png').convert_alpha()
-        self.diamond_image_surf_surf = pygame.transform.scale(self.diamond_image_surf, (40, 25))
-
-        self.equip_button_size = (120,65)
-        self.equip_button_surf = pygame.Surface(self.equip_button_size)
-        self.equip_button_surf.fill((1,50,32))
-
-        self.unequip_button_surf = pygame.Surface(self.equip_button_size)
-        self.unequip_button_surf.fill((144,238,144))
-
-        # word
-        self.unlock_text_surf = self.font.render('Unlock', True, 'Black')
-        self.unlock_text_rect = self.unlock_text_surf.get_rect()
-
-        self.backpack_word_surf = pygame.font.Font(None, 60)
-        self.backpack_word_surf = self.backpack_word_surf.render('Backpack', True, 'White')
-        self.backpack_word_rect = self.backpack_word_surf.get_rect(center=(480,27))
-        
-        #words for the topic
-        self.topic_word_surf = pygame.font.Font(None, 60)
-        self.topic_word_surf = self.topic_word_surf.render('War of stick store', True, 'Black')
-        self.topic_word_rect = self.topic_word_surf.get_rect(center=(462,60))
-
-        #money word
-        self.num_money_surf = self.font.render(str(self.num_money), True, 'White')
-        self.num_money_rect = self.num_money_surf.get_rect(topright=(900,5))
-
-        self.castle_word_surf = self.font.render('Castle', True, 'White')
-        self.castle_word_rect = self.castle_word_surf.get_rect(center=(545,220))
-
-        self.troop_word_surf = self.font.render('Troop', True, 'White')
-        self.troop_word_rect = self.troop_word_surf.get_rect(center=(645,220))
-
-        self.spell_word_surf = self.font.render('Spell', True, 'White')
-        self.spell_word_rect = self.spell_word_surf.get_rect(center=(745,220))
-
-        self.others_word_surf = self.font.render('Others', True, 'White')
-        self.others_word_rect = self.others_word_surf.get_rect(center=(845,220))
-
-        self.store_list = [
-            {'image' : self.cards.archer_card_surf, 'name' : 'archer','button': self.button_background_surf, 'locked' : True, 'money' : self.money_image_surf, 'price' : 200},
-            {'image' : self.cards.sparta_card_surf, 'name' : 'sparta','button': self.button_background_surf, 'locked' : True, 'money' : self.money_image_surf, 'price' : 350},
-            {'image' : self.cards.wizard_card_surf, 'name' : 'wizard','button': self.button_background_surf, 'locked' : True, 'money' : self.money_image_surf, 'price' : 450},
-            {'image' : self.cards.giant_card_surf, 'name' : 'giant','button': self.button_background_surf, 'locked' : True,  'money' : self.money_image_surf, 'price' : 550},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 2', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 300},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 3', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 4', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 378},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 5', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 320},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 6', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 330},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 7', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 870},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 8', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 9', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 10', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 12', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 13', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 14', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 15', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 16', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 17', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 18', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
-            {'image' : self.blank_card_surf, 'name' : 'Blank 19', 'button' : self.button_background_surf,'locked' : True, 'money' : self.money_image_surf, 'price' : 100},
+        # Troop Three
+        # Wizard walk
+        self.wizard_all_image = [
+            pygame.image.load(
+                'War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 1.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 2.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 3.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 4.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 5.png').convert_alpha()
         ]
-        random.shuffle(self.store_list)
-        self.current_item = self.store_list[:len(self.x_coords)]
+        self.wizard_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.wizard_all_image]
 
-        self.backpack_troop_list = [
-            {'image' : self.cards.warrior_image_surf, 
-             'name' : 'warrior',
-             'button' : self.button_background_surf, 
-             'locked' : False, 
-             'equip' : False,
-             'money' : self.money_image_surf, 
-             'upgrades price' : 200, 
-             'level': 1,
-             'health icon' : self.health_image_surf,
-             'damage icon' : self.damage_image_surf,
-             'gold icon' : self.gold_image_surf_surf,
-             'diamond icon' : self.diamond_image_surf_surf,
-             'upgrades button' : self.upgrades_button_surf,
-             'health' : 1000,
-             'attack damage' : 150,
-             'equip button' : self.equip_button_surf,
-             'unequip button' :self.unequip_button_surf
-             }
+        # Wizard run
+        self.wizard_attack_image = [
+            pygame.image.load(
+                'War of stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 1.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 2.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 3.png').convert_alpha()
         ]
-        self.troop_position = [
-            {
-            'warrior' : (558,290),
-            'archer' : (695,278),
-            'sparta' : (830,287),
-            'wizard' : (558,410),
-            'giant' : (695,400)
-            }
-        ] 
+        self.wizard_attack_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.wizard_attack_image]
 
-        self.troop_msg_position = [
-            {
-                'warrior' : (558,320),
-                'archer' : (695,320),
-                'sparta' : (830,320),
-                'wizard' : (558,438),
-                'giant' :(695,438)
-            }
+        self.wizard_button_image = pygame.image.load('War of stick/Picture/button/wizard_button.png')
+        self.wizard_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/wizard_dim.png')
+        self.wizard_button_flash = pygame.image.load('War of stick/Picture/button_flash/wizard_flash.png')
+        self.wizard_button = TroopButton(self.wizard_button_image, self.wizard_button_dim_image, self.wizard_button_flash,
+                                         (100, 100), (300, 70), '500\n500', 3000)
+        # Troop Four
+        # Sparta run
+        self.sparta_all_image = [
+            pygame.image.load(
+                'War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 1.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 2.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 3.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 4.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 5.png').convert_alpha()
         ]
+        self.sparta_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.sparta_all_image]
 
-        self.castle_detail = [{
-            'image': self.castle_image_surf,
-            'name': 'Castle',
-            'health icon' : self.health_image_surf,
-            'health': 1000,
-            'health level' : 1,
-            'health price': 150,
-            'mining icon' : self.mining_image_surf,
-            'mining speed': 100,
-            'mining speed level' : 1,
-            'mining speed price' : 150,
-            'upgrades button': self.upgrades_button_surf,
-            'money image' : self.money_image_surf,
-            }]
-
-    def button(self):
-        self.title_background_surf = pygame.image.load('War of stick/Picture/store/coklat background.jpg').convert_alpha()
-        self.title_background_surf = pygame.transform.scale(self.title_background_surf,(90,40))
-        self.title_background_dark_surf = pygame.image.load('War of stick/Picture/store/choc_bg_dark.png').convert_alpha()
-        self.title_background_dark_surf = pygame.transform.scale(self.title_background_dark_surf,(90,40))
-        self.button_surf = [
-            self.title_background_surf.copy(),
-            self.title_background_surf.copy(),
-            self.title_background_surf.copy(),
-            self.title_background_surf.copy()
+        # Sparta attack
+        self.sparta_attack_image = [
+            pygame.image.load(
+                'War of stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 1.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 2.png').convert_alpha()
         ]
-        self.castle_background_surf = self.button_surf[0]
-        self.troop_background_surf = self.button_surf[1]
-        self.spell_background_surf = self.button_surf[2]
-        self.others_background_surf = self.button_surf[3]
+        self.sparta_attack_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.sparta_attack_image]
 
-        #upgrade button 
-        self.upgrades_button_size = (145,65)
-        self.upgrades_button_surf= pygame.Surface(self.upgrades_button_size)
-        self.upgrades_button_surf.fill((253,238,176))
+        self.sparta_button_image = pygame.image.load('War of stick/Picture/button/sparta_button.png')
+        self.sparta_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/sparta_dim.png')
+        self.sparta_button_flash = pygame.image.load('War of stick/Picture/button_flash/sparta_flash.png')
+        self.sparta_button = TroopButton(self.sparta_button_image, self.sparta_button_dim_image, self.sparta_button_flash,
+                                         (100, 100), (400, 70), '700\n200', 3000)
 
-        return self.upgrades_button_surf
-    
+        # Troop Five
+        # Giant Walk
+        self.giant_all_image = [
+            pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 1.png').convert_alpha(),
+            pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 2.png').convert_alpha(),
+            pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 3.png').convert_alpha(),
+            pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 4.png').convert_alpha(),
+            pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 5.png').convert_alpha()]
+        self.giant_frame_storage = [pygame.transform.scale(frame, (150, 200)) for frame in self.giant_all_image]
+
+        # Giant Attack
+        self.giant_attack_image = [
+            pygame.image.load(
+                'War of stick/Picture/stickman giant/stickman giant attack/stickman Giant attack 1.png').convert_alpha(),
+            pygame.image.load(
+                'War of stick/Picture/stickman giant/stickman giant attack/stickman Giant attack 2.png').convert_alpha()]
+        self.giant_attack_frame_storage = [pygame.transform.scale(frame, (150, 200)) for frame in self.giant_attack_image]
+
+        self.giant_button_image = pygame.image.load('War of stick/Picture/button/giant_button.png').convert_alpha()
+        self.giant_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/giant_dim.png')
+        self.giant_button_flash = pygame.image.load('War of stick/Picture/button_flash/giant_flash.png')
+        self.giant_button = TroopButton(self.giant_button_image, self.giant_button_dim_image, self.giant_button_flash, (100, 100),
+                                        (500, 70), '700\n200', 3000)
+
+        self.naruto_normal = [pygame.image.load('Plant vs Stick/Picture/naruto/naruto_walk_1.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/naruto/naruto_walk_2.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/naruto/naruto_walk_3.png').convert_alpha()]
+        self.naruto_attack = [pygame.image.load('Plant vs Stick/Picture/naruto/naruto_attack_1.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/naruto/naruto_attack_2.png').convert_alpha()]
+        self.naruto_frame_storage = [pygame.transform.scale(frame, (84, 45)) for frame in self.naruto_normal]
+        self.naruto_attack_frame_storage = [pygame.transform.scale(frame, (84, 45)) for frame in self.naruto_attack]
+
+        self.sasuke_normal = [pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_walk_1.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_walk_2.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_walk_3.png').convert_alpha()]
+        self.sasuke_attack = [pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_attack_1.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_attack_2.png').convert_alpha()]
+        self.sasuke_frame_storage = [pygame.transform.scale(frame, (75, 55)) for frame in self.sasuke_normal]
+        self.sasuke_attack_frame_storage = [pygame.transform.scale(frame, (75, 55)) for frame in self.sasuke_attack]
+
+        self.kakashi_normal = [pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_run_1.png').convert_alpha(),
+                               pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_run_2.png').convert_alpha(),
+                               pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_run_3.png').convert_alpha()]
+        self.kakashi_attack = [pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_attack_1.png').convert_alpha(),
+                               pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_attack_2.png').convert_alpha()]
+        self.kakashi_frame_storage = [pygame.transform.scale(frame, (110, 85)) for frame in self.kakashi_normal]
+        self.kakashi_attack_frame_storage = [pygame.transform.scale(frame, (110, 85)) for frame in self.kakashi_attack]
+
     def event_handling(self):
+        def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage,
+                          speed, troop_width, troop_height, troop_name):
+            mouse_pos = pygame.mouse.get_pos()  # Check if the left mouse button was clicked and handle accordingly
+
+            if button_name.is_clicked(mouse_pos):
+                if len(self.troop_on_court) <= 20:
+                    if self.num_gold >= gold_cost and self.num_diamond >= diamond_cost:
+                        self.num_gold -= gold_cost
+                        self.num_diamond -= diamond_cost
+                        new_troop = Troop(self, frame_storage, attack_frame_storage, health, attack_damage, speed,
+                                          troop_width,
+                                          troop_height, troop_name)
+                        self.troop_on_court.append(new_troop)
+                    else:
+                        button_name.insufficient_currency = True
+                        button_name.false_toggle = True
+                        button_name.lack_currency(self.screen)
+                else:
+                    self.max_troop(button_name)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-
             if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
-
-                #check if the refreash button is clicked
-                if self.refresh_button_rect.collidepoint(mouse_pos):
-                    if self.num_money >= 100:
-                        self.num_money -= 100
-                        random.shuffle(self.store_list)
-                        self.current_item = self.store_list[:len(self.x_coords)]
-
-                if self.backpack_image_rect.collidepoint(mouse_pos):
-                    self.store = False
-                    self.backpack = True
-                    self.selected_category = 'Castle'
-
-                if self.store:
-                        for index, item in enumerate(self.current_item):
-                            if item['locked']:
-                                button_background_rect = item['button'].get_rect(center=(self.x_coords[index], self.y_coords[index] + 45))
-                                if button_background_rect.collidepoint(mouse_pos):
-                                    if self.num_money >= item['price']:
-                                        self.num_money -= item['price']
-                                        item_copy = item.copy()
-                                        item_copy['level'] = 1
-                                        item_copy['health icon'] = self.health_image_surf
-                                        item_copy['damage icon'] = self.damage_image_surf
-                                        item_copy['gold icon'] = self.gold_image_surf_surf
-                                        item_copy['diamond icon'] = self.diamond_image_surf_surf
-                                        item_copy['upgrades button'] = self.upgrades_button_surf
-                                        item_copy['equip'] = False
-                                        item_copy['equip button'] = self.equip_button_surf
-                                        item_copy['unequip button'] = self.unequip_button_surf
-
-                                        if item['name'] == 'archer':
-                                            troop_image = self.cards.archer_image_surf
-                                            item_copy['health'] = 1200
-                                            item_copy['upgrades price'] = 150
-                                            item_copy['attack damage'] = 200
-                                        elif item['name'] == 'sparta':
-                                            troop_image = self.cards.sparta_image_surf
-                                            item_copy['health'] = 1400
-                                            item_copy['upgrades price'] = 160
-                                            item_copy['attack damage'] = 220
-                                        elif item['name'] == 'wizard':
-                                            troop_image = self.cards.wizard_image_surf
-                                            item_copy['health'] = 1400
-                                            item_copy['upgrades price'] = 170
-                                            item_copy['attack damage'] = 240                                        
-                                        elif item['name'] == 'giant':
-                                            troop_image = self.cards.giant_image_surf
-                                            item_copy['health'] = 1400
-                                            item_copy['upgrades price'] = 180
-                                            item_copy['attack damage'] = 260                                        
-                                        else:
-                                            break
-                                        item_copy['image'] = troop_image
-                                        self.backpack_troop_list.append(item_copy)
-                                        item['locked'] = False
-                                        del self.store_list[index]
-
-                if self.backpack:
-                    if self.back_button_rect.collidepoint(mouse_pos):
-                        self.store = True
-                        self.backpack = False
-
-                for index, surface in enumerate(self.button_surf):
-                    x_coord = self.x_button_coordinate[index]
-                    y_coord = self.y_button_coordinate[index]
-                    surface_rect = surface.get_rect(center=(x_coord, y_coord))
-                    if surface_rect.collidepoint(mouse_pos):
-                        if index == 0 :
-                            self.selected_category = 'Castle'
-                        if index == 1 :
-                            self.screen.blit(self.title_background_dark_surf, surface_rect)
-                            self.selected_category = "Troop"
-                        elif index == 2 :
-                            self.screen.blit(self.title_background_dark_surf, surface_rect)
-                            self.selected_category = 'Spell'
-                        elif index == 3 :
-                            self.screen.blit(self.title_background_dark_surf, surface_rect)
-                            self.selected_category = 'Others'
-
-                if self.backpack and self.selected_category == 'Castle':
-                    for item in self.castle_detail:
-                        health_button_rect = item['upgrades button'].get_rect(bottomleft=(120,550))
-                        mining_button_rect = item['upgrades button'].get_rect(bottomleft=(340,550))
-                        if health_button_rect.collidepoint(mouse_pos):
-                            if self.num_money >= item['health price']:
-                                self.num_money -= item['health price']
-                                item['health level'] += 1
-                                item['health price'] +=100
-                                item['health'] += 200
-                        elif mining_button_rect.collidepoint(mouse_pos):
-                            if self.num_money >= item['mining speed price']:
-                                self.num_money -= item['mining speed price']
-                                item['mining speed level'] += 1
-                                item['mining speed price'] +=100
-
-                if self.backpack and self.selected_category == 'Troop':
-                    for item in self.backpack_troop_list:
-                        troop_type = item['name']
-                        troop_image = item['image']
-                        position = self.troop_position[0].get(troop_type, (0,0))
-                        troop_rect = troop_image.get_rect(center=(position))
-                        if troop_rect.collidepoint(mouse_pos):
-                            if troop_type == 'warrior':
-                                self.clicked_image_surf = 'warrior'
-                            elif troop_type == 'archer':
-                                self.clicked_image_surf ='archer'
-                            elif troop_type =='sparta':
-                                self.clicked_image_surf = 'sparta'
-                            elif troop_type =='wizard':
-                                self.clicked_image_surf = 'wizard'
-                            elif troop_type == 'giant':
-                                self.clicked_image_surf = 'giant'
-
-                if self.backpack and self.selected_category == 'Troop':
-                    for item in self.backpack_troop_list :
-                        if item['name'] == self.clicked_image_surf:
-                            upgrades_button_rect = item['upgrades button'].get_rect(midbottom=(250,565))
-                            if upgrades_button_rect.collidepoint(mouse_pos):
-                                if self.num_money >= item['upgrades price'] :
-                                    self.num_money -= item['upgrades price']
-                                    item['upgrades price'] += 100
-                                    item['health'] += 200
-                                    item['attack damage'] += 100
-                                    item['level'] += 1     
-
-                            equip_button_rect = item['equip button'].get_rect(midbottom=(383,565))
-                            if equip_button_rect.collidepoint(mouse_pos):
-                                if item['equip']:
-                                    item['equip'] = False
-                                else:
-                                    item['equip'] = True
-
-    def backpack_screen(self):
-        self.display_detail_info()
-        self.troop_screen_blit()
-
-    def display_detail_info(self):
-        self.button() 
-        self.screen.fill((50,49,47))
-        self.screen.blit(self.backpack_background_surf, (100, 195))
-        self.screen.blit(self.backpack_word_surf,self.backpack_word_rect)
-        self.screen.blit(self.back_button_surf, self.back_button_rect)
-        self.screen.blit(self.money_image_surf,(465,213))
-        self.num_money_surf = self.font.render(str(self.num_money), True, 'Black')
-        self.screen.blit(self.num_money_surf,(400,210))
-        #equipment box
-        self.screen.blit(self.troop_equipment_box_surf,self.troop_equipment_box_rect)
-        self.screen.blit(self.spell_equipment_box_surf,self.spell_equipment_box_rect)
-
-        #button
-        for index, surface in enumerate(self.button_surf):
-            button_x_coords = self.x_button_coordinate[index]
-            button_y_coords = self.y_button_coordinate[index]
-            surface_rect = surface.get_rect(center=(button_x_coords, button_y_coords))
-            self.screen.blit(surface, surface_rect) 
-        #title word
-        self.screen.blit(self.castle_word_surf,self.castle_word_rect)
-        self.screen.blit(self.troop_word_surf,self.troop_word_rect)
-        self.screen.blit(self.spell_word_surf,self.spell_word_rect)
-        self.screen.blit(self.others_word_surf,self.others_word_rect)
-
-        if self.backpack and self.selected_category == 'Castle':
-                    self.screen.fill((50,49,47))
-                    self.screen.blit(self.backpack_background_surf, (100, 195))
-                    self.screen.blit(self.backpack_word_surf,self.backpack_word_rect)
-                    self.screen.blit(self.back_button_surf, self.back_button_rect)
-                    self.screen.blit(self.money_image_surf,(465,213))
-                    self.num_money_surf = self.font.render(str(self.num_money), True, 'Black')
-                    self.screen.blit(self.num_money_surf,(400,210))
-                    self.screen.blit(self.troop_equipment_box_surf,self.troop_equipment_box_rect)
-                    self.screen.blit(self.spell_equipment_box_surf,self.spell_equipment_box_rect)
-
-                    for index, surface in enumerate(self.button_surf):
-                        button_x_coords = self.x_button_coordinate[index]
-                        button_y_coords = self.y_button_coordinate[index]
-                        surface_rect = surface.get_rect(center=(button_x_coords, button_y_coords))
-                        self.screen.blit(surface, surface_rect) 
-
-                    for item in self.castle_detail:
-                        #display castle image
-                        self.screen.blit(item['image'],(80,180))
-                        #Display the health icon
-                        health_icon_surf = item['health icon']
-                        health_icon_rect = health_icon_surf.get_rect(midleft=(375,293))
-                        self.screen.blit(health_icon_surf,health_icon_rect)
-
-                        #display the health msg
-                        health_text = self.font.render(f"{str(item['health'])}", True, 'Black')    
-                        health_text_rect = health_text.get_rect(midleft=(400,295))    
-                        self.screen.blit(health_text,health_text_rect)        
-
-                        #display mining icon
-                        mining_icon_surf = item['mining icon']
-                        mining_icon_rect = mining_icon_surf.get_rect(midleft=(366,335))
-                        self.screen.blit(mining_icon_surf,mining_icon_rect)
-
-                        #display mining speed msg
-                        mining_speed_text = self.font.render(f"{str(item['mining speed'])}", True, 'Black')
-                        mining_speed_text_rect = mining_speed_text.get_rect(midleft=(402,337))
-                        self.screen.blit(mining_speed_text,mining_speed_text_rect)
-
-                        #display health upgrades button
-                        health_button_surf = item['upgrades button']
-                        health_button_rect = health_button_surf.get_rect(bottomleft=(118,565))
-                        self.screen.blit(health_button_surf,health_button_rect)
-
-                        mining_button_surf = item['upgrades button']
-                        mining_button_rect = mining_button_surf.get_rect(bottomleft=(338,565))
-                        self.screen.blit(mining_button_surf,mining_button_rect)
-
-                        #health upgrades detail
-                        health_upgrades_msg_surf = self.font.render(f"Health: Lv{str(item['health level'])}", True , 'Black')
-                        health_upgrades_msg_rect = health_upgrades_msg_surf.get_rect(bottomleft=(132,530))
-                        self.screen.blit(health_upgrades_msg_surf,health_upgrades_msg_rect)
-
-                        health_upgrades_surf = self.price_font.render(f"Upgrade {str(item['health price'])}",True, 'Black')
-                        health_upgrades_rect = health_upgrades_surf.get_rect(bottomleft=(130,555))
-                        self.screen.blit(health_upgrades_surf,health_upgrades_rect)
-
-                        health_money_icon_surf = item['money image']
-                        health_money_icon_rect = health_money_icon_surf.get_rect(bottomleft=(237,549))
-                        self.screen.blit(health_money_icon_surf,health_money_icon_rect)
-
-                        mining_upgrades_msg_surf = self.font.render(f"Mining: Lv{str(item['mining speed level'])}", True, 'Black')
-                        mining_upgrades_msg_rect = mining_upgrades_msg_surf.get_rect(bottomleft=(352,530))
-                        self.screen.blit(mining_upgrades_msg_surf,mining_upgrades_msg_rect)
-
-                        mining_upgrades_surf = self.price_font.render(f"Upgrade {str(item['mining speed price'])}", True, 'Black')
-                        mining_upgrades_rect = mining_upgrades_surf.get_rect(bottomleft=(350,555))
-                        self.screen.blit(mining_upgrades_surf,mining_upgrades_rect)
-
-                        mining_money_icon_surf = item['money image']
-                        mining_money_icon_rect = mining_money_icon_surf.get_rect(bottomleft=(457,549))
-                        self.screen.blit(mining_money_icon_surf,mining_money_icon_rect)
-
-                        right_part_castle_surf = item['image']
-                        right_part_castle_surf = pygame.transform.scale(right_part_castle_surf,(120,120))
-                        right_part_castle_rect = right_part_castle_surf.get_rect(center=(565,295))
-                        self.screen.blit(right_part_castle_surf,right_part_castle_rect)
-                        
-                        self.screen.blit(self.castle_word_surf,self.castle_word_rect)
-                        self.screen.blit(self.troop_word_surf,self.troop_word_rect)
-                        self.screen.blit(self.spell_word_surf,self.spell_word_rect)
-                        self.screen.blit(self.others_word_surf,self.others_word_rect)
-                        
-        elif self.selected_category == 'Troop':
-            for index, item in enumerate(self.backpack_troop_list):
-                troop_type = item['name']
-                troop_image = item['image']
-                position = self.troop_position[0].get(troop_type, (0,0))
-                troop_rect = troop_image.get_rect(center=(position))
-                self.screen.blit(troop_image,troop_rect)
-
-                msg_position = self.troop_msg_position[0].get(troop_type, (0,0))
-
-                level_msg_surf = self.price_font.render(f"Level: {str(item['level'])}", True, 'White')
-                level_msg_rect = level_msg_surf.get_rect(center=(msg_position))
-                self.screen.blit(level_msg_surf, level_msg_rect)
-            
-        elif self.selected_category == 'Spell':
-            pass
-        elif self.selected_category == 'Others':
-            pass
-    def troop_screen_blit(self):
-        if self.backpack and self.selected_category == 'Troop':
-            for item in self.backpack_troop_list:
-                if self.clicked_image_surf == 'warrior':
-                    if item['name'] == 'warrior' :
-                        warrior_troop_image_surf = item['image']
-                        warrior_troop_image_surf = pygame.transform.scale(warrior_troop_image_surf,(350,350))
-                        warrior_troop_image_rect = warrior_troop_image_surf.get_rect(midleft=(48,380))
-                        self.screen.blit(warrior_troop_image_surf,warrior_troop_image_rect)
-
-                        troop_name_surf = self.troop_font.render(f"{str(item['name'])}", True, 'White')
-                        troop_name_rect = troop_name_surf.get_rect(midtop=(246,198))
-                        self.screen.blit(troop_name_surf,troop_name_rect)
-
-                        gold_icon_surf = item['gold icon'] 
-                        gold_icon_rect = gold_icon_surf.get_rect(midleft=(375,293))
-                        self.screen.blit(gold_icon_surf,gold_icon_rect)
-
-                        gold_text_surf = self.font.render(str(300), True, 'White')
-                        gold_text_rect = gold_text_surf.get_rect(midleft=(406,293))
-                        self.screen.blit(gold_text_surf,gold_text_rect)
-
-                        diamond_icon_surf = item['diamond icon']
-                        diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366,330))
-                        self.screen.blit(diamond_icon_surf,diamond_icon_rect)
-
-                        diamond_text_surf = self.font.render(str(400), True, "White")
-                        diamond_text_rect = diamond_text_surf.get_rect(midleft=(406,332))
-                        self.screen.blit(diamond_text_surf,diamond_text_rect)
-
-                        health_icon_surf = item['health icon']
-                        health_icon_rect = health_icon_surf.get_rect(midleft=(376,370))
-                        self.screen.blit(health_icon_surf,health_icon_rect)
-
-                        health_text_surf = self.font.render(f"{str(item['health'])}", True, 'White')
-                        health_text_rect = health_text_surf.get_rect(midleft=(403,371))
-                        self.screen.blit(health_text_surf,health_text_rect)
-
-                        damage_icon_surf = item['damage icon']
-                        damage_icon_rect = damage_icon_surf.get_rect(midleft=(375,407))
-                        self.screen.blit(damage_icon_surf,damage_icon_rect)
-
-                        damage_text_surf = self.font.render(f"{str(item['attack damage'])}", True, 'White')
-                        damage_text_rect = damage_text_surf.get_rect(midleft=(405,408))
-                        self.screen.blit(damage_text_surf,damage_text_rect)
-
-                        upgrades_button_surf = item['upgrades button']
-                        upgrades_button_rect = upgrades_button_surf.get_rect(midbottom=(220,565))
-                        self.screen.blit(upgrades_button_surf,upgrades_button_rect)
-
-                        level_msg_surf = self.font.render(f"Level: {str(item['level'])}", True, 'Black')
-                        level_msg_rect = level_msg_surf.get_rect(bottomleft=(180,530))
-                        self.screen.blit(level_msg_surf,level_msg_rect)
-
-                        level_upgrades_surf = self.price_font.render(f"Upgrade {str(item['upgrades price'])}", True, 'Black')
-                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(163,555))
-                        self.screen.blit(level_upgrades_surf,level_upgrades_rect)
-
-                        money_icon_surf = item['money']
-                        money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
-                        self.screen.blit(money_icon_surf,money_icon_rect)
-
-                        if item['equip'] == False:
-                            equip_button_surf = item['equip button']
-                            equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
-                            self.screen.blit(equip_button_surf,equip_button_rect)
-
-                            equip_text = self.font.render("Equip", True, (255, 255, 255))  
-                            equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
-                            self.screen.blit(equip_text, equip_text_rect)
-                        elif item['equip'] == True:
-                            unequip_button_surf = item['unequip button']
-                            unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
-                            self.screen.blit(unequip_button_surf,unequip_button_rect)
-
-                            equip_text = self.font.render("Unequip", True, (0, 0, 0))  
-                            equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
-                            self.screen.blit(equip_text, equip_text_rect)
-
-                elif self.clicked_image_surf == 'archer':
-                    if item['name'] == 'archer':
-                        archer_troop_image_surf = item['image']
-                        archer_troop_image_surf = pygame.transform.scale(archer_troop_image_surf,(200,200))
-                        archer_troop_image_rect = archer_troop_image_surf.get_rect(midleft=(148,355))
-                        self.screen.blit(archer_troop_image_surf,archer_troop_image_rect)
-
-                        troop_name_surf = self.troop_font.render(f"{str(item['name'])}", True, 'White')
-                        troop_name_rect = troop_name_surf.get_rect(midtop=(246,198))
-                        self.screen.blit(troop_name_surf,troop_name_rect)
-
-                        gold_icon_surf = item['gold icon'] 
-                        gold_icon_rect = gold_icon_surf.get_rect(midleft=(375,293))
-                        self.screen.blit(gold_icon_surf,gold_icon_rect)
-
-                        gold_text_surf = self.font.render(str(300), True, 'White')
-                        gold_text_rect = gold_text_surf.get_rect(midleft=(406,293))
-                        self.screen.blit(gold_text_surf,gold_text_rect)
-
-                        diamond_icon_surf = item['diamond icon']
-                        diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366,330))
-                        self.screen.blit(diamond_icon_surf,diamond_icon_rect)
-
-                        diamond_text_surf = self.font.render(str(400), True, "White")
-                        diamond_text_rect = diamond_text_surf.get_rect(midleft=(406,332))
-                        self.screen.blit(diamond_text_surf,diamond_text_rect)
-
-                        health_icon_surf = item['health icon']
-                        health_icon_rect = health_icon_surf.get_rect(midleft=(376,370))
-                        self.screen.blit(health_icon_surf,health_icon_rect)
-
-                        health_text_surf = self.font.render(f"{str(item['health'])}", True, 'White')
-                        health_text_rect = health_text_surf.get_rect(midleft=(403,371))
-                        self.screen.blit(health_text_surf,health_text_rect)
-
-                        damage_icon_surf = item['damage icon']
-                        damage_icon_rect = damage_icon_surf.get_rect(midleft=(375,407))
-                        self.screen.blit(damage_icon_surf,damage_icon_rect)
-
-                        damage_text_surf = self.font.render(f"{str(item['attack damage'])}", True, 'White')
-                        damage_text_rect = damage_text_surf.get_rect(midleft=(405,408))
-                        self.screen.blit(damage_text_surf,damage_text_rect)
-
-                        upgrades_button_surf = item['upgrades button']
-                        upgrades_button_rect = upgrades_button_surf.get_rect(midbottom=(220,565))
-                        self.screen.blit(upgrades_button_surf,upgrades_button_rect)
-
-                        level_msg_surf = self.font.render(f"Level: {str(item['level'])}", True, 'Black')
-                        level_msg_rect = level_msg_surf.get_rect(bottomleft=(180,530))
-                        self.screen.blit(level_msg_surf,level_msg_rect)
-
-                        level_upgrades_surf = self.price_font.render(f"Upgrade {str(item['upgrades price'])}", True, 'Black')
-                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(163,555))
-                        self.screen.blit(level_upgrades_surf,level_upgrades_rect)
-
-                        money_icon_surf = item['money']
-                        money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
-                        self.screen.blit(money_icon_surf,money_icon_rect)
-
-
-                        if item['equip'] == False:
-                            equip_button_surf = item['equip button']
-                            equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
-                            self.screen.blit(equip_button_surf,equip_button_rect)
-
-                            equip_text = self.font.render("Equip", True, (255, 255, 255))  
-                            equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
-                            self.screen.blit(equip_text, equip_text_rect)
-                        elif item['equip'] == True:
-                            unequip_button_surf = item['unequip button']
-                            unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
-                            self.screen.blit(unequip_button_surf,unequip_button_rect)
-
-                            equip_text = self.font.render("Unequip", True, (0, 0, 0))  
-                            equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
-                            self.screen.blit(equip_text, equip_text_rect)
-
-
-                elif self.clicked_image_surf == 'sparta':
-                    if item['name'] == 'sparta':
-                        sparta_troop_image_surf = item['image']
-                        sparta_troop_image_surf = pygame.transform.scale(sparta_troop_image_surf,(280,320))
-                        sparta_troop_image_rect = sparta_troop_image_surf.get_rect(midleft=(80,390))
-                        self.screen.blit(sparta_troop_image_surf,sparta_troop_image_rect)
-
-                        troop_name_surf = self.troop_font.render(f"{str(item['name'])}", True, 'White')
-                        troop_name_rect = troop_name_surf.get_rect(midtop=(246,198))
-                        self.screen.blit(troop_name_surf,troop_name_rect)
-
-                        gold_icon_surf = item['gold icon'] 
-                        gold_icon_rect = gold_icon_surf.get_rect(midleft=(375,293))
-                        self.screen.blit(gold_icon_surf,gold_icon_rect)
-
-                        gold_text_surf = self.font.render(str(300), True, 'White')
-                        gold_text_rect = gold_text_surf.get_rect(midleft=(406,293))
-                        self.screen.blit(gold_text_surf,gold_text_rect)
-
-                        diamond_icon_surf = item['diamond icon']
-                        diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366,330))
-                        self.screen.blit(diamond_icon_surf,diamond_icon_rect)
-
-                        diamond_text_surf = self.font.render(str(400), True, "White")
-                        diamond_text_rect = diamond_text_surf.get_rect(midleft=(406,332))
-                        self.screen.blit(diamond_text_surf,diamond_text_rect)
-
-                        health_icon_surf = item['health icon']
-                        health_icon_rect = health_icon_surf.get_rect(midleft=(376,370))
-                        self.screen.blit(health_icon_surf,health_icon_rect)
-
-                        health_text_surf = self.font.render(f"{str(item['health'])}", True, 'White')
-                        health_text_rect = health_text_surf.get_rect(midleft=(403,371))
-                        self.screen.blit(health_text_surf,health_text_rect)
-
-                        damage_icon_surf = item['damage icon']
-                        damage_icon_rect = damage_icon_surf.get_rect(midleft=(375,407))
-                        self.screen.blit(damage_icon_surf,damage_icon_rect)
-
-                        damage_text_surf = self.font.render(f"{str(item['attack damage'])}", True, 'White')
-                        damage_text_rect = damage_text_surf.get_rect(midleft=(405,408))
-                        self.screen.blit(damage_text_surf,damage_text_rect)
-
-                        upgrades_button_surf = item['upgrades button']
-                        upgrades_button_rect = upgrades_button_surf.get_rect(midbottom=(220,565))
-                        self.screen.blit(upgrades_button_surf,upgrades_button_rect)
-
-                        level_msg_surf = self.font.render(f"Level: {str(item['level'])}", True, 'Black')
-                        level_msg_rect = level_msg_surf.get_rect(bottomleft=(180,530))
-                        self.screen.blit(level_msg_surf,level_msg_rect)
-
-                        level_upgrades_surf = self.price_font.render(f"Upgrade {str(item['upgrades price'])}", True, 'Black')
-                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(163,555))
-                        self.screen.blit(level_upgrades_surf,level_upgrades_rect)
-
-                        money_icon_surf = item['money']
-                        money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
-                        self.screen.blit(money_icon_surf,money_icon_rect)
-
-                        if item['equip'] == False:
-                            equip_button_surf = item['equip button']
-                            equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
-                            self.screen.blit(equip_button_surf,equip_button_rect)
-
-                            equip_text = self.font.render("Equip", True, (255, 255, 255))  
-                            equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
-                            self.screen.blit(equip_text, equip_text_rect)
-                        elif item['equip'] == True:
-                            unequip_button_surf = item['unequip button']
-                            unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
-                            self.screen.blit(unequip_button_surf,unequip_button_rect)
-
-                            equip_text = self.font.render("Unequip", True, (0, 0, 0))  
-                            equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
-                            self.screen.blit(equip_text, equip_text_rect)
-
-
-                elif self.clicked_image_surf == 'wizard':
-                    if item['name'] == 'wizard':
-                        wizard_troop_image_surf = item['image']
-                        wizard_troop_image_surf =pygame.transform.scale(wizard_troop_image_surf,(300,350))
-                        wizard_troop_image_rect = wizard_troop_image_surf.get_rect(midleft=(100,408))
-                        self.screen.blit(wizard_troop_image_surf,wizard_troop_image_rect)
-
-                        troop_name_surf = self.troop_font.render(f"{str(item['name'])}", True, 'White')
-                        troop_name_rect = troop_name_surf.get_rect(midtop=(246,198))
-                        self.screen.blit(troop_name_surf,troop_name_rect)
-
-                        gold_icon_surf = item['gold icon'] 
-                        gold_icon_rect = gold_icon_surf.get_rect(midleft=(375,293))
-                        self.screen.blit(gold_icon_surf,gold_icon_rect)
-
-                        gold_text_surf = self.font.render(str(300), True, 'White')
-                        gold_text_rect = gold_text_surf.get_rect(midleft=(406,293))
-                        self.screen.blit(gold_text_surf,gold_text_rect)
-
-                        diamond_icon_surf = item['diamond icon']
-                        diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366,330))
-                        self.screen.blit(diamond_icon_surf,diamond_icon_rect)
-
-                        diamond_text_surf = self.font.render(str(400), True, "White")
-                        diamond_text_rect = diamond_text_surf.get_rect(midleft=(406,332))
-                        self.screen.blit(diamond_text_surf,diamond_text_rect)
-
-                        health_icon_surf = item['health icon']
-                        health_icon_rect = health_icon_surf.get_rect(midleft=(376,370))
-                        self.screen.blit(health_icon_surf,health_icon_rect)
-
-                        health_text_surf = self.font.render(f"{str(item['health'])}", True, 'White')
-                        health_text_rect = health_text_surf.get_rect(midleft=(403,371))
-                        self.screen.blit(health_text_surf,health_text_rect)
-
-                        damage_icon_surf = item['damage icon']
-                        damage_icon_rect = damage_icon_surf.get_rect(midleft=(375,407))
-                        self.screen.blit(damage_icon_surf,damage_icon_rect)
-
-                        damage_text_surf = self.font.render(f"{str(item['attack damage'])}", True, 'White')
-                        damage_text_rect = damage_text_surf.get_rect(midleft=(405,408))
-                        self.screen.blit(damage_text_surf,damage_text_rect)
-
-                        upgrades_button_surf = item['upgrades button']
-                        upgrades_button_rect = upgrades_button_surf.get_rect(midbottom=(220,565))
-                        self.screen.blit(upgrades_button_surf,upgrades_button_rect)
-
-                        level_msg_surf = self.font.render(f"Level: {str(item['level'])}", True, 'Black')
-                        level_msg_rect = level_msg_surf.get_rect(bottomleft=(180,530))
-                        self.screen.blit(level_msg_surf,level_msg_rect)
-
-                        level_upgrades_surf = self.price_font.render(f"Upgrade {str(item['upgrades price'])}", True, 'Black')
-                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(163,555))
-                        self.screen.blit(level_upgrades_surf,level_upgrades_rect)
-
-                        money_icon_surf = item['money']
-                        money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
-                        self.screen.blit(money_icon_surf,money_icon_rect)
-
-
-                        if item['equip'] == False:
-                            equip_button_surf = item['equip button']
-                            equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
-                            self.screen.blit(equip_button_surf,equip_button_rect)
-
-                            equip_text = self.font.render("Equip", True, (255, 255, 255))  
-                            equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
-                            self.screen.blit(equip_text, equip_text_rect)
-                        elif item['equip'] == True:
-                            unequip_button_surf = item['unequip button']
-                            unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
-                            self.screen.blit(unequip_button_surf,unequip_button_rect)
-
-                            equip_text = self.font.render("Unequip", True, (0, 0, 0))  
-                            equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
-                            self.screen.blit(equip_text, equip_text_rect)
-
-                elif self.clicked_image_surf == 'giant':
-                    if item['name'] == 'giant':
-                        giant_troop_image_surf = item['image']
-                        giant_troop_image_surf = pygame.transform.scale(giant_troop_image_surf,(250,300))
-                        giant_troop_image_rect = giant_troop_image_surf.get_rect(midleft=(115,380))
-                        self.screen.blit(giant_troop_image_surf,giant_troop_image_rect)
-
-                        troop_name_surf = self.troop_font.render(f"{str(item['name'])}", True, 'White')
-                        troop_name_rect = troop_name_surf.get_rect(midtop=(246,198))
-                        self.screen.blit(troop_name_surf,troop_name_rect)
-
-                        gold_icon_surf = item['gold icon'] 
-                        gold_icon_rect = gold_icon_surf.get_rect(midleft=(375,293))
-                        self.screen.blit(gold_icon_surf,gold_icon_rect)
-
-                        gold_text_surf = self.font.render(str(300), True, 'White')
-                        gold_text_rect = gold_text_surf.get_rect(midleft=(406,293))
-                        self.screen.blit(gold_text_surf,gold_text_rect)
-
-                        diamond_icon_surf = item['diamond icon']
-                        diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366,330))
-                        self.screen.blit(diamond_icon_surf,diamond_icon_rect)
-
-                        diamond_text_surf = self.font.render(str(400), True, "White")
-                        diamond_text_rect = diamond_text_surf.get_rect(midleft=(406,332))
-                        self.screen.blit(diamond_text_surf,diamond_text_rect)
-
-                        health_icon_surf = item['health icon']
-                        health_icon_rect = health_icon_surf.get_rect(midleft=(376,370))
-                        self.screen.blit(health_icon_surf,health_icon_rect)
-
-                        health_text_surf = self.font.render(f"{str(item['health'])}", True, 'White')
-                        health_text_rect = health_text_surf.get_rect(midleft=(403,371))
-                        self.screen.blit(health_text_surf,health_text_rect)
-
-                        damage_icon_surf = item['damage icon']
-                        damage_icon_rect = damage_icon_surf.get_rect(midleft=(375,407))
-                        self.screen.blit(damage_icon_surf,damage_icon_rect)
-
-                        damage_text_surf = self.font.render(f"{str(item['attack damage'])}", True, 'White')
-                        damage_text_rect = damage_text_surf.get_rect(midleft=(405,408))
-                        self.screen.blit(damage_text_surf,damage_text_rect)
-
-                        upgrades_button_surf = item['upgrades button']
-                        upgrades_button_rect = upgrades_button_surf.get_rect(midbottom=(220,565))
-                        self.screen.blit(upgrades_button_surf,upgrades_button_rect)
-
-                        level_msg_surf = self.font.render(f"Level: {str(item['level'])}", True, 'Black')
-                        level_msg_rect = level_msg_surf.get_rect(bottomleft=(180,530))
-                        self.screen.blit(level_msg_surf,level_msg_rect)
-
-                        level_upgrades_surf = self.price_font.render(f"Upgrade {str(item['upgrades price'])}", True, 'Black')
-                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(163,555))
-                        self.screen.blit(level_upgrades_surf,level_upgrades_rect)
-
-                        money_icon_surf = item['money']
-                        money_icon_rect = money_icon_surf.get_rect(midleft=(270,543))
-                        self.screen.blit(money_icon_surf,money_icon_rect)
-
-
-                        if item['equip'] == False:
-                            equip_button_surf = item['equip button']
-                            equip_button_rect = equip_button_surf.get_rect(midbottom=(383,565))
-                            self.screen.blit(equip_button_surf,equip_button_rect)
-
-                            equip_text = self.font.render("Equip", True, (255, 255, 255))  
-                            equip_text_rect = equip_text.get_rect(midtop=(380, 520))  
-                            self.screen.blit(equip_text, equip_text_rect)
-                        elif item['equip'] == True:
-                            unequip_button_surf = item['unequip button']
-                            unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383,565))
-                            self.screen.blit(unequip_button_surf,unequip_button_rect)
-
-                            equip_text = self.font.render("Unequip", True, (0, 0, 0))  
-                            equip_text_rect = equip_text.get_rect(midtop=(380, 520)) 
-                            self.screen.blit(equip_text, equip_text_rect)
+                if event.button == 1:  # Check if left mouse button is pressed
+                    clicked_troop(100, 200, self.warrior_button, self.warrior_frame_storage, self.warrior_attack_frame_storage, 100,
+                                  1, 1, 75, 100, 'Warrior')
+                    clicked_troop(300, 200, self.archer_button, self.archer_frame_storage, self.archer_attack_frame_storage, 200, 5,
+                                  1, 75, 100, 'Archer')
+                    clicked_troop(500, 500, self.wizard_button, self.wizard_frame_storage, self.wizard_attack_frame_storage, 250, 5,
+                                  1, 75, 100, 'Wizard')
+                    clicked_troop(700, 200, self.sparta_button, self.sparta_frame_storage, self.sparta_attack_frame_storage, 300, 3,
+                                  1, 75, 100, 'Sparta')
+                    clicked_troop(700, 200, self.giant_button, self.giant_frame_storage, self.giant_attack_frame_storage, 350, 4,
+                                  1, 30, 200, 'Giant')
+
+            if event.type == self.ninja_timer:
+                if len(self.enemy_on_court) <= 20:
+                    new_ninja = None
+                    ninja_chosen = choice(self.ninja_choice)
+                    if ninja_chosen == "naruto":
+                        new_ninja = Ninja(ninja_chosen, self.naruto_frame_storage, self.naruto_attack_frame_storage, 100, 1, 2,
+                                          self.background_image.get_width())
+                    elif ninja_chosen == "sasuke":
+                        new_ninja = Ninja(ninja_chosen, self.sasuke_frame_storage, self.sasuke_attack_frame_storage, 50, 1, 3,
+                                          self.background_image.get_width())
+                    elif ninja_chosen == "kakashi":
+                        new_ninja = Ninja(ninja_chosen, self.kakashi_frame_storage, self.kakashi_attack_frame_storage, 75, 2, 2,
+                                          self.background_image.get_width())
+                    self.enemy_on_court.append(new_ninja)
+                else:
+                    print('wont be more than 20')
+
+            if self.chosen_spell is None and event.type == pygame.MOUSEBUTTONDOWN:
+                if self.healing_spell_rect.collidepoint(event.pos):
+                    self.chosen_spell = 'healing'
+                elif self.rage_spell_rect.collidepoint(event.pos):
+                    self.chosen_spell = 'rage'
+                elif self.freeze_spell_rect.collidepoint(event.pos):
+                    self.chosen_spell = 'freeze'
+
+            if self.chosen_spell is not None and event.type == pygame.MOUSEMOTION:
+                # card follow the mouse poss
+                if self.chosen_spell == 'healing':
+                    self.healing_spell_rect.move_ip(event.rel)
+                elif self.chosen_spell == 'rage':
+                    self.rage_spell_rect.move_ip(event.rel)
+                elif self.chosen_spell == 'freeze':
+                    self.freeze_spell_rect.move_ip(event.rel)
+
+            if event.type == pygame.MOUSEBUTTONUP and self.chosen_spell is not None:
+                # can add check condition can release spell or not
+                if self.chosen_spell == 'healing':
+                    for troop in self.troop_on_court:
+                        troop.health_increase()
+                    if not self.healing_spell_rect.center == self.healing_initial_position:
+                        self.healing_spell_rect.center = self.healing_initial_position  # Snap back to initial position
+                if self.chosen_spell == 'rage':
+                    for troop in self.troop_on_court:
+                        troop.speed_increase()
+                    if not self.rage_spell_rect.center == self.rage_initial_position:
+                        self.rage_spell_rect.center = self.rage_initial_position  # Snap back to initial position
+                if self.chosen_spell == 'freeze':
+                    for ninja in self.enemy_on_court:
+                        ninja.ninja_speed_decrease()
+                    if not self.freeze_spell_rect.center == self.freeze_initial_position:
+                        self.freeze_spell_rect.center = self.freeze_initial_position  # Snap back to initial position
+                self.chosen_spell = None
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
+            self.bg_x += self.scroll_speed
+        elif keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+            self.bg_x -= self.scroll_speed
+
+        self.bg_x = max(self.bg_x, 1000 - self.background_image.get_width())
+        self.bg_x = min(self.bg_x, 0)
+
+        current_time = pygame.time.get_ticks()
+        if current_time - self.gold_time >= self.gold_interval:
+            self.num_gold += 3
+            self.gold_time = current_time
+
+        if current_time - self.diamond_time >= self.diamond_interval:
+            self.num_diamond += 2
+            self.diamond_time = current_time
+
+        for troop in self.troop_on_court:
+            if self.check_collision(troop, self.right_rect_castle):
+                get_damage = troop.attack_damage
+                self.health_bar_enemy.update_health(get_damage)  # Update castle health
+                troop.attack(self.bg_x)
+
+        for ninja in self.enemy_on_court:
+            if self.ninja_collision(ninja, self.left_rect_castle):
+                self.health_bar_user.update_health(ninja.attack)  # Update castle health
+                ninja.ninja_attack()
+
+        for ninja in self.enemy_on_court:
+            for troop in self.troop_on_court:
+                if troop.troop_name == "Archer" or troop.troop_name == "Wizard":
+                    if self.far_range_collide(troop, ninja):
+                        troop.attack(self.bg_x)
+                        if troop.health <= 0:
+                            self.troop_on_court.remove(troop)
+                    if self.both_collide(troop, ninja):
+                        ninja.ninja_attack()
+                        troop.take_damage(ninja.attack)
+
+                        if ninja.ninja_health <= 0:
+                            self.enemy_on_court.remove(ninja)
+                else:
+                    if self.both_collide(troop, ninja):
+                        troop.attack(self.bg_x)
+                        troop.take_damage(ninja.attack)
+                        if troop.health <= 0:
+                            self.troop_on_court.remove(troop)
+                    if self.both_collide(troop, ninja):
+                        ninja.ninja_attack()
+                        ninja.ninja_take_damage(troop.attack_damage)
+                        if ninja.ninja_health <= 0:
+                            self.enemy_on_court.remove(ninja)
+
+    def max_troop(self, button_name):
+        if button_name == self.warrior_button:
+            button_name.insufficient_currency = True
+            button_name.lack_currency(self.screen)
+        elif button_name == self.archer_button:
+            button_name.insufficient_currency = True
+            button_name.lack_currency(self.screen)
+        elif button_name == self.wizard_button:
+            button_name.insufficient_currency = True
+            button_name.lack_currency(self.screen)
+        elif button_name == self.sparta_button:
+            button_name.insufficient_currency = True
+            button_name.lack_currency(self.screen)
+        elif button_name == self.giant_button:
+            button_name.insufficient_currency = True
+            button_name.lack_currency(self.screen)
+
+    @staticmethod
+    def check_collision(troop, rect):
+        troop_rect = pygame.Rect(troop.coordinate_x, 0, troop.troop_width, troop.troop_height)  # for right castle
+        return troop_rect.colliderect(rect)
+
+    @staticmethod
+    def both_collide(troop, ninja):
+        troop_rect = pygame.Rect(troop.coordinate_x, 0, troop.troop_width, troop.troop_height)
+        ninja_rect = pygame.Rect(ninja.ninja_coordinate_x, 0, 75, 100)  # for attack each other
+        return troop_rect.colliderect(ninja_rect)
+
+    @staticmethod
+    def far_range_collide(troop, ninja):
+        troop_rect = pygame.Rect(troop.coordinate_x, 0, troop.troop_width + 400, troop.troop_height)
+        ninja_rect = pygame.Rect(ninja.ninja_coordinate_x, 0, 75, 100)  # for attack each other
+        return troop_rect.colliderect(ninja_rect)
+
+    @staticmethod
+    def ninja_collision(ninja, rect):
+        ninja_rect = pygame.Rect(ninja.ninja_coordinate_x, 0, 75, 100)  # for left castle
+        return ninja_rect.colliderect(rect)
+
+    def check_game_over(self):
+        if self.health_bar_user.current_health <= 0:
+            self.game_over = True
+            self.winner = "Enemy"
+        elif self.health_bar_enemy.current_health <= 0:
+            self.game_over = True
+            self.winner = "User"
 
     def game_start(self):
-        if self.store:
-            self.screen.blit(self.background_surf, (0, 0))
-            self.screen.blit(self.topic_word_surf, self.topic_word_rect) 
+        # Clear screen
+        self.screen.fill((255, 255, 255))
 
-            self.screen.blit(self.refresh_button_surf, self.refresh_button_rect)
-            self.screen.blit(self.backpack_image_surf,self.backpack_image_rect)
-            self.screen.blit(self.money_image_surf,self.money_image_rect)
-            self.num_money_surf = self.font.render(str(self.num_money), True, 'Black')
-            self.screen.blit(self.num_money_surf,self.num_money_rect)
+        # Draw rectangles on both sides of the scrolling background
+        left_rect_castle = pygame.Rect(self.bg_x, 90, 170, 390)
+        right_rect_castle = pygame.Rect(self.bg_x + self.background_image.get_width() - 170, 90, 170, 390)
+        pygame.draw.rect(self.screen, (0, 255, 0), left_rect_castle)
+        pygame.draw.rect(self.screen, (255, 0, 0), right_rect_castle)
 
-            for index, item in enumerate(self.current_item):
-                if item['locked'] and index <len(self.x_coords):
-                    card_image = item['image']
-                    card_rect = card_image.get_rect(center=(self.x_coords[index], self.y_coords[index]))
-                    self.screen.blit(card_image, card_rect)
+        # background
+        self.screen.blit(self.background_image, (self.bg_x, 0))
 
-                    text=self.font.render(f"{item['name'].capitalize()}", True, 'Red')
-                    text_rect = text.get_rect(center=(self.x_coords[index], self.y_coords[index] -50))
-                    self.screen.blit(text,text_rect)
+        self.health_bar_user.draw(self.screen)
+        self.health_bar_enemy.draw(self.screen)
 
-                    button_background_surf = item['button']
-                    button_background_rect = button_background_surf.get_rect(center=(self.x_coords[index], self.y_coords[index]+45))
-                    self.screen.blit(button_background_surf,button_background_rect)
+        # box for spell
+        self.screen.blit(self.box_surf, self.box_rect)
+        self.screen.blit(self.healing_spell_surf, self.healing_spell_rect)
+        self.screen.blit(self.freeze_spell_surf, self.freeze_spell_rect)
+        self.screen.blit(self.rage_spell_surf, self.rage_spell_rect)
 
-                    money_image_surf = item['money']
-                    money_image_rect = money_image_surf.get_rect(center=(self.x_coords[index] +20, self.y_coords[index] +45))
-                    self.screen.blit(money_image_surf,money_image_rect)
+        # gold icon
+        self.screen.blit(self.pic_gold_surf, self.pic_gold_rect)
+        self.num_gold_surf = self.num_gold_font.render(str(self.num_gold), True, 'Black')
+        self.screen.blit(self.num_gold_surf, self.num_gold_rect)
 
-                    price_text_surf = self.price_font.render(str(item['price']), True, 'Black')
-                    price_text_rect = price_text_surf.get_rect(center=(self.x_coords[index] -7, self.y_coords[index] +46))
-                    self.screen.blit(price_text_surf,price_text_rect)
+        # diamond icon
+        self.screen.blit(self.pic_diamond_surf, self.pic_diamond_rect)
+        self.num_diamond_surf = self.num_diamond_font.render(str(self.num_diamond), True, 'Black')
+        self.screen.blit(self.num_diamond_surf, self.num_diamond_rect)
 
-        elif self.backpack:
-            self.backpack_screen()
+        # button draw
+        self.warrior_button.draw(self.screen)
+        self.archer_button.draw(self.screen)
+        self.wizard_button.draw(self.screen)
+        self.sparta_button.draw(self.screen)
+        self.giant_button.draw(self.screen)
+
+        self.check_game_over()
+        if self.game_over:
+            self.screen.fill((0, 0, 0))
+            font = pygame.font.Font(None, 68)
+            if self.winner == "User":
+                text = font.render("You've won!", True, (255, 255, 255))
+            else:
+                text = font.render("You've lost!", True, (255, 255, 255))
+            text_rect = text.get_rect(center=(500, 300))
+            self.screen.blit(text, text_rect)
+            return  # End the game
+
+        for troop in self.troop_on_court:
+            troop.spawn_troop(self.screen, self.bg_x)
+            troop.update()
+            for bullet in troop.bullet_on_court:
+                self.screen.blit(bullet[0], bullet[1])
+
+        for enemy in self.enemy_on_court:
+            enemy.spawn_ninja(self.screen, self.bg_x)
+            enemy.update_ninja()
 
     def run(self):
         while True:
-            self.screen.fill((255, 255, 255))
-
-            self.event_handling()
             self.game_start()
+            self.event_handling()
 
-            pygame.display.update()
-            self.clock.tick(60)
+            pygame.display.update()  # Update the display
+            self.clock.tick(60)  # Limit frame rate to 60 FPS
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     Game().run()
