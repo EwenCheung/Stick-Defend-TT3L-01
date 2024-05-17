@@ -1,6 +1,8 @@
 # coding: utf-8
 
 import pygame
+from pygame.locals import *
+from Home import *
 from sys import exit
 from random import randint, choice
 
