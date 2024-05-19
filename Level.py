@@ -10,28 +10,49 @@ class GameLevel:
         pygame.display.set_caption('Choose Level')
 
         self.wood_plank_surface = pygame.image.load('Plant vs Stick/Picture/utils/wood.png').convert()
-        self.wood_plank_surface = pygame.transform.scale(self.wood_plank_surface, (140, 50))
+        self.wood_plank_surface = pygame.transform.scale(self.wood_plank_surface, (100, 120))
+        self.wood_plank_surface_back_and_store = pygame.transform.scale(self.wood_plank_surface, (90,50))
+        self.level_bg = pygame.image.load('War of stick/Picture/utils/choose level.png')
 
 
     def choose_level(self):
-        wood_plank_rectangle = self.wood_plank_surface.get_rect(center=(350, 430))
-        self.screen.blit(self.wood_plank_surface, wood_plank_rectangle)
-        back_choose_game = pygame.font.Font(None, 40).render('Back to Choose Game', True, (255, 255, 255))
-        self.back_choose_game_rect = back_choose_game.get_rect(center=(350, 430))
-        self.screen.blit(back_choose_game,self.back_choose_game_rect)
+        self.wood_plank_rectangle_back = self.wood_plank_surface.get_rect(center=(115, 100))
+        self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
 
-        wood_plank_rectangle = self.wood_plank_surface.get_rect(center=(650, 430))
-        self.screen.blit(self.wood_plank_surface, wood_plank_rectangle)
-        store = pygame.font.Font(None, 40).render("Store", True, (255, 255, 255))
-        self.store_rect = store.get_rect(center=(650, 430))
-        self.screen.blit(store, self.store_rect)
+        self.wood_plank_rectangle_store = self.wood_plank_surface.get_rect(center=(890, 100))
+        self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
 
-        wood_plank_rectangle = self.wood_plank_surface.get_rect(center=(500, 200))
-        self.screen.blit(self.wood_plank_surface, wood_plank_rectangle)
-        level_1= pygame.font.Font(None, 40).render("level 1", True, (255, 255, 255))
-        self.level_1_rect = level_1.get_rect(center=(500, 200))
-        self.screen.blit(level_1, self.level_1_rect)
+        self.wood_plank_rectangle_one = self.wood_plank_surface.get_rect(center=(180, 230))
+        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
 
+        self.wood_plank_rectangle_two = self.wood_plank_surface.get_rect(center=(335, 230))
+        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_two)
+
+        self.wood_plank_rectangle_three = self.wood_plank_surface.get_rect(center=(495, 230))
+        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_three)
+
+        self.wood_plank_rectangle_four = self.wood_plank_surface.get_rect(center=(650, 230))
+        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_four)
+
+        self.wood_plank_rectangle_five = self.wood_plank_surface.get_rect(center=(805, 230))
+        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_five)
+
+        self.wood_plank_rectangle_six = self.wood_plank_surface.get_rect(center=(180, 410))
+        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_six)
+
+        self.wood_plank_rectangle_seven = self.wood_plank_surface.get_rect(center=(335, 410))
+        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_seven)
+
+        self.wood_plank_rectangle_eight = self.wood_plank_surface.get_rect(center=(495, 410))
+        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_eight)
+
+        self.wood_plank_rectangle_nine = self.wood_plank_surface.get_rect(center=(650, 410))
+        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_nine)
+
+        self.wood_plank_rectangle_ten = self.wood_plank_surface.get_rect(center=(805, 410))
+        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_ten)
+
+        self.screen.blit(self.level_bg, (0, 0))
 
     def event_handling(self):
         for event in pygame.event.get():
@@ -39,12 +60,31 @@ class GameLevel:
                 pygame.quit()
                 exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if self.store_rect.collidepoint(pygame.mouse.get_pos()):
+                if self.wood_plank_rectangle_store.collidepoint(pygame.mouse.get_pos()):
                     self.go_store_py()
-                elif self.back_choose_game_rect.collidepoint(pygame.mouse.get_pos()):
+                elif self.wood_plank_rectangle_back.collidepoint(pygame.mouse.get_pos()):
                     self.go_home_py()
-                elif self.level_1_rect.collidepoint(pygame.mouse.get_pos()):
+                elif self.wood_plank_rectangle_one.collidepoint(pygame.mouse.get_pos()):
                     self.go_stick_war_py()
+                elif self.wood_plank_rectangle_two.collidepoint(pygame.mouse.get_pos()):
+                    self.go_stick_war_py()
+                elif self.wood_plank_rectangle_three.collidepoint(pygame.mouse.get_pos()):
+                    self.go_stick_war_py()
+                elif self.wood_plank_rectangle_four.collidepoint(pygame.mouse.get_pos()):
+                    self.go_stick_war_py()
+                elif self.wood_plank_rectangle_five.collidepoint(pygame.mouse.get_pos()):
+                    self.go_stick_war_py()
+                elif self.wood_plank_rectangle_six.collidepoint(pygame.mouse.get_pos()):
+                    self.go_stick_war_py()
+                elif self.wood_plank_rectangle_seven.collidepoint(pygame.mouse.get_pos()):
+                    self.go_stick_war_py()
+                elif self.wood_plank_rectangle_eight.collidepoint(pygame.mouse.get_pos()):
+                    self.go_stick_war_py()
+                elif self.wood_plank_rectangle_nine.collidepoint(pygame.mouse.get_pos()):
+                    self.go_stick_war_py()
+                elif self.wood_plank_rectangle_ten.collidepoint(pygame.mouse.get_pos()):
+                    self.go_stick_war_py()
+
 
     def go_store_py(self):
         store_module = importlib.import_module("Store")

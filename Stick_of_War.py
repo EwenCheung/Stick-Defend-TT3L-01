@@ -303,17 +303,32 @@ class GameStickOfWar:
         self.box_surf = pygame.transform.scale(self.box, (600, 80))
         self.box_rect = self.box_surf.get_rect(center=(300, 550))
 
+        # healing
         self.healing_spell = pygame.image.load('War of stick/Picture/spell/healing_spell.png')
         self.healing_spell_surf = pygame.transform.scale(self.healing_spell, (70, 70))
         self.healing_spell_rect = self.healing_spell_surf.get_rect(center=self.healing_initial_position)
+        # healing cooldown
+        self.healing_dim_spell = pygame.image.load('War of stick/Picture/spell/healing_dim_spell.png')
+        self.healing_dim_spell_surf = pygame.transform.scale(self.healing_dim_spell, (70, 70))
+        self.healing_dim_spell_rect = self.healing_dim_spell_surf.get_rect(center=self.healing_initial_position)
 
+        # freeze
         self.freeze_spell = pygame.image.load('War of stick/Picture/spell/freeze_spell.png')
         self.freeze_spell_surf = pygame.transform.scale(self.freeze_spell, (70, 70))
         self.freeze_spell_rect = self.freeze_spell_surf.get_rect(center=self.freeze_initial_position)
+        # freeze cooldown
+        self.freeze_dim_spell = pygame.image.load('War of stick/Picture/spell/freeze_dim_spell.png')
+        self.freeze_dim_spell_surf = pygame.transform.scale(self.freeze_dim_spell, (70, 70))
+        self.freeze_dim_spell_rect = self.freeze_dim_spell_surf.get_rect(center=self.freeze_initial_position)
 
+        # rage 
         self.rage_spell = pygame.image.load('War of stick/Picture/spell/rage_spell.png')
         self.rage_spell_surf = pygame.transform.scale(self.rage_spell, (70, 70))
         self.rage_spell_rect = self.rage_spell_surf.get_rect(center=self.rage_initial_position)
+        # rage cooldown
+        self.rage_dim_spell = pygame.image.load('War of stick/Picture/spell/rage_dim_spell.png')
+        self.rage_dim_spell_surf = pygame.transform.scale(self.rage_dim_spell, (70, 70))
+        self.rage_dim_spell_rect = self.rage_dim_spell_surf.get_rect(center=self.rage_initial_position)
 
         # Gold assets
         self.pic_gold = pygame.image.load('War of stick/Picture/utils/gold.png').convert_alpha()
@@ -562,9 +577,10 @@ class GameStickOfWar:
                 if self.chosen_spell == 'healing':
                     for troop in self.troop_on_court:
                         troop.health += 500
-                        pygame.time.set_timer(self.ninja_timer, self.spawn_time)
+                        pygame.time.set_timer(self.ninja_timer, self.spawn_time)                        
                     if not self.healing_spell_rect.center == self.healing_initial_position:
                         self.healing_spell_rect.center = self.healing_initial_position  # Snap back to initial position
+                        self.spell_cooldown(self.chosen_spell)
                 if self.chosen_spell == 'rage':
                     for troop in self.troop_on_court:
                         troop.speed *= 1.3
@@ -575,6 +591,7 @@ class GameStickOfWar:
                         pygame.time.set_timer(self.rage_timer, rage_time)
                     if not self.rage_spell_rect.center == self.rage_initial_position:
                         self.rage_spell_rect.center = self.rage_initial_position  # Snap back to initial position
+                        self.spell_cooldown(self.chosen_spell)
                 if self.chosen_spell == 'freeze':
                     for ninja in self.enemy_on_court:
                         ninja.ninja_speed *= 0.7
@@ -584,6 +601,7 @@ class GameStickOfWar:
                         pygame.time.set_timer(self.freeze_timer, freeze_time)
                     if not self.freeze_spell_rect.center == self.freeze_initial_position:
                         self.freeze_spell_rect.center = self.freeze_initial_position  # Snap back to initial position
+                        self.spell_cooldown(self.chosen_spell)
                 self.chosen_spell = None
 
                 if self.freezing and event.type == self.freeze_timer:
@@ -682,6 +700,17 @@ class GameStickOfWar:
             button_name.insufficient_currency = True
             button_name.lack_currency(self.screen)
 
+    def spell_cooldown(self, chosen_spell):
+        if self.healing_spell_rect.center == self.healing_initial_position:
+            if chosen_spell == 'healing':
+                self.screen.blit(self.healing_dim_spell_surf, self.healing_dim_spell_rect)
+        if self.rage_spell_rect.center == self.rage_initial_position:
+            if chosen_spell == 'rage':
+                self.screen.blit(self.rage_dim_spell_surf, self.rage_dim_spell_rect)
+        if self.freeze_spell_rect.center == self.freeze_initial_position:
+            if chosen_spell == 'freeze':
+                self.screen.blit(self.freeze_dim_spell_surf, self.freeze_dim_spell_rect)
+        
     @staticmethod
     def check_collision(troop, rect):
         troop_rect = pygame.Rect(troop.coordinate_x, 0, troop.troop_width, troop.troop_height)  # for right castle
