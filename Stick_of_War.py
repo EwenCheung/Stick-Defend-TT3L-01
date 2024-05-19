@@ -8,7 +8,7 @@ pygame.font.init()
 
 
 class TroopButton:
-    def __init__(self, image, image_dim, flash, size, position, price, cooldown_time):
+    def __init__(self, image, image_dim, flash, size, position, price, cooldown_time, gold_cost, diamond_cost):
         self.size = size
         self.position = position
         self.image = image
@@ -19,16 +19,16 @@ class TroopButton:
         self.flash = pygame.transform.scale(self.flash, self.size)
         self.price = price
         self.cooldown_time = cooldown_time
+        self.gold_cost = gold_cost
+        self.diamond_cost = diamond_cost
         self.rect = self.image.get_rect(center=self.position)
         self.clicked = False
-        self.cooldown_flag = False
         self.coordinate_x = 0
         self.last_clicked_time = 0
         self.remaining_cooldown = 0
         self.insufficient_currency = False
         self.flash_timer = 0
         self.flash_duration = 3000
-        self.flash_toggle = False
 
     def render_name(self, screen):
         font = pygame.font.Font(None, 15)
@@ -44,27 +44,43 @@ class TroopButton:
             screen.blit(text, text_rect)
             y_offset += 8
 
-    def draw(self, screen):
-        if self.clicked and not self.insufficient_currency:
-            self.cooldown_flag = True
-            current_time = pygame.time.get_ticks()
-            self.remaining_cooldown = max(0, self.cooldown_time - (current_time - self.last_clicked_time)) // 1000
-            cooldown_font = pygame.font.Font(None, 70)
-            cooldown_text = cooldown_font.render(f"{self.remaining_cooldown}", True, (255, 255, 255))
-            cooldown_text_rect = cooldown_text.get_rect(center=(self.position[0], self.position[1]))
-            screen.blit(self.image_dim, self.rect)
-            screen.blit(cooldown_text, cooldown_text_rect)
-
-        if self.insufficient_currency and self.flash_toggle:    
-            if self.flash_timer <= self.flash_duration:
+    def draw(self, screen):            
+        if self.clicked:
+            if not self.insufficient_currency:
+                current_time = pygame.time.get_ticks()
+                self.remaining_cooldown = max(0, self.cooldown_time - (current_time - self.last_clicked_time)) // 1000
+                cooldown_font = pygame.font.Font(None, 70)
+                cooldown_text = cooldown_font.render(f"{self.remaining_cooldown}", True, (255, 255, 255))
+                cooldown_text_rect = cooldown_text.get_rect(center=(self.position[0], self.position[1]))
+                screen.blit(self.image_dim, self.rect)
+                screen.blit(cooldown_text, cooldown_text_rect)
+            if self.insufficient_currency:
                 screen.blit(self.flash, self.rect)
-                self.flash_timer += 15
-            else:
-                self.flash_timer = 0
-                self.insufficient_currency = False
-                self.clicked = False
-                self.cooldown_flag = False
+        else:
+            screen.blit(self.image, self.rect)
 
+        # if self.insufficient_currency:    
+        #     if self.flash_timer <= self.flash_duration:
+        #         screen.blit(self.flash, self.rect)
+        #         self.flash_timer += 15
+        #     else:
+        #         self.flash_timer = 0
+        #         self.insufficient_currency = False
+        #         self.clicked = False
+# 2
+        # if self.clicked and self.insufficient_currency:
+        #     screen.blit(self.flash, self.rect)  
+        #     if self.clicked and not self.insufficient_currency:
+        #         screen.blit(self.image, self.rect)
+        #         self.clicked = False       
+
+# 3     
+        # if self.insufficient_currency:              
+        #     screen.blit(self.flash, self.rect)  
+        # else:
+        #     if not self.clicked:
+        #         screen.blit(self.image, self.rect)
+                                                           
         if self.remaining_cooldown == 0 and not self.insufficient_currency:
             screen.blit(self.image, self.rect)
             self.clicked = False
@@ -82,11 +98,7 @@ class TroopButton:
         return False
 
     def lack_currency(self, screen):
-        if self.insufficient_currency:
-            self.draw(screen)
-            screen.blit(self.flash, self.rect)
-            self.clicked = False
-            self.cooldown_flag = False
+        self.draw(screen)
 
 class Troop:
     def __init__(self, game_instance, frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height, troop_name):
@@ -343,7 +355,7 @@ class GameStickOfWar:
         self.warrior_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/sword_dim.png')
         self.warrior_button_flash = pygame.image.load('War of stick/Picture/button_flash/warrior_flash.png')
         self.warrior_button = TroopButton(self.warrior_button_image, self.warrior_button_dim_image, self.warrior_button_flash,
-                                          (100, 100), (100, 70), '100n200', 3000)
+                                          (100, 100), (100, 70), '100n200', 3000, 100, 200)
 
         # Troop Two
         # Archer walk
@@ -361,7 +373,7 @@ class GameStickOfWar:
         self.archer_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/archer_dim.png')
         self.archer_button_flash = pygame.image.load('War of stick/Picture/button_flash/archer_flash.png')
         self.archer_button = TroopButton(self.archer_button_image, self.archer_button_dim_image, self.archer_button_flash,
-                                         (100, 100), (200, 70), '300n200', 3000)
+                                         (100, 100), (200, 70), '300n200', 3000, 300, 200)
 
         # Troop Three
         # Wizard walk
@@ -394,7 +406,7 @@ class GameStickOfWar:
         self.wizard_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/wizard_dim.png')
         self.wizard_button_flash = pygame.image.load('War of stick/Picture/button_flash/wizard_flash.png')
         self.wizard_button = TroopButton(self.wizard_button_image, self.wizard_button_dim_image, self.wizard_button_flash,
-                                         (100, 100), (300, 70), '500n500', 3000)
+                                         (100, 100), (300, 70), '500n500', 3000, 500, 500)
         # Troop Four
         # Sparta run
         self.sparta_all_image = [
@@ -424,7 +436,7 @@ class GameStickOfWar:
         self.sparta_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/sparta_dim.png')
         self.sparta_button_flash = pygame.image.load('War of stick/Picture/button_flash/sparta_flash.png')
         self.sparta_button = TroopButton(self.sparta_button_image, self.sparta_button_dim_image, self.sparta_button_flash,
-                                         (100, 100), (400, 70), '700n200', 3000)
+                                         (100, 100), (400, 70), '700n200', 3000, 700, 200)
 
         # Troop Five
         # Giant Walk
@@ -448,7 +460,7 @@ class GameStickOfWar:
         self.giant_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/giant_dim.png')
         self.giant_button_flash = pygame.image.load('War of stick/Picture/button_flash/giant_flash.png')
         self.giant_button = TroopButton(self.giant_button_image, self.giant_button_dim_image, self.giant_button_flash, (100, 100),
-                                        (500, 70), '700n200', 3000)
+                                        (500, 70), '700n200', 3000, 700, 200)
 
         self.naruto_normal = [pygame.image.load('Plant vs Stick/Picture/naruto/naruto_walk_1.png').convert_alpha(),
                               pygame.image.load('Plant vs Stick/Picture/naruto/naruto_walk_2.png').convert_alpha(),
@@ -490,7 +502,6 @@ class GameStickOfWar:
                         self.troop_on_court.append(new_troop)
                     else:
                         button_name.insufficient_currency = True
-                        button_name.flash_toggle = True
                         button_name.lack_currency(self.screen)
                 else:
                     self.max_troop(button_name)
