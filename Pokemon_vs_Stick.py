@@ -165,55 +165,91 @@ class Pokemon(pygame.sprite.Sprite):
         self.update_animation_state()
 
 
-# load ninja frame
-naruto_normal = [pygame.image.load('Plant vs Stick/Picture/naruto/naruto_walk_1.png').convert_alpha(),
-                 pygame.image.load('Plant vs Stick/Picture/naruto/naruto_walk_2.png').convert_alpha(),
-                 pygame.image.load('Plant vs Stick/Picture/naruto/naruto_walk_3.png').convert_alpha()]
+#load stickman image
+stickman_warrior_image = [pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 1.png').convert_alpha(),
+                        pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 2.png').convert_alpha(),
+                        pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 3.png').convert_alpha(),
+                        pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 4.png').convert_alpha(),
+                        pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 5.png').convert_alpha()]
 
-sasuke_normal = [pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_walk_1.png').convert_alpha(),
-                 pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_walk_2.png').convert_alpha(),
-                 pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_walk_3.png').convert_alpha()]
+stickman_sparta_image = [pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 1.png').convert_alpha(),
+                        pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 2.png').convert_alpha(),
+                        pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 3.png').convert_alpha(),
+                        pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 4.png').convert_alpha(),
+                        pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 5.png').convert_alpha()]
 
-kakashi_normal = [pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_run_1.png').convert_alpha(),
-                  pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_run_2.png').convert_alpha(),
-                  pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_run_3.png').convert_alpha()]
+stickman_archer_image = [pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
+                            pygame.image.load('War of stick/Picture/stickman archer/stickman archer 2.png').convert_alpha()]
 
-# attack image
-naruto_attack = [pygame.image.load('Plant vs Stick/Picture/naruto/naruto_attack_1.png').convert_alpha(),
-                 pygame.image.load('Plant vs Stick/Picture/naruto/naruto_attack_2.png').convert_alpha()]
+stickman_wizard_image = [pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 1.png').convert_alpha(),
+                            pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 2.png').convert_alpha(),
+                            pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 3.png').convert_alpha(),
+                            pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 4.png').convert_alpha(),
+                            pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 5.png').convert_alpha()]
 
-sasuke_attack = [pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_attack_1.png').convert_alpha(),
-                 pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_attack_2.png').convert_alpha()]
+stickman_giant_image = [pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 1.png').convert_alpha(),
+                        pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 2.png').convert_alpha(),
+                        pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 3.png').convert_alpha(),
+                        pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 4.png').convert_alpha(),
+                        pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 5.png').convert_alpha()]
 
-kakashi_attack = [pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_attack_1.png').convert_alpha(),
-                  pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_attack_2.png').convert_alpha()]
+#load stickman attack image
+stickman_warrior_attack = [pygame.image.load('War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 1.png').convert_alpha(),
+                            pygame.image.load('War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 2.png').convert_alpha(),
+                            pygame.image.load('War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 3.png').convert_alpha()]
 
+stickman_archer_attack = [pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
+                            pygame.image.load('War of stick/Picture/stickman archer/stickman archer 2.png').convert_alpha()]
 
-class Ninja(pygame.sprite.Sprite):
+stickman_sparta_attack = [pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 1.png').convert_alpha(),
+                            pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 2.png').convert_alpha()]
+
+stickman_wizard_attack = [pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 1.png').convert_alpha(),
+                            pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 2.png').convert_alpha(),
+                            pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 3.png').convert_alpha()]
+
+stickman_giant_attack = [pygame.image.load('War of stick/Picture/stickman giant/stickman giant attack/stickman giant attack 1.png').convert_alpha(),
+                            pygame.image.load('War of stick/Picture/stickman giant/stickman giant attack/stickman giant attack 2.png').convert_alpha()]
+
+class Troop(pygame.sprite.Sprite):
     # load image
 
-    def __init__(self, ninja_type, all_grid_coor):
+    def __init__(self, troop_type, all_grid_coor):
         super().__init__()
 
-        self.ninja_type = ninja_type
+        self.troop_type = troop_type
         self.speed = 1  # speed cannot be lower than 0.6 , if not ninja will not spawn
         self.all_grid_coor = all_grid_coor
 
-        if ninja_type == 'naruto':
-            self.frames = [pygame.transform.scale(frame, (84, 45)) for frame in naruto_normal]
-            self.frame = [pygame.transform.scale(frame, (84, 45)) for frame in naruto_attack]
+        if troop_type == 'warrior':
+            self.frames = [pygame.transform.scale(frame, (84, 45)) for frame in stickman_warrior_image]
+            self.frame = [pygame.transform.scale(frame, (84, 45)) for frame in stickman_warrior_attack]
             self.health = 120
             self.attack = 20
             self.cooldown = 0
-        elif ninja_type == 'sasuke':
-            self.frames = [pygame.transform.scale(frame, (75, 55)) for frame in sasuke_normal]
-            self.frame = [pygame.transform.scale(frame, (75, 55)) for frame in sasuke_attack]
+        elif troop_type == 'archer':
+            self.frames = [pygame.transform.scale(frame, (75, 55)) for frame in stickman_archer_image]
+            self.frame = [pygame.transform.scale(frame, (75, 55)) for frame in stickman_archer_attack]
             self.health = 100
             self.attack = 15
             self.cooldown = 0
-        elif ninja_type == 'kakashi':
-            self.frames = [pygame.transform.scale(frame, (110, 85)) for frame in kakashi_normal]
-            self.frame = [pygame.transform.scale(frame, (110, 85)) for frame in kakashi_attack]
+        elif troop_type == 'sparta':
+            self.frames = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_sparta_image]
+            self.frame = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_sparta_attack]
+            self.speed = 2
+            self.health = 110
+            self.attack = 25
+            self.cooldown = 0
+        elif troop_type == 'wizard':
+            self.frames = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_wizard_image]
+            self.frame = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_wizard_attack]
+            self.speed = 2
+            self.health = 110
+            self.attack = 25
+            self.cooldown = 0
+        elif troop_type == 'giant':
+            self.frames = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_giant_image]
+            self.frame = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_giant_attack]
             self.speed = 2
             self.health = 110
             self.attack = 25
@@ -274,10 +310,10 @@ class Ninja(pygame.sprite.Sprite):
         else:
             self.speed = self.original_speed
 
-    def ninja_being_attack(self, damage):
+    def troop_being_attack(self, damage):
         self.health -= damage
 
-    def check_ninja_die(self):
+    def check_troop_die(self):
         if self.health <= 0:
             self.kill()
             return True
@@ -295,7 +331,7 @@ class GamePokemonVsStick:
         self.begin_time = None
 
         # Groups
-        self.ninja_groups = pygame.sprite.Group()
+        self.troop_groups = pygame.sprite.Group()
         self.pokemon_groups = pygame.sprite.Group()
 
         # reset game state for play again
@@ -306,18 +342,18 @@ class GamePokemonVsStick:
         pygame.time.set_timer(self.poke_ball_timer, 16000)
 
         # choice of ninja
-        self.ninja_choice = ['naruto', 'sasuke', 'kakashi', 'sasuke']
+        self.troop_choice = ['warrior','archer','sparta','wizard','giant']
 
     def reset_game_state(self):
         # create a background music
-        self.bg_music = pygame.mixer.Sound('Plant vs Stick/audio/bg_music.mp3')
-        self.bg_music.set_volume(0.1)
-        self.bg_music.play(loops=-1)
+        # self.bg_music = pygame.mixer.Sound('Plant vs Stick/audio/bg_music.mp3')
+        # self.bg_music.set_volume(0.1)
+        # self.bg_music.play(loops=-1)
 
         # set up Ninja timer
-        self.ninja_timer = pygame.USEREVENT + 1
+        self.troop_timer = pygame.USEREVENT + 1
         self.spawn_time = 8000
-        pygame.time.set_timer(self.ninja_timer, self.spawn_time)
+        pygame.time.set_timer(self.troop_timer, self.spawn_time)
 
         self.num_ball = 500
         self.chosen_pokemon = None
@@ -326,7 +362,7 @@ class GamePokemonVsStick:
         self.help_menu_page = None
         self.lose = False
         self.wave = 1
-        self.row_with_ninja = []
+        self.row_with_troop = []
         # center coordinate for each box
         # x = [312, 400, 486, 577, 663, 750, 838, 927]
         # y = [172, 262, 352, 442, 532]
@@ -343,7 +379,7 @@ class GamePokemonVsStick:
         ]
         self.tools = Tools()
         self.spawned_ball = Poke_Ball()
-        self.ninja_groups.empty()
+        self.troop_groups.empty()
         self.pokemon_groups.empty()
         self.set_up()  # set up surface and rectangle etc
 
@@ -431,9 +467,9 @@ class GamePokemonVsStick:
                 self.begin_time = pygame.time.get_ticks()  # this record the initial countdown and i put here coz to only program the time when user move to next page
 
             # spawned ninja
-            if event.type == self.ninja_timer and self.after_press_start:
-                spawned_ninja = Ninja((choice(self.ninja_choice)), self.grid_coor)
-                self.ninja_groups.add(spawned_ninja)
+            if event.type == self.troop_timer and self.after_press_start:
+                spawned_troop = Troop((choice(self.troop_choice)), self.grid_coor)
+                self.troop_groups.add(spawned_troop)
 
             # spawned poke_ball from sky
             if event.type == self.poke_ball_timer and self.after_press_start:
@@ -564,7 +600,7 @@ class GamePokemonVsStick:
             # wave
             if minutes >= self.wave:
                 self.spawn_time = self.spawn_time // 3
-                pygame.time.set_timer(self.ninja_timer, self.spawn_time)
+                pygame.time.set_timer(self.troop_timer, self.spawn_time)
                 self.wave = minutes + 1
 
                 self.wave_surface = pygame.font.Font(None, 50).render(f'Wave {self.wave}', True, 'White')
@@ -581,8 +617,8 @@ class GamePokemonVsStick:
             # update the frame of ninja and pokemon then draw them out
             self.pokemon_groups.draw(self.screen)
             self.pokemon_groups.update()
-            self.ninja_groups.draw(self.screen)
-            self.ninja_groups.update(self.pokemon_groups)
+            self.troop_groups.draw(self.screen)
+            self.troop_groups.update(self.pokemon_groups)
 
             # blit poke ball
             for poke_ball_rect in self.spawned_ball.poke_ball_rect_storage:
@@ -597,18 +633,18 @@ class GamePokemonVsStick:
             # 2. change pokemon mode(attacking or normal)
             # 3. bullet dissapear when collide with ninja
             for pokemon in self.pokemon_groups:
-                for ninja in self.ninja_groups:
+                for troop in self.troop_groups:
                     # if ninja appear on screen and in same row with pokemon , add ninja to list
                     # y_coor same means same row
-                    if ninja.rect.centerx < 1025 and ninja.rect.centery == pokemon.rect.centery:
-                        if ninja.rect.centery not in self.row_with_ninja:
+                    if troop.rect.centerx < 1025 and troop.rect.centery == pokemon.rect.centery:
+                        if troop.rect.centery not in self.row_with_troop:
                             # append ninja into the list if this ninja is not in the list and change mode
-                            self.row_with_ninja.append(ninja.rect.centery)
+                            self.row_with_troop.append(troop.rect.centery)
                             pokemon.change_mode('attacking')
 
-                        die = ninja.check_ninja_die()
-                        if die or ninja.rect.centerx < (pokemon.rect.centerx - 30):
-                            self.row_with_ninja.remove(ninja.rect.centery)
+                        die = troop.check_troop_die()
+                        if die or troop.rect.centerx < (pokemon.rect.centerx - 30):
+                            self.row_with_troop.remove(troop.rect.centery)
                             for pokemon in self.pokemon_groups:
                                 if pokemon.pokemon_type != 'machine':
                                     pokemon.bullet_rect_storage = []
@@ -616,17 +652,17 @@ class GamePokemonVsStick:
 
                     # bullet collide then cause damage and dissapear
                     for bullet_rect in pokemon.bullet_rect_storage:
-                        if pokemon.pokemon_type != 'machine' and bullet_rect.colliderect(ninja.rect):
+                        if pokemon.pokemon_type != 'machine' and bullet_rect.colliderect(troop.rect):
                             pokemon.bullet_rect_storage.remove(bullet_rect)
                             if pokemon.pokemon_type == 'pikachu':
-                                ninja.ninja_being_attack(25)
+                                troop.troop_being_attack(25)
                             elif pokemon.pokemon_type == 'squirtle':
-                                ninja.ninja_being_attack(18)
+                                troop.troop_being_attack(18)
                             break
 
             # move and blit bullet for pokemon in row_with_ninja
             for pokemon in self.pokemon_groups:
-                if pokemon.rect.centery in self.row_with_ninja:
+                if pokemon.rect.centery in self.row_with_troop:
                     if pokemon.pokemon_type == 'pikachu':
                         pokemon.move_bullet()
                         for bullet_rect in pokemon.bullet_rect_storage:
@@ -641,8 +677,8 @@ class GamePokemonVsStick:
                         self.screen.blit(pokemon.machine_ball_surface, bullet_rect)  # Draw the poke ball
 
             # if ninja cross over to the house then lose
-            for ninja in self.ninja_groups:
-                if ninja.rect.centerx < 250:
+            for troop in self.troop_groups:
+                if troop.rect.centerx < 250:
                     self.lose = True
                     self.after_press_start = False
 

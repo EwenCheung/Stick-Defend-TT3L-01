@@ -44,6 +44,15 @@ class Item_card():
             'War of stick/Picture/stickman giant/stickman giant walk/stickman giant walk 1.png').convert_alpha()
         self.giant_image_surf = pygame.transform.scale(self.giant_image_surf, (75, 80))
 
+        #spell card
+        self.freeze_card_image_surf = pygame.image.load('War of stick/Picture/spell/freeze_spell.png').convert_alpha()
+        self.freeze_card_image_surf = pygame.transform.scale(self.freeze_card_image_surf,(70,70))
+
+        self.healing_card_image_surf = pygame.image.load('War of stick/Picture/spell/healing_spell.png').convert_alpha()
+        self.healing_card_image_surf = pygame.transform.scale(self.healing_card_image_surf,(70,70))
+
+        self.rage_card_image_surf = pygame.image.load('War of stick/Picture/spell/rage_spell.png').convert_alpha()
+        self.rage_card_image_surf = pygame.transform.scale(self.rage_card_image_surf,(70,70))
 
 class Game_Store:
     def __init__(self):
@@ -115,6 +124,9 @@ class Game_Store:
         self.damage_image_surf = pygame.image.load('WAr of stick/Picture/store/damage.png').convert_alpha()
         self.damage_image_surf = pygame.transform.scale(self.damage_image_surf, (25, 25))
 
+        self.timer_image_surf = pygame.image.load('War of stick/Picture/store/timer.png').convert_alpha()
+        self.timer_image_surf = pygame.transform.scale(self.timer_image_surf,(25,25))
+
         # load the back button image
         self.back_button_surf = pygame.image.load('War of stick/Picture/store/back button.png').convert_alpha()
         self.back_button_surf = pygame.transform.scale(self.back_button_surf, (50, 50))
@@ -178,6 +190,12 @@ class Game_Store:
              'money': self.money_image_surf, 'price': 450},
             {'image': self.cards.giant_card_surf, 'name': 'giant', 'button': self.button_background_surf, 'locked': True,
              'money': self.money_image_surf, 'price': 550},
+            {'image': self.cards.freeze_card_image_surf, 'name': 'freeze', 'button': self.button_background_surf, 'locked': True,
+             'money': self.money_image_surf, 'price':200},
+            {'image': self.cards.healing_card_image_surf, 'name': 'healing', 'button': self.button_background_surf, 'locked': True,
+             'money': self.money_image_surf, 'price':200},
+            {'image': self.cards.rage_card_image_surf, 'name': 'rage', 'button': self.button_background_surf, 'locked': True,
+             'money': self.money_image_surf, 'price':200},
             {'image': self.blank_card_surf, 'name': 'Blank 2', 'button': self.button_background_surf, 'locked': True,
              'money': self.money_image_surf, 'price': 300},
             {'image': self.blank_card_surf, 'name': 'Blank 3', 'button': self.button_background_surf, 'locked': True,
@@ -236,6 +254,8 @@ class Game_Store:
              'unequip button': self.unequip_button_surf
              }
         ]
+
+        self.spell_list = []
         self.troop_position = [
             {
                 'warrior': (558, 290),
@@ -256,6 +276,13 @@ class Game_Store:
             }
         ]
 
+        self.spell_position = [
+            {
+                'freeze': (558,290),
+                'healing': (695,278),
+                'rage': (830,287)
+            }
+        ]
         self.castle_detail = [{
             'image': self.castle_image_surf,
             'name': 'Castle',
@@ -354,8 +381,15 @@ class Game_Store:
                                         item_copy['health'] = 1400
                                         item_copy['upgrades price'] = 180
                                         item_copy['attack damage'] = 260
+                                    elif item['name'] in ['freeze', 'healing', 'rage']:
+                                        item_copy['timer'] = self.timer_image_surf
+                                        self.spell_list.append(item_copy)
+                                        item['locked'] = False
+                                        self.store_list.pop(index)
+                                        continue
                                     else:
                                         break
+
                                     item_copy['image'] = troop_image
                                     self.backpack_troop_list.append(item_copy)
                                     item['locked'] = False
@@ -607,7 +641,13 @@ class Game_Store:
                 self.screen.blit(level_msg_surf, level_msg_rect)
 
         elif self.selected_category == 'Spell':
-            pass
+            for index, item in enumerate(self.spell_list):
+                spell_type = item['name']
+                spell_image = item['image']
+                position = self.spell_position[0].get(spell_type, (0,0))
+                spell_rect = spell_image.get_rect(center=(position))
+                self.screen.blit(spell_image,spell_rect)
+
         elif self.selected_category == 'Others':
             pass
 
