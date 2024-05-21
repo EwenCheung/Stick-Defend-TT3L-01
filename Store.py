@@ -64,9 +64,9 @@ class Game_Store:
         self.backpack = False
         self.font = pygame.font.Font(None, 30)
         self.price_font = pygame.font.Font(None, 25)
-        self.troop_font = pygame.font.Font(None, 70)
+        self.title_font = pygame.font.Font(None, 70)
         # self.selected_card = None
-        self.num_money = 500000000000
+        self.num_money = 50000
         # define the x,y coordiante for the card
         self.x_coords = ([325, 470, 610, 325, 470, 610, 325, 470, 610])
         self.y_coords = ([200, 200, 200, 336, 336, 336, 477, 477, 477])
@@ -74,6 +74,7 @@ class Game_Store:
         self.y_button_coordinate = ([218, 218, 218, 218])
         self.selected_category = 'Castle'
         self.clicked_image_surf = 'warrior'
+        self.clicked_spell_surf = 'freeze'
         self.equipped_box = []
         self.equipped_word_storage = []
         self.set_up()
@@ -125,7 +126,7 @@ class Game_Store:
         self.damage_image_surf = pygame.transform.scale(self.damage_image_surf, (25, 25))
 
         self.timer_image_surf = pygame.image.load('War of stick/Picture/store/timer.png').convert_alpha()
-        self.timer_image_surf = pygame.transform.scale(self.timer_image_surf,(25,25))
+        self.timer_image_surf = pygame.transform.scale(self.timer_image_surf,(30,30))
 
         # load the back button image
         self.back_button_surf = pygame.image.load('War of stick/Picture/store/back button.png').convert_alpha()
@@ -279,8 +280,8 @@ class Game_Store:
         self.spell_position = [
             {
                 'freeze': (558,290),
-                'healing': (695,278),
-                'rage': (830,287)
+                'healing': (695,290),
+                'rage': (830,290)
             }
         ]
         self.castle_detail = [{
@@ -382,14 +383,22 @@ class Game_Store:
                                         item_copy['upgrades price'] = 180
                                         item_copy['attack damage'] = 260
                                     elif item['name'] in ['freeze', 'healing', 'rage']:
-                                        item_copy['timer'] = self.timer_image_surf
+                                        if item['name'] == 'freeze':
+                                            item_copy['upgrades price'] = 150
+                                            item_copy['timer duration'] = 5
+                                        elif item['name'] == 'healing':
+                                            item_copy['upgrades price'] = 200
+                                            item_copy['timer duration'] = 5
+                                        elif item['name'] == 'rage':
+                                            item_copy['upgrades price'] = 250
+                                            item_copy['timer duration'] = 5
+                                        item_copy['timer icon'] = self.timer_image_surf
                                         self.spell_list.append(item_copy)
                                         item['locked'] = False
                                         self.store_list.pop(index)
                                         continue
                                     else:
                                         break
-
                                     item_copy['image'] = troop_image
                                     self.backpack_troop_list.append(item_copy)
                                     item['locked'] = False
@@ -470,7 +479,32 @@ class Game_Store:
                                     item['equip'] = False
                                 else:
                                     item['equip'] = True
+                
+                if self.backpack and self.selected_category == 'Spell':
+                    for item in self.spell_list:
+                        spell_type = item['name']
+                        spell_image = item['image']
+                        position = self.spell_position[0].get(spell_type, (0,0))
+                        spell_rect = spell_image.get_rect(center=(position))
+                        if spell_rect.collidepoint(mouse_pos):
+                            if spell_type == 'freeze':
+                                self.clicked_spell_surf = 'freeze'
+                            elif spell_type == 'healing':
+                                self.clicked_spell_surf = 'healing'
+                            elif spell_type == 'rage':
+                                self.clicked_spell_surf = 'rage'
 
+                if self.backpack and self.selected_category == 'Spell':
+                     for item in self.spell_list:
+                        if item['name'] == self.clicked_spell_surf:
+                            upgrades_button_rect = item['upgrades button'].get_rect(midbottom=(220, 565))
+                            if upgrades_button_rect.collidepoint(mouse_pos):
+                                if self.num_money>= item['upgrades price']:
+                                    self.num_money -= item['upgrades price']
+                                    item['upgrades price'] += 150
+                                    item['timer duration'] += 5
+                                    item['level'] += 1
+                                    
     def backpack_screen(self):
         self.display_detail_info()
         for item in self.backpack_troop_list:
@@ -507,6 +541,7 @@ class Game_Store:
                     equipped = [giant_equipped_surf, giant_equipped_rect]
                 self.equipped_box.append(equipped)
         self.troop_screen_blit()
+        self.spell_screen_blit()
 
     def display_detail_info(self):
         self.button()
@@ -683,7 +718,7 @@ class Game_Store:
                         warrior_troop_image_rect = warrior_troop_image_surf.get_rect(midleft=(48, 380))
                         self.screen.blit(warrior_troop_image_surf, warrior_troop_image_rect)
 
-                        troop_name_surf = self.troop_font.render(f"{str(item['name'])}", True, 'White')
+                        troop_name_surf = self.title_font.render(f"{str(item['name'])}", True, 'White')
                         troop_name_rect = troop_name_surf.get_rect(midtop=(246, 198))
                         self.screen.blit(troop_name_surf, troop_name_rect)
 
@@ -759,7 +794,7 @@ class Game_Store:
                         archer_troop_image_rect = archer_troop_image_surf.get_rect(midleft=(148, 355))
                         self.screen.blit(archer_troop_image_surf, archer_troop_image_rect)
 
-                        troop_name_surf = self.troop_font.render(f"{str(item['name'])}", True, 'White')
+                        troop_name_surf = self.title_font.render(f"{str(item['name'])}", True, 'White')
                         troop_name_rect = troop_name_surf.get_rect(midtop=(246, 198))
                         self.screen.blit(troop_name_surf, troop_name_rect)
 
@@ -835,7 +870,7 @@ class Game_Store:
                         sparta_troop_image_rect = sparta_troop_image_surf.get_rect(midleft=(80, 390))
                         self.screen.blit(sparta_troop_image_surf, sparta_troop_image_rect)
 
-                        troop_name_surf = self.troop_font.render(f"{str(item['name'])}", True, 'White')
+                        troop_name_surf = self.title_font.render(f"{str(item['name'])}", True, 'White')
                         troop_name_rect = troop_name_surf.get_rect(midtop=(246, 198))
                         self.screen.blit(troop_name_surf, troop_name_rect)
 
@@ -911,7 +946,7 @@ class Game_Store:
                         wizard_troop_image_rect = wizard_troop_image_surf.get_rect(midleft=(100, 408))
                         self.screen.blit(wizard_troop_image_surf, wizard_troop_image_rect)
 
-                        troop_name_surf = self.troop_font.render(f"{str(item['name'])}", True, 'White')
+                        troop_name_surf = self.title_font.render(f"{str(item['name'])}", True, 'White')
                         troop_name_rect = troop_name_surf.get_rect(midtop=(246, 198))
                         self.screen.blit(troop_name_surf, troop_name_rect)
 
@@ -987,7 +1022,7 @@ class Game_Store:
                         giant_troop_image_rect = giant_troop_image_surf.get_rect(midleft=(115, 380))
                         self.screen.blit(giant_troop_image_surf, giant_troop_image_rect)
 
-                        troop_name_surf = self.troop_font.render(f"{str(item['name'])}", True, 'White')
+                        troop_name_surf = self.title_font.render(f"{str(item['name'])}", True, 'White')
                         troop_name_rect = troop_name_surf.get_rect(midtop=(246, 198))
                         self.screen.blit(troop_name_surf, troop_name_rect)
 
@@ -1055,6 +1090,162 @@ class Game_Store:
                             equip_text = self.font.render("Unequip", True, (0, 0, 0))
                             equip_text_rect = equip_text.get_rect(midtop=(380, 520))
                             self.screen.blit(equip_text, equip_text_rect)
+
+    def spell_screen_blit(self):
+        if self.backpack and self.selected_category == 'Spell':
+            for item in self.spell_list:
+                if self.clicked_spell_surf =='freeze':
+                    if item['name'] == 'freeze':
+                        freeze_spell_image_surf = item['image']
+                        freeze_spell_image_surf = pygame.transform.scale(freeze_spell_image_surf, (220, 220))
+                        freeze_spell_image_rect = freeze_spell_image_surf.get_rect(midleft=(142, 375))
+                        self.screen.blit(freeze_spell_image_surf, freeze_spell_image_rect)
+                    
+                        spell_name_surf = self.title_font.render(f"{str(item['name'])}", True, 'White')
+                        spell_name_rect = spell_name_surf.get_rect(midtop=(246, 205))
+                        self.screen.blit(spell_name_surf, spell_name_rect)
+
+                        gold_icon_surf = item['gold icon']
+                        gold_icon_rect = gold_icon_surf.get_rect(midleft=(375, 293))
+                        self.screen.blit(gold_icon_surf, gold_icon_rect)
+
+                        gold_text_surf = self.font.render(str(300), True, 'White')
+                        gold_text_rect = gold_text_surf.get_rect(midleft=(406, 293))
+                        self.screen.blit(gold_text_surf, gold_text_rect)
+
+                        diamond_icon_surf = item['diamond icon']
+                        diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366, 330))
+                        self.screen.blit(diamond_icon_surf, diamond_icon_rect)
+
+                        diamond_text_surf = self.font.render(str(400), True, "White")
+                        diamond_text_rect = diamond_text_surf.get_rect(midleft=(406, 332))
+                        self.screen.blit(diamond_text_surf, diamond_text_rect)
+
+                        timer_icon_surf = item['timer icon']
+                        timer_icon_rect = timer_icon_surf.get_rect(midleft=(370, 370))
+                        self.screen.blit(timer_icon_surf,timer_icon_rect)
+
+                        timer_text_surf = self.font.render(f"{str(item['timer duration'])}s", True, "White")
+                        timer_text_rect = timer_text_surf.get_rect(midleft=(410, 371))
+                        self.screen.blit(timer_text_surf,timer_text_rect)
+
+                        upgrades_button_surf = item['upgrades button']
+                        upgrades_button_rect = upgrades_button_surf.get_rect(midbottom=(220, 565))
+                        self.screen.blit(upgrades_button_surf, upgrades_button_rect)
+
+                        level_msg_surf = self.font.render(f"Duration: Lv{str(item['level'])}", True, 'Black')
+                        level_msg_rect = level_msg_surf.get_rect(bottomleft=(155, 530))
+                        self.screen.blit(level_msg_surf, level_msg_rect)
+
+                        level_upgrades_surf = self.price_font.render(f"Upgrade {str(item['upgrades price'])}", True, 'Black')
+                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(163, 555))
+                        self.screen.blit(level_upgrades_surf, level_upgrades_rect)
+
+                        money_icon_surf = item['money']
+                        money_icon_rect = money_icon_surf.get_rect(midleft=(270, 543))
+                        self.screen.blit(money_icon_surf, money_icon_rect)
+
+                elif self.clicked_spell_surf == 'healing':
+                    if item['name'] == 'healing':
+                        healing_spell_image_surf = item['image']
+                        healing_spell_image_surf = pygame.transform.scale(healing_spell_image_surf, (220, 220))
+                        healing_spell_image_rect = healing_spell_image_surf.get_rect(midleft=(142, 375))
+                        self.screen.blit(healing_spell_image_surf, healing_spell_image_rect)
+                    
+                        spell_name_surf = self.title_font.render(f"{str(item['name'])}", True, 'White')
+                        spell_name_rect = spell_name_surf.get_rect(midtop=(246, 205))
+                        self.screen.blit(spell_name_surf, spell_name_rect)
+
+                        gold_icon_surf = item['gold icon']
+                        gold_icon_rect = gold_icon_surf.get_rect(midleft=(375, 293))
+                        self.screen.blit(gold_icon_surf, gold_icon_rect)
+
+                        gold_text_surf = self.font.render(str(300), True, 'White')
+                        gold_text_rect = gold_text_surf.get_rect(midleft=(406, 293))
+                        self.screen.blit(gold_text_surf, gold_text_rect)
+
+                        diamond_icon_surf = item['diamond icon']
+                        diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366, 330))
+                        self.screen.blit(diamond_icon_surf, diamond_icon_rect)
+
+                        diamond_text_surf = self.font.render(str(400), True, "White")
+                        diamond_text_rect = diamond_text_surf.get_rect(midleft=(406, 332))
+                        self.screen.blit(diamond_text_surf, diamond_text_rect)
+
+                        timer_icon_surf = item['timer icon']
+                        timer_icon_rect = timer_icon_surf.get_rect(midleft=(370, 370))
+                        self.screen.blit(timer_icon_surf,timer_icon_rect)
+
+                        timer_text_surf = self.font.render(f"{str(item['timer duration'])}s", True, "White")
+                        timer_text_rect = timer_text_surf.get_rect(midleft=(410, 371))
+                        self.screen.blit(timer_text_surf,timer_text_rect)
+
+                        upgrades_button_surf = item['upgrades button']
+                        upgrades_button_rect = upgrades_button_surf.get_rect(midbottom=(220, 565))
+                        self.screen.blit(upgrades_button_surf, upgrades_button_rect)
+
+                        level_msg_surf = self.font.render(f"Duration: Lv{str(item['level'])}", True, 'Black')
+                        level_msg_rect = level_msg_surf.get_rect(bottomleft=(155, 530))
+                        self.screen.blit(level_msg_surf, level_msg_rect)
+
+                        level_upgrades_surf = self.price_font.render(f"Upgrade {str(item['upgrades price'])}", True, 'Black')
+                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(163, 555))
+                        self.screen.blit(level_upgrades_surf, level_upgrades_rect)
+
+                        money_icon_surf = item['money']
+                        money_icon_rect = money_icon_surf.get_rect(midleft=(270, 543))
+                        self.screen.blit(money_icon_surf, money_icon_rect)
+
+                elif self.clicked_spell_surf == 'rage':
+                    if item['name'] == 'rage':
+                        rage_spell_image_surf = item['image']
+                        rage_spell_image_surf = pygame.transform.scale(rage_spell_image_surf, (220, 220))
+                        rage_spell_image_rect = rage_spell_image_surf.get_rect(midleft=(142, 375))
+                        self.screen.blit(rage_spell_image_surf, rage_spell_image_rect)
+                    
+                        spell_name_surf = self.title_font.render(f"{str(item['name'])}", True, 'White')
+                        spell_name_rect = spell_name_surf.get_rect(midtop=(246, 205))
+                        self.screen.blit(spell_name_surf, spell_name_rect)
+
+                        gold_icon_surf = item['gold icon']
+                        gold_icon_rect = gold_icon_surf.get_rect(midleft=(375, 293))
+                        self.screen.blit(gold_icon_surf, gold_icon_rect)
+
+                        gold_text_surf = self.font.render(str(300), True, 'White')
+                        gold_text_rect = gold_text_surf.get_rect(midleft=(406, 293))
+                        self.screen.blit(gold_text_surf, gold_text_rect)
+
+                        diamond_icon_surf = item['diamond icon']
+                        diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366, 330))
+                        self.screen.blit(diamond_icon_surf, diamond_icon_rect)
+
+                        diamond_text_surf = self.font.render(str(400), True, "White")
+                        diamond_text_rect = diamond_text_surf.get_rect(midleft=(406, 332))
+                        self.screen.blit(diamond_text_surf, diamond_text_rect)
+
+                        timer_icon_surf = item['timer icon']
+                        timer_icon_rect = timer_icon_surf.get_rect(midleft=(370, 370))
+                        self.screen.blit(timer_icon_surf,timer_icon_rect)
+
+                        timer_text_surf = self.font.render(f"{str(item['timer duration'])}s", True, "White")
+                        timer_text_rect = timer_text_surf.get_rect(midleft=(410, 371))
+                        self.screen.blit(timer_text_surf,timer_text_rect)
+
+                        upgrades_button_surf = item['upgrades button']
+                        upgrades_button_rect = upgrades_button_surf.get_rect(midbottom=(220, 565))
+                        self.screen.blit(upgrades_button_surf, upgrades_button_rect)
+
+                        level_msg_surf = self.font.render(f"Duration: Lv{str(item['level'])}", True, 'Black')
+                        level_msg_rect = level_msg_surf.get_rect(bottomleft=(155, 530))
+                        self.screen.blit(level_msg_surf, level_msg_rect)
+
+                        level_upgrades_surf = self.price_font.render(f"Upgrade {str(item['upgrades price'])}", True, 'Black')
+                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(163, 555))
+                        self.screen.blit(level_upgrades_surf, level_upgrades_rect)
+
+                        money_icon_surf = item['money']
+                        money_icon_rect = money_icon_surf.get_rect(midleft=(270, 543))
+                        self.screen.blit(money_icon_surf, money_icon_rect)
 
     def game_start(self):
         if self.store:

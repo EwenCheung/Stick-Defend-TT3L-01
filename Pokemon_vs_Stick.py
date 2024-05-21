@@ -166,50 +166,50 @@ class Pokemon(pygame.sprite.Sprite):
 
 
 #load stickman image
-stickman_warrior_image = [pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 1.png').convert_alpha(),
-                        pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 2.png').convert_alpha(),
-                        pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 3.png').convert_alpha(),
-                        pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 4.png').convert_alpha(),
-                        pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 5.png').convert_alpha()]
+stickman_warrior_image = [pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword run/stickman sword run 1.png').convert_alpha(),
+                        pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword run/stickman sword run 2.png').convert_alpha(),
+                        pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword run/stickman sword run 3.png').convert_alpha(),
+                        pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword run/stickman sword run 4.png').convert_alpha(),
+                        pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword run/stickman sword run 5.png').convert_alpha()]
 
-stickman_sparta_image = [pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 1.png').convert_alpha(),
-                        pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 2.png').convert_alpha(),
-                        pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 3.png').convert_alpha(),
-                        pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 4.png').convert_alpha(),
-                        pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 5.png').convert_alpha()]
+stickman_sparta_image = [pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 1.png').convert_alpha(),
+                        pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 2.png').convert_alpha(),
+                        pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 3.png').convert_alpha(),
+                        pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 4.png').convert_alpha(),
+                        pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 5.png').convert_alpha()]
 
-stickman_archer_image = [pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
-                            pygame.image.load('War of stick/Picture/stickman archer/stickman archer 2.png').convert_alpha()]
+stickman_archer_image = [pygame.image.load('Plant vs Stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
+                            pygame.image.load('Plant vs Stick/Picture/stickman archer/stickman archer 2.png').convert_alpha()]
 
-stickman_wizard_image = [pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 1.png').convert_alpha(),
-                            pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 2.png').convert_alpha(),
-                            pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 3.png').convert_alpha(),
-                            pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 4.png').convert_alpha(),
-                            pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 5.png').convert_alpha()]
+stickman_wizard_image = [pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 1.png').convert_alpha(),
+                            pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 2.png').convert_alpha(),
+                            pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 3.png').convert_alpha(),
+                            pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 4.png').convert_alpha(),
+                            pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 5.png').convert_alpha()]
 
-stickman_giant_image = [pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 1.png').convert_alpha(),
-                        pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 2.png').convert_alpha(),
-                        pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 3.png').convert_alpha(),
-                        pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 4.png').convert_alpha(),
-                        pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 5.png').convert_alpha()]
+stickman_giant_image = [pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 1.png').convert_alpha(),
+                        pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 2.png').convert_alpha(),
+                        pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 3.png').convert_alpha(),
+                        pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 4.png').convert_alpha(),
+                        pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 5.png').convert_alpha()]
 
 #load stickman attack image
-stickman_warrior_attack = [pygame.image.load('War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 1.png').convert_alpha(),
-                            pygame.image.load('War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 2.png').convert_alpha(),
-                            pygame.image.load('War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 3.png').convert_alpha()]
+stickman_warrior_attack = [pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword attack/stickman sword attack 1.png').convert_alpha(),
+                            pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword attack/stickman sword attack 2.png').convert_alpha(),
+                            pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword attack/stickman sword attack 3.png').convert_alpha()]
 
-stickman_archer_attack = [pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
-                            pygame.image.load('War of stick/Picture/stickman archer/stickman archer 2.png').convert_alpha()]
+stickman_archer_attack = [pygame.image.load('Plant vs Stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
+                            pygame.image.load('Plant vs Stick/Picture/stickman archer/stickman archer 2.png').convert_alpha()]
 
-stickman_sparta_attack = [pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 1.png').convert_alpha(),
-                            pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 2.png').convert_alpha()]
+stickman_sparta_attack = [pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 1.png').convert_alpha(),
+                            pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 2.png').convert_alpha()]
 
-stickman_wizard_attack = [pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 1.png').convert_alpha(),
-                            pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 2.png').convert_alpha(),
-                            pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 3.png').convert_alpha()]
+stickman_wizard_attack = [pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 1.png').convert_alpha(),
+                            pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 2.png').convert_alpha(),
+                            pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 3.png').convert_alpha()]
 
-stickman_giant_attack = [pygame.image.load('War of stick/Picture/stickman giant/stickman giant attack/stickman giant attack 1.png').convert_alpha(),
-                            pygame.image.load('War of stick/Picture/stickman giant/stickman giant attack/stickman giant attack 2.png').convert_alpha()]
+stickman_giant_attack = [pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant attack/stickman giant attack 1.png').convert_alpha(),
+                            pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant attack/stickman giant attack 2.png').convert_alpha()]
 
 class Troop(pygame.sprite.Sprite):
     # load image
@@ -346,9 +346,9 @@ class GamePokemonVsStick:
 
     def reset_game_state(self):
         # create a background music
-        # self.bg_music = pygame.mixer.Sound('Plant vs Stick/audio/bg_music.mp3')
-        # self.bg_music.set_volume(0.1)
-        # self.bg_music.play(loops=-1)
+        self.bg_music = pygame.mixer.Sound('Plant vs Stick/audio/bg_music.mp3')
+        self.bg_music.set_volume(0.1)
+        self.bg_music.play(loops=-1)
 
         # set up Ninja timer
         self.troop_timer = pygame.USEREVENT + 1
