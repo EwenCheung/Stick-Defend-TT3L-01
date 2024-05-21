@@ -279,8 +279,8 @@ class GameStickOfWar:
         self.screen = pygame.display.set_mode((1000, 600))
         self.bg_x = 0
         self.scroll_speed = 10
-        self.num_gold = 300
-        self.num_diamond = 400
+        self.num_gold = 30000
+        self.num_diamond = 40000
         self.gold_time = pygame.time.get_ticks()
         self.diamond_time = pygame.time.get_ticks()
         self.gold_interval = 100
@@ -585,8 +585,9 @@ class GameStickOfWar:
                 # can add check condition can release spell or not
                 if self.chosen_spell == 'healing':
                     for troop in self.troop_on_court:
-                        troop.health += 500
-                        pygame.time.set_timer(self.ninja_timer, self.spawn_time)                        
+                        troop.health += 500 
+                        pygame.time.set_timer(self.ninja_timer, self.spawn_time)    
+                        self.num_diamond -= 500                  
                     if not self.healing_spell_rect.center == self.healing_initial_position:
                         self.healing_spell_rect.center = self.healing_initial_position  # Snap back to initial position
                         self.spell_cooldown(self.chosen_spell)
@@ -596,8 +597,9 @@ class GameStickOfWar:
                         troop.attack_damage *= 1.3
                         self.rage_timer = pygame.USEREVENT + 2
                         rage_time = 10000
-                        self.raging = True
+                        self.raging = True  
                         pygame.time.set_timer(self.rage_timer, rage_time)
+                        self.num_diamond -= 500 
                     if not self.rage_spell_rect.center == self.rage_initial_position:
                         self.rage_spell_rect.center = self.rage_initial_position  # Snap back to initial position
                         self.spell_cooldown(self.chosen_spell)
@@ -606,8 +608,9 @@ class GameStickOfWar:
                         ninja.ninja_speed *= 0.7
                         self.freeze_timer = pygame.USEREVENT + 3
                         freeze_time = 10000
-                        self.freezing = True
+                        self.freezing = True  
                         pygame.time.set_timer(self.freeze_timer, freeze_time)
+                        self.num_diamond -= 500 
                     if not self.freeze_spell_rect.center == self.freeze_initial_position:
                         self.freeze_spell_rect.center = self.freeze_initial_position  # Snap back to initial position
                         self.spell_cooldown(self.chosen_spell)
