@@ -218,39 +218,40 @@ class Troop(pygame.sprite.Sprite):
         super().__init__()
 
         self.troop_type = troop_type
-        self.speed = 1  # speed cannot be lower than 0.6 , if not ninja will not spawn
         self.all_grid_coor = all_grid_coor
 
         if troop_type == 'warrior':
             self.frames = [pygame.transform.scale(frame, (84, 45)) for frame in stickman_warrior_image]
             self.frame = [pygame.transform.scale(frame, (84, 45)) for frame in stickman_warrior_attack]
+            self.speed = 1
             self.health = 120
             self.attack = 20
             self.cooldown = 0
         elif troop_type == 'archer':
             self.frames = [pygame.transform.scale(frame, (75, 55)) for frame in stickman_archer_image]
             self.frame = [pygame.transform.scale(frame, (75, 55)) for frame in stickman_archer_attack]
+            self.speed = 1
             self.health = 100
             self.attack = 15
             self.cooldown = 0
         elif troop_type == 'sparta':
             self.frames = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_sparta_image]
             self.frame = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_sparta_attack]
-            self.speed = 2
+            self.speed = 1
             self.health = 110
             self.attack = 25
             self.cooldown = 0
         elif troop_type == 'wizard':
             self.frames = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_wizard_image]
             self.frame = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_wizard_attack]
-            self.speed = 2
+            self.speed = 1
             self.health = 110
             self.attack = 25
             self.cooldown = 0
         elif troop_type == 'giant':
             self.frames = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_giant_image]
             self.frame = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_giant_attack]
-            self.speed = 2
+            self.speed = 1
             self.health = 110
             self.attack = 25
             self.cooldown = 0
