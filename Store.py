@@ -504,7 +504,14 @@ class Game_Store:
                                     item['upgrades price'] += 150
                                     item['timer duration'] += 5
                                     item['level'] += 1
-                                    
+
+                            equip_button_rect = item['equip button'].get_rect(midbottom=(383, 565))
+                            if equip_button_rect.collidepoint(mouse_pos):
+                                if item['equip']:
+                                    item['equip'] = False
+                                else:
+                                    item['equip'] = True
+                
     def backpack_screen(self):
         self.display_detail_info()
         for item in self.backpack_troop_list:
@@ -540,6 +547,30 @@ class Game_Store:
                     self.screen.blit(giant_equipped_surf, giant_equipped_rect)
                     equipped = [giant_equipped_surf, giant_equipped_rect]
                 self.equipped_box.append(equipped)
+        
+        for item in self.spell_list :
+            if item['equip'] == True:
+                if item['name'] == 'freeze':
+                    freeze_equipped_surf = self.cards.freeze_card_image_surf
+                    freeze_equipped_surf = pygame.transform.scale(freeze_equipped_surf,(55,55))
+                    freeze_equipped_rect = freeze_equipped_surf.get_rect(topleft=(290, 130))
+                    self.screen.blit(freeze_equipped_surf, freeze_equipped_rect)
+                    equipped = [freeze_equipped_surf, freeze_equipped_rect]
+                    
+                if item['name'] == 'healing':
+                    healing_equipped_surf = self.cards.healing_card_image_surf
+                    healing_equipped_surf = pygame.transform.scale(healing_equipped_surf,(55,55))
+                    healing_equipped_rect = healing_equipped_surf.get_rect(topleft=(375, 130))
+                    self.screen.blit(healing_equipped_surf, healing_equipped_rect)
+                    equipped = [healing_equipped_surf, healing_equipped_rect]
+
+                elif item['name'] == 'rage':
+                    rage_equipped_surf = self.cards.rage_card_image_surf
+                    rage_equipped_surf = pygame.transform.scale(rage_equipped_surf,(55,55))
+                    rage_equipped_rect = rage_equipped_surf.get_rect(topleft=(473, 130))
+                    self.screen.blit(rage_equipped_surf, rage_equipped_rect)
+                    equipped = [rage_equipped_surf, rage_equipped_rect]
+
         self.troop_screen_blit()
         self.spell_screen_blit()
 
@@ -1094,6 +1125,20 @@ class Game_Store:
     def spell_screen_blit(self):
         if self.backpack and self.selected_category == 'Spell':
             for item in self.spell_list:
+                if item['equip'] == True:
+                    if item['name'] == 'freeze':
+                        equipped_text = self.price_font.render("Equipped", True, (255, 255, 255))
+                        equipped_text_rect = equipped_text.get_rect(midtop=(557, 330))
+                        self.screen.blit(equipped_text, equipped_text_rect)
+                    elif item['name'] == 'healing':
+                        equipped_text = self.price_font.render("Equipped", True, (255, 255, 255))
+                        equipped_text_rect = equipped_text.get_rect(midtop=(695, 330))
+                        self.screen.blit(equipped_text, equipped_text_rect)
+                    elif item['name'] == 'rage':
+                        equipped_text = self.price_font.render("Equipped", True, (255, 255, 255))
+                        equipped_text_rect = equipped_text.get_rect(midtop=(829, 330))
+                        self.screen.blit(equipped_text, equipped_text_rect)
+
                 if self.clicked_spell_surf =='freeze':
                     if item['name'] == 'freeze':
                         freeze_spell_image_surf = item['image']
@@ -1144,6 +1189,23 @@ class Game_Store:
                         money_icon_surf = item['money']
                         money_icon_rect = money_icon_surf.get_rect(midleft=(270, 543))
                         self.screen.blit(money_icon_surf, money_icon_rect)
+
+                        if item['equip'] == False:
+                            equip_button_surf = item['equip button']
+                            equip_button_rect = equip_button_surf.get_rect(midbottom=(383, 565))
+                            self.screen.blit(equip_button_surf, equip_button_rect)
+
+                            equip_text = self.font.render("Equip", True, (255, 255, 255))
+                            equip_text_rect = equip_text.get_rect(midtop=(380, 520))
+                            self.screen.blit(equip_text, equip_text_rect)
+                        elif item['equip'] == True:
+                            unequip_button_surf = item['unequip button']
+                            unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383, 565))
+                            self.screen.blit(unequip_button_surf, unequip_button_rect)
+
+                            equip_text = self.font.render("Unequip", True, (0, 0, 0))
+                            equip_text_rect = equip_text.get_rect(midtop=(380, 520))
+                            self.screen.blit(equip_text, equip_text_rect)
 
                 elif self.clicked_spell_surf == 'healing':
                     if item['name'] == 'healing':
@@ -1196,6 +1258,23 @@ class Game_Store:
                         money_icon_rect = money_icon_surf.get_rect(midleft=(270, 543))
                         self.screen.blit(money_icon_surf, money_icon_rect)
 
+                        if item['equip'] == False:
+                            equip_button_surf = item['equip button']
+                            equip_button_rect = equip_button_surf.get_rect(midbottom=(383, 565))
+                            self.screen.blit(equip_button_surf, equip_button_rect)
+
+                            equip_text = self.font.render("Equip", True, (255, 255, 255))
+                            equip_text_rect = equip_text.get_rect(midtop=(380, 520))
+                            self.screen.blit(equip_text, equip_text_rect)
+                        elif item['equip'] == True:
+                            unequip_button_surf = item['unequip button']
+                            unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383, 565))
+                            self.screen.blit(unequip_button_surf, unequip_button_rect)
+
+                            equip_text = self.font.render("Unequip", True, (0, 0, 0))
+                            equip_text_rect = equip_text.get_rect(midtop=(380, 520))
+                            self.screen.blit(equip_text, equip_text_rect)
+
                 elif self.clicked_spell_surf == 'rage':
                     if item['name'] == 'rage':
                         rage_spell_image_surf = item['image']
@@ -1246,6 +1325,23 @@ class Game_Store:
                         money_icon_surf = item['money']
                         money_icon_rect = money_icon_surf.get_rect(midleft=(270, 543))
                         self.screen.blit(money_icon_surf, money_icon_rect)
+
+                        if item['equip'] == False:
+                            equip_button_surf = item['equip button']
+                            equip_button_rect = equip_button_surf.get_rect(midbottom=(383, 565))
+                            self.screen.blit(equip_button_surf, equip_button_rect)
+
+                            equip_text = self.font.render("Equip", True, (255, 255, 255))
+                            equip_text_rect = equip_text.get_rect(midtop=(380, 520))
+                            self.screen.blit(equip_text, equip_text_rect)
+                        elif item['equip'] == True:
+                            unequip_button_surf = item['unequip button']
+                            unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383, 565))
+                            self.screen.blit(unequip_button_surf, unequip_button_rect)
+
+                            equip_text = self.font.render("Unequip", True, (0, 0, 0))
+                            equip_text_rect = equip_text.get_rect(midtop=(380, 520))
+                            self.screen.blit(equip_text, equip_text_rect)
 
     def game_start(self):
         if self.store:
