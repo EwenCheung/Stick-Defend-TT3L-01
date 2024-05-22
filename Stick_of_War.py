@@ -46,36 +46,40 @@ class TroopButton:
             screen.blit(text, text_rect)
             y_offset += 8
 
-    def draw(self, screen):   
+    def draw(self, screen):
         if self.game.num_gold < self.gold_cost or self.game.num_diamond < self.diamond_cost:
             self.insufficient_currency = True
         else:
             self.insufficient_currency = False
 
-        if self.insufficient_currency or len(self.game.troop_on_court)>5:
-            screen.blit(self.flash, self.rect)    
-            self.red = True   
+        if self.insufficient_currency or len(self.game.troop_on_court) > 5:
+
+            if self.clicked:
+                screen.blit(self.flash, self.rect)
+                self.testing(screen)
+            if self.remaining_cooldown == 0:
+                screen.blit(self.flash, self.rect)
+                self.clicked = False
+            self.red = True
 
         elif not self.insufficient_currency:
-            
             if self.clicked:
                 screen.blit(self.image_dim, self.rect)
+                self.testing(screen)
             if self.remaining_cooldown == 0:
                 screen.blit(self.image, self.rect)
                 self.clicked = False
             self.red = False
-        
-        if self.clicked:
-            current_time = pygame.time.get_ticks()
-            self.remaining_cooldown = max(0, self.cooldown_time - (current_time - self.last_clicked_time)) // 1000
-            cooldown_font = pygame.font.Font(None, 70)
-            cooldown_text = cooldown_font.render(f"{self.remaining_cooldown}", True, (255, 255, 255))
-            cooldown_text_rect = cooldown_text.get_rect(center=(self.position[0], self.position[1]))
-            screen.blit(cooldown_text, cooldown_text_rect)
-
-            
 
         self.render_name(screen)
+
+    def testing(self,screen):
+        current_time = pygame.time.get_ticks()
+        self.remaining_cooldown = max(0, self.cooldown_time - (current_time - self.last_clicked_time)) // 1000
+        cooldown_font = pygame.font.Font(None, 70)
+        cooldown_text = cooldown_font.render(f"{self.remaining_cooldown}", True, (255, 255, 255))
+        cooldown_text_rect = cooldown_text.get_rect(center=(self.position[0], self.position[1]))
+        screen.blit(cooldown_text, cooldown_text_rect)
 
     def is_clicked(self, mouse_pos):
         current_time = pygame.time.get_ticks()
@@ -86,7 +90,7 @@ class TroopButton:
                 return True
         return False
 
-        # if self.insufficient_currency:    
+        # if self.insufficient_currency:
         #     if self.flash_timer <= self.flash_duration:
         #         screen.blit(self.flash, self.rect)
         #         self.flash_timer += 15
@@ -94,27 +98,26 @@ class TroopButton:
         #         self.flash_timer = 0
         #         self.insufficient_currency = False
         #         self.clicked = False
+
+
 # 2
-        # if self.clicked and self.insufficient_currency:
-        #     screen.blit(self.flash, self.rect)  
-        #     if self.clicked and not self.insufficient_currency:
-        #         screen.blit(self.image, self.rect)
-        #         self.clicked = False       
+# if self.clicked and self.insufficient_currency:
+#     screen.blit(self.flash, self.rect)
+#     if self.clicked and not self.insufficient_currency:
+#         screen.blit(self.image, self.rect)
+#         self.clicked = False
 
-# 3     
-        # if self.insufficient_currency:              
-        #     screen.blit(self.flash, self.rect)  
-        # else:
-        #     if not self.clicked:
-        #         screen.blit(self.image, self.rect)
-                                                           
-        
-
-
+# 3
+# if self.insufficient_currency:
+#     screen.blit(self.flash, self.rect)
+# else:
+#     if not self.clicked:
+#         screen.blit(self.image, self.rect)
 
 
 class Troop:
-    def __init__(self, game_instance, frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height, troop_name):
+    def __init__(self, game_instance, frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height,
+                 troop_name):
         self.previous_coor = 0
         self.coordinate_x = 0
         self.animation_index = 0
@@ -194,7 +197,8 @@ class Troop:
                     self.bullet_on_court.remove(bullet)
                     ninja.ninja_health -= self.attack_damage
                     break
-            if bullet[1].x >= self.game.right_rect_castle.x - 350:
+            if bullet[1].x >= self.game.right_rect_castle.x:
+                self.game.health_bar_enemy.update_health(self.attack_damage)  # Update castle health
                 self.bullet_on_court.remove(bullet)
 
     def take_damage(self, damage):
@@ -334,7 +338,7 @@ class GameStickOfWar:
         self.freeze_dim_spell_surf = pygame.transform.scale(self.freeze_dim_spell, (70, 70))
         self.freeze_dim_spell_rect = self.freeze_dim_spell_surf.get_rect(center=self.freeze_initial_position)
 
-        # rage 
+        # rage
         self.rage_spell = pygame.image.load('War of stick/Picture/spell/rage_spell.png')
         self.rage_spell_surf = pygame.transform.scale(self.rage_spell, (70, 70))
         self.rage_spell_rect = self.rage_spell_surf.get_rect(center=self.rage_initial_position)
@@ -487,7 +491,8 @@ class GameStickOfWar:
         self.giant_button_image = pygame.image.load('War of stick/Picture/button/giant_button.png').convert_alpha()
         self.giant_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/giant_dim.png')
         self.giant_button_flash = pygame.image.load('War of stick/Picture/button_flash/giant_flash.png')
-        self.giant_button = TroopButton(self, self.giant_button_image, self.giant_button_dim_image, self.giant_button_flash, (100, 100),
+        self.giant_button = TroopButton(self, self.giant_button_image, self.giant_button_dim_image, self.giant_button_flash,
+                                        (100, 100),
                                         (500, 70), '700n200', 3000, 700, 200)
 
         self.naruto_normal = [pygame.image.load('Plant vs Stick/Picture/naruto/naruto_walk_1.png').convert_alpha(),
@@ -519,15 +524,14 @@ class GameStickOfWar:
                           speed, troop_width, troop_height, troop_name):
             mouse_pos = pygame.mouse.get_pos()  # Check if the left mouse button was clicked and handle accordingly
 
-            
             if button_name.is_clicked(mouse_pos):
-            
+
                 if self.num_gold >= gold_cost and self.num_diamond >= diamond_cost:
                     self.num_gold -= gold_cost
                     self.num_diamond -= diamond_cost
                     new_troop = Troop(self, frame_storage, attack_frame_storage, health, attack_damage, speed,
-                                        troop_width,
-                                        troop_height, troop_name)
+                                      troop_width,
+                                      troop_height, troop_name)
                     self.troop_on_court.append(new_troop)
 
         for event in pygame.event.get():
@@ -585,9 +589,9 @@ class GameStickOfWar:
                 # can add check condition can release spell or not
                 if self.chosen_spell == 'healing':
                     for troop in self.troop_on_court:
-                        troop.health += 500 
-                        pygame.time.set_timer(self.ninja_timer, self.spawn_time)    
-                        self.num_diamond -= 500                  
+                        troop.health += 500
+                        pygame.time.set_timer(self.ninja_timer, self.spawn_time)
+                        self.num_diamond -= 500
                     if not self.healing_spell_rect.center == self.healing_initial_position:
                         self.healing_spell_rect.center = self.healing_initial_position  # Snap back to initial position
                         self.spell_cooldown(self.chosen_spell)
@@ -597,9 +601,9 @@ class GameStickOfWar:
                         troop.attack_damage *= 1.3
                         self.rage_timer = pygame.USEREVENT + 2
                         rage_time = 10000
-                        self.raging = True  
+                        self.raging = True
                         pygame.time.set_timer(self.rage_timer, rage_time)
-                        self.num_diamond -= 500 
+                        self.num_diamond -= 500
                     if not self.rage_spell_rect.center == self.rage_initial_position:
                         self.rage_spell_rect.center = self.rage_initial_position  # Snap back to initial position
                         self.spell_cooldown(self.chosen_spell)
@@ -608,9 +612,9 @@ class GameStickOfWar:
                         ninja.ninja_speed *= 0.7
                         self.freeze_timer = pygame.USEREVENT + 3
                         freeze_time = 10000
-                        self.freezing = True  
+                        self.freezing = True
                         pygame.time.set_timer(self.freeze_timer, freeze_time)
-                        self.num_diamond -= 500 
+                        self.num_diamond -= 500
                     if not self.freeze_spell_rect.center == self.freeze_initial_position:
                         self.freeze_spell_rect.center = self.freeze_initial_position  # Snap back to initial position
                         self.spell_cooldown(self.chosen_spell)
@@ -650,7 +654,6 @@ class GameStickOfWar:
             if troop.troop_name == "Archer" or troop.troop_name == "Wizard":
                 # troop attack tower
                 if self.check_far_collision(troop, self.right_rect_castle):
-                    self.health_bar_enemy.update_health(troop.attack_damage)  # Update castle health
                     troop.attack(self.bg_x)
                     troop.move_bullet(self.bg_x)
                 else:
@@ -695,7 +698,6 @@ class GameStickOfWar:
                             self.troop_on_court.remove(troop)
                         break
 
-
     def spell_cooldown(self, chosen_spell):
         if self.healing_spell_rect.center == self.healing_initial_position:
             if chosen_spell == 'healing':
@@ -706,7 +708,7 @@ class GameStickOfWar:
         if self.freeze_spell_rect.center == self.freeze_initial_position:
             if chosen_spell == 'freeze':
                 self.screen.blit(self.freeze_dim_spell_surf, self.freeze_dim_spell_rect)
-        
+
     @staticmethod
     def check_collision(troop, rect):
         troop_rect = pygame.Rect(troop.coordinate_x, 0, troop.troop_width, troop.troop_height)  # for right castle
