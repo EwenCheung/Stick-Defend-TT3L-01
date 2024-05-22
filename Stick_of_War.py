@@ -83,7 +83,7 @@ class TroopButton:
 
     def is_clicked(self, mouse_pos):
         current_time = pygame.time.get_ticks()
-        if current_time - self.last_clicked_time >= self.cooldown_time or self.red:
+        if current_time - self.last_clicked_time >= self.cooldown_time and not self.red:
             if self.rect.collidepoint(mouse_pos):
                 self.clicked = True
                 self.last_clicked_time = current_time
