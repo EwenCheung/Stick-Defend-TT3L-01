@@ -277,6 +277,7 @@ class GameStickOfWar:
         self.game_over = False
         self.winner = None
         self.chosen_spell = None
+        self.spell_animation = False
 
         # set up Ninja timer
         self.ninja_timer = pygame.USEREVENT + 1
@@ -302,31 +303,25 @@ class GameStickOfWar:
         self.healing_spell = pygame.image.load('War of stick/Picture/spell/healing_spell.png')
         self.healing_spell_surf = pygame.transform.scale(self.healing_spell, (70, 70))
         self.healing_spell_rect = self.healing_spell_surf.get_rect(center=self.healing_initial_position)
-        for troop in self.troop_on_court:
-            # healing animation
-            self.healing_spell_animation = pygame.image.load('War of stick/Picture/spell/healing_animation.png')
-            self.healing_spell_animation_surf = pygame.transform.scale(self.healing_spell_animation, (100, 110))
-            self.healing_spell_animation_rect = self.healing_spell_animation_surf.get_rect(center=(troop.rect))
+        # healing animation
+        self.healing_spell_animation = pygame.image.load('War of stick/Picture/spell/healing_animation.png')
+        self.healing_spell_animation_surf = pygame.transform.scale(self.healing_spell_animation, (100, 110))
 
         # freeze
         self.freeze_spell = pygame.image.load('War of stick/Picture/spell/freeze_spell.png')
         self.freeze_spell_surf = pygame.transform.scale(self.freeze_spell, (70, 70))
         self.freeze_spell_rect = self.freeze_spell_surf.get_rect(center=self.freeze_initial_position)
-        for troop in self.troop_on_court:
-            # rage animation
-            self.freeze_spell_animation = pygame.image.load('War of stick/Picture/spell/freeze_animation.png')
-            self.freeze_spell_animation_surf = pygame.transform.scale(self.freeze_spell_animation, (100, 110))
-            self.freeze_spell_animation_rect = self.freeze_spell_animation_surf.get_rect(center=(troop.rect))
+        # rage animation
+        self.freeze_spell_animation = pygame.image.load('War of stick/Picture/spell/freeze_animation.png')
+        self.freeze_spell_animation_surf = pygame.transform.scale(self.freeze_spell_animation, (100, 110))
 
         # rage
         self.rage_spell = pygame.image.load('War of stick/Picture/spell/rage_spell.png')
         self.rage_spell_surf = pygame.transform.scale(self.rage_spell, (70, 70))
         self.rage_spell_rect = self.rage_spell_surf.get_rect(center=self.rage_initial_position)
-        for troop in self.troop_on_court:
-            # rage animation
-            self.rage_spell_animation = pygame.image.load('War of stick/Picture/spell/rage_animation.png')
-            self.rage_spell_animation_surf = pygame.transform.scale(self.rage_spell_animation, (100, 110))
-            self.rage_spell_animation_rect = self.rage_spell_animation_surf.get_rect(center=(troop.rect))      
+        # rage animation
+        self.rage_spell_animation = pygame.image.load('War of stick/Picture/spell/rage_animation.png')
+        self.rage_spell_animation_surf = pygame.transform.scale(self.rage_spell_animation, (100, 110))     
 
         # Gold assets
         self.pic_gold = pygame.image.load('War of stick/Picture/utils/gold.png').convert_alpha()
@@ -571,8 +566,8 @@ class GameStickOfWar:
                 if self.chosen_spell == 'healing':
                     if self.num_diamond >= 500:
                         self.num_diamond -= 500
-                        self.screen.blit(self.healing_spell_animation_surf, self.healing_spell_animation_rect)
                         for troop in self.troop_on_court:
+                            self.spell_animation = True
                             troop.health += 500
                             pygame.time.set_timer(self.ninja_timer, self.spawn_time)
                     if not self.healing_spell_rect.center == self.healing_initial_position:
@@ -580,8 +575,8 @@ class GameStickOfWar:
                 if self.chosen_spell == 'rage':
                     if self.num_diamond >= 500:
                         self.num_diamond -= 500
-                        self.screen.blit(self.rage_spell_animation_surf, self.rage_spell_animation_rect)
                         for troop in self.troop_on_court:
+                            self.spell_animation = True
                             troop.speed *= 1.3
                             troop.attack_damage *= 1.3
                             self.rage_timer = pygame.USEREVENT + 2
@@ -593,8 +588,8 @@ class GameStickOfWar:
                 if self.chosen_spell == 'freeze':
                     if self.num_diamond >= 500:
                         self.num_diamond -= 500
-                        self.screen.blit(self.freeze_spell_animation_surf, self.freeze_spell_animation_rect)
                         for ninja in self.enemy_on_court:
+                            self.spell_animation = True
                             ninja.ninja_speed *= 0.7
                             self.freeze_timer = pygame.USEREVENT + 3
                             freeze_time = 10000
@@ -769,12 +764,20 @@ class GameStickOfWar:
             return  # End the game
 
         for troop in self.troop_on_court:
+            if self.spell_animation:
+                if self.chosen_spell == 'healing':
+                    self.screen.blit(self.healing_spell_animation_surf, troop.rect)
+                elif self.chosen_spell == 'rage':
+                    self.screen.blit(self.rage_spell_animation_surf, troop.rect)
             troop.spawn_troop(self.screen, self.bg_x)
             troop.update()
             for bullet in troop.bullet_on_court:
                 self.screen.blit(bullet[0], bullet[1])
 
         for enemy in self.enemy_on_court:
+            if self.spell_animation:
+                if self.chosen_spell == 'freeze':
+                    self.screen.blit(self.freeze_spell_animation_surf, enemy.rect)
             enemy.spawn_ninja(self.screen, self.bg_x)
             enemy.update_ninja()
 
