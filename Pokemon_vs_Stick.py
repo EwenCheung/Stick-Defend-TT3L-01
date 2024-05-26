@@ -3,6 +3,7 @@
 import pygame
 from sys import exit
 from random import randint, choice
+import importlib
 
 
 # game start from here
@@ -347,9 +348,9 @@ class GamePokemonVsStick:
 
     def reset_game_state(self):
         # create a background music
-        self.bg_music = pygame.mixer.Sound('Plant vs Stick/audio/bg_music.mp3')
-        self.bg_music.set_volume(0.1)
-        self.bg_music.play(loops=-1)
+        # self.bg_music = pygame.mixer.Sound('Plant vs Stick/audio/bg_music.mp3')
+        # self.bg_music.set_volume(0.1)
+        # self.bg_music.play(loops=-1)
 
         # set up Ninja timer
         self.troop_timer = pygame.USEREVENT + 1
@@ -441,6 +442,19 @@ class GamePokemonVsStick:
         self.time = None
         self.timer = pygame.font.Font(None, 36).render(None, True, (255, 255, 255))
         self.timer_rectangle = self.timer.get_rect(center=(890, 35))
+
+        self.back_background_size = (250,55)
+        self.back_background_surf = pygame.surface.Surface(self.back_background_size)
+        self.back_background_surf.fill((14,25,45))
+        self.back_background_rect = self.back_background_surf.get_rect(center=(254,40))
+
+        self.back_button_surf = pygame.image.load('War of stick/Picture/Store/back_to_level.png').convert_alpha()
+        self.back_button_surf = pygame.transform.scale(self.back_button_surf,(75,75))
+        self.back_button_rect = self.back_button_surf.get_rect(center=(155,40))
+
+        self.back_word_surf = pygame.font.Font(None,42)
+        self.back_word_surf = self.back_word_surf.render('Back to Home', True, "Green")
+        self.back_word_rect = self.back_word_surf.get_rect(center=(270,40))
 
     def event_handling(self):
         # Event handling
@@ -569,6 +583,18 @@ class GamePokemonVsStick:
                     self.after_press_start = True
                     self.before_press_start = False
                     self.begin_time = pygame.time.get_ticks()
+            
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+
+                if self.back_background_rect.collidepoint(mouse_pos):
+                    self.go_home_py()
+    
+    def go_home_py(self):
+        home_module = importlib.import_module("Home")
+        home_select = home_module.GameHome()
+        home_select.run()
+        exit()
 
     def game_start(self):
         if self.before_press_start:  # main menu page
@@ -576,6 +602,9 @@ class GamePokemonVsStick:
             self.screen.blit(self.welcome_surface, (0, 0))
             self.screen.blit(self.username_surface, self.username_rectangle)
             self.screen.blit(self.h_surface, self.h_rectangle)
+            self.screen.blit(self.back_background_surf,self.back_background_rect)
+            self.screen.blit(self.back_button_surf,self.back_button_rect)
+            self.screen.blit(self.back_word_surf,self.back_word_rect)
 
         if self.help_menu_page:
             self.screen.fill((255, 255, 255))
