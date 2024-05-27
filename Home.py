@@ -1,7 +1,7 @@
 import pygame
 from sys import exit
 import importlib
-
+from Firebase import firebase
 pygame.init()
 
 
@@ -118,4 +118,6 @@ class GameHome:
 
 
 if __name__ == '__main__':
+    firebase.run()
+
     GameHome().run()

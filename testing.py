@@ -14,8 +14,8 @@ firebaseConfig = {"apiKey": "AIzaSyBLS9T81kZgfIPhwHVykobtrh_Axu9Cvwg",
 firebase = pyrebase.initialize_app(firebaseConfig)
 
 db = firebase.database()
-# auth = firebase.auth()
-# storage = firebase.storage()
+auth = firebase.auth()
+storage = firebase.storage()
 
 # Authentication
 # login

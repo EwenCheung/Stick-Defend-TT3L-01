@@ -1,6 +1,7 @@
 import pygame
 from sys import exit
 import random
+from Firebase import firebase
 
 pygame.init()
 

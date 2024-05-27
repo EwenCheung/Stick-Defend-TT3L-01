@@ -1,7 +1,11 @@
 import pygame
 from sys import exit
 import importlib
+from Firebase import firebase
+
+
 pygame.init()
+
 
 class GameLevel:
     def __init__(self):

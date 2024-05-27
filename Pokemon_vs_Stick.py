@@ -3,6 +3,8 @@
 import pygame
 from sys import exit
 from random import randint, choice
+from Firebase import firebase
+
 
 
 # game start from here
@@ -394,7 +396,7 @@ class GamePokemonVsStick:
         self.start_adventure_rect = self.start_adventure_surface.get_rect(topleft=(510, 70))
 
         username_font = pygame.font.Font(None, 30)
-        self.username_surface = username_font.render("logged_in_user", True, 'Green')
+        self.username_surface = username_font.render(firebase.username, True, 'Green')
         self.username_rectangle = self.username_surface.get_rect(center=(257, 90))
 
         press_h_font = pygame.font.Font(None, 35)
