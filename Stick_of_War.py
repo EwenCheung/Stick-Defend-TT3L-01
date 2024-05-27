@@ -726,7 +726,7 @@ class GameStickOfWar:
         return troop_rect.colliderect(rect)
 
     @staticmethod
-    def both_collide(troop, ninja):
+    def both_collide(troop, ninja): 
         troop_rect = pygame.Rect(troop.coordinate_x, 0, troop.troop_width, troop.troop_height)
         ninja_rect = pygame.Rect(ninja.ninja_coordinate_x, 0, 75, 100)  # for attack each other
         return troop_rect.colliderect(ninja_rect)

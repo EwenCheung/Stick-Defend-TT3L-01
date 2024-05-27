@@ -1,4 +1,5 @@
 def create_user(username, stage_level, money, troop_storage, spell_storage, castle_storage, other_storage):
+
     """
     example of troop storage:
     {'warrior': [(boolean - unlocked?), (integer - level_of_troop)],
@@ -20,6 +21,7 @@ def create_user(username, stage_level, money, troop_storage, spell_storage, cast
 username = "Ewen"
 stage_level = 5
 money = 1000
+
 troop_storage = {
     "warrior": [True, 2],
     "archer" :[True, 3],
@@ -38,7 +40,8 @@ castle_storage = {
 other_storage = {
 }
 
+usernam = 'Mok'
 user1 = create_user(username,stage_level,money,troop_storage,spell_storage,castle_storage,other_storage)
-# print(user1)
+print(user1)
 # you guys can do changes on the data based on what you need, just change to what you want
 # here is just the idea of data, you can use them in your python file.

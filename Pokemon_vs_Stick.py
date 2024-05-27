@@ -179,15 +179,6 @@ stickman_sparta_image = [pygame.image.load('Plant vs Stick/Picture/stickman spar
                         pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 4.png').convert_alpha(),
                         pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 5.png').convert_alpha()]
 
-stickman_archer_image = [pygame.image.load('Plant vs Stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
-                            pygame.image.load('Plant vs Stick/Picture/stickman archer/stickman archer 2.png').convert_alpha()]
-
-stickman_wizard_image = [pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 1.png').convert_alpha(),
-                            pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 2.png').convert_alpha(),
-                            pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 3.png').convert_alpha(),
-                            pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 4.png').convert_alpha(),
-                            pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 5.png').convert_alpha()]
-
 stickman_giant_image = [pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 1.png').convert_alpha(),
                         pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 2.png').convert_alpha(),
                         pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 3.png').convert_alpha(),
@@ -199,15 +190,8 @@ stickman_warrior_attack = [pygame.image.load('Plant vs Stick/Picture/stickman sw
                             pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword attack/stickman sword attack 2.png').convert_alpha(),
                             pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword attack/stickman sword attack 3.png').convert_alpha()]
 
-stickman_archer_attack = [pygame.image.load('Plant vs Stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
-                            pygame.image.load('Plant vs Stick/Picture/stickman archer/stickman archer 2.png').convert_alpha()]
-
 stickman_sparta_attack = [pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 1.png').convert_alpha(),
                             pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 2.png').convert_alpha()]
-
-stickman_wizard_attack = [pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 1.png').convert_alpha(),
-                            pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 2.png').convert_alpha(),
-                            pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 3.png').convert_alpha()]
 
 stickman_giant_attack = [pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant attack/stickman giant attack 1.png').convert_alpha(),
                             pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant attack/stickman giant attack 2.png').convert_alpha()]
@@ -228,23 +212,9 @@ class Troop(pygame.sprite.Sprite):
             self.health = 120
             self.attack = 20
             self.cooldown = 0
-        elif troop_type == 'archer':
-            self.frames = [pygame.transform.scale(frame, (75, 55)) for frame in stickman_archer_image]
-            self.frame = [pygame.transform.scale(frame, (75, 55)) for frame in stickman_archer_attack]
-            self.speed = 1
-            self.health = 100
-            self.attack = 15
-            self.cooldown = 0
         elif troop_type == 'sparta':
             self.frames = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_sparta_image]
             self.frame = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_sparta_attack]
-            self.speed = 1
-            self.health = 110
-            self.attack = 25
-            self.cooldown = 0
-        elif troop_type == 'wizard':
-            self.frames = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_wizard_image]
-            self.frame = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_wizard_attack]
             self.speed = 1
             self.health = 110
             self.attack = 25
@@ -320,7 +290,6 @@ class Troop(pygame.sprite.Sprite):
             self.kill()
             return True
 
-
 class GamePokemonVsStick:
     def __init__(self):
         self.clock = pygame.time.Clock()
@@ -344,7 +313,7 @@ class GamePokemonVsStick:
         pygame.time.set_timer(self.poke_ball_timer, 16000)
 
         # choice of ninja
-        self.troop_choice = ['warrior','archer','sparta','wizard','giant']
+        self.troop_choice = ['warrior','sparta','giant']
 
     def reset_game_state(self):
         # create a background music
@@ -587,7 +556,7 @@ class GamePokemonVsStick:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
 
-                if self.back_background_rect.collidepoint(mouse_pos):
+                if self.before_press_start and self.back_background_rect.collidepoint(mouse_pos):
                     self.go_home_py()
     
     def go_home_py(self):

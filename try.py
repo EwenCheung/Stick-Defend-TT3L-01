@@ -524,9 +524,9 @@ class Game_Store:
                                     item['equip'] = False
                                 else:
                                     item['equip'] = True
-                if self.store:
-                    if self.back_level_background_rect.collidepoint(mouse_pos):
-                        self.go_level_py()
+                
+                if self.back_level_background_rect.collidepoint(mouse_pos):
+                    self.go_level_py()
                 
     def go_level_py(self):
         level_module = importlib.import_module("Level")
