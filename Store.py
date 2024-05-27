@@ -1,7 +1,7 @@
 import pygame
 from sys import exit
 import random
-from Firebase import firebase
+import importlib
 
 pygame.init()
 
@@ -154,6 +154,14 @@ class Game_Store:
         self.unequip_button_surf = pygame.Surface(self.equip_button_size)
         self.unequip_button_surf.fill((144, 238, 144))
 
+        self.back_level_button_surf = pygame.image.load('War of stick/Picture/Store/back_to_level.png').convert_alpha()
+        self.back_level_button_surf = pygame.transform.scale(self.back_level_button_surf,(75,75))
+        self.back_level_button_rect = self.back_level_button_surf.get_rect(topleft=(25,15))
+
+        self.back_level_background_surf = pygame.image.load('War of stick/Picture/Store/back_to_level_background.png').convert_alpha()
+        self.back_level_background_surf = pygame.transform.scale(self.back_level_background_surf, (150, 100))
+        self.back_level_background_rect = self.back_level_background_surf.get_rect(topleft=(40, 2))
+
         # word
         self.unlock_text_surf = self.font.render('Unlock', True, 'Black')
         self.unlock_text_rect = self.unlock_text_surf.get_rect()
@@ -166,6 +174,10 @@ class Game_Store:
         self.topic_word_surf = pygame.font.Font(None, 60)
         self.topic_word_surf = self.topic_word_surf.render('War of stick store', True, 'Black')
         self.topic_word_rect = self.topic_word_surf.get_rect(center=(462, 60))
+
+        self.level_word_surf = pygame.font.Font(None, 50)
+        self.level_word_surf = self.level_word_surf.render('Level', True, 'Black')
+        self.level_word_rect = self.level_word_surf.get_rect(topleft=(85,35))
 
         # money word
         self.num_money_surf = self.font.render(str(self.num_money), True, 'White')
@@ -512,7 +524,16 @@ class Game_Store:
                                     item['equip'] = False
                                 else:
                                     item['equip'] = True
+                if self.store:
+                    if self.back_level_background_rect.collidepoint(mouse_pos):
+                        self.go_level_py()
                 
+    def go_level_py(self):
+        level_module = importlib.import_module("Level")
+        level_select = level_module.GameLevel()
+        level_select.run()
+        exit()
+
     def backpack_screen(self):
         self.display_detail_info()
         for item in self.backpack_troop_list:
@@ -1354,6 +1375,10 @@ class Game_Store:
             self.screen.blit(self.money_image_surf, self.money_image_rect)
             self.num_money_surf = self.font.render(str(self.num_money), True, 'Black')
             self.screen.blit(self.num_money_surf, self.num_money_rect)
+
+            self.screen.blit(self.back_level_background_surf,self.back_level_background_rect)
+            self.screen.blit(self.back_level_button_surf,self.back_level_button_rect)
+            self.screen.blit(self.level_word_surf,self.level_word_rect)
 
             for index, item in enumerate(self.current_item):
                 if item['locked'] and index < len(self.x_coords):

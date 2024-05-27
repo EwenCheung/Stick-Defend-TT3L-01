@@ -3,8 +3,7 @@
 import pygame
 from sys import exit
 from random import randint, choice
-from Firebase import firebase
-
+import importlib
 
 
 # game start from here
@@ -180,15 +179,6 @@ stickman_sparta_image = [pygame.image.load('Plant vs Stick/Picture/stickman spar
                         pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 4.png').convert_alpha(),
                         pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 5.png').convert_alpha()]
 
-stickman_archer_image = [pygame.image.load('Plant vs Stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
-                            pygame.image.load('Plant vs Stick/Picture/stickman archer/stickman archer 2.png').convert_alpha()]
-
-stickman_wizard_image = [pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 1.png').convert_alpha(),
-                            pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 2.png').convert_alpha(),
-                            pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 3.png').convert_alpha(),
-                            pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 4.png').convert_alpha(),
-                            pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 5.png').convert_alpha()]
-
 stickman_giant_image = [pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 1.png').convert_alpha(),
                         pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 2.png').convert_alpha(),
                         pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 3.png').convert_alpha(),
@@ -200,15 +190,8 @@ stickman_warrior_attack = [pygame.image.load('Plant vs Stick/Picture/stickman sw
                             pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword attack/stickman sword attack 2.png').convert_alpha(),
                             pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword attack/stickman sword attack 3.png').convert_alpha()]
 
-stickman_archer_attack = [pygame.image.load('Plant vs Stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
-                            pygame.image.load('Plant vs Stick/Picture/stickman archer/stickman archer 2.png').convert_alpha()]
-
 stickman_sparta_attack = [pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 1.png').convert_alpha(),
                             pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 2.png').convert_alpha()]
-
-stickman_wizard_attack = [pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 1.png').convert_alpha(),
-                            pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 2.png').convert_alpha(),
-                            pygame.image.load('Plant vs Stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 3.png').convert_alpha()]
 
 stickman_giant_attack = [pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant attack/stickman giant attack 1.png').convert_alpha(),
                             pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant attack/stickman giant attack 2.png').convert_alpha()]
@@ -229,23 +212,9 @@ class Troop(pygame.sprite.Sprite):
             self.health = 120
             self.attack = 20
             self.cooldown = 0
-        elif troop_type == 'archer':
-            self.frames = [pygame.transform.scale(frame, (75, 55)) for frame in stickman_archer_image]
-            self.frame = [pygame.transform.scale(frame, (75, 55)) for frame in stickman_archer_attack]
-            self.speed = 1
-            self.health = 100
-            self.attack = 15
-            self.cooldown = 0
         elif troop_type == 'sparta':
             self.frames = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_sparta_image]
             self.frame = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_sparta_attack]
-            self.speed = 1
-            self.health = 110
-            self.attack = 25
-            self.cooldown = 0
-        elif troop_type == 'wizard':
-            self.frames = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_wizard_image]
-            self.frame = [pygame.transform.scale(frame, (110, 85)) for frame in stickman_wizard_attack]
             self.speed = 1
             self.health = 110
             self.attack = 25
@@ -321,7 +290,6 @@ class Troop(pygame.sprite.Sprite):
             self.kill()
             return True
 
-
 class GamePokemonVsStick:
     def __init__(self):
         self.clock = pygame.time.Clock()
@@ -345,13 +313,13 @@ class GamePokemonVsStick:
         pygame.time.set_timer(self.poke_ball_timer, 16000)
 
         # choice of ninja
-        self.troop_choice = ['warrior','archer','sparta','wizard','giant']
+        self.troop_choice = ['warrior','sparta','giant']
 
     def reset_game_state(self):
         # create a background music
-        self.bg_music = pygame.mixer.Sound('Plant vs Stick/audio/bg_music.mp3')
-        self.bg_music.set_volume(0.1)
-        self.bg_music.play(loops=-1)
+        # self.bg_music = pygame.mixer.Sound('Plant vs Stick/audio/bg_music.mp3')
+        # self.bg_music.set_volume(0.1)
+        # self.bg_music.play(loops=-1)
 
         # set up Ninja timer
         self.troop_timer = pygame.USEREVENT + 1
@@ -396,7 +364,7 @@ class GamePokemonVsStick:
         self.start_adventure_rect = self.start_adventure_surface.get_rect(topleft=(510, 70))
 
         username_font = pygame.font.Font(None, 30)
-        self.username_surface = username_font.render(firebase.username, True, 'Green')
+        self.username_surface = username_font.render("logged_in_user", True, 'Green')
         self.username_rectangle = self.username_surface.get_rect(center=(257, 90))
 
         press_h_font = pygame.font.Font(None, 35)
@@ -443,6 +411,19 @@ class GamePokemonVsStick:
         self.time = None
         self.timer = pygame.font.Font(None, 36).render(None, True, (255, 255, 255))
         self.timer_rectangle = self.timer.get_rect(center=(890, 35))
+
+        self.back_background_size = (250,55)
+        self.back_background_surf = pygame.surface.Surface(self.back_background_size)
+        self.back_background_surf.fill((14,25,45))
+        self.back_background_rect = self.back_background_surf.get_rect(center=(254,40))
+
+        self.back_button_surf = pygame.image.load('War of stick/Picture/Store/back_to_level.png').convert_alpha()
+        self.back_button_surf = pygame.transform.scale(self.back_button_surf,(75,75))
+        self.back_button_rect = self.back_button_surf.get_rect(center=(155,40))
+
+        self.back_word_surf = pygame.font.Font(None,42)
+        self.back_word_surf = self.back_word_surf.render('Back to Home', True, "Green")
+        self.back_word_rect = self.back_word_surf.get_rect(center=(270,40))
 
     def event_handling(self):
         # Event handling
@@ -571,6 +552,18 @@ class GamePokemonVsStick:
                     self.after_press_start = True
                     self.before_press_start = False
                     self.begin_time = pygame.time.get_ticks()
+            
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+
+                if self.before_press_start and self.back_background_rect.collidepoint(mouse_pos):
+                    self.go_home_py()
+    
+    def go_home_py(self):
+        home_module = importlib.import_module("Home")
+        home_select = home_module.GameHome()
+        home_select.run()
+        exit()
 
     def game_start(self):
         if self.before_press_start:  # main menu page
@@ -578,6 +571,9 @@ class GamePokemonVsStick:
             self.screen.blit(self.welcome_surface, (0, 0))
             self.screen.blit(self.username_surface, self.username_rectangle)
             self.screen.blit(self.h_surface, self.h_rectangle)
+            self.screen.blit(self.back_background_surf,self.back_background_rect)
+            self.screen.blit(self.back_button_surf,self.back_button_rect)
+            self.screen.blit(self.back_word_surf,self.back_word_rect)
 
         if self.help_menu_page:
             self.screen.fill((255, 255, 255))
