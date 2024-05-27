@@ -124,8 +124,12 @@ class Troop:
         self.rage_run = 0
 
     def spawn_troop(self, screen, bg_x):
-        self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 500))
-        screen.blit(self.image, self.rect)
+        if self.troop_name == 'Giant':
+            self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 520))
+            screen.blit(self.image, self.rect)
+        else:
+            self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 500))
+            screen.blit(self.image, self.rect)
 
     def update(self):
         self.previous_coor = self.coordinate_x
@@ -221,8 +225,12 @@ class Ninja:
         self.run = 0
 
     def spawn_ninja(self, screen, bg_x):
-        self.rect = self.image.get_rect(bottomright=(self.ninja_coordinate_x + bg_x, 500))
-        screen.blit(self.image, self.rect)
+        if self.ninja_type == 'naruto' and self.ninja_type == 'sasuke':
+            self.rect = self.image.get_rect(bottomright=(self.ninja_coordinate_x + bg_x, 500))
+            screen.blit(self.image, self.rect)
+        else:
+            self.rect = self.image.get_rect(bottomright=(self.ninja_coordinate_x + bg_x, 500))
+            screen.blit(self.image, self.rect)
 
     def update_ninja(self):
         self.ninja_prev_coor = self.ninja_coordinate_x
@@ -345,7 +353,7 @@ class GameStickOfWar:
         self.freeze_dim_rect = self.freeze_dim_surf.get_rect(center=self.freeze_initial_position)
         # rage animation
         self.freeze_spell_animation = pygame.image.load('War of stick/Picture/spell/freeze_animation.png')
-        self.freeze_spell_animation_surf = pygame.transform.scale(self.freeze_spell_animation, (100, 80))
+        self.freeze_spell_animation_surf = pygame.transform.scale(self.freeze_spell_animation, (80, 80))
 
         # rage
         self.rage_spell = pygame.image.load('War of stick/Picture/spell/rage_spell.png')
@@ -357,7 +365,9 @@ class GameStickOfWar:
         self.rage_dim_rect = self.rage_dim_surf.get_rect(center=self.rage_initial_position)
         # rage animation
         self.rage_spell_animation = pygame.image.load('War of stick/Picture/spell/rage_animation.png')
-        self.rage_spell_animation_surf = pygame.transform.scale(self.rage_spell_animation, (100, 100))
+        self.rage_spell_animation_surf = pygame.transform.scale(self.rage_spell_animation, (90, 100))
+        # rage special for giant
+        self.rage_spell_animation_giant_surf = pygame.transform.scale(self.rage_spell_animation, (90, 150))
 
         # Gold assets
         self.pic_gold = pygame.image.load('War of stick/Picture/utils/gold.png').convert_alpha()
@@ -582,15 +592,15 @@ class GameStickOfWar:
             if event.type == self.ninja_timer:
                 if len(self.enemy_on_court) <= 20:
                     new_ninja = None
-                    ninja_chosen = choice(self.ninja_choice)
-                    if ninja_chosen == "naruto":
-                        new_ninja = Ninja(ninja_chosen, self.naruto_frame_storage, self.naruto_attack_frame_storage, 100, 1, 2,
+                    self.ninja_chosen = choice(self.ninja_choice)
+                    if self.ninja_chosen == "naruto":
+                        new_ninja = Ninja(self.ninja_chosen, self.naruto_frame_storage, self.naruto_attack_frame_storage, 100, 1, 2,
                                           self.background_image.get_width())
-                    elif ninja_chosen == "sasuke":
-                        new_ninja = Ninja(ninja_chosen, self.sasuke_frame_storage, self.sasuke_attack_frame_storage, 50, 1, 3,
+                    elif self.ninja_chosen == "sasuke":
+                        new_ninja = Ninja(self.ninja_chosen, self.sasuke_frame_storage, self.sasuke_attack_frame_storage, 50, 1, 3,
                                           self.background_image.get_width())
-                    elif ninja_chosen == "kakashi":
-                        new_ninja = Ninja(ninja_chosen, self.kakashi_frame_storage, self.kakashi_attack_frame_storage, 75, 2, 2,
+                    elif self.ninja_chosen == "kakashi":
+                        new_ninja = Ninja(self.ninja_chosen, self.kakashi_frame_storage, self.kakashi_attack_frame_storage, 75, 2, 2,
                                           self.background_image.get_width())
                     self.enemy_on_court.append(new_ninja)
                 else:
@@ -801,7 +811,10 @@ class GameStickOfWar:
 
         for troop in self.troop_on_court:
             if troop.raging:
-                self.screen.blit(self.rage_spell_animation_surf, troop.rect)
+                if troop.troop_name == 'Giant':
+                    self.screen.blit(self.rage_spell_animation_giant_surf, troop.rect)
+                else: 
+                    self.screen.blit(self.rage_spell_animation_surf, troop.rect)
             if self.healing:
                 self.screen.blit(self.healing_spell_animation_surf, troop.rect)
                 self.heal_run += 1
