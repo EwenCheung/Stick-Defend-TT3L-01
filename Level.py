@@ -8,6 +8,7 @@ class GameLevel:
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((1000, 600))
         pygame.display.set_caption('Choose Level')
+        self.begin_time = pygame.time.get_ticks()
 
         self.wood_plank_surface = pygame.image.load('Plant vs Stick/Picture/utils/wood.png').convert()
         self.wood_plank_surface = pygame.transform.scale(self.wood_plank_surface, (100, 120))

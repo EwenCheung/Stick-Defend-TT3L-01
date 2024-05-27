@@ -78,7 +78,7 @@ class GameHome:
         # Simulating loading progress
 
         if self.progress <= 1:
-            self.progress += 0.005
+            self.progress += 0.03
             self.finish_loading = False
 
         else:
