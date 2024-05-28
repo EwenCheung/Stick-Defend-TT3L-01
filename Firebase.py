@@ -22,16 +22,16 @@ class FirebaseSetup:
         self.stage_level = 1
         self.money = 0
         self.troop_storage = {
-            "warrior": [False, 1],
-            "archer": [False, 1],
-            "wizard": [False, 1],
-            "sparta": [False, 1],
-            "giant": [False, 1]
+            "warrior": [False, 1, False],
+            "archer": [False, 1, False],
+            "wizard": [False, 1, False],
+            "sparta": [False, 1, False],
+            "giant": [False, 1, False]
         }
         self.spell_storage = {
-            "rage": [False, 1],
-            "healing": [False, 1],
-            "freeze": [False, 1]
+            "rage": [False, 1, False],
+            "healing": [False, 1, False],
+            "freeze": [False, 1, False]
         }
         self.castle_storage = {
             "default_castle": [False, 1, 1]  # two upgrades
@@ -45,8 +45,8 @@ class FirebaseSetup:
     def update_user(self):
         """
         Example of troop storage:
-        {'warrior': [(boolean - unlocked?), (integer - level_of_troop)],
-        'archer': [(boolean - unlocked?), (integer - level_of_troop)]...}
+        {'warrior': [(boolean - unlocked?), (integer - level_of_troop), (boolean - equipped?)],
+        'archer': [(boolean - unlocked?), (integer - level_of_troop), (boolean - equipped?)]...}
         Same for spell_storage, castle_storage, and other_storage.
         """
         all_data = {
