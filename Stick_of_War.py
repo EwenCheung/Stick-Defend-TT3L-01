@@ -316,6 +316,9 @@ class GameStickOfWar:
         self.healing_press_time = 0
         self.freeze_press_time = 0
         self.rage_press_time = 0
+        self.healing_price = 500
+        self.freeze_price = 500
+        self.rage_price = 500
 
         # set up Ninja timer
         self.ninja_timer = pygame.USEREVENT + 1
@@ -415,6 +418,25 @@ class GameStickOfWar:
         self.timer = pygame.image.load('War of stick/Picture/store/timer.png')
         self.timer_surf = pygame.transform.scale(self.timer, (30,30))
         self.timer_rect = self.timer_surf.get_rect(center=(763, 136))
+
+        # spell price
+        self.price_box = pygame.image.load('War of stick/Picture/utils/price_box.png')
+        self.price_box_surf = pygame.transform.scale(self.price_box, (50, 20))
+        self.price_box_heal_rect = self.price_box_surf.get_rect(center=(35, 510))
+        self.price_box_freeze_rect = self.price_box_surf.get_rect(center=(105, 510))
+        self.price_box_rage_rect = self.price_box_surf.get_rect(center=(175, 510))
+
+        self.healing_price_font = pygame.font.Font(None, 20)
+        self.healing_price_surf = self.healing_price_font.render(str(self.healing_price), True, 'Black')
+        self.healing_price_rect = self.healing_price_surf.get_rect(center=(35, 510))
+
+        self.freeze_price_font = pygame.font.Font(None, 20)
+        self.freeze_price_surf = self.freeze_price_font.render(str(self.freeze_price), True, 'Black')
+        self.freeze_price_rect = self.freeze_price_surf.get_rect(center=(105, 510))
+
+        self.rage_price_font = pygame.font.Font(None, 20)
+        self.rage_price_surf = self.rage_price_font.render(str(self.rage_price), True, 'Black')
+        self.rage_price_rect = self.rage_price_surf.get_rect(center=(175, 510))
 
         # Troop One
         # Warrior run
@@ -625,12 +647,15 @@ class GameStickOfWar:
                     print('wont be more than 20')
 
             if self.chosen_spell is None and event.type == pygame.MOUSEBUTTONDOWN:
-                if self.healing_spell_rect.collidepoint(event.pos):
-                    self.chosen_spell = 'healing'
-                elif self.rage_spell_rect.collidepoint(event.pos):
-                    self.chosen_spell = 'rage'
-                elif self.freeze_spell_rect.collidepoint(event.pos):
-                    self.chosen_spell = 'freeze'
+                if not self.healing_press:
+                    if self.healing_spell_rect.collidepoint(event.pos):
+                        self.chosen_spell = 'healing'
+                if not self.rage_press:
+                    if self.rage_spell_rect.collidepoint(event.pos):
+                        self.chosen_spell = 'rage'
+                if not self.freeze_press:
+                    if self.freeze_spell_rect.collidepoint(event.pos):
+                        self.chosen_spell = 'freeze'
 
             if event.type == pygame.MOUSEBUTTONDOWN and self.chosen_spell is not None:
                 # can add check condition can release spell or not
@@ -799,18 +824,21 @@ class GameStickOfWar:
             self.healing_press_time += 1.75
             if self.healing_press_time >= 300:
                 self.healing_press = False
+                self.healing_press_time = 0
 
         if self.freeze_press:
             self.screen.blit(self.freeze_dim_surf, self.freeze_dim_rect)
             self.freeze_press_time += 1.75
             if self.freeze_press_time >= 300:
                 self.freeze_press = False
+                self.freeze_press_time = 0
 
         if self.rage_press:
             self.screen.blit(self.rage_dim_surf, self.rage_dim_rect)
             self.rage_press_time += 1.75
             if self.rage_press_time >= 300:
                 self.rage_press = False
+                self.rage_press_time = 0
 
         # gold icon
         self.screen.blit(self.pic_gold_surf, self.pic_gold_rect)
@@ -829,6 +857,15 @@ class GameStickOfWar:
 
         # timer icon
         self.screen.blit(self.timer_surf, self.timer_rect)
+
+        # spell price
+        self.screen.blit(self.price_box_surf, self.price_box_heal_rect)
+        self.screen.blit(self.price_box_surf, self.price_box_freeze_rect)
+        self.screen.blit(self.price_box_surf, self.price_box_rage_rect)
+
+        self.screen.blit(self.healing_price_surf, self.healing_price_rect)
+        self.screen.blit(self.freeze_price_surf, self.freeze_price_rect)
+        self.screen.blit(self.rage_price_surf, self.rage_price_rect)
 
         # button draw
         self.warrior_button.draw(self.screen)
