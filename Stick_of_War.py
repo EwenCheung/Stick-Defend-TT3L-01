@@ -310,6 +310,12 @@ class GameStickOfWar:
         self.spell_animation = False      
         self.time_string = ""
         self.num_troops = 0
+        self.healing_press = False
+        self.freeze_press = False
+        self.rage_press = False
+        self.healing_press_time = 0
+        self.freeze_press_time = 0
+        self.rage_press_time = 0
 
         # set up Ninja timer
         self.ninja_timer = pygame.USEREVENT + 1
@@ -339,6 +345,10 @@ class GameStickOfWar:
         self.healing_dim = pygame.image.load('War of stick/Picture/spell/healing_dim_spell.png')
         self.healing_dim_surf = pygame.transform.scale(self.healing_dim, (70, 70))
         self.healing_dim_rect = self.healing_dim_surf.get_rect(center=self.healing_initial_position)
+        # healing red
+        self.healing_red = pygame.image.load('War of stick/Picture/spell/healing_red.png')
+        self.healing_red_surf = pygame.transform.scale(self.healing_red, (70, 70))
+        self.healing_red_rect = self.healing_red_surf.get_rect(center=self.healing_initial_position)
         # healing animation
         self.healing_spell_animation = pygame.image.load('War of stick/Picture/spell/healing_animation.png')
         self.healing_spell_animation_surf = pygame.transform.scale(self.healing_spell_animation, (100, 100))
@@ -351,6 +361,10 @@ class GameStickOfWar:
         self.freeze_dim = pygame.image.load('War of stick/Picture/spell/freeze_dim_spell.png')
         self.freeze_dim_surf = pygame.transform.scale(self.freeze_dim, (70, 70))
         self.freeze_dim_rect = self.freeze_dim_surf.get_rect(center=self.freeze_initial_position)
+        # freeze red
+        self.freeze_red = pygame.image.load('War of stick/Picture/spell/freeze_red.png')
+        self.freeze_red_surf = pygame.transform.scale(self.freeze_red, (70, 70))
+        self.freeze_red_rect = self.freeze_red_surf.get_rect(center=self.freeze_initial_position)
         # rage animation
         self.freeze_spell_animation = pygame.image.load('War of stick/Picture/spell/freeze_animation.png')
         self.freeze_spell_animation_surf = pygame.transform.scale(self.freeze_spell_animation, (80, 80))
@@ -363,6 +377,10 @@ class GameStickOfWar:
         self.rage_dim = pygame.image.load('War of stick/Picture/spell/rage_dim_spell.png')
         self.rage_dim_surf = pygame.transform.scale(self.rage_dim, (70, 70))
         self.rage_dim_rect = self.rage_dim_surf.get_rect(center=self.rage_initial_position)
+        # rage red
+        self.rage_red = pygame.image.load('War of stick/Picture/spell/rage_red.png')
+        self.rage_red_surf = pygame.transform.scale(self.rage_red, (70, 70))
+        self.rage_red_rect = self.rage_red_surf.get_rect(center=self.rage_initial_position)
         # rage animation
         self.rage_spell_animation = pygame.image.load('War of stick/Picture/spell/rage_animation.png')
         self.rage_spell_animation_surf = pygame.transform.scale(self.rage_spell_animation, (90, 100))
@@ -617,17 +635,20 @@ class GameStickOfWar:
             if event.type == pygame.MOUSEBUTTONDOWN and self.chosen_spell is not None:
                 # can add check condition can release spell or not
                 if self.chosen_spell == 'healing':
+                    self.healing_press = True
                     if self.num_diamond >= 500:
                         self.num_diamond -= 500
                         self.healing = True
                         for troop in self.troop_on_court:
                             troop.health += 500
                 if self.chosen_spell == 'rage':
+                    self.rage_press = True
                     if self.num_diamond >= 500:
                         self.num_diamond -= 500
                         for troop in self.troop_on_court:
                             troop.raging = True
                 if self.chosen_spell == 'freeze':
+                    self.freeze_press = True
                     if self.num_diamond >= 500:
                         self.num_diamond -= 500
                         for ninja in self.enemy_on_court:
@@ -764,9 +785,32 @@ class GameStickOfWar:
 
         # box for spell
         self.screen.blit(self.box_surf, self.box_rect)
-        self.screen.blit(self.healing_spell_surf, self.healing_spell_rect)
-        self.screen.blit(self.freeze_spell_surf, self.freeze_spell_rect)
-        self.screen.blit(self.rage_spell_surf, self.rage_spell_rect)
+        if self.num_diamond >= 500:
+            self.screen.blit(self.healing_spell_surf, self.healing_spell_rect)
+            self.screen.blit(self.freeze_spell_surf, self.freeze_spell_rect)
+            self.screen.blit(self.rage_spell_surf, self.rage_spell_rect)
+        else:
+            self.screen.blit(self.healing_red_surf, self.healing_red_rect)
+            self.screen.blit(self.freeze_red_surf, self.freeze_red_rect)
+            self.screen.blit(self.rage_red_surf, self.rage_red_rect)
+        
+        if self.healing_press:
+            self.screen.blit(self.healing_dim_surf, self.healing_dim_rect)
+            self.healing_press_time += 1.75
+            if self.healing_press_time >= 300:
+                self.healing_press = False
+
+        if self.freeze_press:
+            self.screen.blit(self.freeze_dim_surf, self.freeze_dim_rect)
+            self.freeze_press_time += 1.75
+            if self.freeze_press_time >= 300:
+                self.freeze_press = False
+
+        if self.rage_press:
+            self.screen.blit(self.rage_dim_surf, self.rage_dim_rect)
+            self.rage_press_time += 1.75
+            if self.rage_press_time >= 300:
+                self.rage_press = False
 
         # gold icon
         self.screen.blit(self.pic_gold_surf, self.pic_gold_rect)
