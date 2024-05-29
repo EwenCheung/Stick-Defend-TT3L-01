@@ -3,7 +3,7 @@
 import pygame
 from sys import exit
 from random import randint, choice
-from Firebase import firebase
+# from Firebase import firebase
 import importlib
 
 
@@ -368,7 +368,7 @@ class GamePokemonVsStick:
         self.start_adventure_rect = self.start_adventure_surface.get_rect(topleft=(510, 70))
 
         username_font = pygame.font.Font(None, 30)
-        self.username_surface = username_font.render(firebase.username, True, 'Green')
+        self.username_surface = username_font.render("firebase.username", True, 'Green')
         self.username_rectangle = self.username_surface.get_rect(center=(257, 90))
 
         press_h_font = pygame.font.Font(None, 35)
@@ -564,7 +564,7 @@ class GamePokemonVsStick:
                     self.go_home_py()
     
     def go_home_py(self):
-        home_module = importlib.import_module("Home")
+        home_module = importlib.import_module("Main")
         home_select = home_module.GameHome()
         home_select.run()
         exit()

@@ -143,7 +143,8 @@ class FirebaseSetup:
         return user_email
 
     def run(self):
-        self.user_email = self.ask_signing()
+        # self.user_email = self.ask_signing()
+        self.user_email = "123456@mail.com"
 
         print(f"User Email: {self.user_email}")
         self.user_id = self.user_email.replace("@", "_").replace(".", "_")

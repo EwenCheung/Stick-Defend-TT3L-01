@@ -110,7 +110,7 @@ class GameHome:
         self.screen.blit(stick_of_war, self.stick_of_war_rect)
 
     async def main(self):
-        firebase.run()
+        # firebase.run()
         while True:
             self.screen.fill((255, 255, 255))
 
@@ -123,7 +123,7 @@ class GameHome:
 
             pygame.display.update()
             self.clock.tick(60)
-            asyncio.sleep(0)
+            await asyncio.sleep(0)
 
 
 game_home = GameHome()
