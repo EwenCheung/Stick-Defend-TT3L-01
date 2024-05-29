@@ -4,6 +4,7 @@ import importlib
 from Firebase import firebase
 
 pygame.init()
+pygame.font.init()
 
 
 class LoadingBar:
@@ -27,6 +28,8 @@ class LoadingBar:
 
 class GameHome:
     def __init__(self):
+        pygame.init()
+        pygame.font.init()
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((1000, 600))
         pygame.display.set_caption('Home Page')
