@@ -1,7 +1,6 @@
 import pygame
 from sys import exit
 import importlib
-# from Firebase import firebase
 import asyncio
 
 pygame.init()
@@ -64,14 +63,12 @@ class GameHome:
 
 
     def go_pokemon_py(self):
-        pygame.quit()  # Cleanup before switching
         importlib.invalidate_caches()  # Clear any cached importlib entries
         pokemon_module = importlib.import_module("Pokemon_vs_Stick")
         game_pokemon = pokemon_module.GamePokemonVsStick()
         game_pokemon.run()  # Call a method to start Stick_of_war game
         exit()
     def go_level_py(self):
-        pygame.quit()  # Cleanup before switching
         importlib.invalidate_caches()  # Clear any cached importlib entries
         level_module = importlib.import_module('Level')
         game_level = level_module.GameLevel()
@@ -110,7 +107,6 @@ class GameHome:
         self.screen.blit(stick_of_war, self.stick_of_war_rect)
 
     async def main(self):
-        # firebase.run()
         while True:
             self.screen.fill((255, 255, 255))
 
@@ -126,5 +122,6 @@ class GameHome:
             await asyncio.sleep(0)
 
 
-game_home = GameHome()
-asyncio.run(game_home.main())
+if __name__ == "__main__":
+    game_home = GameHome()
+    asyncio.run(game_home.main())

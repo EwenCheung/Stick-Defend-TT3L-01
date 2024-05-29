@@ -1,7 +1,6 @@
 import pygame
 from sys import exit
 import importlib
-# from Firebase import firebase
 
 
 pygame.init()
@@ -101,7 +100,6 @@ class GameLevel:
         exit()
 
     def go_home_py(self):
-        pygame.quit()  # Cleanup before switching
         importlib.invalidate_caches()  # Clear any cached importlib entries
         home_module = importlib.import_module("Main")
         go_home = home_module.GameHome()
