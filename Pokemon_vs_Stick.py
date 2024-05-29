@@ -563,9 +563,9 @@ class GamePokemonVsStick:
                     self.go_home_py()
     
     def go_home_py(self):
-        home_module = importlib.import_module("Main")
+        home_module = importlib.import_module("main")
         home_select = home_module.GameHome()
-        home_select.run()
+        home_select.main()
         exit()
 
     def game_start(self):

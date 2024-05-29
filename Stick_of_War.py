@@ -4,9 +4,6 @@ from sys import exit
 from random import choice, randint
 
 
-pygame.init()
-pygame.font.init()
-
 
 class TroopButton:
     def __init__(self, game_instance, image, image_dim, flash, size, position, price, cooldown_time, gold_cost, diamond_cost):

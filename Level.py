@@ -3,14 +3,9 @@ from sys import exit
 import importlib
 
 
-pygame.init()
-pygame.font.init()
-
 
 class GameLevel:
     def __init__(self):
-        pygame.init()
-        pygame.font.init()
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((1000, 600))
         pygame.display.set_caption('Choose Level')
@@ -101,9 +96,9 @@ class GameLevel:
 
     def go_home_py(self):
         importlib.invalidate_caches()  # Clear any cached importlib entries
-        home_module = importlib.import_module("Main")
+        home_module = importlib.import_module("main")
         go_home = home_module.GameHome()
-        go_home.run()
+        go_home.main()
         exit()
 
     def go_stick_war_py(self):
