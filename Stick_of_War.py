@@ -3,9 +3,6 @@ import pygame
 from sys import exit
 from random import choice, randint
 
-# import Data
-
-# print(Data.user1)
 
 pygame.init()
 pygame.font.init()
