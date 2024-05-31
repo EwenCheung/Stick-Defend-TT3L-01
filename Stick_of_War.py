@@ -3,9 +3,6 @@ import pygame
 from sys import exit
 from random import choice, randint
 
-# import Data
-
-# print(Data.user1)
 
 pygame.init()
 pygame.font.init()
@@ -56,7 +53,7 @@ class TroopButton:
         else:
             self.insufficient_currency = False
 
-        if self.insufficient_currency or len(self.game.troop_on_court) > 5:
+        if self.insufficient_currency or self.game.num_troops > 99:
 
             if self.clicked:
                 screen.blit(self.flash, self.rect)
@@ -94,10 +91,9 @@ class TroopButton:
                 return True
         return False
 
-
 class Troop:
     def __init__(self, game_instance, frame_storage, attack_frame_storage, health, attack_damage, speed, troop_width, troop_height,
-                 troop_name):
+                 troop_name, troop_size):
         self.previous_coor = 0
         self.coordinate_x = 0
         self.animation_index = 0
@@ -115,6 +111,7 @@ class Troop:
         self.normal_speed = speed
         self.troop_width = troop_width
         self.troop_height = troop_height
+        self.troop_size = troop_size
         # communication between the Troop instance and the Game instance
         self.game = game_instance
         self.rect = (0, 0, 0, 0)
@@ -124,8 +121,12 @@ class Troop:
         self.rage_run = 0
 
     def spawn_troop(self, screen, bg_x):
-        self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 500))
-        screen.blit(self.image, self.rect)
+        if self.troop_name == 'Giant':
+            self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 520))
+            screen.blit(self.image, self.rect)
+        else:
+            self.rect = self.image.get_rect(bottomright=(self.coordinate_x + bg_x, 500))
+            screen.blit(self.image, self.rect)
 
     def update(self):
         self.previous_coor = self.coordinate_x
@@ -138,6 +139,7 @@ class Troop:
             self.speed *= 1.2
             self.attack_damage *= 1.2
             self.rage_run += 1
+            self.health += 200
         elif not self.raging and self.rage_run > 0:
             self.speed = self.normal_speed
             self.attack_damage = self.normal_attack
@@ -220,8 +222,12 @@ class Ninja:
         self.run = 0
 
     def spawn_ninja(self, screen, bg_x):
-        self.rect = self.image.get_rect(bottomright=(self.ninja_coordinate_x + bg_x, 500))
-        screen.blit(self.image, self.rect)
+        if self.ninja_type == 'naruto' and self.ninja_type == 'sasuke':
+            self.rect = self.image.get_rect(bottomright=(self.ninja_coordinate_x + bg_x, 500))
+            screen.blit(self.image, self.rect)
+        else:
+            self.rect = self.image.get_rect(bottomright=(self.ninja_coordinate_x + bg_x, 500))
+            screen.blit(self.image, self.rect)
 
     def update_ninja(self):
         self.ninja_prev_coor = self.ninja_coordinate_x
@@ -275,9 +281,10 @@ class HealthBar:
         self.current_health -= get_damage
         self.current_health = max(0, self.current_health)
 
-
 class GameStickOfWar:
     def __init__(self):
+        pygame.init()
+        pygame.font.init()
         self.clock = pygame.time.Clock()
         pygame.display.set_caption('Tower Defend')  # title name
         self.screen = pygame.display.set_mode((1000, 600))
@@ -299,7 +306,18 @@ class GameStickOfWar:
         self.game_over = False
         self.winner = None
         self.chosen_spell = None
-        self.spell_animation = False
+        self.spell_animation = False      
+        self.time_string = ""
+        self.num_troops = 0
+        self.healing_press = False
+        self.freeze_press = False
+        self.rage_press = False
+        self.healing_press_time = 0
+        self.freeze_press_time = 0
+        self.rage_press_time = 0
+        self.healing_price = 500
+        self.freeze_price = 500
+        self.rage_price = 500
 
         # set up Ninja timer
         self.ninja_timer = pygame.USEREVENT + 1
@@ -325,25 +343,51 @@ class GameStickOfWar:
         self.healing_spell = pygame.image.load('War of stick/Picture/spell/healing_spell.png')
         self.healing_spell_surf = pygame.transform.scale(self.healing_spell, (70, 70))
         self.healing_spell_rect = self.healing_spell_surf.get_rect(center=self.healing_initial_position)
+        # healing dim
+        self.healing_dim = pygame.image.load('War of stick/Picture/spell/healing_dim_spell.png')
+        self.healing_dim_surf = pygame.transform.scale(self.healing_dim, (70, 70))
+        self.healing_dim_rect = self.healing_dim_surf.get_rect(center=self.healing_initial_position)
+        # healing red
+        self.healing_red = pygame.image.load('War of stick/Picture/spell/healing_red.png')
+        self.healing_red_surf = pygame.transform.scale(self.healing_red, (70, 70))
+        self.healing_red_rect = self.healing_red_surf.get_rect(center=self.healing_initial_position)
         # healing animation
         self.healing_spell_animation = pygame.image.load('War of stick/Picture/spell/healing_animation.png')
-        self.healing_spell_animation_surf = pygame.transform.scale(self.healing_spell_animation, (100, 110))
+        self.healing_spell_animation_surf = pygame.transform.scale(self.healing_spell_animation, (100, 100))
 
         # freeze
         self.freeze_spell = pygame.image.load('War of stick/Picture/spell/freeze_spell.png')
         self.freeze_spell_surf = pygame.transform.scale(self.freeze_spell, (70, 70))
         self.freeze_spell_rect = self.freeze_spell_surf.get_rect(center=self.freeze_initial_position)
+        # freeze dim
+        self.freeze_dim = pygame.image.load('War of stick/Picture/spell/freeze_dim_spell.png')
+        self.freeze_dim_surf = pygame.transform.scale(self.freeze_dim, (70, 70))
+        self.freeze_dim_rect = self.freeze_dim_surf.get_rect(center=self.freeze_initial_position)
+        # freeze red
+        self.freeze_red = pygame.image.load('War of stick/Picture/spell/freeze_red.png')
+        self.freeze_red_surf = pygame.transform.scale(self.freeze_red, (70, 70))
+        self.freeze_red_rect = self.freeze_red_surf.get_rect(center=self.freeze_initial_position)
         # rage animation
         self.freeze_spell_animation = pygame.image.load('War of stick/Picture/spell/freeze_animation.png')
-        self.freeze_spell_animation_surf = pygame.transform.scale(self.freeze_spell_animation, (100, 110))
+        self.freeze_spell_animation_surf = pygame.transform.scale(self.freeze_spell_animation, (80, 80))
 
         # rage
         self.rage_spell = pygame.image.load('War of stick/Picture/spell/rage_spell.png')
         self.rage_spell_surf = pygame.transform.scale(self.rage_spell, (70, 70))
         self.rage_spell_rect = self.rage_spell_surf.get_rect(center=self.rage_initial_position)
+        # rage dim
+        self.rage_dim = pygame.image.load('War of stick/Picture/spell/rage_dim_spell.png')
+        self.rage_dim_surf = pygame.transform.scale(self.rage_dim, (70, 70))
+        self.rage_dim_rect = self.rage_dim_surf.get_rect(center=self.rage_initial_position)
+        # rage red
+        self.rage_red = pygame.image.load('War of stick/Picture/spell/rage_red.png')
+        self.rage_red_surf = pygame.transform.scale(self.rage_red, (70, 70))
+        self.rage_red_rect = self.rage_red_surf.get_rect(center=self.rage_initial_position)
         # rage animation
         self.rage_spell_animation = pygame.image.load('War of stick/Picture/spell/rage_animation.png')
-        self.rage_spell_animation_surf = pygame.transform.scale(self.rage_spell_animation, (100, 110))
+        self.rage_spell_animation_surf = pygame.transform.scale(self.rage_spell_animation, (90, 100))
+        # rage special for giant
+        self.rage_spell_animation_giant_surf = pygame.transform.scale(self.rage_spell_animation, (90, 150))
 
         # Gold assets
         self.pic_gold = pygame.image.load('War of stick/Picture/utils/gold.png').convert_alpha()
@@ -360,6 +404,38 @@ class GameStickOfWar:
         self.num_diamond_font = pygame.font.Font(None, 30)
         self.num_diamond_surf = self.num_diamond_font.render(str(self.num_diamond), True, 'Black')
         self.num_diamond_rect = self.num_diamond_surf.get_rect(center=(800, 80))
+
+        # Troop Assets
+        self.pic_troop = pygame.image.load('War of stick/Picture/utils/troop_pic.png').convert_alpha()
+        self.pic_troop_surf = pygame.transform.scale(self.pic_troop, (80,80))
+        self.pic_troop_rect = self.pic_troop_surf.get_rect(center=(766, 130))
+        self.num_troop_font = pygame.font.Font(None, 30)
+        self.num_troop_surf = self.num_troop_font.render(str(self.num_troops), True, 'Black')
+        self.num_troop_rect = self.num_troop_surf.get_rect(center=(800, 110))
+
+        # timer asset
+        self.timer = pygame.image.load('War of stick/Picture/store/timer.png')
+        self.timer_surf = pygame.transform.scale(self.timer, (30,30))
+        self.timer_rect = self.timer_surf.get_rect(center=(763, 136))
+
+        # spell price
+        self.price_box = pygame.image.load('War of stick/Picture/utils/price_box.png')
+        self.price_box_surf = pygame.transform.scale(self.price_box, (50, 20))
+        self.price_box_heal_rect = self.price_box_surf.get_rect(center=(35, 510))
+        self.price_box_freeze_rect = self.price_box_surf.get_rect(center=(105, 510))
+        self.price_box_rage_rect = self.price_box_surf.get_rect(center=(175, 510))
+
+        self.healing_price_font = pygame.font.Font(None, 20)
+        self.healing_price_surf = self.healing_price_font.render(str(self.healing_price), True, 'Black')
+        self.healing_price_rect = self.healing_price_surf.get_rect(center=(35, 510))
+
+        self.freeze_price_font = pygame.font.Font(None, 20)
+        self.freeze_price_surf = self.freeze_price_font.render(str(self.freeze_price), True, 'Black')
+        self.freeze_price_rect = self.freeze_price_surf.get_rect(center=(105, 510))
+
+        self.rage_price_font = pygame.font.Font(None, 20)
+        self.rage_price_surf = self.rage_price_font.render(str(self.rage_price), True, 'Black')
+        self.rage_price_rect = self.rage_price_surf.get_rect(center=(175, 510))
 
         # Troop One
         # Warrior run
@@ -519,18 +595,21 @@ class GameStickOfWar:
 
     def event_handling(self):
         def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage,
-                          speed, troop_width, troop_height, troop_name):
+                          speed, troop_width, troop_height, troop_name, troop_size):
             mouse_pos = pygame.mouse.get_pos()  # Check if the left mouse button was clicked and handle accordingly
 
-            if button_name.is_clicked(mouse_pos):
-
-                if self.num_gold >= gold_cost and self.num_diamond >= diamond_cost:
-                    self.num_gold -= gold_cost
-                    self.num_diamond -= diamond_cost
-                    new_troop = Troop(self, frame_storage, attack_frame_storage, health, attack_damage, speed,
-                                      troop_width,
-                                      troop_height, troop_name)
-                    self.troop_on_court.append(new_troop)
+            if self.num_troops <= 99:
+                if button_name.is_clicked(mouse_pos):
+                    if self.num_gold >= gold_cost and self.num_diamond >= diamond_cost:
+                        self.num_gold -= gold_cost
+                        self.num_diamond -= diamond_cost
+                        new_troop = Troop(self, frame_storage, attack_frame_storage, health, attack_damage, speed,
+                                        troop_width,
+                                        troop_height, troop_name, troop_size)
+                        self.troop_on_court.append(new_troop)
+                    self.num_troops += troop_size
+            else:
+                print('have reach the max troop')
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -539,74 +618,65 @@ class GameStickOfWar:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Check if left mouse button is pressed
                     clicked_troop(100, 200, self.warrior_button, self.warrior_frame_storage, self.warrior_attack_frame_storage, 100,
-                                  1, 1, 75, 100, 'Warrior')
+                                  1, 1, 75, 100, 'Warrior', 1)
                     clicked_troop(300, 200, self.archer_button, self.archer_frame_storage, self.archer_attack_frame_storage, 200, 5,
-                                  1, 75, 100, 'Archer')
+                                  1, 75, 100, 'Archer', 2)
                     clicked_troop(500, 500, self.wizard_button, self.wizard_frame_storage, self.wizard_attack_frame_storage, 250, 5,
-                                  1, 75, 100, 'Wizard')
+                                  1, 75, 100, 'Wizard', 4)
                     clicked_troop(700, 200, self.sparta_button, self.sparta_frame_storage, self.sparta_attack_frame_storage, 300, 3,
-                                  1, 75, 100, 'Sparta')
+                                  1, 75, 100, 'Sparta', 6)
                     clicked_troop(700, 200, self.giant_button, self.giant_frame_storage, self.giant_attack_frame_storage, 350, 4,
-                                  1, 30, 200, 'Giant')
+                                  1, 30, 200, 'Giant', 15)
 
             if event.type == self.ninja_timer:
                 if len(self.enemy_on_court) <= 20:
                     new_ninja = None
-                    ninja_chosen = choice(self.ninja_choice)
-                    if ninja_chosen == "naruto":
-                        new_ninja = Ninja(ninja_chosen, self.naruto_frame_storage, self.naruto_attack_frame_storage, 100, 1, 2,
+                    self.ninja_chosen = choice(self.ninja_choice)
+                    if self.ninja_chosen == "naruto":
+                        new_ninja = Ninja(self.ninja_chosen, self.naruto_frame_storage, self.naruto_attack_frame_storage, 100, 1, 2,
                                           self.background_image.get_width())
-                    elif ninja_chosen == "sasuke":
-                        new_ninja = Ninja(ninja_chosen, self.sasuke_frame_storage, self.sasuke_attack_frame_storage, 50, 1, 3,
+                    elif self.ninja_chosen == "sasuke":
+                        new_ninja = Ninja(self.ninja_chosen, self.sasuke_frame_storage, self.sasuke_attack_frame_storage, 50, 1, 3,
                                           self.background_image.get_width())
-                    elif ninja_chosen == "kakashi":
-                        new_ninja = Ninja(ninja_chosen, self.kakashi_frame_storage, self.kakashi_attack_frame_storage, 75, 2, 2,
+                    elif self.ninja_chosen == "kakashi":
+                        new_ninja = Ninja(self.ninja_chosen, self.kakashi_frame_storage, self.kakashi_attack_frame_storage, 75, 2, 2,
                                           self.background_image.get_width())
                     self.enemy_on_court.append(new_ninja)
                 else:
                     print('wont be more than 20')
 
             if self.chosen_spell is None and event.type == pygame.MOUSEBUTTONDOWN:
-                if self.healing_spell_rect.collidepoint(event.pos):
-                    self.chosen_spell = 'healing'
-                elif self.rage_spell_rect.collidepoint(event.pos):
-                    self.chosen_spell = 'rage'
-                elif self.freeze_spell_rect.collidepoint(event.pos):
-                    self.chosen_spell = 'freeze'
+                if not self.healing_press:
+                    if self.healing_spell_rect.collidepoint(event.pos):
+                        self.chosen_spell = 'healing'
+                if not self.rage_press:
+                    if self.rage_spell_rect.collidepoint(event.pos):
+                        self.chosen_spell = 'rage'
+                if not self.freeze_press:
+                    if self.freeze_spell_rect.collidepoint(event.pos):
+                        self.chosen_spell = 'freeze'
 
-            if self.chosen_spell is not None and event.type == pygame.MOUSEMOTION:
-                # card follow the mouse poss
-                if self.chosen_spell == 'healing':
-                    self.healing_spell_rect.move_ip(event.rel)
-                elif self.chosen_spell == 'rage':
-                    self.rage_spell_rect.move_ip(event.rel)
-                elif self.chosen_spell == 'freeze':
-                    self.freeze_spell_rect.move_ip(event.rel)
-
-            if event.type == pygame.MOUSEBUTTONUP and self.chosen_spell is not None:
+            if event.type == pygame.MOUSEBUTTONDOWN and self.chosen_spell is not None:
                 # can add check condition can release spell or not
                 if self.chosen_spell == 'healing':
+                    self.healing_press = True
                     if self.num_diamond >= 500:
                         self.num_diamond -= 500
                         self.healing = True
                         for troop in self.troop_on_court:
                             troop.health += 500
-                    if not self.healing_spell_rect.center == self.healing_initial_position:
-                        self.healing_spell_rect.center = self.healing_initial_position  # Snap back to initial position
                 if self.chosen_spell == 'rage':
+                    self.rage_press = True
                     if self.num_diamond >= 500:
                         self.num_diamond -= 500
                         for troop in self.troop_on_court:
                             troop.raging = True
-                    if not self.rage_spell_rect.center == self.rage_initial_position:
-                        self.rage_spell_rect.center = self.rage_initial_position  # Snap back to initial position
                 if self.chosen_spell == 'freeze':
+                    self.freeze_press = True
                     if self.num_diamond >= 500:
                         self.num_diamond -= 500
                         for ninja in self.enemy_on_court:
                             ninja.freezing = True
-                    if not self.freeze_spell_rect.center == self.freeze_initial_position:
-                        self.freeze_spell_rect.center = self.freeze_initial_position  # Snap back to initial position
                 self.chosen_spell = None
 
         keys = pygame.key.get_pressed()
@@ -724,14 +794,50 @@ class GameStickOfWar:
         # background
         self.screen.blit(self.background_image, (self.bg_x, 0))
 
+        if not self.game_over:
+            current_time = pygame.time.get_ticks()  # Get the current time
+            elapsed_time_seconds = (current_time) / 1000  # Convert milliseconds to seconds
+            minutes = int(elapsed_time_seconds // 60)
+            seconds = int(elapsed_time_seconds % 60)
+            self.time_string = f"{minutes:02}:{seconds:02}"
+            timer_surface = pygame.font.Font(None, 30).render(self.time_string, True, 'black')
+            timer_rect = timer_surface.get_rect(center=(802, 140))
+            self.screen.blit(timer_surface, timer_rect)
+
         self.health_bar_user.draw(self.screen)
         self.health_bar_enemy.draw(self.screen)
 
         # box for spell
         self.screen.blit(self.box_surf, self.box_rect)
-        self.screen.blit(self.healing_spell_surf, self.healing_spell_rect)
-        self.screen.blit(self.freeze_spell_surf, self.freeze_spell_rect)
-        self.screen.blit(self.rage_spell_surf, self.rage_spell_rect)
+        if self.num_diamond >= 500:
+            self.screen.blit(self.healing_spell_surf, self.healing_spell_rect)
+            self.screen.blit(self.freeze_spell_surf, self.freeze_spell_rect)
+            self.screen.blit(self.rage_spell_surf, self.rage_spell_rect)
+        else:
+            self.screen.blit(self.healing_red_surf, self.healing_red_rect)
+            self.screen.blit(self.freeze_red_surf, self.freeze_red_rect)
+            self.screen.blit(self.rage_red_surf, self.rage_red_rect)
+        
+        if self.healing_press:
+            self.screen.blit(self.healing_dim_surf, self.healing_dim_rect)
+            self.healing_press_time += 1.75
+            if self.healing_press_time >= 300:
+                self.healing_press = False
+                self.healing_press_time = 0
+
+        if self.freeze_press:
+            self.screen.blit(self.freeze_dim_surf, self.freeze_dim_rect)
+            self.freeze_press_time += 1.75
+            if self.freeze_press_time >= 300:
+                self.freeze_press = False
+                self.freeze_press_time = 0
+
+        if self.rage_press:
+            self.screen.blit(self.rage_dim_surf, self.rage_dim_rect)
+            self.rage_press_time += 1.75
+            if self.rage_press_time >= 300:
+                self.rage_press = False
+                self.rage_press_time = 0
 
         # gold icon
         self.screen.blit(self.pic_gold_surf, self.pic_gold_rect)
@@ -743,6 +849,23 @@ class GameStickOfWar:
         self.num_diamond_surf = self.num_diamond_font.render(str(self.num_diamond), True, 'Black')
         self.screen.blit(self.num_diamond_surf, self.num_diamond_rect)
 
+        # troop icon
+        self.screen.blit(self.pic_troop_surf, self.pic_troop_rect)
+        self.num_troop_surf = self.num_troop_font.render(str(self.num_troops), True, 'Black')
+        self.screen.blit(self.num_troop_surf, self.num_troop_rect)
+
+        # timer icon
+        self.screen.blit(self.timer_surf, self.timer_rect)
+
+        # spell price
+        self.screen.blit(self.price_box_surf, self.price_box_heal_rect)
+        self.screen.blit(self.price_box_surf, self.price_box_freeze_rect)
+        self.screen.blit(self.price_box_surf, self.price_box_rage_rect)
+
+        self.screen.blit(self.healing_price_surf, self.healing_price_rect)
+        self.screen.blit(self.freeze_price_surf, self.freeze_price_rect)
+        self.screen.blit(self.rage_price_surf, self.rage_price_rect)
+
         # button draw
         self.warrior_button.draw(self.screen)
         self.archer_button.draw(self.screen)
@@ -750,21 +873,28 @@ class GameStickOfWar:
         self.sparta_button.draw(self.screen)
         self.giant_button.draw(self.screen)
 
-        self.check_game_over()
+        self.check_game_over()  
         if self.game_over:
             self.screen.fill((0, 0, 0))
             font = pygame.font.Font(None, 68)
             if self.winner == "User":
                 text = font.render("You've won!", True, (255, 255, 255))
+                time = font.render(f'{self.time_string}', True, (255, 255, 255))
             else:
                 text = font.render("You've lost!", True, (255, 255, 255))
+                time = font.render(f'{self.time_string}', True, (255, 255, 255))
             text_rect = text.get_rect(center=(500, 300))
+            time_rect = time.get_rect(center=(500, 400))
             self.screen.blit(text, text_rect)
+            self.screen.blit(time, time_rect)
             return  # End the game
 
         for troop in self.troop_on_court:
             if troop.raging:
-                self.screen.blit(self.rage_spell_animation_surf, troop.rect)
+                if troop.troop_name == 'Giant':
+                    self.screen.blit(self.rage_spell_animation_giant_surf, troop.rect)
+                else: 
+                    self.screen.blit(self.rage_spell_animation_surf, troop.rect)
             if self.healing:
                 self.screen.blit(self.healing_spell_animation_surf, troop.rect)
                 self.heal_run += 1
@@ -786,10 +916,9 @@ class GameStickOfWar:
         while True:
             self.game_start()
             self.event_handling()
-
+            
             pygame.display.update()  # Update the display
             self.clock.tick(60)  # Limit frame rate to 60 FPS
-
 
 if __name__ == "__main__":
     GameStickOfWar().run()

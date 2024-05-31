@@ -3,12 +3,14 @@
 import pygame
 from sys import exit
 from random import randint, choice
+from Firebase import firebase
 import importlib
 
 
 # game start from here
 # have to initialise the pygame first
 pygame.init()
+pygame.font.init()
 pygame.display.set_caption('Pokemon vs Naruto')  # title name
 pygame.display.set_mode((1000, 600))
 
@@ -292,6 +294,8 @@ class Troop(pygame.sprite.Sprite):
 
 class GamePokemonVsStick:
     def __init__(self):
+        pygame.init()
+        pygame.font.init()
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((1000, 600))  # screen size
         self.machine_card_initial_position = (120, 8)
@@ -364,7 +368,7 @@ class GamePokemonVsStick:
         self.start_adventure_rect = self.start_adventure_surface.get_rect(topleft=(510, 70))
 
         username_font = pygame.font.Font(None, 30)
-        self.username_surface = username_font.render("logged_in_user", True, 'Green')
+        self.username_surface = username_font.render(firebase.username, True, 'Green')
         self.username_rectangle = self.username_surface.get_rect(center=(257, 90))
 
         press_h_font = pygame.font.Font(None, 35)

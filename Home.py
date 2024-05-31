@@ -2,7 +2,9 @@ import pygame
 from sys import exit
 import importlib
 from Firebase import firebase
+
 pygame.init()
+pygame.font.init()
 
 
 class LoadingBar:
@@ -26,6 +28,8 @@ class LoadingBar:
 
 class GameHome:
     def __init__(self):
+        pygame.init()
+        pygame.font.init()
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((1000, 600))
         pygame.display.set_caption('Home Page')
@@ -43,6 +47,8 @@ class GameHome:
 
         self.loading = True
         self.finish_loading = False
+
+        self.font = pygame.font.Font(None, 40)
 
     def event_handling(self):
         for event in pygame.event.get():
@@ -78,7 +84,7 @@ class GameHome:
         # Simulating loading progress
 
         if self.progress <= 1:
-            self.progress += 0.005
+            self.progress += 0.03
             self.finish_loading = False
 
         else:
@@ -92,13 +98,13 @@ class GameHome:
     def choose_game(self):
         wood_plank_rectangle = self.wood_plank_surface.get_rect(center=(350, 430))
         self.screen.blit(self.wood_plank_surface, wood_plank_rectangle)
-        pokemon_vs_naruto = pygame.font.Font(None, 40).render('Plant vs Zombie', True, (255, 255, 255))
+        pokemon_vs_naruto = self.font.render('Plant vs Zombie', True, (255, 255, 255))
         self.pokemon_vs_naruto_rect = pokemon_vs_naruto.get_rect(center=(350, 430))
         self.screen.blit(pokemon_vs_naruto, self.pokemon_vs_naruto_rect)
 
         wood_plank_rectangle = self.wood_plank_surface.get_rect(center=(650, 430))
         self.screen.blit(self.wood_plank_surface, wood_plank_rectangle)
-        stick_of_war = pygame.font.Font(None, 40).render("Stick of War", True, (255, 255, 255))
+        stick_of_war = self.font.render("Stick of War", True, (255, 255, 255))
         self.stick_of_war_rect = stick_of_war.get_rect(center=(650, 430))
         self.screen.blit(stick_of_war, self.stick_of_war_rect)
 
