@@ -1,5 +1,68 @@
 import pyrebase
 
+class Data:
+    def __init__(self):
+        self.username = "Guest"
+        self.stage_level = 1
+        self.money = 0
+        self.troop_storage = {
+            "warrior": [True, 1],
+            "archer": [False, 1],
+            "wizard": [False, 1],
+            "sparta": [False, 1],
+            "giant": [False, 1]
+        }
+        self.spell_storage = {
+            "rage": [False, 1],
+            "healing": [False, 1],
+            "freeze": [False, 1]
+        }
+        self.castle_storage = {
+            "default_castle": [False, 1, 1]  # two upgrades
+        }
+
+    def read_data(self):
+        all_data = {
+            "username": self.username,
+            "stage_level": self.stage_level,  # can be list if you want else just integer
+            "money": self.money,  # money that the user has
+            "troop_storage": self.troop_storage,
+            "spell_storage": self.spell_storage,
+            "castle_storage": self.castle_storage,
+        }
+        return all_data
+
+
+firebase = Data()
+# print(firebase.read_data())
+# firebase.username = "Ewen"
+# print(firebase.read_data())
+
+
+""" 以上信息是可以用改用增 等。。。
+    如果你们要
+    
+    读信息：
+    print(firebase.read_data())
+    上面那个代码可以read 给你们知道 user 的实时信息
+    
+    改data ：
+    firebase.username = "Ewen"
+    firebase.stage_level = 1
+    firebase.money = 1000
+    # 如果你们要改storage （dictionary）
+    Example： troop_storage["archer"] 的第一个 list variable 从 False 变True 可以这样
+    firebase.troop_storage["archer"] = [True, 1] or firebase.troop_storage["archer"][0] = True
+    
+    还有什么东西自己msg 问我
+"""
+
+
+
+
+
+
+
 
 class FirebaseSetup:
     def __init__(self):
@@ -161,7 +224,7 @@ class FirebaseSetup:
 
 
 
-firebase = FirebaseSetup()
+
 
 
 #     ask_save = input("save?")
