@@ -2,6 +2,7 @@ import pygame
 from sys import exit
 import random
 import importlib
+import Firebase
 
 pygame.init()
 pygame.font.init()
@@ -81,6 +82,13 @@ class Game_Store:
         self.clicked_spell_surf = 'freeze'
         self.equipped_box = []
         self.equipped_word_storage = []
+
+        firebase = Firebase.FirebaseSetup()
+        firebase.run()  # This ensures user signs in and user data is fetched or created
+
+        # Fetch all troop levels
+        self.troop_levels = firebase.get_all_troop_levels()
+        print(f"Troop Levels: {self.troop_levels}")
         self.set_up()
 
     def set_up(self):
@@ -484,7 +492,7 @@ class Game_Store:
                             if upgrades_button_rect.collidepoint(mouse_pos):
                                 if self.num_money >= item['upgrades price']:
                                     self.num_money -= item['upgrades price']
-                                    item['upgrades price'] += 100
+                                    item['upgrades price'] *= self.troop_levels.get(item['name'], 1)
                                     item['health'] += 200
                                     item['attack damage'] += 100
                                     item['level'] += 1

@@ -159,7 +159,11 @@ class FirebaseSetup:
 
         self.read_data(user_data)
 
-
+    def get_all_troop_levels(self):
+        troop_levels = {}
+        for troop, data in self.troop_storage.items():
+            troop_levels[troop] = data[1]
+        return troop_levels
 
 firebase = FirebaseSetup()
 
