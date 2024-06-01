@@ -1,7 +1,6 @@
 import pygame
 from sys import exit
 import importlib
-from Firebase import firebase
 
 pygame.init()
 pygame.font.init()
@@ -41,14 +40,27 @@ class GameHome:
         self.image_rect = self.image.get_rect(center=(1000 // 2, 600 // 2))
 
         self.wood_plank_surface = pygame.image.load('Plant vs Stick/Picture/utils/wood.png').convert()
-        self.wood_plank_surface = pygame.transform.scale(self.wood_plank_surface, (140, 50))
+        self.wood_plank_surface = pygame.transform.scale(self.wood_plank_surface, (200, 80))
         self.pokemon_vs_naruto_rect = None
         self.stick_of_war_rect = None
+
+        self.text_box_surface = pygame.image.load('Plant vs Stick/Picture/utils/wood.png').convert()
+        self.text_box_surface = pygame.transform.scale(self.text_box_surface, (400, 80))
 
         self.loading = True
         self.finish_loading = False
 
         self.font = pygame.font.Font(None, 40)
+        self.first_time = True
+        self.choose_to_play = False
+        self.choosing_method = True
+        self.signing_in = False
+        self.signing_up = False
+        self.guest = False
+        self.key_user = False
+        self.key_pass = False
+        self.sign_up_username = ""
+        self.sign_up_password = ""
 
     def event_handling(self):
         for event in pygame.event.get():
@@ -60,7 +72,36 @@ class GameHome:
                     self.go_level_py()
                 elif self.pokemon_vs_naruto_rect.collidepoint(pygame.mouse.get_pos()):
                     self.go_pokemon_py()
+            if self.choosing_method and event.type == pygame.MOUSEBUTTONDOWN:
+                if self.sign_in_rect.collidepoint(pygame.mouse.get_pos()):
+                    self.signing_in = True
+                    self.choose_to_play = False
+                elif self.sign_up_rect.collidepoint(pygame.mouse.get_pos()):
+                    self.signing_up = True
+                    self.choose_to_play = False
+                elif self.guest_rect.collidepoint(pygame.mouse.get_pos()):
+                    self.guest = True
+                    self.choose_to_play = False
 
+            if self.signing_up:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.user_text_box_rectangle.collidepoint(pygame.mouse.get_pos()):
+                        self.key_user = True
+                        self.key_pass = False
+                    elif self.pass_text_box_rectangle.collidepoint(pygame.mouse.get_pos()):
+                        self.key_user = False
+                        self.key_pass = True
+                if event.type == pygame.KEYDOWN:
+                    if self.key_user:
+                        if event.key == pygame.K_BACKSPACE:
+                            self.sign_up_username = self.sign_up_username[:-1]
+                        else:
+                            self.sign_up_username += event.unicode
+                    elif self.key_pass:
+                        if event.key == pygame.K_BACKSPACE:
+                            self.sign_up_password = self.sign_up_password[:-1]
+                        else:
+                            self.sign_up_password += event.unicode
 
     def go_pokemon_py(self):
         pygame.quit()  # Cleanup before switching
@@ -69,6 +110,7 @@ class GameHome:
         game_pokemon = pokemon_module.GamePokemonVsStick()
         game_pokemon.run()  # Call a method to start Stick_of_war game
         exit()
+
     def go_level_py(self):
         pygame.quit()  # Cleanup before switching
         importlib.invalidate_caches()  # Clear any cached importlib entries
@@ -108,17 +150,66 @@ class GameHome:
         self.stick_of_war_rect = stick_of_war.get_rect(center=(650, 430))
         self.screen.blit(stick_of_war, self.stick_of_war_rect)
 
+    def signing_user(self):
+        wood_plank_rectangle = self.wood_plank_surface.get_rect(center=(350, 430))
+        self.screen.blit(self.wood_plank_surface, wood_plank_rectangle)
+        sign_up = self.font.render('Sign Up', True, (255, 255, 255))
+        self.sign_up_rect = sign_up.get_rect(center=(350, 450))
+        self.screen.blit(sign_up, self.sign_up_rect)
+
+        wood_plank_rectangle = self.wood_plank_surface.get_rect(center=(650, 430))
+        self.screen.blit(self.wood_plank_surface, wood_plank_rectangle)
+        sign_in = self.font.render("Sign In", True, (255, 255, 255))
+        self.sign_in_rect = sign_in.get_rect(center=(650, 450))
+        self.screen.blit(sign_in, self.sign_in_rect)
+
+        wood_plank_rectangle = self.wood_plank_surface.get_rect(center=(500, 300))
+        self.screen.blit(self.wood_plank_surface, wood_plank_rectangle)
+        guest = self.font.render("Login as Guest", True, (255, 255, 255))
+        self.guest_rect = guest.get_rect(center=(500, 300))
+        self.screen.blit(guest, self.guest_rect)
+
+    def signing_in(self):
+        pass
+
+    def sign_up(self):
+        self.user_text_box_rectangle = self.text_box_surface.get_rect(center=(350, 250))
+        self.screen.blit(self.text_box_surface, self.user_text_box_rectangle)
+        ask_username = self.font.render('Choose your username', True, (255, 255, 255))
+        self.sign_up_rect = ask_username.get_rect(center=(350, 200))
+        self.screen.blit(ask_username, self.sign_up_rect)
+
+        self.pass_text_box_rectangle = self.text_box_surface.get_rect(center=(650, 430))
+        self.screen.blit(self.text_box_surface, self.user_text_box_rectangle)
+        ask_password = self.font.render("Enter password", True, (255, 255, 255))
+        self.sign_in_rect = ask_password.get_rect(center=(650, 450))
+        self.screen.blit(ask_password, self.sign_in_rect)
+
+        username = self.font.render(self.sign_up_username, True, (255, 255, 255))
+        self.screen.blit(username, (350, 250))
+        password = self.font.render(self.sign_up_password, True, (255, 255, 255))
+        self.screen.blit(password, (650, 430))
+
     def run(self):
         while True:
             self.screen.fill((255, 255, 255))
 
             self.event_handling()
             self.game_start_bg()
-            if self.loading:
-                self.update_progress()
-            elif self.finish_loading:
+            if self.first_time:
+                if self.loading:
+                    self.update_progress()
+                elif self.finish_loading:
+                    if self.choosing_method:
+                        self.signing_user()
+                    elif self.signing_in:
+                        pass
+                    elif self.signing_up:
+                        self.sign_up()
+                    else:
+                        self.choose_game()
+            else:
                 self.choose_game()
-
             pygame.display.update()
             self.clock.tick(60)
 
