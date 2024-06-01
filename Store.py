@@ -2,6 +2,7 @@ import pygame
 from sys import exit
 import random
 import importlib
+from Firebase import firebase
 
 pygame.init()
 pygame.font.init()
@@ -81,6 +82,7 @@ class Game_Store:
         self.clicked_spell_surf = 'freeze'
         self.equipped_box = []
         self.equipped_word_storage = []
+        print(firebase.troop_storage)
         self.set_up()
 
     def set_up(self):
@@ -484,10 +486,14 @@ class Game_Store:
                             if upgrades_button_rect.collidepoint(mouse_pos):
                                 if self.num_money >= item['upgrades price']:
                                     self.num_money -= item['upgrades price']
-                                    item['upgrades price'] += 100
-                                    item['health'] += 200
-                                    item['attack damage'] += 100
-                                    item['level'] += 1
+
+                                    troop_data = firebase.troop_storage.get(item['name'])
+                                    if troop_data:
+                                        item['upgrades price'] = max(item['upgrades price'] * (troop_data[1] / 2), item['upgrades price'] + 50)
+                                        item['health'] += max(item['health'] * (troop_data[1] / 2), item['health'] + 50)
+                                        item['attack damage'] += max(item['attack damage'] * (troop_data[1] / 2), item['attack damage'] + 50)
+                                        item['level'] +=1
+                                        troop_data[1] +=1
 
                             equip_button_rect = item['equip button'].get_rect(midbottom=(383, 565))
                             if equip_button_rect.collidepoint(mouse_pos):
@@ -517,9 +523,12 @@ class Game_Store:
                             if upgrades_button_rect.collidepoint(mouse_pos):
                                 if self.num_money>= item['upgrades price']:
                                     self.num_money -= item['upgrades price']
-                                    item['upgrades price'] += 150
-                                    item['timer duration'] += 5
-                                    item['level'] += 1
+
+                                    spell_data = firebase.spell_storage.get(item['name'])
+                                    if spell_data:
+                                        item['upgrades price'] +=  max(item['upgrades price'] * (spell_data[1] / 2), item['upgrades price'] + 50)
+                                        item['timer duration'] += 5
+                                        item['level'] += 1
 
                             equip_button_rect = item['equip button'].get_rect(midbottom=(383, 565))
                             if equip_button_rect.collidepoint(mouse_pos):
@@ -819,7 +828,7 @@ class Game_Store:
                         self.screen.blit(level_msg_surf, level_msg_rect)
 
                         level_upgrades_surf = self.price_font.render(f"Upgrade {str(item['upgrades price'])}", True, 'Black')
-                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(163, 555))
+                        level_upgrades_rect = level_upgrades_surf.get_rect(topright=(265, 535))
                         self.screen.blit(level_upgrades_surf, level_upgrades_rect)
 
                         money_icon_surf = item['money']
@@ -895,7 +904,7 @@ class Game_Store:
                         self.screen.blit(level_msg_surf, level_msg_rect)
 
                         level_upgrades_surf = self.price_font.render(f"Upgrade {str(item['upgrades price'])}", True, 'Black')
-                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(163, 555))
+                        level_upgrades_rect = level_upgrades_surf.get_rect(topright=(265, 535))
                         self.screen.blit(level_upgrades_surf, level_upgrades_rect)
 
                         money_icon_surf = item['money']
@@ -971,7 +980,7 @@ class Game_Store:
                         self.screen.blit(level_msg_surf, level_msg_rect)
 
                         level_upgrades_surf = self.price_font.render(f"Upgrade {str(item['upgrades price'])}", True, 'Black')
-                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(163, 555))
+                        level_upgrades_rect = level_upgrades_surf.get_rect(topright=(265, 535))
                         self.screen.blit(level_upgrades_surf, level_upgrades_rect)
 
                         money_icon_surf = item['money']
@@ -1047,7 +1056,7 @@ class Game_Store:
                         self.screen.blit(level_msg_surf, level_msg_rect)
 
                         level_upgrades_surf = self.price_font.render(f"Upgrade {str(item['upgrades price'])}", True, 'Black')
-                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(163, 555))
+                        level_upgrades_rect = level_upgrades_surf.get_rect(topright=(265, 535))
                         self.screen.blit(level_upgrades_surf, level_upgrades_rect)
 
                         money_icon_surf = item['money']
@@ -1123,7 +1132,7 @@ class Game_Store:
                         self.screen.blit(level_msg_surf, level_msg_rect)
 
                         level_upgrades_surf = self.price_font.render(f"Upgrade {str(item['upgrades price'])}", True, 'Black')
-                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(163, 555))
+                        level_upgrades_rect = level_upgrades_surf.get_rect(topright=(265, 535))
                         self.screen.blit(level_upgrades_surf, level_upgrades_rect)
 
                         money_icon_surf = item['money']
@@ -1175,19 +1184,19 @@ class Game_Store:
                         spell_name_rect = spell_name_surf.get_rect(midtop=(246, 205))
                         self.screen.blit(spell_name_surf, spell_name_rect)
 
-                        gold_icon_surf = item['gold icon']
-                        gold_icon_rect = gold_icon_surf.get_rect(midleft=(375, 293))
-                        self.screen.blit(gold_icon_surf, gold_icon_rect)
+                        # gold_icon_surf = item['gold icon']
+                        # gold_icon_rect = gold_icon_surf.get_rect(midleft=(375, 293))
+                        # self.screen.blit(gold_icon_surf, gold_icon_rect)
 
-                        gold_text_surf = self.font.render(str(300), True, 'White')
-                        gold_text_rect = gold_text_surf.get_rect(midleft=(406, 293))
-                        self.screen.blit(gold_text_surf, gold_text_rect)
+                        # gold_text_surf = self.font.render(str(300), True, 'White')
+                        # gold_text_rect = gold_text_surf.get_rect(midleft=(406, 293))
+                        # self.screen.blit(gold_text_surf, gold_text_rect)
 
                         diamond_icon_surf = item['diamond icon']
                         diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366, 330))
                         self.screen.blit(diamond_icon_surf, diamond_icon_rect)
 
-                        diamond_text_surf = self.font.render(str(400), True, "White")
+                        diamond_text_surf = self.font.render(str(500), True, "White")
                         diamond_text_rect = diamond_text_surf.get_rect(midleft=(406, 332))
                         self.screen.blit(diamond_text_surf, diamond_text_rect)
 
@@ -1208,7 +1217,7 @@ class Game_Store:
                         self.screen.blit(level_msg_surf, level_msg_rect)
 
                         level_upgrades_surf = self.price_font.render(f"Upgrade {str(item['upgrades price'])}", True, 'Black')
-                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(163, 555))
+                        level_upgrades_rect = level_upgrades_surf.get_rect(topright=(265, 535))
                         self.screen.blit(level_upgrades_surf, level_upgrades_rect)
 
                         money_icon_surf = item['money']
@@ -1243,19 +1252,19 @@ class Game_Store:
                         spell_name_rect = spell_name_surf.get_rect(midtop=(246, 205))
                         self.screen.blit(spell_name_surf, spell_name_rect)
 
-                        gold_icon_surf = item['gold icon']
-                        gold_icon_rect = gold_icon_surf.get_rect(midleft=(375, 293))
-                        self.screen.blit(gold_icon_surf, gold_icon_rect)
+                        # gold_icon_surf = item['gold icon']
+                        # gold_icon_rect = gold_icon_surf.get_rect(midleft=(375, 293))
+                        # self.screen.blit(gold_icon_surf, gold_icon_rect)
 
-                        gold_text_surf = self.font.render(str(300), True, 'White')
-                        gold_text_rect = gold_text_surf.get_rect(midleft=(406, 293))
-                        self.screen.blit(gold_text_surf, gold_text_rect)
+                        # gold_text_surf = self.font.render(str(300), True, 'White')
+                        # gold_text_rect = gold_text_surf.get_rect(midleft=(406, 293))
+                        # self.screen.blit(gold_text_surf, gold_text_rect)
 
                         diamond_icon_surf = item['diamond icon']
                         diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366, 330))
                         self.screen.blit(diamond_icon_surf, diamond_icon_rect)
 
-                        diamond_text_surf = self.font.render(str(400), True, "White")
+                        diamond_text_surf = self.font.render(str(500), True, "White")
                         diamond_text_rect = diamond_text_surf.get_rect(midleft=(406, 332))
                         self.screen.blit(diamond_text_surf, diamond_text_rect)
 
@@ -1276,7 +1285,7 @@ class Game_Store:
                         self.screen.blit(level_msg_surf, level_msg_rect)
 
                         level_upgrades_surf = self.price_font.render(f"Upgrade {str(item['upgrades price'])}", True, 'Black')
-                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(163, 555))
+                        level_upgrades_rect = level_upgrades_surf.get_rect(topright=(265, 535))
                         self.screen.blit(level_upgrades_surf, level_upgrades_rect)
 
                         money_icon_surf = item['money']
@@ -1311,13 +1320,13 @@ class Game_Store:
                         spell_name_rect = spell_name_surf.get_rect(midtop=(246, 205))
                         self.screen.blit(spell_name_surf, spell_name_rect)
 
-                        gold_icon_surf = item['gold icon']
-                        gold_icon_rect = gold_icon_surf.get_rect(midleft=(375, 293))
-                        self.screen.blit(gold_icon_surf, gold_icon_rect)
+                        # gold_icon_surf = item['gold icon']
+                        # gold_icon_rect = gold_icon_surf.get_rect(midleft=(375, 293))
+                        # self.screen.blit(gold_icon_surf, gold_icon_rect)
 
-                        gold_text_surf = self.font.render(str(300), True, 'White')
-                        gold_text_rect = gold_text_surf.get_rect(midleft=(406, 293))
-                        self.screen.blit(gold_text_surf, gold_text_rect)
+                        # gold_text_surf = self.font.render(str(500), True, 'White')
+                        # gold_text_rect = gold_text_surf.get_rect(midleft=(406, 293))
+                        # self.screen.blit(gold_text_surf, gold_text_rect)
 
                         diamond_icon_surf = item['diamond icon']
                         diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366, 330))
@@ -1344,7 +1353,7 @@ class Game_Store:
                         self.screen.blit(level_msg_surf, level_msg_rect)
 
                         level_upgrades_surf = self.price_font.render(f"Upgrade {str(item['upgrades price'])}", True, 'Black')
-                        level_upgrades_rect = level_upgrades_surf.get_rect(bottomleft=(163, 555))
+                        level_upgrades_rect = level_upgrades_surf.get_rect(topright=(265, 535))
                         self.screen.blit(level_upgrades_surf, level_upgrades_rect)
 
                         money_icon_surf = item['money']

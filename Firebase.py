@@ -6,11 +6,11 @@ class Data:
         self.stage_level = 1
         self.money = 0
         self.troop_storage = {
-            "warrior": [True, 1],
-            "archer": [False, 1],
-            "wizard": [False, 1],
-            "sparta": [False, 1],
-            "giant": [False, 1]
+            "warrior": [True, 1, False],
+            "archer": [False, 1, False],
+            "wizard": [False, 1, False],
+            "sparta": [False, 1, False],
+            "giant": [False, 1, False]
         }
         self.spell_storage = {
             "rage": [False, 1],
