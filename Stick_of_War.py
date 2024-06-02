@@ -2,7 +2,7 @@
 import pygame
 from sys import exit
 from random import choice, randint
-
+from Firebase import firebase       
 
 pygame.init()
 pygame.font.init()
@@ -22,7 +22,7 @@ class TroopButton:
         self.cooldown_time = cooldown_time
         self.gold_cost = gold_cost
         self.diamond_cost = diamond_cost
-        self.rect = self.image.get_rect(center=self.position)
+        self.rect = self.image.get_rect(center=self.position)                               
         self.clicked = False
         self.coordinate_x = 0
         self.last_clicked_time = 0
@@ -597,7 +597,7 @@ class GameStickOfWar:
         def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage,
                           speed, troop_width, troop_height, troop_name, troop_size):
             mouse_pos = pygame.mouse.get_pos()  # Check if the left mouse button was clicked and handle accordingly
-
+                                                                                       
             if self.num_troops <= 99:
                 if button_name.is_clicked(mouse_pos):
                     if self.num_gold >= gold_cost and self.num_diamond >= diamond_cost:
@@ -744,6 +744,7 @@ class GameStickOfWar:
                         troop.take_damage(ninja.attack)
                         if troop.health <= 0:
                             self.troop_on_court.remove(troop)
+                            self.num_troops -= troop.troop_size
                         break
 
     @staticmethod
