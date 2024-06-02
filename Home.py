@@ -251,7 +251,7 @@ class GameHome:
                 self.choose_game()
             pygame.display.update()
             self.clock.tick(60)
-
+    
 
 if __name__ == '__main__':
     GameHome().run()

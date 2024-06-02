@@ -7,17 +7,25 @@ class Data:
         self.password = "888888"
         self.stage_level = 1
         self.money = 0
+        #troop : [have or not, level, equipped or not, health, attack damage, speed, upgrades_price]
+        #health = (current health * 1.1)//1
+        #attack = (current attack* 1.1)
+        #upgrades_price = (current price * 1.1)//1
         self.troop_storage = {
-            "warrior": [True, 1, False],
-            "archer": [False, 1, False],
-            "wizard": [False, 1, False],
-            "sparta": [False, 1, False],
-            "giant": [False, 1, False]
+            "warrior": [True, 1, False, 100, 1, 1, 100],
+            "archer": [False, 1, False, 200, 5, 1, 200],
+            "wizard": [False, 1, False, 250, 5, 1, 300],
+            "sparta": [False, 1, False, 300, 3, 1, 400],
+            "giant": [False, 1, False, 350, 4, 1, 500]
         }
+        #spell :[have or not, level, equpped or not, functionality]
+        #rage = rage + 0.05
+        #healing = healing + 100
+        #freeze = freeze + 0.05
         self.spell_storage = {
-            "rage": [False, 1],
-            "healing": [False, 1],
-            "freeze": [False, 1]
+            "rage": [False, 1, False, 0.5],
+            "healing": [False, 1, False, 300],
+            "freeze": [False, 1, False, 0.5]
         }
         self.castle_storage = {
             "default_castle": [False, 1, 1]  # two upgrades

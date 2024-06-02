@@ -6,7 +6,10 @@ from Firebase import firebase
 
 pygame.init()
 pygame.font.init()
-
+#others troop * 10
+#archer wiazrd(attack damage) after use the formula *5//1
+#spell blit percentage
+#backpack 人一开始就Blit
 
 class Item_card():
     def __init__(self):
@@ -384,7 +387,7 @@ class Game_Store:
                                         troop_image = self.cards.archer_image_surf
                                         item_copy['health'] = 1200
                                         item_copy['upgrades price'] = 150
-                                        item_copy['attack damage'] = 200
+                                        item_copy['attack damage'] = 25
                                     elif item['name'] == 'sparta':
                                         troop_image = self.cards.sparta_image_surf
                                         item_copy['health'] = 1400
@@ -394,7 +397,7 @@ class Game_Store:
                                         troop_image = self.cards.wizard_image_surf
                                         item_copy['health'] = 1400
                                         item_copy['upgrades price'] = 170
-                                        item_copy['attack damage'] = 240
+                                        item_copy['attack damage'] = 25
                                     elif item['name'] == 'giant':
                                         troop_image = self.cards.giant_image_surf
                                         item_copy['health'] = 1400
