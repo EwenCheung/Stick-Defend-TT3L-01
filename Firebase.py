@@ -125,6 +125,7 @@ firebase = Data()
     读信息：
     print(firebase.username)
     print(firebase.stage_level)
+    print(firebase.troop_storage["archer"][0])
     
     print(firebase.read_data())
     上面那个代码可以read 给你们知道 user 的全部实时信息
