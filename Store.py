@@ -98,11 +98,6 @@ class Game_Store:
         self.button_background_surf = pygame.image.load('War of stick/Picture/store/button_for_store.png')
         self.button_background_surf = pygame.transform.scale(self.button_background_surf, (150, 75))
 
-        # refresh button image
-        self.refresh_button_surf = pygame.image.load('War of stick/Picture/store/refresh button.png').convert_alpha()
-        self.refresh_button_surf = pygame.transform.scale(self.refresh_button_surf, (95, 95))
-        self.refresh_button_rect = self.refresh_button_surf.get_rect(midright=(870, 398))
-
         # load the backpack image
         self.backpack_image_surf = pygame.image.load('War of stick/Picture/store/backpack.png').convert_alpha()
         self.backpack_image_surf = pygame.transform.scale(self.backpack_image_surf, (90, 90))
@@ -124,6 +119,7 @@ class Game_Store:
 
         self.castle_image_surf = pygame.image.load('War of stick/Picture/store/castle.png').convert_alpha()
         self.castle_image_surf = pygame.transform.scale(self.castle_image_surf, (300, 300))
+        self.store_castle_image_surf = pygame.transform.scale(self.castle_image_surf, (120,120))
 
         self.health_image_surf = pygame.image.load('War of stick/Picture/store/health.png').convert_alpha()
         self.health_image_surf = pygame.transform.scale(self.health_image_surf, (20, 20))
@@ -204,6 +200,10 @@ class Game_Store:
         self.others_word_rect = self.others_word_surf.get_rect(center=(845, 220))
 
         self.store_list = [
+            {'image': self.store_castle_image_surf, 'name': 'castle', 'button': self.button_background_surf, 'locked': False, 
+             'money': self.money_image_surf, 'price': 200},
+            {'image': self.cards.warrior_card_surf, 'name': 'warrior', 'button': self.button_background_surf, 'locked': False,
+              'money': self.money_image_surf, 'price': 250},
             {'image': self.cards.archer_card_surf, 'name': 'archer', 'button': self.button_background_surf, 'locked': True,
              'money': self.money_image_surf, 'price': 200},
             {'image': self.cards.sparta_card_surf, 'name': 'sparta', 'button': self.button_background_surf, 'locked': True,
@@ -218,43 +218,7 @@ class Game_Store:
              'money': self.money_image_surf, 'price':200},
             {'image': self.cards.rage_card_image_surf, 'name': 'rage', 'button': self.button_background_surf, 'locked': True,
              'money': self.money_image_surf, 'price':200},
-            {'image': self.blank_card_surf, 'name': 'Blank 2', 'button': self.button_background_surf, 'locked': True,
-             'money': self.money_image_surf, 'price': 300},
-            {'image': self.blank_card_surf, 'name': 'Blank 3', 'button': self.button_background_surf, 'locked': True,
-             'money': self.money_image_surf, 'price': 100},
-            {'image': self.blank_card_surf, 'name': 'Blank 4', 'button': self.button_background_surf, 'locked': True,
-             'money': self.money_image_surf, 'price': 378},
-            {'image': self.blank_card_surf, 'name': 'Blank 5', 'button': self.button_background_surf, 'locked': True,
-             'money': self.money_image_surf, 'price': 320},
-            {'image': self.blank_card_surf, 'name': 'Blank 6', 'button': self.button_background_surf, 'locked': True,
-             'money': self.money_image_surf, 'price': 330},
-            {'image': self.blank_card_surf, 'name': 'Blank 7', 'button': self.button_background_surf, 'locked': True,
-             'money': self.money_image_surf, 'price': 870},
-            {'image': self.blank_card_surf, 'name': 'Blank 8', 'button': self.button_background_surf, 'locked': True,
-             'money': self.money_image_surf, 'price': 100},
-            {'image': self.blank_card_surf, 'name': 'Blank 9', 'button': self.button_background_surf, 'locked': True,
-             'money': self.money_image_surf, 'price': 100},
-            {'image': self.blank_card_surf, 'name': 'Blank 10', 'button': self.button_background_surf, 'locked': True,
-             'money': self.money_image_surf, 'price': 100},
-            {'image': self.blank_card_surf, 'name': 'Blank 12', 'button': self.button_background_surf, 'locked': True,
-             'money': self.money_image_surf, 'price': 100},
-            {'image': self.blank_card_surf, 'name': 'Blank 13', 'button': self.button_background_surf, 'locked': True,
-             'money': self.money_image_surf, 'price': 100},
-            {'image': self.blank_card_surf, 'name': 'Blank 14', 'button': self.button_background_surf, 'locked': True,
-             'money': self.money_image_surf, 'price': 100},
-            {'image': self.blank_card_surf, 'name': 'Blank 15', 'button': self.button_background_surf, 'locked': True,
-             'money': self.money_image_surf, 'price': 100},
-            {'image': self.blank_card_surf, 'name': 'Blank 16', 'button': self.button_background_surf, 'locked': True,
-             'money': self.money_image_surf, 'price': 100},
-            {'image': self.blank_card_surf, 'name': 'Blank 17', 'button': self.button_background_surf, 'locked': True,
-             'money': self.money_image_surf, 'price': 100},
-            {'image': self.blank_card_surf, 'name': 'Blank 18', 'button': self.button_background_surf, 'locked': True,
-             'money': self.money_image_surf, 'price': 100},
-            {'image': self.blank_card_surf, 'name': 'Blank 19', 'button': self.button_background_surf, 'locked': True,
-             'money': self.money_image_surf, 'price': 100},
         ]
-        random.shuffle(self.store_list)
-        self.current_item = self.store_list[:len(self.x_coords)]
 
         self.backpack_troop_list = [
             {'image': self.cards.warrior_image_surf,
@@ -263,7 +227,7 @@ class Game_Store:
              'locked': False,
              'equip': False,
              'money': self.money_image_surf,
-             'upgrades price': 200,
+             'upgrades price': 100,
              'level': 1,
              'health icon': self.health_image_surf,
              'damage icon': self.damage_image_surf,
@@ -271,7 +235,7 @@ class Game_Store:
              'diamond icon': self.diamond_image_surf_surf,
              'upgrades button': self.upgrades_button_surf,
              'health': 1000,
-             'attack damage': 150,
+             'attack damage': 10,
              'equip button': self.equip_button_surf,
              'unequip button': self.unequip_button_surf
              }
@@ -352,21 +316,14 @@ class Game_Store:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
 
-                # check if the refreash button is clicked
-                if self.refresh_button_rect.collidepoint(mouse_pos):
-                    if self.num_money >= 100:
-                        self.num_money -= 100
-                        random.shuffle(self.store_list)
-                        self.current_item = self.store_list[:len(self.x_coords)]
-
                 if self.backpack_image_rect.collidepoint(mouse_pos):
                     self.store = False
                     self.backpack = True
                     self.selected_category = 'Castle'
 
                 if self.store:
-                    for index, item in enumerate(self.current_item):
-                        if item['locked']:
+                    for index, item in enumerate(self.store_list):
+                        if item['locked'] == True:
                             button_background_rect = item['button'].get_rect(
                                 center=(self.x_coords[index], self.y_coords[index] + 45))
                             if button_background_rect.collidepoint(mouse_pos):
@@ -385,45 +342,43 @@ class Game_Store:
 
                                     if item['name'] == 'archer':
                                         troop_image = self.cards.archer_image_surf
-                                        item_copy['health'] = 1200
-                                        item_copy['upgrades price'] = 150
+                                        item_copy['health'] = 2000
+                                        item_copy['upgrades price'] = 200
                                         item_copy['attack damage'] = 25
                                     elif item['name'] == 'sparta':
                                         troop_image = self.cards.sparta_image_surf
-                                        item_copy['health'] = 1400
-                                        item_copy['upgrades price'] = 160
-                                        item_copy['attack damage'] = 220
+                                        item_copy['health'] = 3000
+                                        item_copy['upgrades price'] = 400
+                                        item_copy['attack damage'] = 30
                                     elif item['name'] == 'wizard':
                                         troop_image = self.cards.wizard_image_surf
-                                        item_copy['health'] = 1400
-                                        item_copy['upgrades price'] = 170
+                                        item_copy['health'] = 2500
+                                        item_copy['upgrades price'] = 300
                                         item_copy['attack damage'] = 25
                                     elif item['name'] == 'giant':
                                         troop_image = self.cards.giant_image_surf
-                                        item_copy['health'] = 1400
-                                        item_copy['upgrades price'] = 180
-                                        item_copy['attack damage'] = 260
+                                        item_copy['health'] = 3500
+                                        item_copy['upgrades price'] = 500
+                                        item_copy['attack damage'] = 40
                                     elif item['name'] in ['freeze', 'healing', 'rage']:
                                         if item['name'] == 'freeze':
-                                            item_copy['upgrades price'] = 150
-                                            item_copy['timer duration'] = 5
+                                            item_copy['upgrades price'] = 300
+                                            item_copy['spell function'] = 50
                                         elif item['name'] == 'healing':
                                             item_copy['upgrades price'] = 200
-                                            item_copy['timer duration'] = 5
+                                            item_copy['healing function'] = 300
                                         elif item['name'] == 'rage':
-                                            item_copy['upgrades price'] = 250
-                                            item_copy['timer duration'] = 5
+                                            item_copy['upgrades price'] = 100
+                                            item_copy['spell function'] = 50
                                         item_copy['timer icon'] = self.timer_image_surf
                                         self.spell_list.append(item_copy)
                                         item['locked'] = False
-                                        self.store_list.pop(index)
-                                        continue
                                     else:
                                         break
-                                    item_copy['image'] = troop_image
-                                    self.backpack_troop_list.append(item_copy)
+                                    if item['name'] not in ['freeze', 'healing', 'rage']:
+                                        item_copy['image'] = troop_image
+                                        self.backpack_troop_list.append(item_copy)
                                     item['locked'] = False
-                                    self.store_list.pop(index)
 
                 if self.backpack:
                     if self.back_button_rect.collidepoint(mouse_pos):
@@ -530,7 +485,7 @@ class Game_Store:
                                     spell_data = firebase.spell_storage.get(item['name'])
                                     if spell_data:
                                         item['upgrades price'] +=  max(item['upgrades price'] * (spell_data[1] / 2), item['upgrades price'] + 50)
-                                        item['timer duration'] += 5
+                                        item['spell function'] += 5
                                         item['level'] += 1
 
                             equip_button_rect = item['equip button'].get_rect(midbottom=(383, 565))
@@ -1385,7 +1340,6 @@ class Game_Store:
             self.screen.blit(self.background_surf, (0, 0))
             self.screen.blit(self.topic_word_surf, self.topic_word_rect)
 
-            self.screen.blit(self.refresh_button_surf, self.refresh_button_rect)
             self.screen.blit(self.backpack_image_surf, self.backpack_image_rect)
             self.screen.blit(self.money_image_surf, self.money_image_rect)
             self.num_money_surf = self.font.render(str(self.num_money), True, 'Black')
@@ -1395,8 +1349,8 @@ class Game_Store:
             self.screen.blit(self.back_level_button_surf,self.back_level_button_rect)
             self.screen.blit(self.level_word_surf,self.level_word_rect)
 
-            for index, item in enumerate(self.current_item):
-                if item['locked'] and index < len(self.x_coords):
+            for index, item in enumerate(self.store_list):
+                if item['locked'] == True and index < len(self.x_coords):
                     card_image = item['image']
                     card_rect = card_image.get_rect(center=(self.x_coords[index], self.y_coords[index]))
                     self.screen.blit(card_image, card_rect)
@@ -1417,6 +1371,25 @@ class Game_Store:
                     price_text_surf = self.price_font.render(str(item['price']), True, 'Black')
                     price_text_rect = price_text_surf.get_rect(center=(self.x_coords[index] - 7, self.y_coords[index] + 46))
                     self.screen.blit(price_text_surf, price_text_rect)
+                
+                else:
+                    card_image = item['image']
+                    card_rect = card_image.get_rect(center=(self.x_coords[index], self.y_coords[index]))
+                    self.screen.blit(card_image, card_rect)
+
+                    text = self.font.render(f"{item['name'].capitalize()}", True, 'Red')
+                    text_rect = text.get_rect(center=(self.x_coords[index], self.y_coords[index] - 50))
+                    self.screen.blit(text, text_rect)
+
+                    button_background_surf = item['button']
+                    button_background_surf = pygame.transform.scale(button_background_surf,(225,75))
+                    button_background_rect = button_background_surf.get_rect(
+                        center=(self.x_coords[index] - 5, self.y_coords[index] + 45))
+                    self.screen.blit(button_background_surf, button_background_rect)
+
+                    unlocked_text_surf = self.price_font.render('Uncloked', True, 'Black')
+                    unlocked_text_rect = unlocked_text_surf.get_rect(center=(self.x_coords[index] - 7, self.y_coords[index] + 46))
+                    self.screen.blit(unlocked_text_surf,unlocked_text_rect)
 
         elif self.backpack:
             self.backpack_screen()

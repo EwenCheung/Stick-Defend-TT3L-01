@@ -23,9 +23,9 @@ class Data:
         #healing = healing + 100
         #freeze = freeze + 0.05
         self.spell_storage = {
-            "rage": [False, 1, False, 0.5],
-            "healing": [False, 1, False, 300],
-            "freeze": [False, 1, False, 0.5]
+            "rage": [False, 1, False, 0.5, 100],
+            "healing": [False, 1, False, 300, 200],
+            "freeze": [False, 1, False, 0.5, 300]
         }
         self.castle_storage = {
             "default_castle": [False, 1, 1]  # two upgrades
