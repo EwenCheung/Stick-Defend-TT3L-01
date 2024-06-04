@@ -5,7 +5,7 @@ class Data:
         self.all_user = []
         self.username = "Guest"
         self.password = "888888"
-        self.stage_level = 1
+        self.stage_level = 4
         self.money = 0
         #troop : [have or not, level, equipped or not, health, attack damage, speed, upgrades_price]
         #health = (current health * 1.1)//1
@@ -42,9 +42,9 @@ class Data:
                 self.troop_storage = user["troop_storage"]
                 self.spell_storage = user["spell_storage"]
                 self.castle_storage = user["castle_storage"]
-                break
+                return True
         else:
-            print("No such user found")
+            return False
 
     # sign up a new account with default info
     def sign_up(self, username, password):
