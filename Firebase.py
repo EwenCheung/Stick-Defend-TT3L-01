@@ -18,17 +18,20 @@ class Data:
             "sparta": [False, 1, False, 300, 3, 1, 400],
             "giant": [False, 1, False, 350, 4, 1, 500]
         }
-        #spell :[have or not, level, equpped or not, functionality]
+        #spell :[have or not, level, equpped or not, functionality, upgrades price]
         #rage = rage + 0.05
         #healing = healing + 100
         #freeze = freeze + 0.05
         self.spell_storage = {
-            "rage": [False, 1, False, 0.5],
-            "healing": [False, 1, False, 300],
-            "freeze": [False, 1, False, 0.5]
+            "rage": [False, 1, False, 0.5, 100],
+            "healing": [False, 1, False, 300, 200],
+            "freeze": [False, 1, False, 0.5, 300]
         }
+        #first upgrades for health, second is formining speed level
+        #middle two coloum 1000 stand for health and 10 stand for mining speed
+        #and the last two coloum first stand for the health upgrades price, second stand for mining speed upgrades price
         self.castle_storage = {
-            "default_castle": [False, 1, 1]  # two upgrades
+            "default_castle": [False, 1, 1, 1000, 10, 150, 150 ]  # two upgrades
         }
 
     # sign in and take the info of the data
