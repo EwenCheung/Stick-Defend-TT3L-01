@@ -5,7 +5,7 @@ class Data:
         self.all_user = []
         self.username = "Guest"
         self.password = "888888"
-        self.stage_level = [1]  
+        self.stage_level = 1 
         self.money = 0
         #troop : [have or not, level, equipped or not, health, attack damage, speed, upgrades_price]
         #health = (current health * 1.1)//1
@@ -38,7 +38,8 @@ class Data:
                 self.username = user["username"]
                 self.password = user["password"]
                 self.stage_level = user["stage_level"]
-                self.money = user["money"]
+                self.gold = user["gold"]
+                self.diamond = user["diamond"]
                 self.troop_storage = user["troop_storage"]
                 self.spell_storage = user["spell_storage"]
                 self.castle_storage = user["castle_storage"]
@@ -51,7 +52,8 @@ class Data:
         data = {'username': username,
                 'password': password,
                 'stage_level': 1,
-                'money': 0,
+                'gold': 0,
+                'diamond' : 0,
                 'troop_storage': {'warrior': [True, 1, False, 100, 1, 1, 100],
                                   'archer': [False, 1, False, 200, 5, 1, 200],
                                   'wizard': [False, 1, False, 250, 5, 1, 300],
@@ -69,7 +71,8 @@ class Data:
             "username": self.username,
             "password": self.password,
             "stage_level": self.stage_level,  # can be list if you want else just integer
-            "money": self.money,  # money that the user has
+            "gold": self.gold,  # money that the user has
+            "diamond" : self.diamond,
             "troop_storage": self.troop_storage,
             "spell_storage": self.spell_storage,
             "castle_storage": self.castle_storage,

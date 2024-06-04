@@ -24,7 +24,7 @@ class TroopButton:
         self.cooldown_time = cooldown_time
         self.gold_cost = gold_cost
         self.diamond_cost = diamond_cost
-        self.rect = self.image.get_rect(center=self.position)                               
+        self.rect = self.image.get_rect(center=self.position)         
         self.clicked = False
         self.coordinate_x = 0
         self.last_clicked_time = 0
@@ -45,7 +45,7 @@ class TroopButton:
         for line, color in zip(lines, colors):
             text = font.render(line, True, color)
             text_rect = text.get_rect(center=(self.position[0], self.position[1] + y_offset))
-            text_rect.y += 46        
+            text_rect.y += 46
             screen.blit(text, text_rect)
             y_offset += 8
 
@@ -608,11 +608,22 @@ class GameStickOfWar:
         self.kakashi_frame_storage = [pygame.transform.scale(frame, (120, 90)) for frame in self.kakashi_normal]
         self.kakashi_attack_frame_storage = [pygame.transform.scale(frame, (120, 90)) for frame in self.kakashi_attack]
 
+        # firebase.all_user={
+        #     "username": firebase.username,
+        #     "password": firebase.password,
+        #     "stage_level": 1,
+        #     "gold": self.num_gold, 
+        #     "diamond": self.num_diamond,
+        #     "troop_storage": firebase.troop_storage,
+        #     "spell_storage": firebase.spell_storage,
+        #     "castle_storage": firebase.castle_storage,
+        # }
+
     def event_handling(self):
         def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage,
                           speed, troop_width, troop_height, troop_name, troop_size):
             mouse_pos = pygame.mouse.get_pos()  # Check if the left mouse button was clicked and handle accordingly
-                                                                                       
+
             if self.num_troops <= 99:
                 if button_name.is_clicked(mouse_pos):
                     if self.num_gold >= gold_cost and self.num_diamond >= diamond_cost:
@@ -659,7 +670,7 @@ class GameStickOfWar:
                     self.enemy_on_court.append(new_ninja)
                 else:
                     print('wont be more than 20')
- 
+
             if firebase.spell_storage['healing'][0] == True:
                 if self.chosen_spell is None and event.type == pygame.MOUSEBUTTONDOWN:
                     if not self.healing_press:
@@ -830,7 +841,6 @@ class GameStickOfWar:
 
         # box for spell
         self.screen.blit(self.box_surf, self.box_rect)
-
         # rage
         if firebase.spell_storage['rage'][0] == True:
             if self.num_diamond >= self.rage_price:
@@ -863,7 +873,7 @@ class GameStickOfWar:
             self.lock_rect = self.lock_surf.get_rect(center=(self.freeze_initial_position))
             self.screen.blit(self.freeze_dim_surf, self.freeze_dim_rect)
             self.screen.blit(self.lock_surf, self.lock_rect)
-        
+            
         if self.healing_press:
             self.screen.blit(self.healing_dim_surf, self.healing_dim_rect)
             self.healing_press_time += 1.75
