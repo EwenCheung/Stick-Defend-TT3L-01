@@ -5,7 +5,7 @@ class Data:
         self.all_user = []
         self.username = "Guest"
         self.password = "888888"
-        self.stage_level = [1]
+        self.stage_level = [1]  
         self.money = 0
         #troop : [have or not, level, equipped or not, health, attack damage, speed, upgrades_price]
         #health = (current health * 1.1)//1

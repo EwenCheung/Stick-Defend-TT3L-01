@@ -357,6 +357,7 @@ class GameStickOfWar:
         self.healing_red_rect = self.healing_red_surf.get_rect(center=self.healing_initial_position)
         # healing animation
         self.healing_spell_animation = pygame.image.load('War of stick/Picture/spell/healing_animation.png')
+        self.healing_spell_animation.set_alpha(128)
         self.healing_spell_animation_surf = pygame.transform.scale(self.healing_spell_animation, (100, 100))
 
         # freeze
@@ -373,6 +374,7 @@ class GameStickOfWar:
         self.freeze_red_rect = self.freeze_red_surf.get_rect(center=self.freeze_initial_position)
         # rage animation
         self.freeze_spell_animation = pygame.image.load('War of stick/Picture/spell/freeze_animation.png')
+        self.freeze_spell_animation.set_alpha(128)
         self.freeze_spell_animation_surf = pygame.transform.scale(self.freeze_spell_animation, (80, 80))
 
         # rage
@@ -389,6 +391,7 @@ class GameStickOfWar:
         self.rage_red_rect = self.rage_red_surf.get_rect(center=self.rage_initial_position)
         # rage animation
         self.rage_spell_animation = pygame.image.load('War of stick/Picture/spell/rage_animation.png')
+        self.rage_spell_animation.set_alpha(128)
         self.rage_spell_animation_surf = pygame.transform.scale(self.rage_spell_animation, (90, 100))
         # rage special for giant
         self.rage_spell_animation_giant_surf = pygame.transform.scale(self.rage_spell_animation, (90, 150))
@@ -662,12 +665,12 @@ class GameStickOfWar:
                     if not self.healing_press:
                         if self.healing_spell_rect.collidepoint(event.pos):
                             self.chosen_spell = 'healing'
-            elif firebase.spell_storage['rage'][0] == True: 
+            if firebase.spell_storage['rage'][0] == True: 
                 if self.chosen_spell is None and event.type == pygame.MOUSEBUTTONDOWN:
                     if not self.rage_press:
                         if self.rage_spell_rect.collidepoint(event.pos):
                             self.chosen_spell = 'rage'
-            elif firebase.spell_storage['freeze'][0] == True:
+            if firebase.spell_storage['freeze'][0] == True:
                 if self.chosen_spell is None and event.type == pygame.MOUSEBUTTONDOWN:
                     if not self.freeze_press:
                         if self.freeze_spell_rect.collidepoint(event.pos):

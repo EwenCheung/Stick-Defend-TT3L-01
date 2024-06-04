@@ -20,6 +20,8 @@ class GameLevel:
         self.wood_plank_surface = pygame.image.load('Plant vs Stick/Picture/utils/wood.png').convert()
         self.wood_plank_surface = pygame.transform.scale(self.wood_plank_surface, (100, 120))
         self.wood_plank_surface_back_and_store = pygame.transform.scale(self.wood_plank_surface, (90,50))
+        self.lock = pygame.image.load('War of stick/Picture/utils/lock.png')
+        self.lock_surf = pygame.transform.scale(self.lock, (50, 50))
         self.level_bg = pygame.image.load('War of stick/Picture/utils/choose level.png')
 
 
@@ -30,37 +32,41 @@ class GameLevel:
         self.wood_plank_rectangle_store = self.wood_plank_surface.get_rect(center=(890, 100))
         self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
 
-        self.wood_plank_rectangle_one = self.wood_plank_surface.get_rect(center=(180, 230))
-        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
+        if firebase.stage_level[0] == 1:
+            self.wood_plank_rectangle_one = self.wood_plank_surface.get_rect(center=(180, 230))
+            self.wood_plank_rectangle_two = self.wood_plank_surface.get_rect(center=(335, 230))
+            self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
+            self.screen.blit(self.lock_surf, self.wood_plank_rectangle_two)
 
-        self.wood_plank_rectangle_two = self.wood_plank_surface.get_rect(center=(335, 230))
-        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_two)
+            self.wood_plank_rectangle_two = self.wood_plank_surface.get_rect(center=(335, 230))
+            self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_two)
 
-        self.wood_plank_rectangle_three = self.wood_plank_surface.get_rect(center=(495, 230))
-        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_three)
+            self.wood_plank_rectangle_three = self.wood_plank_surface.get_rect(center=(495, 230))
+            self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_three)
 
-        self.wood_plank_rectangle_four = self.wood_plank_surface.get_rect(center=(650, 230))
-        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_four)
+            self.wood_plank_rectangle_four = self.wood_plank_surface.get_rect(center=(650, 230))
+            self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_four)
 
-        self.wood_plank_rectangle_five = self.wood_plank_surface.get_rect(center=(805, 230))
-        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_five)
+            self.wood_plank_rectangle_five = self.wood_plank_surface.get_rect(center=(805, 230))
+            self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_five)
 
-        self.wood_plank_rectangle_six = self.wood_plank_surface.get_rect(center=(180, 410))
-        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_six)
+            self.wood_plank_rectangle_six = self.wood_plank_surface.get_rect(center=(180, 410))
+            self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_six)
 
-        self.wood_plank_rectangle_seven = self.wood_plank_surface.get_rect(center=(335, 410))
-        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_seven)
+            self.wood_plank_rectangle_seven = self.wood_plank_surface.get_rect(center=(335, 410))
+            self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_seven)
 
-        self.wood_plank_rectangle_eight = self.wood_plank_surface.get_rect(center=(495, 410))
-        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_eight)
+            self.wood_plank_rectangle_eight = self.wood_plank_surface.get_rect(center=(495, 410))
+            self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_eight)
 
-        self.wood_plank_rectangle_nine = self.wood_plank_surface.get_rect(center=(650, 410))
-        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_nine)
+            self.wood_plank_rectangle_nine = self.wood_plank_surface.get_rect(center=(650, 410))
+            self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_nine)
 
-        self.wood_plank_rectangle_ten = self.wood_plank_surface.get_rect(center=(805, 410))
-        self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_ten)
+            self.wood_plank_rectangle_ten = self.wood_plank_surface.get_rect(center=(805, 410))
+            self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_ten)
 
         self.screen.blit(self.level_bg, (0, 0))
+        self.screen.blit(self.lock_surf, self.wood_plank_rectangle_two)
 
     def event_handling(self):
         for event in pygame.event.get():
