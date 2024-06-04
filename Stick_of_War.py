@@ -2,27 +2,29 @@
 import pygame
 from sys import exit
 from random import choice, randint
-
+from Firebase import firebase       
 
 pygame.init()
 pygame.font.init()
 
 
 class TroopButton:
-    def __init__(self, game_instance, image, image_dim, flash, size, position, price, cooldown_time, gold_cost, diamond_cost):
+    def __init__(self, game_instance, image, image_dim, flash, lock, size, position, price, cooldown_time, gold_cost, diamond_cost):
         self.size = size
         self.position = position
         self.image = image
         self.image_dim = image_dim
         self.flash = flash
+        self.lock = lock
         self.image = pygame.transform.scale(self.image, self.size)
         self.image_dim = pygame.transform.scale(self.image_dim, self.size)
         self.flash = pygame.transform.scale(self.flash, self.size)
+        self.lock = pygame.transform.scale(self.lock, self.size)
         self.price = price
         self.cooldown_time = cooldown_time
         self.gold_cost = gold_cost
         self.diamond_cost = diamond_cost
-        self.rect = self.image.get_rect(center=self.position)
+        self.rect = self.image.get_rect(center=self.position)         
         self.clicked = False
         self.coordinate_x = 0
         self.last_clicked_time = 0
@@ -47,30 +49,32 @@ class TroopButton:
             screen.blit(text, text_rect)
             y_offset += 8
 
-    def draw(self, screen):
-        if self.game.num_gold < self.gold_cost or self.game.num_diamond < self.diamond_cost:
-            self.insufficient_currency = True
+    def draw(self, screen, troop_available):
+        if troop_available == True:
+            if self.game.num_gold < self.gold_cost or self.game.num_diamond < self.diamond_cost:
+                self.insufficient_currency = True
+            else:
+                self.insufficient_currency = False
+
+            if self.insufficient_currency or self.game.num_troops > 99:
+                if self.clicked:
+                    screen.blit(self.flash, self.rect)
+                    self.testing(screen)
+                if self.remaining_cooldown == 0:
+                    screen.blit(self.flash, self.rect)
+                    self.clicked = False
+                self.red = True
+
+            elif not self.insufficient_currency:
+                if self.clicked:
+                    screen.blit(self.image_dim, self.rect)
+                    self.testing(screen)
+                if self.remaining_cooldown == 0:
+                    screen.blit(self.image, self.rect)
+                    self.clicked = False
+                self.red = False
         else:
-            self.insufficient_currency = False
-
-        if self.insufficient_currency or self.game.num_troops > 99:
-
-            if self.clicked:
-                screen.blit(self.flash, self.rect)
-                self.testing(screen)
-            if self.remaining_cooldown == 0:
-                screen.blit(self.flash, self.rect)
-                self.clicked = False
-            self.red = True
-
-        elif not self.insufficient_currency:
-            if self.clicked:
-                screen.blit(self.image_dim, self.rect)
-                self.testing(screen)
-            if self.remaining_cooldown == 0:
-                screen.blit(self.image, self.rect)
-                self.clicked = False
-            self.red = False
+            screen.blit(self.lock, self.rect)
 
         self.render_name(screen)
 
@@ -353,6 +357,7 @@ class GameStickOfWar:
         self.healing_red_rect = self.healing_red_surf.get_rect(center=self.healing_initial_position)
         # healing animation
         self.healing_spell_animation = pygame.image.load('War of stick/Picture/spell/healing_animation.png')
+        self.healing_spell_animation.set_alpha(128)
         self.healing_spell_animation_surf = pygame.transform.scale(self.healing_spell_animation, (100, 100))
 
         # freeze
@@ -369,6 +374,7 @@ class GameStickOfWar:
         self.freeze_red_rect = self.freeze_red_surf.get_rect(center=self.freeze_initial_position)
         # rage animation
         self.freeze_spell_animation = pygame.image.load('War of stick/Picture/spell/freeze_animation.png')
+        self.freeze_spell_animation.set_alpha(128)
         self.freeze_spell_animation_surf = pygame.transform.scale(self.freeze_spell_animation, (80, 80))
 
         # rage
@@ -385,6 +391,7 @@ class GameStickOfWar:
         self.rage_red_rect = self.rage_red_surf.get_rect(center=self.rage_initial_position)
         # rage animation
         self.rage_spell_animation = pygame.image.load('War of stick/Picture/spell/rage_animation.png')
+        self.rage_spell_animation.set_alpha(128)
         self.rage_spell_animation_surf = pygame.transform.scale(self.rage_spell_animation, (90, 100))
         # rage special for giant
         self.rage_spell_animation_giant_surf = pygame.transform.scale(self.rage_spell_animation, (90, 150))
@@ -408,15 +415,15 @@ class GameStickOfWar:
         # Troop Assets
         self.pic_troop = pygame.image.load('War of stick/Picture/utils/troop_pic.png').convert_alpha()
         self.pic_troop_surf = pygame.transform.scale(self.pic_troop, (80,80))
-        self.pic_troop_rect = self.pic_troop_surf.get_rect(center=(766, 130))
+        self.pic_troop_rect = self.pic_troop_surf.get_rect(center=(866, 100))
         self.num_troop_font = pygame.font.Font(None, 30)
         self.num_troop_surf = self.num_troop_font.render(str(self.num_troops), True, 'Black')
-        self.num_troop_rect = self.num_troop_surf.get_rect(center=(800, 110))
+        self.num_troop_rect = self.num_troop_surf.get_rect(center=(905, 80))
 
         # timer asset
         self.timer = pygame.image.load('War of stick/Picture/store/timer.png')
         self.timer_surf = pygame.transform.scale(self.timer, (30,30))
-        self.timer_rect = self.timer_surf.get_rect(center=(763, 136))
+        self.timer_rect = self.timer_surf.get_rect(center=(863, 50))
 
         # spell price
         self.price_box = pygame.image.load('War of stick/Picture/utils/price_box.png')
@@ -436,6 +443,9 @@ class GameStickOfWar:
         self.rage_price_font = pygame.font.Font(None, 20)
         self.rage_price_surf = self.rage_price_font.render(str(self.rage_price), True, 'Black')
         self.rage_price_rect = self.rage_price_surf.get_rect(center=(175, 510))
+
+        self.lock = pygame.image.load('War of stick/Picture/utils/lock.png')
+        self.lock_surf = pygame.transform.scale(self.lock, (50, 50))
 
         # Troop One
         # Warrior run
@@ -460,7 +470,8 @@ class GameStickOfWar:
         self.warrior_button_image = pygame.image.load('War of stick/Picture/button/sword_button.png')
         self.warrior_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/sword_dim.png')
         self.warrior_button_flash = pygame.image.load('War of stick/Picture/button_flash/warrior_flash.png')
-        self.warrior_button = TroopButton(self, self.warrior_button_image, self.warrior_button_dim_image, self.warrior_button_flash,
+        self.warrior_lock = pygame.image.load('War of stick/Picture/button_lock/warrior_lock.png')
+        self.warrior_button = TroopButton(self, self.warrior_button_image, self.warrior_button_dim_image, self.warrior_button_flash, self.warrior_lock,
                                           (100, 100), (100, 70), '100n-', 3000, 100, 0)
 
         # Troop Two
@@ -478,7 +489,8 @@ class GameStickOfWar:
         self.archer_button_image = pygame.image.load('War of stick/Picture/button/archer_button.png')
         self.archer_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/archer_dim.png')
         self.archer_button_flash = pygame.image.load('War of stick/Picture/button_flash/archer_flash.png')
-        self.archer_button = TroopButton(self, self.archer_button_image, self.archer_button_dim_image, self.archer_button_flash,
+        self.archer_lock = pygame.image.load('War of stick/Picture/button_lock/archer_lock.png')
+        self.archer_button = TroopButton(self, self.archer_button_image, self.archer_button_dim_image, self.archer_button_flash, self.archer_lock,
                                          (100, 100), (200, 70), '300n200', 3000, 300, 200)
 
         # Troop Three
@@ -511,7 +523,8 @@ class GameStickOfWar:
         self.wizard_button_image = pygame.image.load('War of stick/Picture/button/wizard_button.png')
         self.wizard_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/wizard_dim.png')
         self.wizard_button_flash = pygame.image.load('War of stick/Picture/button_flash/wizard_flash.png')
-        self.wizard_button = TroopButton(self, self.wizard_button_image, self.wizard_button_dim_image, self.wizard_button_flash,
+        self.wizard_lock = pygame.image.load('War of stick/Picture/button_lock/wizard_lock.png')
+        self.wizard_button = TroopButton(self, self.wizard_button_image, self.wizard_button_dim_image, self.wizard_button_flash, self.wizard_lock,
                                          (100, 100), (300, 70), '500n500', 3000, 500, 500)
         # Troop Four
         # Sparta run
@@ -541,7 +554,8 @@ class GameStickOfWar:
         self.sparta_button_image = pygame.image.load('War of stick/Picture/button/sparta_button.png')
         self.sparta_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/sparta_dim.png')
         self.sparta_button_flash = pygame.image.load('War of stick/Picture/button_flash/sparta_flash.png')
-        self.sparta_button = TroopButton(self, self.sparta_button_image, self.sparta_button_dim_image, self.sparta_button_flash,
+        self.sparta_lock = pygame.image.load('War of stick/Picture/button_lock/sparta_lock.png')
+        self.sparta_button = TroopButton(self, self.sparta_button_image, self.sparta_button_dim_image, self.sparta_button_flash, self.sparta_lock,
                                          (100, 100), (400, 70), '700n200', 3000, 700, 200)
 
         # Troop Five
@@ -565,7 +579,8 @@ class GameStickOfWar:
         self.giant_button_image = pygame.image.load('War of stick/Picture/button/giant_button.png').convert_alpha()
         self.giant_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/giant_dim.png')
         self.giant_button_flash = pygame.image.load('War of stick/Picture/button_flash/giant_flash.png')
-        self.giant_button = TroopButton(self, self.giant_button_image, self.giant_button_dim_image, self.giant_button_flash,
+        self.giant_lock = pygame.image.load('War of stick/Picture/button_lock/giant_lock.png')
+        self.giant_button = TroopButton(self, self.giant_button_image, self.giant_button_dim_image, self.giant_button_flash, self.giant_lock,
                                         (100, 100),
                                         (500, 70), '700n200', 3000, 700, 200)
 
@@ -592,6 +607,17 @@ class GameStickOfWar:
                                pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_attack_2.png').convert_alpha()]
         self.kakashi_frame_storage = [pygame.transform.scale(frame, (120, 90)) for frame in self.kakashi_normal]
         self.kakashi_attack_frame_storage = [pygame.transform.scale(frame, (120, 90)) for frame in self.kakashi_attack]
+
+        # firebase.all_user={
+        #     "username": firebase.username,
+        #     "password": firebase.password,
+        #     "stage_level": 1,
+        #     "gold": self.num_gold, 
+        #     "diamond": self.num_diamond,
+        #     "troop_storage": firebase.troop_storage,
+        #     "spell_storage": firebase.spell_storage,
+        #     "castle_storage": firebase.castle_storage,
+        # }
 
     def event_handling(self):
         def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage,
@@ -645,16 +671,21 @@ class GameStickOfWar:
                 else:
                     print('wont be more than 20')
 
-            if self.chosen_spell is None and event.type == pygame.MOUSEBUTTONDOWN:
-                if not self.healing_press:
-                    if self.healing_spell_rect.collidepoint(event.pos):
-                        self.chosen_spell = 'healing'
-                if not self.rage_press:
-                    if self.rage_spell_rect.collidepoint(event.pos):
-                        self.chosen_spell = 'rage'
-                if not self.freeze_press:
-                    if self.freeze_spell_rect.collidepoint(event.pos):
-                        self.chosen_spell = 'freeze'
+            if firebase.spell_storage['healing'][0] == True:
+                if self.chosen_spell is None and event.type == pygame.MOUSEBUTTONDOWN:
+                    if not self.healing_press:
+                        if self.healing_spell_rect.collidepoint(event.pos):
+                            self.chosen_spell = 'healing'
+            if firebase.spell_storage['rage'][0] == True: 
+                if self.chosen_spell is None and event.type == pygame.MOUSEBUTTONDOWN:
+                    if not self.rage_press:
+                        if self.rage_spell_rect.collidepoint(event.pos):
+                            self.chosen_spell = 'rage'
+            if firebase.spell_storage['freeze'][0] == True:
+                if self.chosen_spell is None and event.type == pygame.MOUSEBUTTONDOWN:
+                    if not self.freeze_press:
+                        if self.freeze_spell_rect.collidepoint(event.pos):
+                            self.chosen_spell = 'freeze'
 
             if event.type == pygame.MOUSEBUTTONDOWN and self.chosen_spell is not None:
                 # can add check condition can release spell or not
@@ -744,6 +775,7 @@ class GameStickOfWar:
                         troop.take_damage(ninja.attack)
                         if troop.health <= 0:
                             self.troop_on_court.remove(troop)
+                            self.num_troops -= troop.troop_size
                         break
 
     @staticmethod
@@ -801,7 +833,7 @@ class GameStickOfWar:
             seconds = int(elapsed_time_seconds % 60)
             self.time_string = f"{minutes:02}:{seconds:02}"
             timer_surface = pygame.font.Font(None, 30).render(self.time_string, True, 'black')
-            timer_rect = timer_surface.get_rect(center=(802, 140))
+            timer_rect = timer_surface.get_rect(center=(908, 50))
             self.screen.blit(timer_surface, timer_rect)
 
         self.health_bar_user.draw(self.screen)
@@ -809,15 +841,39 @@ class GameStickOfWar:
 
         # box for spell
         self.screen.blit(self.box_surf, self.box_rect)
-        if self.num_diamond >= 500:
-            self.screen.blit(self.healing_spell_surf, self.healing_spell_rect)
-            self.screen.blit(self.freeze_spell_surf, self.freeze_spell_rect)
-            self.screen.blit(self.rage_spell_surf, self.rage_spell_rect)
-        else:
-            self.screen.blit(self.healing_red_surf, self.healing_red_rect)
-            self.screen.blit(self.freeze_red_surf, self.freeze_red_rect)
-            self.screen.blit(self.rage_red_surf, self.rage_red_rect)
-        
+        # rage
+        if firebase.spell_storage['rage'][0] == True:
+            if self.num_diamond >= self.rage_price:
+                self.screen.blit(self.rage_spell_surf, self.rage_spell_rect)
+            else:
+                self.screen.blit(self.rage_red_surf, self.rage_red_rect)
+        elif firebase.spell_storage['rage'][0] == False:
+            self.lock_rect = self.lock_surf.get_rect(center=(self.rage_initial_position))
+            self.screen.blit(self.rage_dim_surf, self.rage_dim_rect)
+            self.screen.blit(self.lock_surf, self.lock_rect)
+
+        # healing
+        if firebase.spell_storage['healing'][0] == True:
+            if self.num_diamond >= self.healing_price:
+                self.screen.blit(self.healing_spell_surf, self.healing_spell_rect)
+            else:
+                self.screen.blit(self.healing_red_surf, self.healing_red_rect)
+        elif firebase.spell_storage['healing'][0] == False:
+            self.lock_rect = self.lock_surf.get_rect(center=(self.healing_initial_position))
+            self.screen.blit(self.healing_dim_surf, self.healing_dim_rect)
+            self.screen.blit(self.lock_surf, self.lock_rect)
+
+        # freeze
+        if firebase.spell_storage['freeze'][0] == True:
+            if self.num_diamond >= self.freeze_price:
+                self.screen.blit(self.freeze_spell_surf, self.freeze_spell_rect)
+            else:
+                self.screen.blit(self.freeze_red_surf, self.freeze_red_rect)
+        elif firebase.spell_storage['freeze'][0] == False:
+            self.lock_rect = self.lock_surf.get_rect(center=(self.freeze_initial_position))
+            self.screen.blit(self.freeze_dim_surf, self.freeze_dim_rect)
+            self.screen.blit(self.lock_surf, self.lock_rect)
+            
         if self.healing_press:
             self.screen.blit(self.healing_dim_surf, self.healing_dim_rect)
             self.healing_press_time += 1.75
@@ -867,11 +923,11 @@ class GameStickOfWar:
         self.screen.blit(self.rage_price_surf, self.rage_price_rect)
 
         # button draw
-        self.warrior_button.draw(self.screen)
-        self.archer_button.draw(self.screen)
-        self.wizard_button.draw(self.screen)
-        self.sparta_button.draw(self.screen)
-        self.giant_button.draw(self.screen)
+        self.warrior_button.draw(self.screen,firebase.troop_storage["warrior"][0])
+        self.archer_button.draw(self.screen,firebase.troop_storage["archer"][0])
+        self.wizard_button.draw(self.screen,firebase.troop_storage["wizard"][0])
+        self.sparta_button.draw(self.screen,firebase.troop_storage["sparta"][0])
+        self.giant_button.draw(self.screen,firebase.troop_storage["giant"][0])
 
         self.check_game_over()  
         if self.game_over:
