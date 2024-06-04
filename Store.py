@@ -74,9 +74,6 @@ class Game_Store:
         self.price_font = pygame.font.Font(None, 25)
         self.title_font = pygame.font.Font(None, 70)
         # self.selected_card = None
-        firebase.money = 50000
-        firebase.money = firebase.money
-        print(firebase.money)
         # define the x,y coordiante for the card
         self.x_coords = ([325, 470, 610, 325, 470, 610, 325, 470, 610])
         self.y_coords = ([200, 200, 200, 336, 336, 336, 477, 477, 477])

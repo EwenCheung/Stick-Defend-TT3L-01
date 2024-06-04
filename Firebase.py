@@ -1,37 +1,38 @@
 import ast
 
+
 class Data:
     def __init__(self):
         self.all_user = []
         self.username = "Guest"
         self.password = "888888"
         self.stage_level = 4
-        self.money = 0
-        #troop : [have or not, level, equipped or not, health, attack damage, speed, upgrades_price]
-        #health = (current health * 1.1)//1
-        #attack = (current attack* 1.1)
-        #upgrades_price = (current price * 1.1)//1
+        self.money = 5000
+        # troop : [have or not, level, equipped or not, health, attack damage, speed, upgrades_price]
+        # health = (current health * 1.1)//1
+        # attack = (current attack* 1.1)
+        # upgrades_price = (current price * 1.1)//1
         self.troop_storage = {
             "warrior": [True, 1, False, 100, 1, 1, 100],
             "archer": [False, 1, False, 200, 5, 1, 200],
-            "wizard": [False, 1, False, 250, 5, 1, 300],
-            "sparta": [False, 1, False, 300, 3, 1, 400],
+            "wizard": [True, 1, False, 250, 5, 1, 300],
+            "sparta": [True, 1, False, 300, 3, 1, 400],
             "giant": [False, 1, False, 350, 4, 1, 500]
         }
-        #spell :[have or not, level, equpped or not, functionality, upgrades price]
-        #rage = rage + 0.05
-        #healing = healing + 100
-        #freeze = freeze + 0.05
+        # spell :[have or not, level, equpped or not, functionality, upgrades price]
+        # rage = rage + 0.05
+        # healing = healing + 100
+        # freeze = freeze + 0.05
         self.spell_storage = {
             "rage": [False, 1, False, 0.5, 100],
-            "healing": [False, 1, False, 300, 200],
+            "healing": [True, 1, False, 300, 200],
             "freeze": [False, 1, False, 0.5, 300]
         }
-        #first upgrades for health, second is formining speed level
-        #middle two coloum 1000 stand for health and 10 stand for mining speed
-        #and the last two coloum first stand for the health upgrades price, second stand for mining speed upgrades price
+        # first upgrades for health, second is formining speed level
+        # middle two coloum 1000 stand for health and 10 stand for mining speed
+        # and the last two coloum first stand for the health upgrades price, second stand for mining speed upgrades price
         self.castle_storage = {
-            "default_castle": [False, 1, 1, 1000, 10, 150, 150 ]  # two upgrades
+            "default_castle": [True, 1, 1, 1000, 10, 150, 150]  # two upgrades
         }
 
     # sign in and take the info of the data
@@ -55,15 +56,19 @@ class Data:
                 'password': password,
                 'stage_level': 1,
                 'money': 0,
-                'troop_storage': {'warrior': [True, 1],
-                                  'archer': [False, 1],
-                                  'wizard': [False, 1],
-                                  'sparta': [False, 1],
-                                  'giant': [False, 1]},
-                'spell_storage': {'rage': [False, 1],
-                                  'healing': [False, 1],
-                                  'freeze': [False, 1]},
-                'castle_storage': {'default_castle': [False, 1, 1]}}
+                'troop_storage': {
+                    "warrior": [True, 1, False, 100, 1, 1, 100],
+                    "archer": [False, 1, False, 200, 5, 1, 200],
+                    "wizard": [False, 1, False, 250, 5, 1, 300],
+                    "sparta": [False, 1, False, 300, 3, 1, 400],
+                    "giant": [False, 1, False, 350, 4, 1, 500]
+                },
+                'spell_storage': {
+                    "rage": [False, 1, False, 0.5, 100],
+                    "healing": [False, 1, False, 300, 200],
+                    "freeze": [False, 1, False, 0.5, 300]
+                },
+                'castle_storage': {"default_castle": [False, 1, 1, 1000, 10, 150, 150]}}
         self.all_user.append(data)
 
     # read current user data
@@ -119,8 +124,7 @@ class Data:
 
 
 firebase = Data()
-
-
+firebase.fetch_data()
 
 """ 以上信息是可以用改用增 等。。。
     如果你们要
