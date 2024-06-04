@@ -16,7 +16,7 @@ class Data:
             "warrior": [True, 1, False, 100, 1, 1, 100],
             "archer": [False, 1, False, 200, 5, 1, 200],
             "wizard": [True, 1, False, 250, 5, 1, 300],
-            "sparta": [True, 1, False, 300, 3, 1, 400],
+            "sparta": [False, 1, False, 300, 3, 1, 400],
             "giant": [False, 1, False, 350, 4, 1, 500]
         }
         # spell :[have or not, level, equpped or not, functionality, upgrades price]

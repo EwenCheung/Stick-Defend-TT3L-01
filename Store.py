@@ -92,6 +92,7 @@ class Game_Store:
         self.clicked_image_surf = 'warrior'
         self.clicked_spell_surf = 'freeze'
         print(firebase.castle_storage)
+        print(firebase.troop_storage)
         self.set_up()
 
     def set_up(self):
@@ -212,23 +213,23 @@ class Game_Store:
         self.others_word_rect = self.others_word_surf.get_rect(center=(845, 220))
 
         self.store_list = [
-            {'image': self.store_castle_image_surf, 'name': 'castle', 'button': self.button_background_surf, 'locked': True, 
+            {'image': self.store_castle_image_surf, 'name': 'castle', 'button': self.button_background_surf, 'locked': firebase.castle_storage['default_castle'][0], 
              'money': self.money_image_surf, 'price': 200},
-            {'image': self.cards.warrior_card_surf, 'name': 'warrior', 'button': self.button_background_surf, 'locked': True,
+            {'image': self.cards.warrior_card_surf, 'name': 'warrior', 'button': self.button_background_surf, 'locked': firebase.troop_storage['warrior'][0],
               'money': self.money_image_surf, 'price': 250},
-            {'image': self.cards.archer_card_surf, 'name': 'archer', 'button': self.button_background_surf, 'locked': False,
+            {'image': self.cards.archer_card_surf, 'name': 'archer', 'button': self.button_background_surf, 'locked': firebase.troop_storage['archer'][0],
              'money': self.money_image_surf, 'price': 200},
-            {'image': self.cards.sparta_card_surf, 'name': 'sparta', 'button': self.button_background_surf, 'locked': False,
+            {'image': self.cards.sparta_card_surf, 'name': 'sparta', 'button': self.button_background_surf, 'locked': firebase.troop_storage['sparta'][0],
              'money': self.money_image_surf, 'price': 350},
-            {'image': self.cards.wizard_card_surf, 'name': 'wizard', 'button': self.button_background_surf, 'locked': False,
+            {'image': self.cards.wizard_card_surf, 'name': 'wizard', 'button': self.button_background_surf, 'locked': firebase.troop_storage['wizard'][0],
              'money': self.money_image_surf, 'price': 450},
-            {'image': self.cards.giant_card_surf, 'name': 'giant', 'button': self.button_background_surf, 'locked': False,
+            {'image': self.cards.giant_card_surf, 'name': 'giant', 'button': self.button_background_surf, 'locked': firebase.troop_storage['giant'][0],
              'money': self.money_image_surf, 'price': 550},
-            {'image': self.cards.freeze_card_image_surf, 'name': 'freeze', 'button': self.button_background_surf, 'locked': False,
+            {'image': self.cards.freeze_card_image_surf, 'name': 'freeze', 'button': self.button_background_surf, 'locked': firebase.spell_storage['freeze'][0],
              'money': self.money_image_surf, 'price':200},
-            {'image': self.cards.healing_card_image_surf, 'name': 'healing', 'button': self.button_background_surf, 'locked': False,
+            {'image': self.cards.healing_card_image_surf, 'name': 'healing', 'button': self.button_background_surf, 'locked': firebase.spell_storage['healing'][0],
              'money': self.money_image_surf, 'price':200},
-            {'image': self.cards.rage_card_image_surf, 'name': 'rage', 'button': self.button_background_surf, 'locked': False,
+            {'image': self.cards.rage_card_image_surf, 'name': 'rage', 'button': self.button_background_surf, 'locked': firebase.spell_storage['rage'][0],
              'money': self.money_image_surf, 'price':200},
         ]
 
@@ -237,10 +238,9 @@ class Game_Store:
                 'name': 'warrior',
                 'image': self.cards.warrior_image_surf,
                 'button': self.button_background_surf,
-                'locked': True,
-                'equip': False,
+                'locked': firebase.troop_storage['warrior'][0],
+                'equip': firebase.troop_storage['warrior'][2],
                 'money': self.money_image_surf,
-                # 'upgrades price': 100,
                 'upgrades price': firebase.troop_storage['warrior'][6],
                 'level': firebase.troop_storage['warrior'][1],
                 'health icon': self.health_image_surf,
@@ -257,10 +257,9 @@ class Game_Store:
                 'name': 'archer',
                 'image': self.cards.archer_image_surf,
                 'button': self.button_background_surf,
-                'locked': False,
-                'equip': False,
+                'locked': firebase.troop_storage['archer'][0],
+                'equip': firebase.troop_storage['archer'][2],
                 'money': self.money_image_surf,
-                # 'upgrades price': 0,
                 'upgrades price': firebase.troop_storage['archer'][6],
                 'level': firebase.troop_storage['archer'][1],
                 'health icon': self.health_image_surf,
@@ -277,10 +276,9 @@ class Game_Store:
                 'name': 'sparta',
                 'image': self.cards.sparta_image_surf,
                 'button': self.button_background_surf,
-                'locked': False,
-                'equip': False,
+                'locked': firebase.troop_storage['sparta'][0],
+                'equip': firebase.troop_storage['sparta'][2],
                 'money': self.money_image_surf,
-                # 'upgrades price': 0,
                 'upgrades price': firebase.troop_storage['sparta'][6],
                 'level': firebase.troop_storage['sparta'][1],
                 'health icon': self.health_image_surf,
@@ -297,10 +295,9 @@ class Game_Store:
                 'name': 'wizard',
                 'image': self.cards.wizard_image_surf,
                 'button': self.button_background_surf,
-                'locked': False,
-                'equip': False,
+                'locked': firebase.troop_storage['wizard'][0],
+                'equip': firebase.troop_storage['wizard'][2],
                 'money': self.money_image_surf,
-                # 'upgrades price': 0,
                 'upgrades price': firebase.troop_storage['wizard'][6],
                 'level': firebase.troop_storage['wizard'][1],
                 'health icon': self.health_image_surf,
@@ -317,10 +314,9 @@ class Game_Store:
                 'name': 'giant',
                 'image': self.cards.giant_image_surf,
                 'button': self.button_background_surf,
-                'locked': False,
-                'equip': False,
+                'locked': firebase.troop_storage['giant'][0],
+                'equip': firebase.troop_storage['giant'][2],
                 'money': self.money_image_surf,
-                # 'upgrades price': 0,
                 'upgrades price': firebase.troop_storage['giant'][6],
                 'level': firebase.troop_storage['giant'][1],
                 'health icon': self.health_image_surf,
@@ -339,12 +335,11 @@ class Game_Store:
             'name': 'freeze',
             'image': self.cards.freeze_card_image_surf,
             'button': self.button_background_surf,
-            'locked': False,
-            'equip': False,
+            'locked': firebase.spell_storage['freeze'][0],
+            'equip': firebase.spell_storage['freeze'][2],
             'level': firebase.spell_storage['freeze'][1],
             'money': self.money_image_surf,
             'diamond icon': self.diamond_image_surf_surf,
-            # 'upgrades price': 0,
             'upgrades price': firebase.spell_storage['freeze'][4],
             'upgrades button': self.upgrades_button_surf,
             'freeze icon': self.freeze_function_image_surf,
@@ -356,12 +351,11 @@ class Game_Store:
             'name': 'healing',
             'image': self.cards.healing_card_image_surf,
             'button': self.button_background_surf,
-            'locked': False,
-            'equip': False,
+            'locked': firebase.spell_storage['healing'][0],
+            'equip': firebase.spell_storage['healing'][2],
             'level': firebase.spell_storage['healing'][1],
             'money': self.money_image_surf,
             'diamond icon': self.diamond_image_surf_surf,
-            # 'upgrades price': 0,
             'upgrades price': firebase.spell_storage['healing'][4],
             'upgrades button': self.upgrades_button_surf,
             'healing icon': self.healing_function_image_surf,
@@ -373,12 +367,11 @@ class Game_Store:
             'name': 'rage',
             'image': self.cards.rage_card_image_surf,
             'button': self.button_background_surf,
-            'locked': False,
-            'equip': False,
+            'locked': firebase.spell_storage['rage'][0],
+            'equip': firebase.spell_storage['rage'][2],
             'level': firebase.spell_storage['rage'][1],
             'money': self.money_image_surf,
             'diamond icon': self.diamond_image_surf_surf,
-            # 'upgrades price': 0,
             'upgrades price': firebase.spell_storage['rage'][4],
             'upgrades button': self.upgrades_button_surf,
             'rage icon': self.rage_function_image_surf,
@@ -493,10 +486,10 @@ class Game_Store:
                                             for troop in self.backpack_troop_list:
                                                 if troop['name'] == item['name']:
                                                     troop.update({
-                                                        'equip': False,
+                                                        'equip': troop_data[2],
                                                         'money': self.money_image_surf,
                                                         'level': troop_data[1],
-                                                        'locked': True
+                                                        'locked': troop_data[0] 
                                                     })
                                                     # Update troop stats based on name
                                                     if item['name'] == 'warrior':
@@ -516,8 +509,8 @@ class Game_Store:
                                             for spell in self.spell_list:
                                                 if spell['name'] == item['name']:
                                                     spell.update({
-                                                        'locked': True,
-                                                        'equip': False,
+                                                        'locked': spell_data[0],
+                                                        'equip': spell_data[2],
                                                     })
                                                     # Update spell-specific data
                                                     if item['name'] == 'freeze':
