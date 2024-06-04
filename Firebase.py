@@ -5,7 +5,7 @@ class Data:
         self.all_user = []
         self.username = "Guest"
         self.password = "888888"
-        self.stage_level = 1
+        self.stage_level = [1]
         self.money = 0
         #troop : [have or not, level, equipped or not, health, attack damage, speed, upgrades_price]
         #health = (current health * 1.1)//1
@@ -52,14 +52,14 @@ class Data:
                 'password': password,
                 'stage_level': 1,
                 'money': 0,
-                'troop_storage': {'warrior': [True, 1],
-                                  'archer': [False, 1],
-                                  'wizard': [False, 1],
-                                  'sparta': [False, 1],
-                                  'giant': [False, 1]},
-                'spell_storage': {'rage': [False, 1],
-                                  'healing': [False, 1],
-                                  'freeze': [False, 1]},
+                'troop_storage': {'warrior': [True, 1, False, 100, 1, 1, 100],
+                                  'archer': [False, 1, False, 200, 5, 1, 200],
+                                  'wizard': [False, 1, False, 250, 5, 1, 300],
+                                  'sparta': [False, 1, False, 300, 3, 1, 400],
+                                  'giant': [False, 1, False, 350, 4, 1, 500]},
+                'spell_storage': {'rage': [False, 1, False, 0.5],
+                                  'healing': [False, 1, False, 300],
+                                  'freeze': [False, 1, False, 0.5]},
                 'castle_storage': {'default_castle': [False, 1, 1]}}
         self.all_user.append(data)
 

@@ -77,7 +77,6 @@ class TroopButton:
             screen.blit(self.lock, self.rect)
 
         self.render_name(screen)
-        print(detail)
 
     def testing(self, screen):
         current_time = pygame.time.get_ticks()

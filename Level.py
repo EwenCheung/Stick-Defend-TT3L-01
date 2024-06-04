@@ -116,6 +116,8 @@ class GameLevel:
 
     def run(self):
         while True:
+            print(firebase.username)
+            print(firebase.stage_level)
             self.screen.fill((255, 255, 255))
 
             self.event_handling()
