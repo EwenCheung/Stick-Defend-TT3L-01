@@ -13,26 +13,27 @@ class Data:
         # attack = (current attack* 1.1)
         # upgrades_price = (current price * 1.1)//1
         self.troop_storage = {
-            "warrior": [True, 1, False, 100, 1, 1, 100],
-            "archer": [False, 1, False, 200, 5, 1, 200],
-            "wizard": [True, 1, False, 250, 5, 1, 300],
-            "sparta": [False, 1, False, 300, 3, 1, 400],
-            "giant": [False, 1, False, 350, 4, 1, 500]
+            "warrior": [True, 1, False, 100, 1, 1, 200],
+            "archer": [False, 1, False, 200, 5, 1, 150],
+            "wizard": [True, 1, False, 250, 5, 1, 200],
+            "sparta": [False, 1, False, 300, 2.5, 1, 350],
+            "giant": [False, 1, False, 350, 3.5, 1, 500]
         }
+
         # spell :[have or not, level, equpped or not, functionality, upgrades price]
         # rage = rage + 0.05
         # healing = healing + 100
         # freeze = freeze + 0.05
         self.spell_storage = {
-            "rage": [False, 1, False, 0.5, 100],
-            "healing": [True, 1, False, 300, 200],
-            "freeze": [False, 1, False, 0.5, 300]
+            "rage": [False, 1, False, 0.1, 150],
+            "healing": [True, 1, False, 100, 150],
+            "freeze": [False, 1, False, 0.1, 150]
         }
         # first upgrades for health, second is formining speed level
         # middle two coloum 1000 stand for health and 10 stand for mining speed
         # and the last two coloum first stand for the health upgrades price, second stand for mining speed upgrades price
         self.castle_storage = {
-            "default_castle": [True, 1, 1, 1000, 10, 150, 150]  # two upgrades
+            "default_castle": [True, 1, 1, 1000, 1, 150, 150]  # two upgrades
         }
 
     # sign in and take the info of the data
