@@ -248,8 +248,8 @@ class Game_Store:
                 'gold icon': self.gold_image_surf_surf,
                 'diamond icon': self.diamond_image_surf_surf,
                 'upgrades button': self.upgrades_button_surf,
-                'health': 1000,
-                'attack damage': 10,
+                'health': (firebase.troop_storage['warrior'][3]*10),
+                'attack damage': (firebase.troop_storage['warrior'][4]*10),
                 'equip button': self.equip_button_surf,
                 'unequip button': self.unequip_button_surf
             },
@@ -267,8 +267,8 @@ class Game_Store:
                 'gold icon': self.gold_image_surf_surf,
                 'diamond icon': self.diamond_image_surf_surf,
                 'upgrades button': self.upgrades_button_surf,
-                'health': 0,
-                'attack damage': 0,
+                'health': (firebase.troop_storage['archer'][3]*10),
+                'attack damage': (firebase.troop_storage['archer'][4]*10),
                 'equip button': self.equip_button_surf,
                 'unequip button': self.unequip_button_surf
             },
@@ -286,8 +286,8 @@ class Game_Store:
                 'gold icon': self.gold_image_surf_surf,
                 'diamond icon': self.diamond_image_surf_surf,
                 'upgrades button': self.upgrades_button_surf,
-                'health': 0,
-                'attack damage': 0,
+                'health': (firebase.troop_storage['sparta'][3]*10),
+                'attack damage': (firebase.troop_storage['sparta'][4]*10),
                 'equip button': self.equip_button_surf,
                 'unequip button': self.unequip_button_surf
             },
@@ -305,8 +305,8 @@ class Game_Store:
                 'gold icon': self.gold_image_surf_surf,
                 'diamond icon': self.diamond_image_surf_surf,
                 'upgrades button': self.upgrades_button_surf,
-                'health': 0,
-                'attack damage': 0,
+                'health': (firebase.troop_storage['wizard'][3]*10),
+                'attack damage': (firebase.troop_storage['wizard'][4]*10),
                 'equip button': self.equip_button_surf,
                 'unequip button': self.unequip_button_surf
             },
@@ -324,8 +324,8 @@ class Game_Store:
                 'gold icon': self.gold_image_surf_surf,
                 'diamond icon': self.diamond_image_surf_surf,
                 'upgrades button': self.upgrades_button_surf,
-                'health': 0,
-                'attack damage': 0,
+                'health': (firebase.troop_storage['giant'][3]*10),
+                'attack damage': (firebase.troop_storage['warrior'][4]*10),
                 'equip button': self.equip_button_surf,
                 'unequip button': self.unequip_button_surf
             }
@@ -343,7 +343,7 @@ class Game_Store:
             'upgrades price': firebase.spell_storage['freeze'][4],
             'upgrades button': self.upgrades_button_surf,
             'freeze icon': self.freeze_function_image_surf,
-            'spell function': 0,
+            'spell function': int(firebase.spell_storage['freeze'][3]*100),
             'equip button': self.equip_button_surf,
             'unequip button': self.unequip_button_surf
         },
@@ -359,7 +359,7 @@ class Game_Store:
             'upgrades price': firebase.spell_storage['healing'][4],
             'upgrades button': self.upgrades_button_surf,
             'healing icon': self.healing_function_image_surf,
-            'healing function': 0,
+            'healing function': int(firebase.spell_storage['healing'][3]),
             'equip button': self.equip_button_surf,
             'unequip button': self.unequip_button_surf
         },
@@ -375,7 +375,7 @@ class Game_Store:
             'upgrades price': firebase.spell_storage['rage'][4],
             'upgrades button': self.upgrades_button_surf,
             'rage icon': self.rage_function_image_surf,
-            'spell function': 0,
+            'spell function': int(firebase.spell_storage['rage'][3]*100),
             'equip button': self.equip_button_surf,
             'unequip button': self.unequip_button_surf
         }
@@ -420,11 +420,11 @@ class Game_Store:
             'image': self.castle_image_surf,
             'name': 'Castle',
             'health icon': self.health_image_surf,
-            'health': 1000,
+            'health': firebase.castle_storage['default_castle'][3],
             'health level': firebase.castle_storage['default_castle'][1],
             'health price': firebase.castle_storage['default_castle'][5],
             'mining icon': self.mining_image_surf,
-            'mining speed': 100,
+            'mining speed': firebase.castle_storage['default_castle'][4],
             'mining speed level': firebase.castle_storage['default_castle'][2],
             'mining speed price': firebase.castle_storage['default_castle'][6],
             'upgrades button': self.upgrades_button_surf,
@@ -493,15 +493,15 @@ class Game_Store:
                                                     })
                                                     # Update troop stats based on name
                                                     if item['name'] == 'warrior':
-                                                        troop.update({'health': 1000, 'attack damage': 10})
+                                                        troop.update({'health': (firebase.troop_storage['warrior'][3]*10), 'attack damage': (firebase.troop_storage['warrior'][4]*10)})
                                                     elif item['name'] == 'archer':
-                                                        troop.update({'health': 2000, 'attack damage': 25})
+                                                        troop.update({'health': (firebase.troop_storage['archer'][3]*10), 'attack damage': (firebase.troop_storage['archer'][4]*10)})
                                                     elif item['name'] == 'sparta':
-                                                        troop.update({'health': 3000, 'attack damage': 30})
+                                                        troop.update({'health': (firebase.troop_storage['sparta'][3]*10), 'attack damage': (firebase.troop_storage['sparta'][4]*10)})
                                                     elif item['name'] == 'wizard':
-                                                        troop.update({'health': 2500, 'attack damage': 25})
+                                                        troop.update({'health': (firebase.troop_storage['wizard'][3]*10), 'attack damage': (firebase.troop_storage['wizard'][4]*10)})
                                                     elif item['name'] == 'giant':
-                                                        troop.update({'health': 3500, 'attack damage': 40})
+                                                        troop.update({'health': (firebase.troop_storage['giant'][3]*10), 'attack damage': (firebase.troop_storage['giant'][4]*10)})
                                     else:
                                         spell_data = firebase.spell_storage.get(item['name'])
                                         if spell_data:
@@ -511,14 +511,15 @@ class Game_Store:
                                                     spell.update({
                                                         'locked': spell_data[0],
                                                         'equip': spell_data[2],
+                                                        'level': spell_data[1]
                                                     })
                                                     # Update spell-specific data
                                                     if item['name'] == 'freeze':
-                                                        spell.update({'spell function': 50})
+                                                        spell.update({'spell function': int(firebase.spell_storage['freeze'][3]*100)})
                                                     elif item['name'] == 'healing':
-                                                        spell.update({'healing function': 300})
+                                                        spell.update({'healing function': int(firebase.spell_storage['healing'][3])})
                                                     elif item['name'] == 'rage':
-                                                        spell.update({'spell function': 50})
+                                                        spell.update({'spell function': int(firebase.spell_storage['rage'][3]*100)})
                                 else:
                                     break       
 
@@ -677,9 +678,7 @@ class Game_Store:
                                         print(spell_data)
                                     
                                     else:
-                                        item['upgrades price'] = int((item['upgrades price'])*1.1)//1  
                                         item['healing function'] += 100
-                                        item['level'] += 1
                                         #handle firebase data
                                         spell_data[1] += 1
                                         spell_data[3] += 100
@@ -932,7 +931,7 @@ class Game_Store:
                             gold_icon_rect = gold_icon_surf.get_rect(midleft=(375, 293))
                             self.screen.blit(gold_icon_surf, gold_icon_rect)
 
-                            gold_text_surf = self.font.render(str(300), True, 'White')
+                            gold_text_surf = self.font.render(str(100), True, 'White')
                             gold_text_rect = gold_text_surf.get_rect(midleft=(406, 293))
                             self.screen.blit(gold_text_surf, gold_text_rect)
 
@@ -940,7 +939,7 @@ class Game_Store:
                             diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366, 330))
                             self.screen.blit(diamond_icon_surf, diamond_icon_rect)
 
-                            diamond_text_surf = self.font.render(str(400), True, "White")
+                            diamond_text_surf = self.font.render(('-'), True, "White")
                             diamond_text_rect = diamond_text_surf.get_rect(midleft=(406, 332))
                             self.screen.blit(diamond_text_surf, diamond_text_rect)
 
@@ -1016,7 +1015,7 @@ class Game_Store:
                             diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366, 330))
                             self.screen.blit(diamond_icon_surf, diamond_icon_rect)
 
-                            diamond_text_surf = self.font.render(str(400), True, "White")
+                            diamond_text_surf = self.font.render(str(200), True, "White")
                             diamond_text_rect = diamond_text_surf.get_rect(midleft=(406, 332))
                             self.screen.blit(diamond_text_surf, diamond_text_rect)
 
@@ -1084,7 +1083,7 @@ class Game_Store:
                             gold_icon_rect = gold_icon_surf.get_rect(midleft=(375, 293))
                             self.screen.blit(gold_icon_surf, gold_icon_rect)
 
-                            gold_text_surf = self.font.render(str(300), True, 'White')
+                            gold_text_surf = self.font.render(str(700), True, 'White')
                             gold_text_rect = gold_text_surf.get_rect(midleft=(406, 293))
                             self.screen.blit(gold_text_surf, gold_text_rect)
 
@@ -1092,7 +1091,7 @@ class Game_Store:
                             diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366, 330))
                             self.screen.blit(diamond_icon_surf, diamond_icon_rect)
 
-                            diamond_text_surf = self.font.render(str(400), True, "White")
+                            diamond_text_surf = self.font.render(str(200), True, "White")
                             diamond_text_rect = diamond_text_surf.get_rect(midleft=(406, 332))
                             self.screen.blit(diamond_text_surf, diamond_text_rect)
 
@@ -1160,7 +1159,7 @@ class Game_Store:
                             gold_icon_rect = gold_icon_surf.get_rect(midleft=(375, 293))
                             self.screen.blit(gold_icon_surf, gold_icon_rect)
 
-                            gold_text_surf = self.font.render(str(300), True, 'White')
+                            gold_text_surf = self.font.render(str(500), True, 'White')
                             gold_text_rect = gold_text_surf.get_rect(midleft=(406, 293))
                             self.screen.blit(gold_text_surf, gold_text_rect)
 
@@ -1168,7 +1167,7 @@ class Game_Store:
                             diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366, 330))
                             self.screen.blit(diamond_icon_surf, diamond_icon_rect)
 
-                            diamond_text_surf = self.font.render(str(400), True, "White")
+                            diamond_text_surf = self.font.render(str(500), True, "White")
                             diamond_text_rect = diamond_text_surf.get_rect(midleft=(406, 332))
                             self.screen.blit(diamond_text_surf, diamond_text_rect)
 
@@ -1236,7 +1235,7 @@ class Game_Store:
                             gold_icon_rect = gold_icon_surf.get_rect(midleft=(375, 293))
                             self.screen.blit(gold_icon_surf, gold_icon_rect)
 
-                            gold_text_surf = self.font.render(str(300), True, 'White')
+                            gold_text_surf = self.font.render(str(700), True, 'White')
                             gold_text_rect = gold_text_surf.get_rect(midleft=(406, 293))
                             self.screen.blit(gold_text_surf, gold_text_rect)
 
@@ -1244,7 +1243,7 @@ class Game_Store:
                             diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366, 330))
                             self.screen.blit(diamond_icon_surf, diamond_icon_rect)
 
-                            diamond_text_surf = self.font.render(str(400), True, "White")
+                            diamond_text_surf = self.font.render(str(200), True, "White")
                             diamond_text_rect = diamond_text_surf.get_rect(midleft=(406, 332))
                             self.screen.blit(diamond_text_surf, diamond_text_rect)
 
