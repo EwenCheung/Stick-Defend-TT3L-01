@@ -485,7 +485,7 @@ class GameStickOfWar:
         self.warrior_button_flash = pygame.image.load('War of stick/Picture/button_flash/warrior_flash.png')
         self.warrior_lock = pygame.image.load('War of stick/Picture/button_lock/warrior_lock.png')
         self.warrior_button = TroopButton(self, self.warrior_button_image, self.warrior_button_dim_image, self.warrior_button_flash, self.warrior_lock,
-                                          (100, 100), (100, 70), '100n-', 3000, 100, 0)
+                                          (100, 100), (100, 70), '100n-', 3000, 100, 10)
 
         # Troop Two
         # Archer walk
