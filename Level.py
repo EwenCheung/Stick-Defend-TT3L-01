@@ -102,17 +102,7 @@ class GameLevel:
         self.two_star_ten_rect = self.two_star_surf.get_rect(center=(805, 470))
         self.three_star_ten_rect = self.three_star_surf.get_rect(center=(805, 470))
 
-        # self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
-        self.level_one = [(self.no_star_surf, self.no_star_one_rect)]
-        self.level_two = [(self.no_star_surf, self.no_star_two_rect)]
-        self.level_three = [(self.no_star_surf, self.no_star_three_rect)]
-        self.level_four = [(self.no_star_surf, self.no_star_four_rect)]
-        self.level_five = [(self.no_star_surf, self.no_star_five_rect)]
-        self.level_six = [(self.no_star_surf, self.no_star_six_rect)]
-        self.level_seven = [(self.no_star_surf, self.no_star_seven_rect)]
-        self.level_eight = [(self.no_star_surf, self.no_star_eight_rect)]
-        self.level_nine = [(self.no_star_surf, self.no_star_nine_rect)]
-        self.level_ten = [(self.no_star_surf, self.no_star_ten_rect)]
+        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
 
     def choose_level(self):
         self.wood_plank_rectangle_back = self.wood_plank_surface.get_rect(center=(115, 100))
@@ -313,53 +303,65 @@ class GameLevel:
 
                 if firebase.stage_level >= 1:
                     if self.wood_plank_rectangle_one.collidepoint(pygame.mouse.get_pos()):
+                        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        self.playing_lvl[0] = True
                         stick_of_war.run()
-                        self.achievement()
                         
+                    
                 if firebase.stage_level >= 2:
                     if self.wood_plank_rectangle_two.collidepoint(pygame.mouse.get_pos()):
+                        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        self.playing_lvl[1] = True
                         stick_of_war.run()
-                        self.achievement()
+
 
                 if firebase.stage_level >= 3:
                     if self.wood_plank_rectangle_three.collidepoint(pygame.mouse.get_pos()):
+                        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        self.playing_lvl[2] = True
                         stick_of_war.run()
-                        self.achievement()
 
                 if firebase.stage_level >= 4:
                     if self.wood_plank_rectangle_four.collidepoint(pygame.mouse.get_pos()):
-                        stick_of_war.run()
-                        self.achievement()
+                        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        self.playing_lvl[3] = True
+                        stick_of_war.run()                    
 
                 if firebase.stage_level >= 5:
                     if self.wood_plank_rectangle_five.collidepoint(pygame.mouse.get_pos()):
+                        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        self.playing_lvl[4] = True
                         stick_of_war.run()
-                        self.achievement()
 
                 if firebase.stage_level >= 6:
                     if self.wood_plank_rectangle_six.collidepoint(pygame.mouse.get_pos()):
+                        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        self.playing_lvl[5] = True
                         stick_of_war.run()
-                        self.achievement()
 
                 if firebase.stage_level >= 7:
                     if self.wood_plank_rectangle_seven.collidepoint(pygame.mouse.get_pos()):
+                        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        self.playing_lvl[6] = True
                         stick_of_war.run()
-                        self.achievement()
 
                 if firebase.stage_level >= 8:
                     if self.wood_plank_rectangle_eight.collidepoint(pygame.mouse.get_pos()):
+                        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        self.playing_lvl[7] = True
                         stick_of_war.run()
-                        self.achievement()
 
                 if firebase.stage_level >= 9:
                     if self.wood_plank_rectangle_nine.collidepoint(pygame.mouse.get_pos()):
+                        # self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        # self.playing_lvl[8] = True
                         stick_of_war.run()
-                        self.achievement()
 
                 if firebase.stage_level >= 10:     
                     if self.wood_plank_rectangle_ten.collidepoint(pygame.mouse.get_pos()):
+                        # self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        # self.playing_lvl[9] = True
                         stick_of_war.run()
-                        self.achievement()
 
     def go_store_py(self):
         # self.level_select_music.stop()
@@ -381,166 +383,146 @@ class GameLevel:
         stick_of_war.check_game_over()
         if stick_of_war.winner == "Enemy" or pygame.init:
             if firebase.stage_level >= 1:
-                for star in self.level_one:
-                    self.screen.blit(star[0], star[1])
+                self.screen.blit(self.no_star_surf, self.no_star_one_rect)
             if firebase.stage_level >= 2:
-                for star in self.level_two:
-                    self.screen.blit(star[0], star[1])
+                self.screen.blit(self.no_star_surf, self.no_star_two_rect)
             if firebase.stage_level >= 3:
-                for star in self.level_three:
-                    self.screen.blit(star[0], star[1])
+                self.screen.blit(self.no_star_surf, self.no_star_three_rect)
             if firebase.stage_level >= 4:
-                for star in self.level_four:
-                    self.screen.blit(star[0], star[1])
+                self.screen.blit(self.no_star_surf, self.no_star_four_rect)
             if firebase.stage_level >= 5:
-                for star in self.level_five:
-                    self.screen.blit(star[0], star[1])
+                self.screen.blit(self.no_star_surf, self.no_star_five_rect)
             if firebase.stage_level >= 6:
-                for star in self.level_six:
-                    self.screen.blit(star[0], star[1])
+                self.screen.blit(self.no_star_surf, self.no_star_six_rect)
             if firebase.stage_level >= 7:
-                for star in self.level_seven:
-                    self.screen.blit(star[0], star[1])
+                self.screen.blit(self.no_star_surf, self.no_star_seven_rect)
             if firebase.stage_level >= 8:
-                for star in self.level_eight:
-                    self.screen.blit(star[0], star[1])
+                self.screen.blit(self.no_star_surf, self.no_star_eight_rect)
             if firebase.stage_level >= 9:
-                for star in self.level_nine:
-                    self.screen.blit(star[0], star[1])
+                self.screen.blit(self.no_star_surf, self.no_star_nine_rect)
             if firebase.stage_level >= 10:
-                for star in self.level_ten:
-                    self.screen.blit(star[0], star[1])
+                self.screen.blit(self.no_star_surf, self.no_star_ten_rect)
             
-        elif stick_of_war.winner == "User":
+        if stick_of_war.winner == "User":
             if firebase.stage_level >= 1:
-                self.level_one = []
                 if 0 <= stick_of_war.current_time <= 120000:
-                    self.level_one.append(self.three_star_surf, self.three_star_one_rect)
+                    self.screen.blit(self.three_star_surf, self.three_star_one_rect)
                     
                 elif 120000 < stick_of_war.current_time <= 240000:
-                    self.level_one.append(self.two_star_surf, self.two_star_one_rect)
+                    self.screen.blit(self.two_star_surf, self.two_star_one_rect)
                     
                 elif stick_of_war.current_time > 240000:
-                    self.level_one.append(self.one_star_surf, self.one_star_one_rect)
+                    self.screen.blit(self.one_star_surf, self.one_star_one_rect)
 
-                self.screen.blit(self.level_one[0], self.level_one[1])
-
-            elif firebase.stage_level >= 2:   
-                self.level_two = [] 
+                self.playing_lvl[0] = False
+                    
+            if firebase.stage_level >= 2:                   
                 if 0 <= stick_of_war.current_time <= 120000:
-                    self.level_two.append(self.three_star_surf, self.three_star_two_rect)
+                    self.screen.blit(self.three_star_surf, self.three_star_two_rect)
                     
                 elif 120000 < stick_of_war.current_time <= 240000:
-                    self.level_two.append(self.two_star_surf, self.two_star_two_rect)
-                    
-                elif stick_of_war.current_time > 240000:
-                    self.level_two.append(self.one_star_surf, self.one_star_two_rect)
-                
-                self.screen.blit(self.level_two[0], self.level_two[1])
+                    self.screen.blit(self.two_star_surf, self.two_star_two_rect)
 
-            elif firebase.stage_level >= 3:
-                self.level_three = []
+                elif stick_of_war.current_time > 240000:
+                    self.screen.blit(self.one_star_surf, self.one_star_two_rect)
+
+                self.playing_lvl[1] = False
+
+            if firebase.stage_level >= 3:
                 if 0 <= stick_of_war.current_time <= 120000:
-                    self.level_three.append(self.three_star_surf, self.three_star_three_rect)
-                    
+                    self.screen.blit(self.three_star_surf, self.three_star_three_rect)
+
                 elif 120000 < stick_of_war.current_time <= 240000:
-                    self.level_three.append(self.two_star_surf, self.two_star_three_rect)
-                    
+                    self.screen.blit(self.two_star_surf, self.two_star_three_rect)
+
                 elif stick_of_war.current_time > 240000:
-                    self.level_three.append(self.one_star_surf, self.one_star_three_rect)
+                    self.screen.blit(self.one_star_surf, self.one_star_three_rect)
 
-                self.screen.blit(self.level_three[0], self.level_three[1])
+                self.playing_lvl[2] = False
 
-            elif firebase.stage_level >= 4:
-                self.level_four = []
+            if firebase.stage_level >= 4:
                 if 0 <= stick_of_war.current_time <= 120000:
-                    self.level_four.append(self.three_star_surf, self.three_star_four_rect)
-                    
+                    self.screen.blit(self.three_star_surf, self.three_star_four_rect)
+
                 elif 120000 < stick_of_war.current_time <= 240000:
-                    self.level_four.append(self.two_star_surf, self.two_star_four_rect)
-                    
+                    self.screen.blit(self.two_star_surf, self.two_star_four_rect)
+
                 elif stick_of_war.current_time > 240000:
-                    self.level_four.append(self.one_star_surf, self.one_star_four_rect)
+                    self.screen.blit(self.one_star_surf, self.one_star_four_rect)
 
-                self.screen.blit(self.level_four[0], self.level_four[1])
+                self.playing_lvl[3] = False
 
-            elif firebase.stage_level >= 5:
-                self.level_five = []
+            if firebase.stage_level >= 5:
                 if 0 <= stick_of_war.current_time <= 120000:
-                    self.level_five.append(self.three_star_surf, self.three_star_five_rect)
-                    
+                    self.screen.blit(self.three_star_surf, self.three_star_five_rect)
+
                 elif 120000 < stick_of_war.current_time <= 240000:
-                    self.level_five.append(self.two_star_surf, self.two_star_five_rect)
-                    
+                    self.screen.blit(self.two_star_surf, self.two_star_five_rect)
+
                 elif stick_of_war.current_time > 240000:
-                    self.level_five.append(self.one_star_surf, self.one_star_five_rect)
+                    self.screen.blit(self.one_star_surf, self.one_star_five_rect)
 
-                self.screen.blit(self.level_five[0], self.level_five[1])
+                self.playing_lvl[4] = False
 
-            elif firebase.stage_level >= 6:
-                self.level_six = []
+            if firebase.stage_level >= 6:
                 if 0 <= stick_of_war.current_time <= 120000:
-                    self.level_six.append(self.three_star_surf, self.three_star_six_rect)
-                    
+                    self.screen.blit(self.three_star_surf, self.three_star_six_rect)
+
                 elif 120000 < stick_of_war.current_time <= 240000:
-                    self.level_six.append(self.two_star_surf, self.two_star_six_rect)
-                    
-                elif stick_of_war.current_time > 240000:
-                    self.level_six.append(self.one_star_surf, self.one_star_six_rect)
+                    self.screen.blit(self.two_star_surf, self.two_star_six_rect)
 
-                self.screen.blit(self.level_six[0], self.level_six[1])
+                elif stick_of_war.current_time >= 240000:
+                    self.screen.blit(self.one_star_surf, self.one_star_six_rect)
 
-            elif firebase.stage_level >= 7:
-                self.level_seven = []
+                self.playing_lvl[5] = False
+
+            if firebase.stage_level >= 7:
                 if 0 <= stick_of_war.current_time <= 120000:
-                    self.level_seven.append(self.three_star_surf, self.three_star_seven_rect)
-                    
+                    self.screen.blit(self.three_star_surf, self.three_star_seven_rect)
+
                 elif 120000 < stick_of_war.current_time <= 240000:
-                    self.level_seven.append(self.two_star_surf, self.two_star_seven_rect)
-                    
-                elif stick_of_war.current_time > 240000:
-                    self.level_seven.append(self.one_star_surf, self.one_star_seven_rect)
+                    self.screen.blit(self.two_star_surf, self.two_star_seven_rect)
 
-                self.screen.blit(self.level_seven[0], self.level_seven[1])
+                elif stick_of_war.current_time >= 240000:
+                    self.screen.blit(self.one_star_surf, self.one_star_seven_rect)
 
-            elif firebase.stage_level >= 8:
-                self.level_eight = []
+                self.playing_lvl[6] = False
+
+            if firebase.stage_level >= 8:
                 if 0 <= stick_of_war.current_time <= 120000:
-                    self.level_eight.append(self.three_star_surf, self.three_star_eight_rect)
-                    
+                    self.screen.blit(self.three_star_surf, self.three_star_eight_rect)
+
                 elif 120000 < stick_of_war.current_time <= 240000:
-                    self.level_eight.append(self.two_star_surf, self.two_star_eight_rect)
-                    
-                elif stick_of_war.current_time > 240000:
-                    self.level_eight.append(self.one_star_surf, self.one_star_eight_rect)
+                    self.screen.blit(self.two_star_surf, self.two_star_eight_rect)
 
-                self.screen.blit(self.level_eight[0], self.level_eight[1])
+                elif stick_of_war.current_time >= 240000:
+                    self.screen.blit(self.one_star_surf, self.one_star_eight_rect)
 
-            elif firebase.stage_level >= 9:
-                self.level_nine = []
+                self.playing_lvl[7] = False
+
+            if firebase.stage_level >= 9:
                 if 0 <= stick_of_war.current_time <= 120000:
-                    self.level_nine.append(self.three_star_surf, self.three_star_nine_rect)
-                    
+                    self.screen.blit(self.three_star_surf, self.three_star_nine_rect)
+
                 elif 120000 < stick_of_war.current_time <= 240000:
-                    self.level_nine.append(self.two_star_surf, self.two_star_nine_rect)
-                    
+                    self.screen.blit(self.two_star_surf, self.two_star_nine_rect)
+
                 elif stick_of_war.current_time > 240000:
-                    self.level_nine.append(self.one_star_surf, self.one_star_nine_rect)
+                    self.screen.blit(self.one_star_surf, self.one_star_nine_rect)
 
-                self.screen.blit(self.level_nine[0], self.level_nine[1])
+                self.playing_lvl[8] = False
 
-            elif firebase.stage_level >= 10:
-                self.level_ten = []
+            if firebase.stage_level >= 10:
                 if 0 <= stick_of_war.current_time <= 120000:
-                    self.level_ten.append(self.three_star_surf, self.three_star_ten_rect)
-                    
-                elif 120000 < stick_of_war.current_time <= 240000:
-                    self.level_ten.append(self.two_star_surf, self.two_star_ten_rect)
-                    
-                elif stick_of_war.current_time > 240000:
-                    self.level_ten.append(self.one_star_surf, self.one_star_ten_rect)
+                    self.screen.blit(self.three_star_surf, self.three_star_ten_rect)
 
-                self.screen.blit(self.level_ten[0], self.level_ten[1])
+                elif 120000 < stick_of_war.current_time <= 240000:
+                    self.screen.blit(self.two_star_surf, self.two_star_ten_rect)
+
+                elif stick_of_war.current_time > 240000:  
+                    self.screen.blit(self.one_star_surf, self.one_star_ten_rect)
+
+                self.playing_lvl[9] = False
                 
     def run(self):
         while True:

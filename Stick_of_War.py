@@ -485,7 +485,7 @@ class GameStickOfWar:
         self.warrior_button_flash = pygame.image.load('War of stick/Picture/button_flash/warrior_flash.png')
         self.warrior_lock = pygame.image.load('War of stick/Picture/button_lock/warrior_lock.png')
         self.warrior_button = TroopButton(self, self.warrior_button_image, self.warrior_button_dim_image, self.warrior_button_flash, self.warrior_lock,
-                                          (100, 100), (100, 70), '100n-', 3000, 100, 10)
+                                          (100, 100), (100, 70), '100n-', 3000, 100, 0)
 
         # Troop Two
         # Archer walk
@@ -855,8 +855,8 @@ class GameStickOfWar:
         self.screen.blit(self.background_image, (self.bg_x, 0))
 
         if not self.game_over:
-            current_time = pygame.time.get_ticks()  # Get the current time
-            self.elapsed_time_seconds = (current_time) / 1000  # Convert milliseconds to seconds
+            self.current_time = pygame.time.get_ticks()  # Get the current time
+            self.elapsed_time_seconds = (self.current_time) / 1000  # Convert milliseconds to seconds
             self.minutes = int(self.elapsed_time_seconds // 60)
             self.seconds = int(self.elapsed_time_seconds % 60)
             self.time_string = f"{self.minutes:02}:{self.seconds:02}"
