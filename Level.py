@@ -590,5 +590,3 @@ class GameLevel:
 
 if __name__ == '__main__':
     GameLevel().run()
-
-level = GameLevel()
