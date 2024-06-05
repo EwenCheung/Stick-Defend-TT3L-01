@@ -23,6 +23,9 @@ class GameLevel:
         self.lock_surf = pygame.transform.scale(self.lock, ( 100, 100))
         self.level_bg = pygame.image.load('War of stick/Picture/utils/choose level.png')
 
+        self.level_select_music = pygame.mixer.Sound('War of stick/Music/level.mp3')
+        self.level_select_music.set_volume(0.2)
+        self.level_select_music.play(loops=-1)
 
     def choose_level(self):
         self.wood_plank_rectangle_back = self.wood_plank_surface.get_rect(center=(115, 100))
