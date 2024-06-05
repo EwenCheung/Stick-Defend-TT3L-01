@@ -7,7 +7,7 @@ class Data:
         self.login_method = None
         self.username = "Guest"
         self.password = "888888"
-        self.stage_level = 1
+        self.stage_level = 4
         self.money = 100
         # troop : [have or not, level, equipped or not, health, attack damage, speed, upgrades_price]
         # health = (current health * 1.1)//1
@@ -26,8 +26,8 @@ class Data:
         # healing = healing + 100
         # freeze = freeze + 0.05
         self.spell_storage = {
-            "rage": [False, 1, False, 0.1, 150],
-            "healing": [False, 1, False, 100, 150],
+            "rage": [True, 1, False, 0.1, 150],
+            "healing": [True, 1, False, 100, 150],
             "freeze": [False, 1, False, 0.1, 150]
         }
         # first upgrades for health, second is formining speed level
