@@ -2,7 +2,8 @@
 import pygame
 from sys import exit
 from random import choice, randint
-from Firebase import firebase
+import importlib
+from Firebase import firebase       
 
 pygame.init()
 pygame.font.init()
@@ -291,6 +292,10 @@ class GameStickOfWar:
     def __init__(self):
         pygame.init()
         pygame.font.init()
+        self.reset_func()
+
+
+    def reset_func(self):
         self.clock = pygame.time.Clock()
         pygame.display.set_caption('Tower Defend')  # title name
         self.screen = pygame.display.set_mode((1000, 600))
@@ -312,8 +317,8 @@ class GameStickOfWar:
         self.game_over = False
         self.winner = None
         self.chosen_spell = None
-        self.spell_animation = False
-        self.time_string = ""
+        self.spell_animation = False      
+        self.time_string = None
         self.num_troops = 0
         self.healing_press = False
         self.freeze_press = False
@@ -451,6 +456,14 @@ class GameStickOfWar:
 
         self.lock = pygame.image.load('War of stick/Picture/utils/lock.png')
         self.lock_surf = pygame.transform.scale(self.lock, (50, 50))
+
+        self.wood_plank = pygame.image.load('Plant vs Stick/Picture/utils/wood.png').convert()
+        self.wood_plank_surface = pygame.transform.scale(self.wood_plank, (100, 50))
+        self.wood_plank_rect = self.wood_plank_surface.get_rect(center=(500, 500))
+
+        self.level_text = pygame.font.Font(None, 50)
+        self.level_text_surf = self.level_text.render("Level", True, (255, 255, 255))
+        self.level_text_rect = self.level_text_surf.get_rect(center=(500, 500))
 
         # Troop One
         # Warrior run
@@ -653,6 +666,11 @@ class GameStickOfWar:
                 firebase.push_data()
                 pygame.quit()
                 exit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.wood_plank_rect.collidepoint(pygame.mouse.get_pos()):
+                    self.go_level_py()
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Check if left mouse button is pressed
                     clicked_troop(100, 200, self.warrior_button, self.warrior_frame_storage, self.warrior_attack_frame_storage, 100,
@@ -826,6 +844,13 @@ class GameStickOfWar:
             self.winner = "User"
             firebase.stage_level += 1
 
+    def go_level_py(self):
+        level_module = importlib.import_module("Level")
+        game_level = level_module.GameLevel()
+        game_level.run()
+        exit()
+        
+
     def game_start(self):
         # Clear screen
         self.screen.fill((255, 255, 255))
@@ -841,10 +866,10 @@ class GameStickOfWar:
 
         if not self.game_over:
             current_time = pygame.time.get_ticks()  # Get the current time
-            elapsed_time_seconds = (current_time) / 1000  # Convert milliseconds to seconds
-            minutes = int(elapsed_time_seconds // 60)
-            seconds = int(elapsed_time_seconds % 60)
-            self.time_string = f"{minutes:02}:{seconds:02}"
+            self.elapsed_time_seconds = (current_time) / 1000  # Convert milliseconds to seconds
+            self.minutes = int(self.elapsed_time_seconds // 60)
+            self.seconds = int(self.elapsed_time_seconds % 60)
+            self.time_string = f"{self.minutes:02}:{self.seconds:02}"
             timer_surface = pygame.font.Font(None, 30).render(self.time_string, True, 'black')
             timer_rect = timer_surface.get_rect(center=(908, 50))
             self.screen.blit(timer_surface, timer_rect)
@@ -956,6 +981,8 @@ class GameStickOfWar:
             time_rect = time.get_rect(center=(500, 400))
             self.screen.blit(text, text_rect)
             self.screen.blit(time, time_rect)
+            self.screen.blit(self.wood_plank_surface, self.wood_plank_rect)
+            self.screen.blit(self.level_text_surf, self.level_text_rect)
             return  # End the game
 
         for troop in self.troop_on_court:
@@ -982,6 +1009,7 @@ class GameStickOfWar:
             enemy.update_ninja()
 
     def run(self):
+        self.reset_func()
         while True:
             self.game_start()
             self.event_handling()
@@ -990,5 +1018,7 @@ class GameStickOfWar:
             self.clock.tick(60)  # Limit frame rate to 60 FPS
 
 
-if __name__ == "__main__":
-    GameStickOfWar().run()
+
+
+stick_of_war = GameStickOfWar()
+
