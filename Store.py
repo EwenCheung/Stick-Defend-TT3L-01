@@ -279,7 +279,7 @@ class Game_Store:
                 'diamond icon': self.diamond_image_surf_surf,
                 'upgrades button': self.upgrades_button_surf,
                 'health': (firebase.troop_storage['archer'][3] * 10),
-                'attack damage': (firebase.troop_storage['archer'][4] * 10),
+                'attack damage': (firebase.troop_storage['archer'][4] * 5),
                 'equip button': self.equip_button_surf,
                 'unequip button': self.unequip_button_surf
             },
@@ -317,7 +317,7 @@ class Game_Store:
                 'diamond icon': self.diamond_image_surf_surf,
                 'upgrades button': self.upgrades_button_surf,
                 'health': (firebase.troop_storage['wizard'][3] * 10),
-                'attack damage': (firebase.troop_storage['wizard'][4] * 10),
+                'attack damage': (firebase.troop_storage['wizard'][4] * 5),
                 'equip button': self.equip_button_surf,
                 'unequip button': self.unequip_button_surf
             },
@@ -509,13 +509,13 @@ class Game_Store:
                                                                       'attack damage': (firebase.troop_storage['warrior'][4] * 10)})
                                                     elif item['name'] == 'archer':
                                                         troop.update({'health': (firebase.troop_storage['archer'][3] * 10),
-                                                                      'attack damage': (firebase.troop_storage['archer'][4] * 10)})
+                                                                      'attack damage': (firebase.troop_storage['archer'][4] * 5)})
                                                     elif item['name'] == 'sparta':
                                                         troop.update({'health': (firebase.troop_storage['sparta'][3] * 10),
                                                                       'attack damage': (firebase.troop_storage['sparta'][4] * 10)})
                                                     elif item['name'] == 'wizard':
                                                         troop.update({'health': (firebase.troop_storage['wizard'][3] * 10),
-                                                                      'attack damage': (firebase.troop_storage['wizard'][4] * 10)})
+                                                                      'attack damage': (firebase.troop_storage['wizard'][4] * 5)})
                                                     elif item['name'] == 'giant':
                                                         troop.update({'health': (firebase.troop_storage['giant'][3] * 10),
                                                                       'attack damage': (firebase.troop_storage['giant'][4] * 10)})
@@ -626,7 +626,7 @@ class Game_Store:
                                     troop_data[3] = (troop_data[3] * 1.1) // 1  # Update health
                                     troop_data[4] = (troop_data[4] * 1.1)  # Update attack damage
                                     troop_data[6] = (troop_data[6] * 1.1) // 1  # update upgrades price
-
+                                    
                             equip_button_rect = item['equip button'].get_rect(midbottom=(383, 565))
                             if equip_button_rect.collidepoint(mouse_pos):
                                 if item['equip']:
