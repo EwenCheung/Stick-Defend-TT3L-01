@@ -4,6 +4,7 @@ import ast
 class Data:
     def __init__(self):
         self.all_user = []
+        self.login_method = None
         self.username = "Guest"
         self.password = "888888"
         self.stage_level = 4
@@ -47,6 +48,7 @@ class Data:
                 self.troop_storage = user["troop_storage"]
                 self.spell_storage = user["spell_storage"]
                 self.castle_storage = user["castle_storage"]
+                self.login_method = "sign_in"
                 return True
         else:
             return False

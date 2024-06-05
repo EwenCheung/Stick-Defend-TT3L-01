@@ -39,6 +39,7 @@ class GameHome:
 
         self.image = pygame.image.load(
             "War of stick/Picture/utils/background_photo.jpg")  # Replace "home_image.jpg" with your image path
+        self.image = pygame.transform.scale(self.image, (1000, 600))
         self.image_rect = self.image.get_rect(center=(1000 // 2, 600 // 2))
 
         self.wood_plank_surface = pygame.image.load('Plant vs Stick/Picture/utils/wood.png').convert()
@@ -52,8 +53,7 @@ class GameHome:
         self.loading = True
         self.finish_loading = False
 
-        self.font = pygame.font.Font(None, 40)
-        self.first_time = True
+        self.font = pygame.font.Font(None, 35)
         self.choose_game_to_play = False
         self.choosing_login_method = True
         self.signing_in = False
@@ -126,7 +126,6 @@ class GameHome:
                 elif self.back_rectangle.collidepoint(pygame.mouse.get_pos()):
                     self.choosing_login_method = True
                     self.choose_game_to_play = False
-                    self.first_time = True
             if self.choosing_login_method and event.type == pygame.MOUSEBUTTONDOWN:
                 if self.sign_in_rect.collidepoint(pygame.mouse.get_pos()) and not self.signing_up and not self.login_as_guest:
                     self.signing_in = True
@@ -240,10 +239,10 @@ class GameHome:
                 self.login_as_guest = False
                 self.choosing_login_method = False
                 self.choose_game_to_play = True
+                firebase.login_method = "Guest"
 
 
     def go_pokemon_py(self):
-        self.first_time = False
         importlib.invalidate_caches()  # Clear any cached importlib entries
         pokemon_module = importlib.import_module("Pokemon_vs_Stick")
         game_pokemon = pokemon_module.GamePokemonVsStick()
@@ -251,7 +250,6 @@ class GameHome:
         exit()
 
     def go_level_py(self):
-        self.first_time = False
         importlib.invalidate_caches()  # Clear any cached importlib entries
         level_module = importlib.import_module('Level')
         game_level = level_module.GameLevel()
@@ -283,7 +281,7 @@ class GameHome:
         self.screen.blit(text_surf, text_rect)
 
     def choose_game(self):
-        self.draw_button_with_text(self.wood_plank_surface, self.wood_plank_surface.get_rect(center=(350, 430)), 'Plant vs Zombie')
+        self.draw_button_with_text(self.wood_plank_surface, self.wood_plank_surface.get_rect(center=(350, 430)), 'Bokomon vs Stick')
         self.pokemon_vs_naruto_rect = self.wood_plank_surface.get_rect(center=(350, 430))
 
         self.draw_button_with_text(self.wood_plank_surface, self.wood_plank_surface.get_rect(center=(650, 430)), 'Stick of War')
@@ -386,7 +384,7 @@ class GameHome:
 
             self.event_handling()
             self.game_start_bg()
-            if self.first_time:
+            if firebase.login_method is None:
                 if self.loading:
                     self.update_progress()
                 elif self.finish_loading:
