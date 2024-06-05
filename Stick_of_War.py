@@ -290,6 +290,10 @@ class GameStickOfWar:
     def __init__(self):
         pygame.init()
         pygame.font.init()
+        self.reset_func()
+
+
+    def reset_func(self):
         self.clock = pygame.time.Clock()
         pygame.display.set_caption('Tower Defend')  # title name
         self.screen = pygame.display.set_mode((1000, 600))
@@ -992,6 +996,7 @@ class GameStickOfWar:
             enemy.update_ninja()
 
     def run(self):
+        self.reset_func()
         while True:
             self.game_start()
             self.event_handling()
@@ -999,6 +1004,6 @@ class GameStickOfWar:
             pygame.display.update()  # Update the display
             self.clock.tick(60)  # Limit frame rate to 60 FPS
 
-if __name__ == "__main__":
-    GameStickOfWar().run()
+
+stick_of_war = GameStickOfWar()
 

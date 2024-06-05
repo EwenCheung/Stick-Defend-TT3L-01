@@ -109,6 +109,8 @@ class GameLevel:
         self.level_nine = [(self.no_star_surf, self.no_star_nine_rect)]
         self.level_ten = [(self.no_star_surf, self.no_star_ten_rect)]
 
+        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+
     def choose_level(self):
         self.wood_plank_rectangle_back = self.wood_plank_surface.get_rect(center=(115, 100))
 
@@ -304,125 +306,71 @@ class GameLevel:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if self.wood_plank_rectangle_store.collidepoint(pygame.mouse.get_pos()):
                     self.go_store_py()
-                elif self.wood_plank_rectangle_back.collidepoint(pygame.mouse.get_pos()):
+
+                if self.wood_plank_rectangle_back.collidepoint(pygame.mouse.get_pos()):
                     self.go_home_py()
 
                 if firebase.stage_level >=1:
                     if self.wood_plank_rectangle_one.collidepoint(pygame.mouse.get_pos()):
+                        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        self.playing_lvl[0] = True
                         stick_of_war.run()
                         
-
+                    
                 if firebase.stage_level >= 2:
                     if self.wood_plank_rectangle_two.collidepoint(pygame.mouse.get_pos()):
+                        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        self.playing_lvl[1] = True
                         stick_of_war.run()
+
 
                 if firebase.stage_level >= 3:
                     if self.wood_plank_rectangle_three.collidepoint(pygame.mouse.get_pos()):
+                        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        self.playing_lvl[2] = True
                         stick_of_war.run()
 
-                elif firebase.stage_level == 4:
-                    if self.wood_plank_rectangle_one.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_two.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_three.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_four.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
+                if firebase.stage_level >= 4:
+                    if self.wood_plank_rectangle_four.collidepoint(pygame.mouse.get_pos()):
+                        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        self.playing_lvl[3] = True
+                        stick_of_war.run()                    
 
-                elif firebase.stage_level == 5:
-                    if self.wood_plank_rectangle_one.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_two.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_three.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_four.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_five.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
+                if firebase.stage_level >= 5:
+                    if self.wood_plank_rectangle_five.collidepoint(pygame.mouse.get_pos()):
+                        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        self.playing_lvl[4] = True
+                        stick_of_war.run()
 
-                elif firebase.stage_level == 6:
-                    if self.wood_plank_rectangle_one.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_two.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_three.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_four.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_five.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_six.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
+                if firebase.stage_level >= 6:
+                    if self.wood_plank_rectangle_six.collidepoint(pygame.mouse.get_pos()):
+                        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        self.playing_lvl[5] = True
+                        stick_of_war.run()
 
-                elif firebase.stage_level == 7:
-                    if self.wood_plank_rectangle_one.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_two.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_three.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_four.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_five.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_seven.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
+                if firebase.stage_level >= 7:
+                    if self.wood_plank_rectangle_seven.collidepoint(pygame.mouse.get_pos()):
+                        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        self.playing_lvl[6] = True
+                        stick_of_war.run()
 
-                elif firebase.stage_level == 8:
-                    if self.wood_plank_rectangle_one.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_two.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_three.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_four.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_five.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_seven.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_eight.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
+                if firebase.stage_level >= 8:
+                    if self.wood_plank_rectangle_eight.collidepoint(pygame.mouse.get_pos()):
+                        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        self.playing_lvl[7] = True
+                        stick_of_war.run()
 
-                elif firebase.stage_level == 9:
-                    if self.wood_plank_rectangle_one.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_two.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_three.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_four.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_five.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_seven.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_eight.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_nine.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
+                if firebase.stage_level >= 9:
+                    if self.wood_plank_rectangle_nine.collidepoint(pygame.mouse.get_pos()):
+                        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        self.playing_lvl[8] = True
+                        stick_of_war.run()
 
-                elif firebase.stage_level == 10:
-                    if self.wood_plank_rectangle_one.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_two.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_three.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_four.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_five.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_seven.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_eight.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
-                    elif self.wood_plank_rectangle_nine.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()       
-                    elif self.wood_plank_rectangle_ten.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()
+                if firebase.stage_level >= 10:     
+                    if self.wood_plank_rectangle_ten.collidepoint(pygame.mouse.get_pos()):
+                        self.playing_lvl = [False,False,False,False,False,False,False,False,False,False]
+                        self.playing_lvl[9] = True
+                        stick_of_war.run()
 
     def go_store_py(self):
         store_module = importlib.import_module("Store")
@@ -438,514 +386,193 @@ class GameLevel:
         go_home.run()
         exit()
 
-    def go_stick_war_py(self):
-        stick_of_war_module = importlib.import_module("Stick_of_War")
-        game_stick_of_war = stick_of_war_module.GameStickOfWar()
-        game_stick_of_war.run()
-        exit()
-
     def achievement(self):
         stick_of_war.check_game_over()
         if stick_of_war.winner == "User":
-            if firebase.stage_level == 1:
-                self.level_one.clear()
-                if 0 <= stick_of_war.elapsed_time_seconds <= 2:
-                    self.level_one.clear()
-                    self.level_one.append((self.three_star_surf, self.three_star_one_rect))
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-
-                elif 2 < stick_of_war.elapsed_time_seconds <= 4:
-                    self.level_one.clear()
-                    self.level_one.append((self.two_star_surf, self.two_star_one_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-
-                elif stick_of_war.elapsed_time_seconds > 4:
-                    self.level_one.clear()
-                    self.level_one.append((self.one_star_surf, self.one_star_one_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-
-            elif firebase.stage_level == 2:
-                self.level_two.clear()
-                if 0 <= stick_of_war.elapsed_time_seconds <= 2:
-                    self.level_two.clear()
-                    self.level_two.append((self.three_star_surf, self.three_star_two_rect))
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-
-                elif 2 < stick_of_war.elapsed_time_seconds<= 4:
-                    self.level_two.clear()
-                    self.level_two.append((self.two_star_surf, self.two_star_two_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-
-                elif stick_of_war.elapsed_time_seconds > 4:
-                    self.level_two.clear()
-                    self.level_two.append((self.one_star_surf, self.one_star_two_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-
-            elif firebase.stage_level == 3:
-                self.level_three.clear()
-                if 0 <= stick_of_war.elapsed_time_seconds <= 2:
-                    self.level_three.clear()
-                    self.level_three.append((self.three_star_surf, self.three_star_three_rect))
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-
-                elif 2 < stick_of_war.elapsed_time_seconds <= 4:
-                    self.level_three.clear()
-                    self.level_three.append((self.two_star_surf, self.two_star_three_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-
-                elif stick_of_war.elapsed_time_seconds > 4:
-                    self.level_three.clear()
-                    self.level_three.append((self.one_star_surf, self.one_star_three_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-
-            elif firebase.stage_level == 4:
-                self.level_four.clear()
-                if 0 <= stick_of_war.elapsed_time_seconds <= 2:
-                    self.level_four.clear()
-                    self.level_four.append((self.three_star_surf, self.three_star_four_rect))
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-
-                elif 2 < stick_of_war.elapsed_time_seconds <= 4:
-                    self.level_four.clear()
-                    self.level_four.append((self.two_star_surf, self.two_star_four_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-
-                elif stick_of_war.elapsed_time_seconds > 4:
-                    self.level_four.clear()
-                    self.level_four.append((self.one_star_surf, self.one_star_four_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-
-            elif firebase.stage_level == 5:
-                self.level_five.clear()
-                if 0 <= stick_of_war.elapsed_time_seconds <= 2:
-                    self.level_five.clear()
-                    self.level_five.append((self.three_star_surf, self.three_star_five_rect))
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_five:
-                        self.screen.blit(star[0], star[1])
-
-                elif 2 < stick_of_war.elapsed_time_seconds <= 4:
-                    self.level_five.clear()
-                    self.level_five.append((self.two_star_surf, self.two_star_five_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_five:
-                        self.screen.blit(star[0], star[1])
-
-                elif stick_of_war.elapsed_time_seconds > 4:
-                    self.level_five.clear()
-                    self.level_five.append((self.one_star_surf, self.one_star_five_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_five:
-                        self.screen.blit(star[0], star[1])
-
-            elif firebase.stage_level == 6:
-                self.level_six.clear()
-                if 0 <= stick_of_war.elapsed_time_seconds <= 2:
-                    self.level_six.clear()
-                    self.level_six.append((self.three_star_surf, self.three_star_six_rect))
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_five:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_six:
-                        self.screen.blit(star[0], star[1])
-
-                elif 2 < stick_of_war.elapsed_time_seconds <= 4:
-                    self.level_six.clear()
-                    self.level_six.append((self.two_star_surf, self.two_star_six_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_five:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_six:
-                        self.screen.blit(star[0], star[1])
-
-                elif stick_of_war.elapsed_time_seconds >= 4:
-                    self.level_six.clear()
-                    self.level_six.append((self.one_star_surf, self.one_star_six_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_five:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_six:
-                        self.screen.blit(star[0], star[1])
-
-            elif firebase.stage_level == 7:
-                self.level_seven.clear()
-                if 0 <= stick_of_war.elapsed_time_seconds <= 2:
-                    self.level_seven.clear()
-                    self.level_seven.append((self.three_star_surf, self.three_star_seven_rect))
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_five:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_six:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_seven:
-                        self.screen.blit(star[0], star[1])
-
-                elif 2 < stick_of_war.elapsed_time_seconds <= 4:
-                    self.level_seven.clear()
-                    self.level_seven.append((self.two_star_surf, self.two_star_seven_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_five:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_six:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_seven:
-                        self.screen.blit(star[0], star[1])
-
-                elif stick_of_war.elapsed_time_seconds >= 4:
-                    self.level_seven.clear()
-                    self.level_seven.append((self.one_star_surf, self.one_star_seven_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_five:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_six:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_seven:
-                        self.screen.blit(star[0], star[1])
-
-            elif firebase.stage_level == 8:
-                self.level_eight.clear()
-                if 0 <= stick_of_war.elapsed_time_seconds <= 2:
-                    self.level_eight.clear()
-                    self.level_eight.append((self.three_star_surf, self.three_star_eight_rect))
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_five:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_six:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_seven:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_eight:
-                        self.screen.blit(star[0], star[1])
-
-                elif 2 < stick_of_war.elapsed_time_seconds <= 4:
-                    self.level_eight.clear()
-                    self.level_eight.append((self.two_star_surf, self.two_star_eight_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_five:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_six:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_seven:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_eight:
-                        self.screen.blit(star[0], star[1])
-
-                elif stick_of_war.elapsed_time_seconds >= 4:
-                    self.level_eight.clear()
-                    self.level_eight.append((self.one_star_surf, self.one_star_eight_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_five:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_six:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_seven:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_eight:
-                        self.screen.blit(star[0], star[1])
-
-            elif firebase.stage_level == 9:
-                self.level_nine.clear()
-                if 0 <= stick_of_war.elapsed_time_seconds <= 2:
-                    self.level_nine.clear()
-                    self.level_nine.append((self.three_star_surf, self.three_star_nine_rect))
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_five:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_six:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_seven:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_eight:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_nine:
-                        self.screen.blit(star[0], star[1])
-
-                elif 2 < stick_of_war.elapsed_time_seconds <= 4:
-                    self.level_nine.clear()
-                    self.level_nine.append((self.two_star_surf, self.two_star_nine_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_five:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_six:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_seven:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_eight:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_nine:
-                        self.screen.blit(star[0], star[1])
-
-                elif stick_of_war.elapsed_time_seconds > 4:
-                    self.level_nine.clear()
-                    self.level_nine.append((self.one_star_surf, self.one_star_nine_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_five:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_six:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_seven:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_eight:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_nine:
-                        self.screen.blit(star[0], star[1])
-
-            elif firebase.stage_level == 10:
-                self.level_ten.clear()
-                if 0 <= stick_of_war.elapsed_time_seconds <= 2:
-                    self.level_ten.clear()
-                    self.level_ten.append((self.three_star_surf, self.three_star_ten_rect))
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_five:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_six:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_seven:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_eight:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_nine:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_ten:
-                        self.screen.blit(star[0], star[1])
-
-                elif 2 < stick_of_war.elapsed_time_seconds <= 4:
-                    self.level_ten.clear()
-                    self.level_ten.append((self.two_star_surf, self.two_star_ten_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_five:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_six:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_seven:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_eight:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_nine:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_ten:
-                        self.screen.blit(star[0], star[1])
-
-                elif stick_of_war.elapsed_time_seconds > 4:
-                    self.level_ten.clear()
-                    self.level_ten.append((self.one_star_surf, self.one_star_ten_rect)) 
-                    for star in self.level_one:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_two:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_three:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_four:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_five:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_six:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_seven:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_eight:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_nine:
-                        self.screen.blit(star[0], star[1])
-                    for star in self.level_ten:
-                        self.screen.blit(star[0], star[1])
-
-        elif stick_of_war.winner == "Enemy":
-            if firebase.stage_level == 1:
+            if firebase.stage_level >= 1:
+                if self.playing_lvl[0] == True:
+                    if 0 <= stick_of_war.elapsed_time_seconds <= 2:
+                        self.level_one =[(self.three_star_surf, self.three_star_one_rect)]
+                        
+                    elif 2 < stick_of_war.elapsed_time_seconds <= 4:
+                        self.level_one = [(self.two_star_surf, self.two_star_one_rect)]
+                        
+                    elif stick_of_war.elapsed_time_seconds > 4:
+                        self.level_one = [(self.one_star_surf, self.one_star_one_rect)]
+                    print("hi")
+                    print(self.level_one)
+                    self.playing_lvl[0] = False
+                    
                 for star in self.level_one:
                     self.screen.blit(star[0], star[1])
-            elif firebase.stage_level == 2:
+
+            if firebase.stage_level >= 2:
+                if self.playing_lvl[1] == True:
+                    
+                    if 0 <= stick_of_war.elapsed_time_seconds <= 2:
+                        self.level_two = [(self.three_star_surf, self.three_star_two_rect)]
+                        
+                    elif 2 < stick_of_war.elapsed_time_seconds <= 4:
+                        self.level_two = [(self.two_star_surf, self.two_star_two_rect)]
+
+                    elif stick_of_war.elapsed_time_seconds > 4:
+                        self.level_two = [(self.one_star_surf, self.one_star_two_rect)] 
+
+                    self.playing_lvl[1] = False
                 for star in self.level_two:
                     self.screen.blit(star[0], star[1])
-            elif firebase.stage_level == 3:
+
+            if firebase.stage_level >= 3:
+                if self.playing_lvl[2] == True:
+                    if 0 <= stick_of_war.elapsed_time_seconds <= 2:
+                        self.level_three = [(self.three_star_surf, self.three_star_three_rect)]
+
+                    elif 2 < stick_of_war.elapsed_time_seconds <= 4:
+                        self.level_three = [(self.two_star_surf, self.two_star_three_rect)]
+
+                    elif stick_of_war.elapsed_time_seconds > 4:
+                        self.level_three = [(self.one_star_surf, self.one_star_three_rect)]
+
+                    self.playing_lvl[2] = False
                 for star in self.level_three:
                     self.screen.blit(star[0], star[1])
-            elif firebase.stage_level == 4:
+
+            if firebase.stage_level >= 4:
+                if self.playing_lvl[3] == True:
+                    if 0 <= stick_of_war.elapsed_time_seconds <= 2:
+                        self.level_four = [(self.three_star_surf, self.three_star_four_rect)]
+
+                    elif 2 < stick_of_war.elapsed_time_seconds <= 4:
+                        self.level_four = [(self.two_star_surf, self.two_star_four_rect)] 
+
+                    elif stick_of_war.elapsed_time_seconds > 4:
+                        self.level_four = [(self.one_star_surf, self.one_star_four_rect)]
+
+                    self.playing_lvl[3] = False
+
                 for star in self.level_four:
                     self.screen.blit(star[0], star[1])
-            elif firebase.stage_level == 5:
+
+            if firebase.stage_level >= 5:
+                if self.playing_lvl[4] == True:
+                    if 0 <= stick_of_war.elapsed_time_seconds <= 2:
+                        self.level_five = [(self.three_star_surf, self.three_star_five_rect)]
+
+                    elif 2 < stick_of_war.elapsed_time_seconds <= 4:
+                        self.level_five = [(self.two_star_surf, self.two_star_five_rect)]
+
+                    elif stick_of_war.elapsed_time_seconds > 4:
+                        self.level_five = [(self.one_star_surf, self.one_star_five_rect)]
+
+                    self.playing_lvl[4] = False
                 for star in self.level_five:
                     self.screen.blit(star[0], star[1])
-            elif firebase.stage_level == 6:
+
+            if firebase.stage_level >= 6:
+                if self.playing_lvl[5] == True:
+                    if 0 <= stick_of_war.elapsed_time_seconds <= 2:
+                        self.level_six = [(self.three_star_surf, self.three_star_six_rect)]
+
+                    elif 2 < stick_of_war.elapsed_time_seconds <= 4:
+                        self.level_six = [(self.two_star_surf, self.two_star_six_rect)]
+
+                    elif stick_of_war.elapsed_time_seconds >= 4:
+                        self.level_six = [(self.one_star_surf, self.one_star_six_rect)] 
+
+                    self.playing_lvl[5] = False
                 for star in self.level_six:
                     self.screen.blit(star[0], star[1])
-            elif firebase.stage_level == 7:
+
+            if firebase.stage_level >= 7:
+                if self.playing_lvl[6] == True:
+                    if 0 <= stick_of_war.elapsed_time_seconds <= 2:
+                        self.level_seven = [(self.three_star_surf, self.three_star_seven_rect)]
+
+                    elif 2 < stick_of_war.elapsed_time_seconds <= 4:
+                        self.level_seven = [(self.two_star_surf, self.two_star_seven_rect)]
+
+                    elif stick_of_war.elapsed_time_seconds >= 4:
+                        self.level_seven = [(self.one_star_surf, self.one_star_seven_rect)]
+
+                    self.playing_lvl[6] = False
                 for star in self.level_seven:
                     self.screen.blit(star[0], star[1])
-            elif firebase.stage_level == 8:
+
+            if firebase.stage_level >= 8:
+                if self.playing_lvl[7] == True:
+                    if 0 <= stick_of_war.elapsed_time_seconds <= 2:
+                        self.level_eight = [(self.three_star_surf, self.three_star_eight_rect)]
+
+                    elif 2 < stick_of_war.elapsed_time_seconds <= 4:
+                        self.level_eight = [(self.two_star_surf, self.two_star_eight_rect)]
+
+                    elif stick_of_war.elapsed_time_seconds >= 4:
+                        self.level_eight.clear()
+                        self.level_eight = [(self.one_star_surf, self.one_star_eight_rect)]
+
+                    self.playing_lvl[7] = False
                 for star in self.level_eight:
                     self.screen.blit(star[0], star[1])
-            elif firebase.stage_level == 9:
+
+            if firebase.stage_level >= 9:
+                if self.playing_lvl[8] == True:
+                    if 0 <= stick_of_war.elapsed_time_seconds <= 2:
+                        self.level_nine = [(self.three_star_surf, self.three_star_nine_rect)]
+
+                    elif 2 < stick_of_war.elapsed_time_seconds <= 4:
+                        self.level_nine = [(self.two_star_surf, self.two_star_nine_rect)] 
+
+                    elif stick_of_war.elapsed_time_seconds > 4:
+                        self.level_nine = [(self.one_star_surf, self.one_star_nine_rect)]
+
+                    self.playing_lvl[8] = False
                 for star in self.level_nine:
                     self.screen.blit(star[0], star[1])
-            elif firebase.stage_level == 10:
+
+            if firebase.stage_level >= 10:
+                if self.playing_lvl[9] == True:
+                    if 0 <= stick_of_war.elapsed_time_seconds <= 2:
+                        self.level_ten = [(self.three_star_surf, self.three_star_ten_rect)]
+
+                    elif 2 < stick_of_war.elapsed_time_seconds <= 4:
+                        self.level_ten = [(self.two_star_surf, self.two_star_ten_rect)]
+
+                    elif stick_of_war.elapsed_time_seconds > 4:  
+                        self.level_ten = [(self.one_star_surf, self.one_star_ten_rect)]
+
+                    self.playing_lvl[9] = False
+                for star in self.level_ten:
+                    self.screen.blit(star[0], star[1])
+
+        elif stick_of_war.winner == "Enemy" or pygame.init:
+            if firebase.stage_level >= 1:
+                for star in self.level_one:
+                    self.screen.blit(star[0], star[1])
+            if firebase.stage_level >= 2:
+                for star in self.level_two:
+                    self.screen.blit(star[0], star[1])
+            if firebase.stage_level >= 3:
+                for star in self.level_three:
+                    self.screen.blit(star[0], star[1])
+            if firebase.stage_level >= 4:
+                for star in self.level_four:
+                    self.screen.blit(star[0], star[1])
+            if firebase.stage_level >= 5:
+                for star in self.level_five:
+                    self.screen.blit(star[0], star[1])
+            if firebase.stage_level >= 6:
+                for star in self.level_six:
+                    self.screen.blit(star[0], star[1])
+            if firebase.stage_level >= 7:
+                for star in self.level_seven:
+                    self.screen.blit(star[0], star[1])
+            if firebase.stage_level >= 8:
+                for star in self.level_eight:
+                    self.screen.blit(star[0], star[1])
+            if firebase.stage_level >= 9:
+                for star in self.level_nine:
+                    self.screen.blit(star[0], star[1])
+            if firebase.stage_level >= 10:
                 for star in self.level_ten:
                     self.screen.blit(star[0], star[1])
 
