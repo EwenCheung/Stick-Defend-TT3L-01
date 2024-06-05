@@ -321,9 +321,9 @@ class GamePokemonVsStick:
 
     def reset_game_state(self):
         # create a background music
-        # self.bg_music = pygame.mixer.Sound('Plant vs Stick/audio/bg_music.mp3')
-        # self.bg_music.set_volume(0.1)
-        # self.bg_music.play(loops=-1)
+        self.bg_music = pygame.mixer.Sound('Plant vs Stick/audio/bg_music.mp3')
+        self.bg_music.set_volume(0.1)
+        self.bg_music.play(loops=-1)
 
         # set up Ninja timer
         self.troop_timer = pygame.USEREVENT + 1
@@ -385,7 +385,7 @@ class GamePokemonVsStick:
         self.background_surface = pygame.image.load('Plant vs Stick/Picture/utils/game_background.png').convert()
         self.background_surface = pygame.transform.scale(self.background_surface, (1000, 600))
 
-        self.machine_card_surface = pygame.image.load('Plant vs Stick/Picture/machine/machine_card.png').convert()
+        self.machine_card_surface = pygame.image.load('Plant vs Stick/Picture/machine/machine_card.jpg').convert()
         self.machine_card_surface = pygame.transform.scale(self.machine_card_surface, (68, 83))
         self.machine_card_rectangle = self.machine_card_surface.get_rect(topleft=self.machine_card_initial_position)
 

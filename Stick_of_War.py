@@ -322,6 +322,9 @@ class GameStickOfWar:
         self.healing_price = 500
         self.freeze_price = 500
         self.rage_price = 500
+        self.bg_music = pygame.mixer.Sound('War of stick/Music/game_music.mp3')
+        self.bg_music.set_volume(0.2)
+        self.bg_music.play(loops=-1)
 
         # set up Ninja timer
         self.ninja_timer = pygame.USEREVENT + 1

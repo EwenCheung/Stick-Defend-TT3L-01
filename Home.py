@@ -90,6 +90,9 @@ class GameHome:
         self.key_user = False
         self.key_pass = False
 
+        self.home_muisc = pygame.mixer.Sound('War of stick/Music/home_music.wav')
+        self.home_muisc.set_volume(0.2)
+        self.home_muisc.play(loops=-1)
 
         # sign in
         self.sign_in_user_text_box_rectangle = self.text_box_surface.get_rect(center=(500, 250))
