@@ -3,9 +3,9 @@ from sys import exit
 import importlib
 from Firebase import firebase
 
-
 pygame.init()
 pygame.font.init()
+
 
 class GameLevel:
     def __init__(self):
@@ -18,9 +18,9 @@ class GameLevel:
 
         self.wood_plank_surface = pygame.image.load('Plant vs Stick/Picture/utils/wood.png').convert()
         self.wood_plank_surface = pygame.transform.scale(self.wood_plank_surface, (100, 120))
-        self.wood_plank_surface_back_and_store = pygame.transform.scale(self.wood_plank_surface, (90,50))
+        self.wood_plank_surface_back_and_store = pygame.transform.scale(self.wood_plank_surface, (90, 50))
         self.lock = pygame.image.load('War of stick/Picture/utils/lock.png')
-        self.lock_surf = pygame.transform.scale(self.lock, ( 100, 100))
+        self.lock_surf = pygame.transform.scale(self.lock, (100, 100))
         self.level_bg = pygame.image.load('War of stick/Picture/utils/choose level.png')
 
         self.level_select_music = pygame.mixer.Sound('War of stick/Music/level.mp3')
@@ -33,25 +33,25 @@ class GameLevel:
         self.wood_plank_rectangle_store = self.wood_plank_surface.get_rect(center=(890, 100))
 
         self.wood_plank_rectangle_one = self.wood_plank_surface.get_rect(center=(180, 230))
-        
+
         self.wood_plank_rectangle_two = self.wood_plank_surface.get_rect(center=(335, 230))
         self.lock_two_rect = self.lock_surf.get_rect(center=(335, 230))
 
         self.wood_plank_rectangle_three = self.wood_plank_surface.get_rect(center=(495, 230))
         self.lock_three_rect = self.lock_surf.get_rect(center=(495, 230))
-        
+
         self.wood_plank_rectangle_four = self.wood_plank_surface.get_rect(center=(650, 230))
         self.lock_four_rect = self.lock_surf.get_rect(center=(650, 230))
-        
+
         self.wood_plank_rectangle_five = self.wood_plank_surface.get_rect(center=(805, 230))
         self.lock_five_rect = self.lock_surf.get_rect(center=(805, 230))
-        
+
         self.wood_plank_rectangle_six = self.wood_plank_surface.get_rect(center=(180, 410))
         self.lock_six_rect = self.lock_surf.get_rect(center=(180, 410))
-        
+
         self.wood_plank_rectangle_seven = self.wood_plank_surface.get_rect(center=(335, 410))
         self.lock_seven_rect = self.lock_surf.get_rect(center=(335, 410))
-        
+
         self.wood_plank_rectangle_eight = self.wood_plank_surface.get_rect(center=(495, 410))
         self.lock_eight_rect = self.lock_surf.get_rect(center=(495, 410))
 
@@ -331,10 +331,9 @@ class GameLevel:
                     elif self.wood_plank_rectangle_eight.collidepoint(pygame.mouse.get_pos()):
                         self.go_stick_war_py()
                     elif self.wood_plank_rectangle_nine.collidepoint(pygame.mouse.get_pos()):
-                        self.go_stick_war_py()       
+                        self.go_stick_war_py()
                     elif self.wood_plank_rectangle_ten.collidepoint(pygame.mouse.get_pos()):
                         self.go_stick_war_py()
-
 
     def go_store_py(self):
         store_module = importlib.import_module("Store")

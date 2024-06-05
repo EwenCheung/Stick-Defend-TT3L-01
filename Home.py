@@ -186,7 +186,6 @@ class GameHome:
                         else:
                             self.sign_up_password += event.unicode
 
-
             if self.signing_in:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.sign_in_user_text_box_rectangle.collidepoint(pygame.mouse.get_pos()):
@@ -205,7 +204,7 @@ class GameHome:
                     elif self.sign_in_login_rectangle.collidepoint(pygame.mouse.get_pos()):
                         self.sign_in_key_user = False
                         self.sign_in_key_pass = False
-                        find_user = firebase.sign_in(self.sign_in_username,self.sign_in_password)
+                        find_user = firebase.sign_in(self.sign_in_username, self.sign_in_password)
                         if find_user:
                             self.signing_in = False
                             self.choosing_login_method = False
@@ -243,7 +242,6 @@ class GameHome:
                 self.choosing_login_method = False
                 self.choose_game_to_play = True
                 firebase.login_method = "Guest"
-
 
     def go_pokemon_py(self):
         importlib.invalidate_caches()  # Clear any cached importlib entries
@@ -354,7 +352,7 @@ class GameHome:
             current_time = time.time()
             if current_time - self.signup_time <= 5:  # Show for 5 seconds
                 alpha = max(255 - int((current_time - self.signup_time) * 85), 0)  # Gradually decrease alpha
-                success_message = self.font.render("Signup Successful! You can signin now", True, (50,205,50))
+                success_message = self.font.render("Signup Successful! You can signin now", True, (50, 205, 50))
                 success_message.set_alpha(alpha)
                 success_message_rect = success_message.get_rect(center=(500, 550))
                 self.screen.blit(success_message, success_message_rect)
@@ -364,7 +362,7 @@ class GameHome:
             current_retry_time = time.time()
             if current_retry_time - self.retry_time <= 3:  # Show for 3 seconds
                 alpha = max(255 - int((current_retry_time - self.retry_time) * 85), 0)  # Gradually decrease alpha
-                retry_message = self.font.render("Do not leave the field blank", True, (255,0,0))
+                retry_message = self.font.render("Do not leave the field blank", True, (255, 0, 0))
                 retry_message.set_alpha(alpha)
                 retry_message_rect = retry_message.get_rect(center=(500, 550))
                 self.screen.blit(retry_message, retry_message_rect)
@@ -374,7 +372,8 @@ class GameHome:
             current_no_acc_time = time.time()
             if current_no_acc_time - self.acc_found_time <= 3:  # Show for 3 seconds
                 alpha = max(255 - int((current_no_acc_time - self.acc_found_time) * 85), 0)  # Gradually decrease alpha
-                no_account_message = self.font.render("No such account found, please try again or signup an account", True, (255,0,0))
+                no_account_message = self.font.render("No such account found, please try again or signup an account", True,
+                                                      (255, 0, 0))
                 no_account_message.set_alpha(alpha)
                 no_account_message_rect = no_account_message.get_rect(center=(500, 550))
                 self.screen.blit(no_account_message, no_account_message_rect)
