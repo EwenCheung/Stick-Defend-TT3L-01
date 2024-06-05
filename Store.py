@@ -91,8 +91,6 @@ class Game_Store:
         self.selected_category = 'Castle'
         self.clicked_image_surf = 'warrior'
         self.clicked_spell_surf = 'freeze'
-        print(firebase.castle_storage)
-        print(firebase.troop_storage)
         self.set_up()
 
     def set_up(self):
@@ -476,7 +474,6 @@ class Game_Store:
                             if button_background_rect.collidepoint(mouse_pos):
                                 if firebase.money >= item['price']:
                                     firebase.money -= item['price']
-                                    print(firebase.money)
                                     item['locked'] = True
                                     # Check if the item is a troop or a spell
                                     if item['name'] in ['warrior', 'archer', 'sparta', 'wizard', 'giant']:
@@ -548,7 +545,6 @@ class Game_Store:
                 if self.backpack and self.selected_category == 'Castle':
                     for item in self.castle_detail:
                         castle_data = firebase.castle_storage['default_castle']
-                        print(castle_data)
                         health_button_rect = item['upgrades button'].get_rect(bottomleft=(120, 550))
                         mining_button_rect = item['upgrades button'].get_rect(bottomleft=(340, 550))
 
@@ -562,7 +558,6 @@ class Game_Store:
                                 castle_data[1] += 1
                                 castle_data[3] = (castle_data[3]*1.1)//1
                                 castle_data[5] = (castle_data[5]*1.1)//1
-                                print(castle_data)
                         elif mining_button_rect.collidepoint(mouse_pos):
                             if firebase.money >= item['mining speed price']:
                                 firebase.money -= item['mining speed price']
@@ -573,7 +568,6 @@ class Game_Store:
                                 castle_data[2] += 1
                                 castle_data[4] += 5
                                 castle_data[6] = (castle_data[6]*1.1)//1
-                                print(castle_data)
 
                 if self.backpack and self.selected_category == 'Troop':
                     for item in self.backpack_troop_list:
@@ -610,7 +604,6 @@ class Game_Store:
                                     troop_data[3] = (troop_data[3] * 1.1) // 1  # Update health
                                     troop_data[4] = (troop_data[4] * 1.1)  # Update attack damage
                                     troop_data[6] = (troop_data[6] * 1.1) // 1 #update upgrades price
-                                    print(troop_data)
 
                             equip_button_rect = item['equip button'].get_rect(midbottom=(383, 565))
                             if equip_button_rect.collidepoint(mouse_pos):
@@ -620,12 +613,10 @@ class Game_Store:
                                     for equipped_item in self.troop_equipped_list:
                                         if equipped_item['name'] == item['name']:
                                             self.troop_equipped_list.remove(equipped_item)
-                                            print(troop_data)
                     
                                 else:
                                     item['equip'] = True
                                     troop_data[2] = True
-                                    print(troop_data)
                                     item_copy = item.copy()
                                     if item_copy['name'] == 'warrior':
                                         troop_equipped_image = pygame.image.load('War of stick/Picture/stickman sword/stickman warrior card.png')
@@ -675,7 +666,6 @@ class Game_Store:
                                         spell_data[1] += 1
                                         spell_data[3] += 0.05
                                         spell_data[4] = (spell_data[4] * 1.1) // 1 
-                                        print(spell_data)
                                     
                                     else:
                                         item['healing function'] += 100
@@ -683,7 +673,6 @@ class Game_Store:
                                         spell_data[1] += 1
                                         spell_data[3] += 100
                                         spell_data[4] = (spell_data[4] * 1.1) // 1 
-                                        print(spell_data)
 
                             equip_button_rect = item['equip button'].get_rect(midbottom=(383, 565))
                             if equip_button_rect.collidepoint(mouse_pos):
