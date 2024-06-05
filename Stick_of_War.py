@@ -290,8 +290,6 @@ class HealthBar:
 
 class GameStickOfWar:
     def __init__(self):
-        pygame.init()
-        pygame.font.init()
         self.reset_func()
 
 

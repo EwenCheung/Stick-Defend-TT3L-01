@@ -301,8 +301,6 @@ class Troop(pygame.sprite.Sprite):
 
 class GamePokemonVsStick:
     def __init__(self):
-        pygame.init()
-        pygame.font.init()
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((1000, 600))  # screen size
         self.machine_card_initial_position = (120, 8)
