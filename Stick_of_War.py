@@ -845,6 +845,7 @@ class GameStickOfWar:
             firebase.stage_level += 1
 
     def go_level_py(self):
+        self.bg_music.stop()
         level_module = importlib.import_module("Level")
         game_level = level_module.GameLevel()
         game_level.run()
