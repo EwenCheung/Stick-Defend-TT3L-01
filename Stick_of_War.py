@@ -649,6 +649,8 @@ class GameStickOfWar:
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                firebase.update_user()
+                firebase.push_data()
                 pygame.quit()
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -822,6 +824,7 @@ class GameStickOfWar:
         elif self.health_bar_enemy.current_health <= 0:
             self.game_over = True
             self.winner = "User"
+            firebase.stage_level += 1
 
     def game_start(self):
         # Clear screen

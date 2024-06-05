@@ -119,6 +119,8 @@ class GameHome:
     def event_handling(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                firebase.update_user()
+                firebase.push_data()
                 pygame.quit()
                 exit()
             elif self.choose_game_to_play and event.type == pygame.MOUSEBUTTONDOWN:

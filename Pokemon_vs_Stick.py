@@ -441,6 +441,8 @@ class GamePokemonVsStick:
         for event in pygame.event.get():
             # press 'x' to quit the game
             if event.type == pygame.QUIT:
+                firebase.update_user()
+                firebase.push_data()
                 pygame.quit()
                 exit()
 
