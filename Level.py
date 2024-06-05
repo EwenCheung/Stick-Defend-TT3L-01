@@ -145,7 +145,7 @@ class GameLevel:
         self.wood_plank_rectangle_ten = self.wood_plank_surface.get_rect(center=(805, 410))
         self.lock_ten_rect = self.lock_surf.get_rect(center=(805, 410))
 
-        if firebase.stage_level >= 1:
+        if firebase.stage_level == 1:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -160,7 +160,7 @@ class GameLevel:
             self.screen.blit(self.lock_surf, self.lock_nine_rect)
             self.screen.blit(self.lock_surf, self.lock_ten_rect)
             self.achievement()
-        elif firebase.stage_level >= 2:
+        elif firebase.stage_level == 2:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -175,7 +175,7 @@ class GameLevel:
             self.screen.blit(self.lock_surf, self.lock_nine_rect)
             self.screen.blit(self.lock_surf, self.lock_ten_rect)
             self.achievement()
-        elif firebase.stage_level >= 3:
+        elif firebase.stage_level == 3:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -190,7 +190,7 @@ class GameLevel:
             self.screen.blit(self.lock_surf, self.lock_nine_rect)
             self.screen.blit(self.lock_surf, self.lock_ten_rect)
             self.achievement()
-        elif firebase.stage_level >= 4:
+        elif firebase.stage_level == 4:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -205,7 +205,7 @@ class GameLevel:
             self.screen.blit(self.lock_surf, self.lock_nine_rect)
             self.screen.blit(self.lock_surf, self.lock_ten_rect)
             self.achievement()
-        elif firebase.stage_level >= 5:
+        elif firebase.stage_level == 5:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -220,7 +220,7 @@ class GameLevel:
             self.screen.blit(self.lock_surf, self.lock_nine_rect)
             self.screen.blit(self.lock_surf, self.lock_ten_rect)
             self.achievement()
-        elif firebase.stage_level >= 6:
+        elif firebase.stage_level == 6:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -235,7 +235,7 @@ class GameLevel:
             self.screen.blit(self.lock_surf, self.lock_nine_rect)
             self.screen.blit(self.lock_surf, self.lock_ten_rect)
             self.achievement()
-        elif firebase.stage_level >= 7:
+        elif firebase.stage_level == 7:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -250,7 +250,7 @@ class GameLevel:
             self.screen.blit(self.lock_surf, self.lock_nine_rect)
             self.screen.blit(self.lock_surf, self.lock_ten_rect)
             self.achievement()
-        elif firebase.stage_level >= 8:
+        elif firebase.stage_level == 8:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -266,7 +266,7 @@ class GameLevel:
             self.screen.blit(self.lock_surf, self.lock_ten_rect)
             self.achievement()
 
-        elif firebase.stage_level >= 9:
+        elif firebase.stage_level == 9:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -282,7 +282,7 @@ class GameLevel:
             self.screen.blit(self.lock_surf, self.lock_ten_rect)
             self.achievement()
 
-        elif firebase.stage_level >= 10:
+        elif firebase.stage_level == 10:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -386,10 +386,10 @@ class GameLevel:
 
     def achievement(self):
         stick_of_war.check_game_over()
-        if stick_of_war.winner == "Enemy":
+        if stick_of_war.winner == "Enemy" or pygame.init:
             if firebase.stage_level >= 1:
                 for star in self.level_one:
-                    self.screen.blit(star[0], star[1])
+                    self.screen.blit(star[0], star[1]) 
             if firebase.stage_level >= 2:
                 for star in self.level_two:
                     self.screen.blit(star[0], star[1])
@@ -417,7 +417,7 @@ class GameLevel:
             if firebase.stage_level >= 10:
                 for star in self.level_ten:
                     self.screen.blit(star[0], star[1])
-
+                    
         if stick_of_war.winner == "User":
             if firebase.stage_level >= 1:
                 if self.playing_lvl[0] == True:
@@ -429,10 +429,9 @@ class GameLevel:
                         
                     elif stick_of_war.time_string > 4000:
                         self.level_one = [(self.one_star_surf, self.one_star_one_rect)]
-
+                self.playing_lvl[0] = False
                 for star in self.level_one:
                     self.screen.blit(star[0], star[1])
-                self.playing_lvl[0] = False
 
             if firebase.stage_level >= 2:
                 if self.playing_lvl[1] == True:
@@ -445,10 +444,9 @@ class GameLevel:
 
                     elif stick_of_war.time_string > 4000:
                         self.level_two = [(self.one_star_surf, self.one_star_two_rect)] 
-
+                self.playing_lvl[1] = False
                 for star in self.level_two:
                     self.screen.blit(star[0], star[1])
-                self.playing_lvl[1] = False
 
             if firebase.stage_level >= 3:
                 if self.playing_lvl[2] == True:
@@ -460,10 +458,9 @@ class GameLevel:
 
                     elif stick_of_war.time_string > 4000:
                         self.level_three = [(self.one_star_surf, self.one_star_three_rect)]
-
+                self.playing_lvl[2] = False
                 for star in self.level_three:
                     self.screen.blit(star[0], star[1])
-                self.playing_lvl[2] = False
 
             if firebase.stage_level >= 4:
                 if self.playing_lvl[3] == True:
@@ -475,10 +472,9 @@ class GameLevel:
 
                     elif stick_of_war.time_string > 4000:
                         self.level_four = [(self.one_star_surf, self.one_star_four_rect)]
-
+                self.playing_lvl[3] = False
                 for star in self.level_four:
                     self.screen.blit(star[0], star[1])
-                self.playing_lvl[3] = False
 
             if firebase.stage_level >= 5:
                 if self.playing_lvl[4] == True:
@@ -490,10 +486,9 @@ class GameLevel:
 
                     elif stick_of_war.time_string > 4000:
                         self.level_five = [(self.one_star_surf, self.one_star_five_rect)]
-
+                self.playing_lvl[4] = False
                 for star in self.level_five:
                     self.screen.blit(star[0], star[1])
-                self.playing_lvl[4] = False
 
             if firebase.stage_level >= 6:
                 if self.playing_lvl[5] == True:
@@ -505,10 +500,9 @@ class GameLevel:
 
                     elif stick_of_war.time_string >= 4000:
                         self.level_six = [(self.one_star_surf, self.one_star_six_rect)] 
-
+                self.playing_lvl[5] = False
                 for star in self.level_six:
                     self.screen.blit(star[0], star[1])
-                self.playing_lvl[5] = False
 
             if firebase.stage_level >= 7:
                 if self.playing_lvl[6] == True:
@@ -520,10 +514,9 @@ class GameLevel:
 
                     elif stick_of_war.time_string >= 4000:
                         self.level_seven = [(self.one_star_surf, self.one_star_seven_rect)]
-
+                self.playing_lvl[6] = False
                 for star in self.level_seven:
                     self.screen.blit(star[0], star[1])
-                self.playing_lvl[6] = False
 
             if firebase.stage_level >= 8:
                 if self.playing_lvl[7] == True:
@@ -535,10 +528,9 @@ class GameLevel:
 
                     elif stick_of_war.time_string >= 4000:
                         self.level_eight = [(self.one_star_surf, self.one_star_eight_rect)]
-
+                self.playing_lvl[7] = False
                 for star in self.level_eight:
                     self.screen.blit(star[0], star[1])
-                self.playing_lvl[7] = False
 
             if firebase.stage_level >= 9:
                 if self.playing_lvl[8] == True:
@@ -550,10 +542,9 @@ class GameLevel:
 
                     elif stick_of_war.time_string > 4000:
                         self.level_nine = [(self.one_star_surf, self.one_star_nine_rect)]
-
+                self.playing_lvl[8] = False
                 for star in self.level_nine:
                     self.screen.blit(star[0], star[1])
-                self.playing_lvl[8] = False
 
             if firebase.stage_level >= 10:
                 if self.playing_lvl[9] == True:
@@ -565,10 +556,9 @@ class GameLevel:
 
                     elif stick_of_war.time_string > 4000:  
                         self.level_ten = [(self.one_star_surf, self.one_star_ten_rect)]
-
+                self.playing_lvl[9] = False
                 for star in self.level_ten:
                     self.screen.blit(star[0], star[1])
-                self.playing_lvl[9] = False
 
                 
     def run(self):
