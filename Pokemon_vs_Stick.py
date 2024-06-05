@@ -389,11 +389,11 @@ class GamePokemonVsStick:
         self.machine_card_surface = pygame.transform.scale(self.machine_card_surface, (68, 83))
         self.machine_card_rectangle = self.machine_card_surface.get_rect(topleft=self.machine_card_initial_position)
 
-        self.pikachu_card_surface = pygame.image.load('Plant vs Stick/Picture/pikachu/pikachu_card.png').convert()
+        self.pikachu_card_surface = pygame.image.load('Plant vs Stick/Picture/pikachu/pikachu_card.jpg').convert()
         self.pikachu_card_surface = pygame.transform.scale(self.pikachu_card_surface, (68, 83))
         self.pikachu_card_rectangle = self.pikachu_card_surface.get_rect(topleft=self.pikachu_card_initial_position)
 
-        self.squirtle_card_surface = pygame.image.load('Plant vs Stick/Picture/squirtle/squirtle_card.png').convert()
+        self.squirtle_card_surface = pygame.image.load('Plant vs Stick/Picture/squirtle/squirtle_card.jpg').convert()
         self.squirtle_card_surface = pygame.transform.scale(self.squirtle_card_surface, (68, 83))
         self.squirtle_card_rectangle = self.squirtle_card_surface.get_rect(topleft=self.squirtle_card_initial_position)
 
