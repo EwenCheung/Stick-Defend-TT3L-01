@@ -573,6 +573,7 @@ class GamePokemonVsStick:
                     self.go_home_py()
 
     def go_home_py(self):
+        self.bg_music.stop()
         home_module = importlib.import_module("Home")
         home_select = home_module.GameHome()
         home_select.run()

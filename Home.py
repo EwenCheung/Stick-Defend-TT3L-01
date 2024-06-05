@@ -90,9 +90,9 @@ class GameHome:
         self.key_user = False
         self.key_pass = False
 
-        self.home_muisc = pygame.mixer.Sound('War of stick/Music/home_music.wav')
-        self.home_muisc.set_volume(0.2)
-        self.home_muisc.play(loops=-1)
+        self.home_music = pygame.mixer.Sound('War of stick/Music/home_music.wav')
+        self.home_music.set_volume(0.2)
+        self.home_music.play(loops=-1)
 
         # sign in
         self.sign_in_user_text_box_rectangle = self.text_box_surface.get_rect(center=(500, 250))
@@ -246,6 +246,7 @@ class GameHome:
                 firebase.login_method = "Guest"
 
     def go_pokemon_py(self):
+        self.home_music.stop()
         importlib.invalidate_caches()  # Clear any cached importlib entries
         pokemon_module = importlib.import_module("Pokemon_vs_Stick")
         game_pokemon = pokemon_module.GamePokemonVsStick()
@@ -253,6 +254,7 @@ class GameHome:
         exit()
 
     def go_level_py(self):
+        self.home_music.stop() 
         importlib.invalidate_caches()  # Clear any cached importlib entries
         level_module = importlib.import_module('Level')
         game_level = level_module.GameLevel()
