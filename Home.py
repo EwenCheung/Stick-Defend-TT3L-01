@@ -133,8 +133,11 @@ class GameHome:
                 elif self.pokemon_vs_naruto_rect.collidepoint(pygame.mouse.get_pos()):
                     self.go_pokemon_py()
                 elif self.back_rectangle.collidepoint(pygame.mouse.get_pos()):
-                    self.choosing_login_method = True
                     self.choose_game_to_play = False
+                    self.choosing_login_method = True
+                    firebase.login_method = None
+                    firebase.update_user()
+                    firebase.push_data()
             if self.choosing_login_method and event.type == pygame.MOUSEBUTTONDOWN:
                 if self.sign_in_rect.collidepoint(pygame.mouse.get_pos()) and not self.signing_up and not self.login_as_guest:
                     self.signing_in = True
@@ -404,6 +407,7 @@ class GameHome:
                     elif self.choose_game_to_play:
                         self.choose_game()
             else:
+                self.choose_game_to_play = True
                 self.choose_game()
             self.display_message()
             pygame.display.update()
