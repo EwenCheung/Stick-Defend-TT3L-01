@@ -1,7 +1,9 @@
 # coding : utf-8
+
 import pygame
 from sys import exit
 from random import choice, randint
+import importlib
 from Firebase import firebase
 
 pygame.init()
@@ -288,6 +290,9 @@ class HealthBar:
 
 class GameStickOfWar:
     def __init__(self):
+        self.reset_func()
+
+    def reset_func(self):
         pygame.init()
         pygame.font.init()
         self.clock = pygame.time.Clock()
@@ -295,16 +300,17 @@ class GameStickOfWar:
         self.screen = pygame.display.set_mode((1000, 600))
         self.bg_x = 0
         self.scroll_speed = 10
-        self.num_gold = 2000
-        self.num_diamond = 10000
+        self.num_gold = 400
+        self.num_diamond = 400
         self.gold_time = pygame.time.get_ticks()
         self.diamond_time = pygame.time.get_ticks()
         self.gold_interval = 100
         self.diamond_interval = 100
         self.troop_on_court = []
         self.enemy_on_court = []
-        self.health_bar_user = HealthBar(10000, 10000, (620, 530), 200, 20, (0, 255, 0))  # health bar
-        self.health_bar_enemy = HealthBar(10000, 10000, (620, 560), 200, 20, (255, 0, 0))
+        self.health_bar_user = HealthBar(firebase.castle_storage["default_castle"][3], firebase.castle_storage["default_castle"][3],
+                                         (620, 530), 200, 20, (0, 255, 0))  # health bar
+        self.health_bar_enemy = HealthBar(5000*(firebase.lvl_choose*2), 5000*(firebase.lvl_choose*2), (620, 560), 200, 20, (255, 0, 0))
         self.healing_initial_position = (35, 550)
         self.freeze_initial_position = (105, 550)
         self.rage_initial_position = (175, 550)
@@ -312,7 +318,7 @@ class GameStickOfWar:
         self.winner = None
         self.chosen_spell = None
         self.spell_animation = False
-        self.time_string = ""
+        self.time_string = None
         self.num_troops = 0
         self.healing_press = False
         self.freeze_press = False
@@ -447,6 +453,14 @@ class GameStickOfWar:
 
         self.lock = pygame.image.load('War of stick/Picture/utils/lock.png')
         self.lock_surf = pygame.transform.scale(self.lock, (50, 50))
+
+        self.wood_plank = pygame.image.load('Plant vs Stick/Picture/utils/wood.png').convert()
+        self.wood_plank_surface = pygame.transform.scale(self.wood_plank, (100, 50))
+        self.wood_plank_rect = self.wood_plank_surface.get_rect(center=(500, 500))
+
+        self.level_text = pygame.font.Font(None, 50)
+        self.level_text_surf = self.level_text.render("Level", True, (255, 255, 255))
+        self.level_text_rect = self.level_text_surf.get_rect(center=(500, 500))
 
         # Troop One
         # Warrior run
@@ -614,17 +628,6 @@ class GameStickOfWar:
         self.kakashi_frame_storage = [pygame.transform.scale(frame, (120, 90)) for frame in self.kakashi_normal]
         self.kakashi_attack_frame_storage = [pygame.transform.scale(frame, (120, 90)) for frame in self.kakashi_attack]
 
-        # firebase.all_user={
-        #     "username": firebase.username,
-        #     "password": firebase.password,
-        #     "stage_level": 1,
-        #     "gold": self.num_gold, 
-        #     "diamond": self.num_diamond,
-        #     "troop_storage": firebase.troop_storage,
-        #     "spell_storage": firebase.spell_storage,
-        #     "castle_storage": firebase.castle_storage,
-        # }
-
     def event_handling(self):
         def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage,
                           speed, troop_width, troop_height, troop_name, troop_size):
@@ -647,6 +650,9 @@ class GameStickOfWar:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.wood_plank_rect.collidepoint(pygame.mouse.get_pos()):
+                    self.go_level_py()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Check if left mouse button is pressed
                     clicked_troop(100, 200, self.warrior_button, self.warrior_frame_storage, self.warrior_attack_frame_storage,
@@ -825,6 +831,12 @@ class GameStickOfWar:
             self.game_over = True
             self.winner = "User"
 
+    def go_level_py(self):
+        level_module = importlib.import_module("Level")
+        game_level = level_module.GameLevel()
+        game_level.run()
+        exit()
+
     def game_start(self):
         # Clear screen
         self.screen.fill((255, 255, 255))
@@ -839,11 +851,11 @@ class GameStickOfWar:
         self.screen.blit(self.background_image, (self.bg_x, 0))
 
         if not self.game_over:
-            current_time = pygame.time.get_ticks()  # Get the current time
-            elapsed_time_seconds = (current_time) / 1000  # Convert milliseconds to seconds
-            minutes = int(elapsed_time_seconds // 60)
-            seconds = int(elapsed_time_seconds % 60)
-            self.time_string = f"{minutes:02}:{seconds:02}"
+            self.current_time = pygame.time.get_ticks()  # Get the current time
+            self.elapsed_time_seconds = (self.current_time) / 1000  # Convert milliseconds to seconds
+            self.minutes = int(self.elapsed_time_seconds // 60)
+            self.seconds = int(self.elapsed_time_seconds % 60)
+            self.time_string = f"{self.minutes:02}:{self.seconds:02}"
             timer_surface = pygame.font.Font(None, 30).render(self.time_string, True, 'black')
             timer_rect = timer_surface.get_rect(center=(908, 50))
             self.screen.blit(timer_surface, timer_rect)
@@ -955,6 +967,8 @@ class GameStickOfWar:
             time_rect = time.get_rect(center=(500, 400))
             self.screen.blit(text, text_rect)
             self.screen.blit(time, time_rect)
+            self.screen.blit(self.wood_plank_surface, self.wood_plank_rect)
+            self.screen.blit(self.level_text_surf, self.level_text_rect)
             return  # End the game
 
         for troop in self.troop_on_court:
@@ -981,13 +995,14 @@ class GameStickOfWar:
             enemy.update_ninja()
 
     def run(self):
+        pygame.quit()
+        self.reset_func()
         while True:
             self.game_start()
             self.event_handling()
 
             pygame.display.update()  # Update the display
             self.clock.tick(60)  # Limit frame rate to 60 FPS
-
 
 
 stick_of_war = GameStickOfWar()

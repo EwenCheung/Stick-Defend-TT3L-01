@@ -7,14 +7,14 @@ class Data:
         self.login_method = None
         self.username = "Guest"
         self.password = "888888"
-        self.stage_level = 1
+        self.stage_level = 4
         self.money = 0
         # troop : [have or not, level, equipped or not, health, attack damage, speed, upgrades_price]
         # health = (current health * 1.1)//1
         # attack = (current attack* 1.1)
         # upgrades_price = (current price * 1.1)//1
         self.troop_storage = {
-            "warrior": [True, 1, False, 100, 1, 1, 200],
+            "warrior": [True, 1, False, 10000, 1000, 15, 200],
             "archer": [False, 1, False, 200, 5, 1, 150],
             "wizard": [False, 1, False, 250, 5, 1, 200],
             "sparta": [False, 1, False, 300, 2.5, 1, 350],
@@ -37,7 +37,7 @@ class Data:
             "default_castle": [True, 1, 1, 1000, 1, 150, 150]  # two upgrades
         }
 
-        self.lvl_choose = None
+        self.lvl_choose = 0
 
         self.no_star = pygame.image.load('War of stick/Picture/utils/no_star.png')
         self.no_star_surf = pygame.transform.scale(self.no_star, (90, 40))

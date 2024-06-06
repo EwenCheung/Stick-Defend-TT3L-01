@@ -375,7 +375,7 @@ class GameLevel:
                 elif stick_of_war.current_time > 240000:
                     firebase.star_one_surf = self.one_star_surf
 
-                firebase.lvl_choose = None
+                firebase.lvl_choose = 0
 
             if firebase.lvl_choose == 2:
                 if 0 <= stick_of_war.current_time <= 120000:
@@ -387,7 +387,7 @@ class GameLevel:
                 elif stick_of_war.current_time > 240000:
                     firebase.star_two_surf = self.one_star_surf
 
-                firebase.lvl_choose = None
+                firebase.lvl_choose = 0
 
             if firebase.lvl_choose == 3:
                 if 0 <= stick_of_war.current_time <= 120000:
@@ -399,7 +399,7 @@ class GameLevel:
                 elif stick_of_war.current_time > 240000:
                     firebase.star_three_surf = self.one_star_surf
 
-                firebase.lvl_choose = None
+                firebase.lvl_choose = 0
 
             if firebase.lvl_choose == 4:
                 if 0 <= stick_of_war.current_time <= 120000:
@@ -411,7 +411,7 @@ class GameLevel:
                 elif stick_of_war.current_time > 240000:
                     firebase.star_four_surf = self.one_star_surf
 
-                firebase.lvl_choose = None
+                firebase.lvl_choose = 0
 
             if firebase.lvl_choose == 5:
                 if 0 <= stick_of_war.current_time <= 120000:
@@ -423,7 +423,7 @@ class GameLevel:
                 elif stick_of_war.current_time > 240000:
                     firebase.star_five_surf = self.one_star_surf
 
-                firebase.lvl_choose = None
+                firebase.lvl_choose = 0
 
             if firebase.lvl_choose == 6:
                 if 0 <= stick_of_war.current_time <= 120000:
@@ -435,7 +435,7 @@ class GameLevel:
                 elif stick_of_war.current_time >= 240000:
                     firebase.star_six_surf = self.one_star_surf
 
-                firebase.lvl_choose = None
+                firebase.lvl_choose = 0
 
             if firebase.lvl_choose == 7:
                 if 0 <= stick_of_war.current_time <= 120000:
@@ -447,7 +447,7 @@ class GameLevel:
                 elif stick_of_war.current_time >= 240000:
                     firebase.star_seven_surf = self.one_star_surf
 
-                firebase.lvl_choose = None
+                firebase.lvl_choose = 0
 
             if firebase.lvl_choose == 8:
                 if 0 <= stick_of_war.current_time <= 120000:
@@ -459,7 +459,7 @@ class GameLevel:
                 elif stick_of_war.current_time >= 240000:
                     firebase.star_eight_surf = self.one_star_surf
 
-                firebase.lvl_choose = None
+                firebase.lvl_choose = 0
 
             if firebase.lvl_choose == 9:
                 if 0 <= stick_of_war.current_time <= 120000:
@@ -471,7 +471,7 @@ class GameLevel:
                 elif stick_of_war.current_time > 240000:
                     firebase.star_nine_surf = self.one_star_surf
 
-                firebase.lvl_choose = None
+                firebase.lvl_choose = 0
 
             if firebase.lvl_choose == 10:
                 if 0 <= stick_of_war.current_time <= 120000:
@@ -483,7 +483,7 @@ class GameLevel:
                 elif stick_of_war.current_time > 240000:
                     firebase.star_ten_surf = self.one_star_surf
 
-                firebase.lvl_choose = None
+                firebase.lvl_choose = 0
 
             stick_of_war.winner = None
 
