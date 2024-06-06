@@ -989,5 +989,5 @@ class GameStickOfWar:
             self.clock.tick(60)  # Limit frame rate to 60 FPS
 
 
-if __name__ == "__main__":
-    GameStickOfWar().run()
+
+stick_of_war = GameStickOfWar()
