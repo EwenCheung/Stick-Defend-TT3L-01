@@ -3,6 +3,7 @@ from sys import exit
 import importlib
 from Firebase import firebase
 from Stick_of_War import stick_of_war
+from Home import home
 
 pygame.init()
 pygame.font.init()
@@ -34,9 +35,9 @@ class GameLevel:
 
         self.level_bg = pygame.image.load('War of stick/Picture/utils/choose level.png')
 
-        # self.level_select_music = pygame.mixer.Sound('War of stick/Music/level.mp3')
-        # self.level_select_music.set_volume(0.2)
-        # self.level_select_music.play(loops=-1)
+        self.level_select_music = pygame.mixer.Sound('War of stick/Music/level.mp3')
+        self.level_select_music.set_volume(0.2)
+        self.level_select_music.play(loops=-1)
 
         # star rect for all level
         # level one
@@ -327,18 +328,17 @@ class GameLevel:
                         stick_of_war.run()
 
     def go_store_py(self):
-        # self.level_select_music.stop()
+        self.level_select_music.stop()
         store_module = importlib.import_module("Store")
         game_store = store_module.Game_Store()
         game_store.run()
         exit()
 
     def go_home_py(self):
-        # self.level_select_music.stop()
-        importlib.invalidate_caches()  # Clear any cached importlib entries
-        home_module = importlib.import_module("Home")
-        go_home = home_module.GameHome()
-        go_home.run()
+        self.level_select_music.stop()
+        home.choose_game_to_play = True
+        home.choosing_login_method = False
+        home.run()
         exit()
 
     def blit_star(self):

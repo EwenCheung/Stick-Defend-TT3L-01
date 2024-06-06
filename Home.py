@@ -55,7 +55,7 @@ class GameHome:
 
         self.font = pygame.font.Font(None, 35)
         self.choose_game_to_play = False
-        self.choosing_login_method = True
+        self.choosing_login_method = False
         self.signing_in = False
         self.signing_up = False
         self.login_as_guest = False
@@ -125,20 +125,23 @@ class GameHome:
                 exit()
             elif self.choose_game_to_play and event.type == pygame.MOUSEBUTTONDOWN:
                 if self.stick_of_war_rect.collidepoint(pygame.mouse.get_pos()):
+                    self.choose_game_to_play = False
                     self.go_level_py()
                 elif self.pokemon_vs_naruto_rect.collidepoint(pygame.mouse.get_pos()):
+                    self.choose_game_to_play = False
                     self.go_pokemon_py()
                 elif self.back_rectangle.collidepoint(pygame.mouse.get_pos()):
                     self.choosing_login_method = True
                     self.choose_game_to_play = False
-            if self.choosing_login_method and event.type == pygame.MOUSEBUTTONDOWN:
-                if self.sign_in_rect.collidepoint(pygame.mouse.get_pos()) and not self.signing_up and not self.login_as_guest:
+                    firebase.login_method = None
+            elif self.choosing_login_method and event.type == pygame.MOUSEBUTTONDOWN:
+                if not self.signing_up and not self.login_as_guest and self.sign_in_rect.collidepoint(pygame.mouse.get_pos()):
                     self.signing_in = True
                     self.choosing_login_method = False
-                elif self.sign_up_rect.collidepoint(pygame.mouse.get_pos()) and not self.signing_in and not self.login_as_guest:
+                elif not self.signing_in and not self.login_as_guest and self.sign_up_rect.collidepoint(pygame.mouse.get_pos()):
                     self.signing_up = True
                     self.choosing_login_method = False
-                elif self.login_as_guest_rect.collidepoint(pygame.mouse.get_pos()) and not self.signing_in and not self.signing_up:
+                elif not self.signing_in and not self.signing_up and self.login_as_guest_rect.collidepoint(pygame.mouse.get_pos()):
                     self.login_as_guest = True
                     self.choosing_login_method = False
 
@@ -240,10 +243,10 @@ class GameHome:
                             self.sign_in_password += event.unicode
 
             elif self.login_as_guest:
-                self.login_as_guest = False
                 self.choosing_login_method = False
                 self.choose_game_to_play = True
                 firebase.login_method = "Guest"
+                self.login_as_guest = False
 
     def go_pokemon_py(self):
         self.home_music.stop()
@@ -273,8 +276,9 @@ class GameHome:
 
         else:
             self.progress = 1
-            self.finish_loading = True
             self.loading = False
+            self.finish_loading = True
+            self.choosing_login_method = True
 
         self.loading_bar.progress = self.progress
         self.loading_bar.draw_bar(self.screen)
@@ -385,6 +389,7 @@ class GameHome:
                 self.retry = False
 
     def run(self):
+        self.home_music.play(loops=-1)
         while True:
             self.screen.fill((255, 255, 255))
 
@@ -409,5 +414,6 @@ class GameHome:
             self.clock.tick(60)
 
 
+home = GameHome()
 if __name__ == '__main__':
-    GameHome().run()
+    home.run()

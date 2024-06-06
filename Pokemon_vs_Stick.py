@@ -5,6 +5,7 @@ from sys import exit
 from random import randint, choice
 from Firebase import firebase
 import importlib
+from Home import home
 
 # game start from here
 # have to initialise the pygame first
@@ -574,9 +575,9 @@ class GamePokemonVsStick:
 
     def go_home_py(self):
         self.bg_music.stop()
-        home_module = importlib.import_module("Home")
-        home_select = home_module.GameHome()
-        home_select.run()
+        home.choose_game_to_play = True
+        home.choosing_login_method = False
+        home.run()
         exit()
 
     def game_start(self):

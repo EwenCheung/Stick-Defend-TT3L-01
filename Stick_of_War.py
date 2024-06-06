@@ -830,8 +830,11 @@ class GameStickOfWar:
         elif self.health_bar_enemy.current_health <= 0:
             self.game_over = True
             self.winner = "User"
+            if firebase.lvl_choose == firebase.stage_level:
+                firebase.stage_level +=1
 
     def go_level_py(self):
+        self.bg_music.stop()
         level_module = importlib.import_module("Level")
         game_level = level_module.GameLevel()
         game_level.run()
@@ -947,11 +950,11 @@ class GameStickOfWar:
         self.screen.blit(self.rage_price_surf, self.rage_price_rect)
 
         # button draw
-        self.warrior_button.draw(self.screen, firebase.troop_storage["warrior"][0])
-        self.archer_button.draw(self.screen, firebase.troop_storage["archer"][0])
-        self.wizard_button.draw(self.screen, firebase.troop_storage["wizard"][0])
-        self.sparta_button.draw(self.screen, firebase.troop_storage["sparta"][0])
-        self.giant_button.draw(self.screen, firebase.troop_storage["giant"][0])
+        self.warrior_button.draw(self.screen, firebase.troop_storage["warrior"][2])
+        self.archer_button.draw(self.screen, firebase.troop_storage["archer"][2])
+        self.wizard_button.draw(self.screen, firebase.troop_storage["wizard"][2])
+        self.sparta_button.draw(self.screen, firebase.troop_storage["sparta"][2])
+        self.giant_button.draw(self.screen, firebase.troop_storage["giant"][2])
 
         self.check_game_over()
         if self.game_over:

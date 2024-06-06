@@ -1579,7 +1579,6 @@ class Game_Store:
 
             self.event_handling()
             self.game_start()
-
             pygame.display.update()
             self.clock.tick(60)
 
