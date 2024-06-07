@@ -1,4 +1,5 @@
 import ast
+import pygame
 
 class Data:
     def __init__(self):
@@ -23,13 +24,28 @@ class Data:
         #healing = healing + 100
         #freeze = freeze + 0.05
         self.spell_storage = {
-            "rage": [False, 1, False, 0.5],
+            "rage": [True, 1, False, 2.5],
             "healing": [True, 1, False, 300],
             "freeze": [False, 1, False, 0.5]
         }
         self.castle_storage = {
             "default_castle": [False, 1, 1]  # two upgrades
         }
+
+        self.lvl_choose = None
+
+        self.no_star = pygame.image.load('War of stick/Picture/utils/no_star.png')
+        self.no_star_surf = pygame.transform.scale(self.no_star, (90, 40))
+        self.star_one_surf = self.no_star_surf
+        self.star_two_surf = self.no_star_surf
+        self.star_three_surf = self.no_star_surf
+        self.star_four_surf = self.no_star_surf
+        self.star_five_surf = self.no_star_surf
+        self.star_six_surf = self.no_star_surf
+        self.star_seven_surf = self.no_star_surf
+        self.star_eight_surf = self.no_star_surf
+        self.star_nine_surf = self.no_star_surf
+        self.star_ten_surf = self.no_star_surf
 
     # sign in and take the info of the data
     def sign_in(self, username, password):

@@ -308,7 +308,7 @@ class GameStickOfWar:
         self.troop_on_court = []
         self.enemy_on_court = []
         self.health_bar_user = HealthBar(10000, 10000, (620, 530), 200, 20, (0, 255, 0))  # health bar
-        self.health_bar_enemy = HealthBar(10000, 10000, (620, 560), 200, 20, (255, 0, 0))
+        self.health_bar_enemy = HealthBar(100, 100, (620, 560), 200, 20, (255, 0, 0))
         self.healing_initial_position = (35, 550)
         self.freeze_initial_position = (105, 550)
         self.rage_initial_position = (175, 550)
@@ -690,20 +690,23 @@ class GameStickOfWar:
                     print('wont be more than 20')
 
             if firebase.spell_storage['healing'][0] == True:
-                if self.chosen_spell is None and event.type == pygame.MOUSEBUTTONDOWN:
-                    if not self.healing_press:
-                        if self.healing_spell_rect.collidepoint(event.pos):
-                            self.chosen_spell = 'healing'
+                if len(self.troop_on_court) >= 1:
+                    if self.chosen_spell is None and event.type == pygame.MOUSEBUTTONDOWN:
+                        if not self.healing_press:
+                            if self.healing_spell_rect.collidepoint(event.pos):
+                                self.chosen_spell = 'healing'
             if firebase.spell_storage['rage'][0] == True: 
-                if self.chosen_spell is None and event.type == pygame.MOUSEBUTTONDOWN:
-                    if not self.rage_press:
-                        if self.rage_spell_rect.collidepoint(event.pos):
-                            self.chosen_spell = 'rage'
+                if len(self.troop_on_court) >= 1:
+                    if self.chosen_spell is None and event.type == pygame.MOUSEBUTTONDOWN:
+                        if not self.rage_press:
+                            if self.rage_spell_rect.collidepoint(event.pos):
+                                self.chosen_spell = 'rage'
             if firebase.spell_storage['freeze'][0] == True:
-                if self.chosen_spell is None and event.type == pygame.MOUSEBUTTONDOWN:
-                    if not self.freeze_press:
-                        if self.freeze_spell_rect.collidepoint(event.pos):
-                            self.chosen_spell = 'freeze'
+                if len(self.troop_on_court) >= 1:
+                    if self.chosen_spell is None and event.type == pygame.MOUSEBUTTONDOWN:
+                        if not self.freeze_press:
+                            if self.freeze_spell_rect.collidepoint(event.pos):
+                                self.chosen_spell = 'freeze'
 
             if event.type == pygame.MOUSEBUTTONDOWN and self.chosen_spell is not None:
                 # can add check condition can release spell or not
