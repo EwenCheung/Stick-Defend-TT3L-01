@@ -604,29 +604,40 @@ class GameStickOfWar:
                                         (100, 100),
                                         (500, 70), '700n200', 3000, 700, 200)
 
-        self.naruto_normal = [pygame.image.load('Plant vs Stick/Picture/naruto/naruto_walk_1.png').convert_alpha(),
-                              pygame.image.load('Plant vs Stick/Picture/naruto/naruto_walk_2.png').convert_alpha(),
-                              pygame.image.load('Plant vs Stick/Picture/naruto/naruto_walk_3.png').convert_alpha()]
-        self.naruto_attack = [pygame.image.load('Plant vs Stick/Picture/naruto/naruto_attack_1.png').convert_alpha(),
-                              pygame.image.load('Plant vs Stick/Picture/naruto/naruto_attack_2.png').convert_alpha()]
-        self.naruto_frame_storage = [pygame.transform.scale(frame, (100, 55)) for frame in self.naruto_normal]
-        self.naruto_attack_frame_storage = [pygame.transform.scale(frame, (100, 55)) for frame in self.naruto_attack]
+        self.enemy_one_normal = [pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_1.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_2.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_3.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_4.png').convert_alpha()]
+        self.enemy_one_attack = [pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_attack_1.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_attack_2.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_attack_3.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_attack_4.png').convert_alpha()]
+        self.enemy_one_frame_storage = [pygame.transform.scale(frame, (110, 135)) for frame in self.enemy_one_normal]
+        self.enemy_one_attack_frame_storage = [pygame.transform.scale(frame, (110, 135)) for frame in self.enemy_one_attack]
 
-        self.sasuke_normal = [pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_walk_1.png').convert_alpha(),
-                              pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_walk_2.png').convert_alpha(),
-                              pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_walk_3.png').convert_alpha()]
-        self.sasuke_attack = [pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_attack_1.png').convert_alpha(),
-                              pygame.image.load('Plant vs Stick/Picture/sasuke/sasuke_attack_2.png').convert_alpha()]
-        self.sasuke_frame_storage = [pygame.transform.scale(frame, (100, 65)) for frame in self.sasuke_normal]
-        self.sasuke_attack_frame_storage = [pygame.transform.scale(frame, (100, 65)) for frame in self.sasuke_attack]
+        self.enemy_two_normal = [pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_1.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_2.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_3.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_4.png').convert_alpha()]
+        self.enemy_two_attack = [pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_attack_1.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_attack_2.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_attack_3.png').convert_alpha(),
+                              pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_attack_4.png').convert_alpha(),]
+        self.enemy_two_frame_storage = [pygame.transform.scale(frame, (100, 95)) for frame in self.enemy_two_normal]
+        self.enemy_two_attack_frame_storage = [pygame.transform.scale(frame, (100, 95)) for frame in self.enemy_two_attack]
 
-        self.kakashi_normal = [pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_run_1.png').convert_alpha(),
-                               pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_run_2.png').convert_alpha(),
-                               pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_run_3.png').convert_alpha()]
-        self.kakashi_attack = [pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_attack_1.png').convert_alpha(),
-                               pygame.image.load('Plant vs Stick/Picture/kakashi/kakashi_attack_2.png').convert_alpha()]
-        self.kakashi_frame_storage = [pygame.transform.scale(frame, (120, 90)) for frame in self.kakashi_normal]
-        self.kakashi_attack_frame_storage = [pygame.transform.scale(frame, (120, 90)) for frame in self.kakashi_attack]
+        self.enemy_three_normal = [pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_1.png').convert_alpha(),
+                               pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_2.png').convert_alpha(),
+                               pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_3.png').convert_alpha(),
+                               pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_4.png').convert_alpha(),
+                               pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_5.png').convert_alpha(),]
+        self.enemy_three_attack = [pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_1.png').convert_alpha(),
+                               pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_2.png').convert_alpha(),
+                               pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_3.png').convert_alpha(),
+                               pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_4.png').convert_alpha(),
+                               pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_5.png').convert_alpha()]
+        self.enemy_three_frame_storage = [pygame.transform.scale(frame, (100, 95)) for frame in self.enemy_three_normal]
+        self.enemy_three_attack_frame_storage = [pygame.transform.scale(frame, (100, 95)) for frame in self.enemy_three_attack]
 
     def event_handling(self):
         def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage,
@@ -676,13 +687,13 @@ class GameStickOfWar:
                     new_ninja = None
                     self.ninja_chosen = choice(self.ninja_choice)
                     if self.ninja_chosen == "naruto":
-                        new_ninja = Ninja(self.ninja_chosen, self.naruto_frame_storage, self.naruto_attack_frame_storage, 100, 1, 2,
+                        new_ninja = Ninja(self.ninja_chosen, self.enemy_one_frame_storage, self.enemy_one_attack_frame_storage, 100, 1, 2,
                                           self.background_image.get_width())
                     elif self.ninja_chosen == "sasuke":
-                        new_ninja = Ninja(self.ninja_chosen, self.sasuke_frame_storage, self.sasuke_attack_frame_storage, 50, 1, 3,
+                        new_ninja = Ninja(self.ninja_chosen, self.enemy_two_frame_storage, self.enemy_two_attack_frame_storage, 50, 1, 3,
                                           self.background_image.get_width())
                     elif self.ninja_chosen == "kakashi":
-                        new_ninja = Ninja(self.ninja_chosen, self.kakashi_frame_storage, self.kakashi_attack_frame_storage, 75, 2, 2,
+                        new_ninja = Ninja(self.ninja_chosen, self.enemy_three_frame_storage, self.enemy_three_attack_frame_storage, 75, 2, 2,
                                           self.background_image.get_width())
                     self.enemy_on_court.append(new_ninja)
                 else:

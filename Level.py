@@ -486,7 +486,6 @@ class GameLevel:
                 firebase.lvl_choose = 0
 
             stick_of_war.winner = None
-
     def run(self):
         while True:
             self.screen.fill((255, 255, 255))
