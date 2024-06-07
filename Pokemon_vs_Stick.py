@@ -742,3 +742,4 @@ class GamePokemonVsStick:
 
 if __name__ == "__main__":
     GamePokemonVsStick().run()
+
