@@ -666,7 +666,7 @@ class GameStickOfWar:
                     self.go_level_py()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Check if left mouse button is pressed
-                    clicked_troop(100, 200, self.warrior_button, self.warrior_frame_storage, self.warrior_attack_frame_storage,
+                    clicked_troop(100, 0, self.warrior_button, self.warrior_frame_storage, self.warrior_attack_frame_storage,
                                   firebase.troop_storage["warrior"][3],
                                   firebase.troop_storage["warrior"][4], firebase.troop_storage["warrior"][5], 75, 100, 'Warrior', 1)
                     clicked_troop(300, 200, self.archer_button, self.archer_frame_storage, self.archer_attack_frame_storage,
