@@ -370,122 +370,152 @@ class GameLevel:
             if firebase.lvl_choose == 1:
                 if 0 <= stick_of_war.current_time <= 120000:
                     firebase.star_one_surf = self.three_star_surf
+                    firebase.money += (30 + firebase.lvl_choose*15)
 
                 elif 120000 < stick_of_war.current_time <= 240000:
                     firebase.star_one_surf = self.two_star_surf
+                    firebase.money += (30 + firebase.lvl_choose * 5)
 
                 elif stick_of_war.current_time > 240000:
                     firebase.star_one_surf = self.one_star_surf
+                    firebase.money += (20 + firebase.lvl_choose*2)
 
-                firebase.lvl_choose = 1
+                firebase.lvl_choose = 100
 
             if firebase.lvl_choose == 2:
                 if 0 <= stick_of_war.current_time <= 120000:
                     firebase.star_two_surf = self.three_star_surf
+                    firebase.money += (30 + firebase.lvl_choose*15)
 
                 elif 120000 < stick_of_war.current_time <= 240000:
                     firebase.star_two_surf = self.two_star_surf
+                    firebase.money += (30 + firebase.lvl_choose * 5)
 
                 elif stick_of_war.current_time > 240000:
                     firebase.star_two_surf = self.one_star_surf
+                    firebase.money += (20 + firebase.lvl_choose * 2)
 
-                firebase.lvl_choose = 1
+                firebase.lvl_choose = 100
 
             if firebase.lvl_choose == 3:
                 if 0 <= stick_of_war.current_time <= 120000:
                     firebase.star_three_surf = self.three_star_surf
+                    firebase.money += (30 + firebase.lvl_choose*15)
 
                 elif 120000 < stick_of_war.current_time <= 240000:
                     firebase.star_three_surf = self.two_star_surf
+                    firebase.money += (30 + firebase.lvl_choose * 5)
 
                 elif stick_of_war.current_time > 240000:
                     firebase.star_three_surf = self.one_star_surf
+                    firebase.money += (20 + firebase.lvl_choose * 2)
 
-                firebase.lvl_choose = 1
+                firebase.lvl_choose = 100
 
             if firebase.lvl_choose == 4:
                 if 0 <= stick_of_war.current_time <= 120000:
                     firebase.star_four_surf = self.three_star_surf
+                    firebase.money += (30 + firebase.lvl_choose*15)
 
                 elif 120000 < stick_of_war.current_time <= 240000:
                     firebase.star_four_surf = self.two_star_surf
+                    firebase.money += (30 + firebase.lvl_choose * 5)
 
                 elif stick_of_war.current_time > 240000:
                     firebase.star_four_surf = self.one_star_surf
+                    firebase.money += (20 + firebase.lvl_choose * 2)
 
-                firebase.lvl_choose = 1
+                firebase.lvl_choose = 100
 
             if firebase.lvl_choose == 5:
                 if 0 <= stick_of_war.current_time <= 120000:
                     firebase.star_five_surf = self.three_star_surf
+                    firebase.money += (30 + firebase.lvl_choose*15)
 
                 elif 120000 < stick_of_war.current_time <= 240000:
                     firebase.star_five_surf = self.two_star_surf
+                    firebase.money += (30 + firebase.lvl_choose * 5)
 
                 elif stick_of_war.current_time > 240000:
                     firebase.star_five_surf = self.one_star_surf
+                    firebase.money += (20 + firebase.lvl_choose * 2)
 
-                firebase.lvl_choose = 1
+                firebase.lvl_choose = 100
 
             if firebase.lvl_choose == 6:
                 if 0 <= stick_of_war.current_time <= 120000:
                     firebase.star_six_surf = self.three_star_surf
+                    firebase.money += (30 + firebase.lvl_choose*15)
 
                 elif 120000 < stick_of_war.current_time <= 240000:
                     firebase.star_six_surf = self.two_star_surf
+                    firebase.money += (30 + firebase.lvl_choose * 5)
 
                 elif stick_of_war.current_time >= 240000:
                     firebase.star_six_surf = self.one_star_surf
+                    firebase.money += (20 + firebase.lvl_choose * 2)
 
-                firebase.lvl_choose = 1
+                firebase.lvl_choose = 100
 
             if firebase.lvl_choose == 7:
                 if 0 <= stick_of_war.current_time <= 120000:
                     firebase.star_seven_surf = self.three_star_surf
+                    firebase.money += (30 + firebase.lvl_choose*15)
 
                 elif 120000 < stick_of_war.current_time <= 240000:
                     firebase.star_seven_surf = self.two_star_surf
+                    firebase.money += (30 + firebase.lvl_choose * 5)
 
                 elif stick_of_war.current_time >= 240000:
                     firebase.star_seven_surf = self.one_star_surf
+                    firebase.money += (20 + firebase.lvl_choose * 2)
 
-                firebase.lvl_choose = 1
+                firebase.lvl_choose = 100
 
             if firebase.lvl_choose == 8:
                 if 0 <= stick_of_war.current_time <= 120000:
                     firebase.star_eight_surf = self.three_star_surf
+                    firebase.money += (30 + firebase.lvl_choose*15)
 
                 elif 120000 < stick_of_war.current_time <= 240000:
                     firebase.star_eight_surf = self.two_star_surf
+                    firebase.money += (30 + firebase.lvl_choose * 5)
 
                 elif stick_of_war.current_time >= 240000:
                     firebase.star_eight_surf = self.one_star_surf
+                    firebase.money += (20 + firebase.lvl_choose * 2)
 
-                firebase.lvl_choose = 1
+                firebase.lvl_choose = 100
 
             if firebase.lvl_choose == 9:
                 if 0 <= stick_of_war.current_time <= 120000:
                     firebase.star_nine_surf = self.three_star_surf
+                    firebase.money += (30 + firebase.lvl_choose*15)
 
                 elif 120000 < stick_of_war.current_time <= 240000:
                     firebase.star_nine_surf = self.two_star_surf
+                    firebase.money += (30 + firebase.lvl_choose * 5)
 
                 elif stick_of_war.current_time > 240000:
                     firebase.star_nine_surf = self.one_star_surf
+                    firebase.money += (20 + firebase.lvl_choose * 2)
 
-                firebase.lvl_choose = 1
+                firebase.lvl_choose = 100
 
             if firebase.lvl_choose == 10:
                 if 0 <= stick_of_war.current_time <= 120000:
                     firebase.star_ten_surf = self.three_star_surf
+                    firebase.money += (30 + firebase.lvl_choose*15)
 
                 elif 120000 < stick_of_war.current_time <= 240000:
                     firebase.star_ten_surf = self.two_star_surf
+                    firebase.money += (30 + firebase.lvl_choose * 5)
 
                 elif stick_of_war.current_time > 240000:
                     firebase.star_ten_surf = self.one_star_surf
+                    firebase.money += (20 + firebase.lvl_choose * 2)
 
-                firebase.lvl_choose = 1
+                firebase.lvl_choose = 100
 
             stick_of_war.winner = None
     def run(self):

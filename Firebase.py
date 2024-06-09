@@ -14,7 +14,7 @@ class Data:
         # attack = (current attack* 1.1)
         # upgrades_price = (current price * 1.1)//1
         self.troop_storage = {
-            "warrior": [True, 1, True, 100, 1, 1.2, 200],
+            "warrior": [True, 1, True, 100, 1000, 15, 200],
             "archer": [True, 1, True, 200, 10, 1.1, 150],
             "wizard": [False, 1, False, 250, 10, 0.8, 200],
             "sparta": [False, 1, False, 300, 2.5, 1, 350],
@@ -49,7 +49,7 @@ class Data:
         self.giant_diamond = 500
 
 
-        self.lvl_choose = 1
+        self.lvl_choose = 100
 
         self.no_star = pygame.image.load('War of stick/Picture/utils/no_star.png')
         self.no_star_surf = pygame.transform.scale(self.no_star, (90, 40))
