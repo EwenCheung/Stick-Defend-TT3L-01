@@ -198,9 +198,6 @@ class Troop:
                     self.bullet_on_court.remove(bullet)
                     ninja.ninja_health -= self.attack_damage
                     break
-            if bullet[1].x >= self.game.right_rect_castle.x:
-                self.game.health_bar_enemy.update_health(self.attack_damage)  # Update castle health
-                self.bullet_on_court.remove(bullet)
 
     def take_damage(self, damage):
         self.health -= damage
@@ -300,17 +297,18 @@ class GameStickOfWar:
         self.screen = pygame.display.set_mode((1000, 600))
         self.bg_x = 0
         self.scroll_speed = 10
-        self.num_gold = 400
-        self.num_diamond = 400
+        self.num_gold = 100000
+        self.num_diamond = 100000
         self.gold_time = pygame.time.get_ticks()
         self.diamond_time = pygame.time.get_ticks()
-        self.gold_interval = 100
-        self.diamond_interval = 100
+        self.gold_interval = 110
+        self.diamond_interval = 110
         self.troop_on_court = []
         self.enemy_on_court = []
         self.health_bar_user = HealthBar(firebase.castle_storage["default_castle"][3], firebase.castle_storage["default_castle"][3],
                                          (620, 530), 200, 20, (0, 255, 0))  # health bar
-        self.health_bar_enemy = HealthBar(5000*(firebase.lvl_choose*2), 5000*(firebase.lvl_choose*2), (620, 560), 200, 20, (255, 0, 0))
+        self.health_bar_enemy = HealthBar(5000 * (firebase.lvl_choose * 2), 5000 * (firebase.lvl_choose * 2), (620, 560), 200, 20,
+                                          (255, 0, 0))
         self.healing_initial_position = (35, 550)
         self.freeze_initial_position = (105, 550)
         self.rage_initial_position = (175, 550)
@@ -320,6 +318,7 @@ class GameStickOfWar:
         self.spell_animation = False
         self.time_string = None
         self.num_troops = 0
+        self.max_troop = int(99 * (firebase.lvl_choose/3))
         self.healing_press = False
         self.freeze_press = False
         self.rage_press = False
@@ -332,13 +331,16 @@ class GameStickOfWar:
 
         # set up Ninja timer
         self.ninja_timer = pygame.USEREVENT + 1
-        self.spawn_time = 3000
+        if firebase.lvl_choose <= 1:
+            self.spawn_time = 11000
+        else:
+            self.spawn_time = int(6000/(firebase.lvl_choose/3))
         pygame.time.set_timer(self.ninja_timer, self.spawn_time)
         self.freeze_timer = pygame.USEREVENT + 2
         self.rage_timer = pygame.USEREVENT + 3
         self.healing = False
         self.heal_run = 0
-        self.ninja_choice = ["naruto", "kakashi", "sasuke"]
+        self.ninja_choice = ["naruto","naruto","naruto","kakashi","kakashi","sasuke"]
         # Scrolling Background
         self.background_image = pygame.image.load('War of stick/Picture/utils/map.jpg')
         self.left_rect_castle = pygame.Rect(self.bg_x, 90, 170, 390)
@@ -488,7 +490,7 @@ class GameStickOfWar:
         self.warrior_lock = pygame.image.load('War of stick/Picture/button_lock/warrior_lock.png')
         self.warrior_button = TroopButton(self, self.warrior_button_image, self.warrior_button_dim_image, self.warrior_button_flash,
                                           self.warrior_lock,
-                                          (100, 100), (100, 70), '100n-', 3000, 100, 0)
+                                          (100, 100), (100, 70), f'{firebase.warrior_gold}n{firebase.warrior_diamond}', 3000, firebase.warrior_gold, firebase.warrior_diamond)
 
         # Troop Two
         # Archer walk
@@ -508,7 +510,7 @@ class GameStickOfWar:
         self.archer_lock = pygame.image.load('War of stick/Picture/button_lock/archer_lock.png')
         self.archer_button = TroopButton(self, self.archer_button_image, self.archer_button_dim_image, self.archer_button_flash,
                                          self.archer_lock,
-                                         (100, 100), (200, 70), '300n200', 3000, 300, 200)
+                                         (100, 100), (200, 70), f'{firebase.archer_gold}n{firebase.archer_diamond}', 3000, firebase.archer_gold, firebase.archer_diamond)
 
         # Troop Three
         # Wizard walk
@@ -543,7 +545,8 @@ class GameStickOfWar:
         self.wizard_lock = pygame.image.load('War of stick/Picture/button_lock/wizard_lock.png')
         self.wizard_button = TroopButton(self, self.wizard_button_image, self.wizard_button_dim_image, self.wizard_button_flash,
                                          self.wizard_lock,
-                                         (100, 100), (300, 70), '500n500', 3000, 500, 500)
+                                         (100, 100), (300, 70), f'{firebase.wizard_gold}n{firebase.wizard_diamond}', 3000,
+                                         firebase.wizard_gold, firebase.wizard_diamond)
         # Troop Four
         # Sparta run
         self.sparta_all_image = [
@@ -575,7 +578,8 @@ class GameStickOfWar:
         self.sparta_lock = pygame.image.load('War of stick/Picture/button_lock/sparta_lock.png')
         self.sparta_button = TroopButton(self, self.sparta_button_image, self.sparta_button_dim_image, self.sparta_button_flash,
                                          self.sparta_lock,
-                                         (100, 100), (400, 70), '700n200', 3000, 700, 200)
+                                         (100, 100), (400, 70), f'{firebase.sparta_gold}n{firebase.sparta_diamond}', 3000,
+                                         firebase.sparta_gold, firebase.sparta_diamond)
 
         # Troop Five
         # Giant Walk
@@ -602,40 +606,41 @@ class GameStickOfWar:
         self.giant_button = TroopButton(self, self.giant_button_image, self.giant_button_dim_image, self.giant_button_flash,
                                         self.giant_lock,
                                         (100, 100),
-                                        (500, 70), '700n200', 3000, 700, 200)
+                                        (500, 70), f'{firebase.giant_gold}n{firebase.giant_diamond}', 3000, firebase.giant_gold,
+                                        firebase.giant_diamond)
 
         self.enemy_one_normal = [pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_1.png').convert_alpha(),
-                              pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_2.png').convert_alpha(),
-                              pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_3.png').convert_alpha(),
-                              pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_4.png').convert_alpha()]
+                                 pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_2.png').convert_alpha(),
+                                 pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_3.png').convert_alpha(),
+                                 pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_4.png').convert_alpha()]
         self.enemy_one_attack = [pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_attack_1.png').convert_alpha(),
-                              pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_attack_2.png').convert_alpha(),
-                              pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_attack_3.png').convert_alpha(),
-                              pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_attack_4.png').convert_alpha()]
+                                 pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_attack_2.png').convert_alpha(),
+                                 pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_attack_3.png').convert_alpha(),
+                                 pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_attack_4.png').convert_alpha()]
         self.enemy_one_frame_storage = [pygame.transform.scale(frame, (110, 135)) for frame in self.enemy_one_normal]
         self.enemy_one_attack_frame_storage = [pygame.transform.scale(frame, (110, 135)) for frame in self.enemy_one_attack]
 
         self.enemy_two_normal = [pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_1.png').convert_alpha(),
-                              pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_2.png').convert_alpha(),
-                              pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_3.png').convert_alpha(),
-                              pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_4.png').convert_alpha()]
+                                 pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_2.png').convert_alpha(),
+                                 pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_3.png').convert_alpha(),
+                                 pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_4.png').convert_alpha()]
         self.enemy_two_attack = [pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_attack_1.png').convert_alpha(),
-                              pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_attack_2.png').convert_alpha(),
-                              pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_attack_3.png').convert_alpha(),
-                              pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_attack_4.png').convert_alpha(),]
+                                 pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_attack_2.png').convert_alpha(),
+                                 pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_attack_3.png').convert_alpha(),
+                                 pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_attack_4.png').convert_alpha(), ]
         self.enemy_two_frame_storage = [pygame.transform.scale(frame, (100, 95)) for frame in self.enemy_two_normal]
         self.enemy_two_attack_frame_storage = [pygame.transform.scale(frame, (100, 95)) for frame in self.enemy_two_attack]
 
         self.enemy_three_normal = [pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_1.png').convert_alpha(),
-                               pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_2.png').convert_alpha(),
-                               pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_3.png').convert_alpha(),
-                               pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_4.png').convert_alpha(),
-                               pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_5.png').convert_alpha(),]
+                                   pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_2.png').convert_alpha(),
+                                   pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_3.png').convert_alpha(),
+                                   pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_4.png').convert_alpha(),
+                                   pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_5.png').convert_alpha(), ]
         self.enemy_three_attack = [pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_1.png').convert_alpha(),
-                               pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_2.png').convert_alpha(),
-                               pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_3.png').convert_alpha(),
-                               pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_4.png').convert_alpha(),
-                               pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_5.png').convert_alpha()]
+                                   pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_2.png').convert_alpha(),
+                                   pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_3.png').convert_alpha(),
+                                   pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_4.png').convert_alpha(),
+                                   pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_5.png').convert_alpha()]
         self.enemy_three_frame_storage = [pygame.transform.scale(frame, (100, 95)) for frame in self.enemy_three_normal]
         self.enemy_three_attack_frame_storage = [pygame.transform.scale(frame, (100, 95)) for frame in self.enemy_three_attack]
 
@@ -644,7 +649,7 @@ class GameStickOfWar:
                           speed, troop_width, troop_height, troop_name, troop_size):
             mouse_pos = pygame.mouse.get_pos()  # Check if the left mouse button was clicked and handle accordingly
 
-            if self.num_troops <= 99:
+            if self.num_troops <= self.max_troop:
                 if button_name.is_clicked(mouse_pos):
                     if self.num_gold >= gold_cost and self.num_diamond >= diamond_cost:
                         self.num_gold -= gold_cost
@@ -666,19 +671,24 @@ class GameStickOfWar:
                     self.go_level_py()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Check if left mouse button is pressed
-                    clicked_troop(100, 200, self.warrior_button, self.warrior_frame_storage, self.warrior_attack_frame_storage,
+                    clicked_troop(firebase.warrior_gold, firebase.warrior_diamond, self.warrior_button, self.warrior_frame_storage,
+                                  self.warrior_attack_frame_storage,
                                   firebase.troop_storage["warrior"][3],
                                   firebase.troop_storage["warrior"][4], firebase.troop_storage["warrior"][5], 75, 100, 'Warrior', 1)
-                    clicked_troop(300, 200, self.archer_button, self.archer_frame_storage, self.archer_attack_frame_storage,
+                    clicked_troop(firebase.archer_gold, firebase.archer_diamond, self.archer_button, self.archer_frame_storage,
+                                  self.archer_attack_frame_storage,
                                   firebase.troop_storage["archer"][3], firebase.troop_storage["archer"][4],
                                   firebase.troop_storage["archer"][5], 75, 100, 'Archer', 2)
-                    clicked_troop(500, 500, self.wizard_button, self.wizard_frame_storage, self.wizard_attack_frame_storage,
+                    clicked_troop(firebase.wizard_gold, firebase.wizard_diamond, self.wizard_button, self.wizard_frame_storage,
+                                  self.wizard_attack_frame_storage,
                                   firebase.troop_storage["wizard"][3], firebase.troop_storage["wizard"][4],
                                   firebase.troop_storage["wizard"][5], 75, 100, 'Wizard', 4)
-                    clicked_troop(700, 200, self.sparta_button, self.sparta_frame_storage, self.sparta_attack_frame_storage,
+                    clicked_troop(firebase.sparta_gold, firebase.sparta_diamond, self.sparta_button, self.sparta_frame_storage,
+                                  self.sparta_attack_frame_storage,
                                   firebase.troop_storage["sparta"][3], firebase.troop_storage["sparta"][4],
                                   firebase.troop_storage["sparta"][5], 75, 100, 'Sparta', 6)
-                    clicked_troop(700, 200, self.giant_button, self.giant_frame_storage, self.giant_attack_frame_storage,
+                    clicked_troop(firebase.giant_gold, firebase.giant_diamond, self.giant_button, self.giant_frame_storage,
+                                  self.giant_attack_frame_storage,
                                   firebase.troop_storage["giant"][3], firebase.troop_storage["giant"][4],
                                   firebase.troop_storage["giant"][5], 30, 200, 'Giant', 15)
 
@@ -687,13 +697,16 @@ class GameStickOfWar:
                     new_ninja = None
                     self.ninja_chosen = choice(self.ninja_choice)
                     if self.ninja_chosen == "naruto":
-                        new_ninja = Ninja(self.ninja_chosen, self.enemy_one_frame_storage, self.enemy_one_attack_frame_storage, 100, 1, 2,
+                        new_ninja = Ninja(self.ninja_chosen, self.enemy_one_frame_storage, self.enemy_one_attack_frame_storage, 50*(firebase.lvl_choose),
+                                          0.9, 1+(firebase.lvl_choose/5),
                                           self.background_image.get_width())
                     elif self.ninja_chosen == "sasuke":
-                        new_ninja = Ninja(self.ninja_chosen, self.enemy_two_frame_storage, self.enemy_two_attack_frame_storage, 50, 1, 3,
+                        new_ninja = Ninja(self.ninja_chosen, self.enemy_two_frame_storage, self.enemy_two_attack_frame_storage, 60*(firebase.lvl_choose),
+                                          1, 2+(firebase.lvl_choose/5),
                                           self.background_image.get_width())
                     elif self.ninja_chosen == "kakashi":
-                        new_ninja = Ninja(self.ninja_chosen, self.enemy_three_frame_storage, self.enemy_three_attack_frame_storage, 75, 2, 2,
+                        new_ninja = Ninja(self.ninja_chosen, self.enemy_three_frame_storage, self.enemy_three_attack_frame_storage,
+                                          70*(firebase.lvl_choose), 1.5, 3+(firebase.lvl_choose/5),
                                           self.background_image.get_width())
                     self.enemy_on_court.append(new_ninja)
                 else:
@@ -760,22 +773,27 @@ class GameStickOfWar:
         # troop attack tower
         for troop in self.troop_on_court:
             if troop.troop_name == "Archer" or troop.troop_name == "Wizard":
-                # troop attack tower
+                # troop attack ninja
+                for ninja in self.enemy_on_court:
+                    if self.far_range_collide(troop, ninja):
+                        troop.attack(self.bg_x)
+                        troop.move_bullet(self.bg_x)
+                        if ninja.ninja_health <= 0:
+                            self.enemy_on_court.remove(ninja)
                 if self.check_far_collision(troop, self.right_rect_castle):
                     troop.attack(self.bg_x)
                     troop.move_bullet(self.bg_x)
+                    for bullet in troop.bullet_on_court:
+                        if bullet[1].x+930 >= self.right_rect_castle.x:
+                            self.health_bar_enemy.update_health(troop.attack_damage)
+                            troop.bullet_on_court.remove(bullet)
+                            print(bullet[1].x)
+                            print(self.right_rect_castle.x)
+                            print(troop.attack_damage)
+                            print(self.health_bar_enemy.current_health)
                 else:
-                    # troop attack ninja
-                    for ninja in self.enemy_on_court:
-                        if self.far_range_collide(troop, ninja):
-                            troop.attack(self.bg_x)
-                            troop.move_bullet(self.bg_x)
-                            if ninja.ninja_health <= 0:
-                                self.enemy_on_court.remove(ninja)
-                            break
-                        else:
-                            troop.move_bullet(self.bg_x)
-                            break
+                    troop.move_bullet(self.bg_x)
+                    break
             else:
                 if self.check_collision(troop, self.right_rect_castle):
                     self.health_bar_enemy.update_health(troop.attack_damage)  # Update castle health
@@ -842,7 +860,7 @@ class GameStickOfWar:
             self.game_over = True
             self.winner = "User"
             if firebase.lvl_choose == firebase.stage_level:
-                firebase.stage_level +=1
+                firebase.stage_level += 1
 
     def go_level_py(self):
         self.bg_music.stop()
@@ -945,7 +963,7 @@ class GameStickOfWar:
 
         # troop icon
         self.screen.blit(self.pic_troop_surf, self.pic_troop_rect)
-        self.num_troop_surf = self.num_troop_font.render(str(self.num_troops), True, 'Black')
+        self.num_troop_surf = self.num_troop_font.render(f"{self.num_troops} / {self.max_troop}", True, 'Black')
         self.screen.blit(self.num_troop_surf, self.num_troop_rect)
 
         # timer icon
@@ -1020,3 +1038,6 @@ class GameStickOfWar:
 
 
 stick_of_war = GameStickOfWar()
+
+if __name__ == '__main__':
+    GameStickOfWar().run()

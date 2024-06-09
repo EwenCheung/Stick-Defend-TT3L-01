@@ -14,11 +14,11 @@ class Data:
         # attack = (current attack* 1.1)
         # upgrades_price = (current price * 1.1)//1
         self.troop_storage = {
-            "warrior": [True, 1, False, 10000, 1000, 15, 200],
-            "archer": [False, 1, False, 200, 5, 1, 150],
-            "wizard": [False, 1, False, 250, 5, 1, 200],
+            "warrior": [True, 1, True, 100, 1, 1.2, 200],
+            "archer": [True, 1, True, 200, 5, 1.1, 150],
+            "wizard": [False, 1, False, 250, 5, 0.8, 200],
             "sparta": [False, 1, False, 300, 2.5, 1, 350],
-            "giant": [False, 1, False, 350, 3.5, 1, 500]
+            "giant": [False, 1, False, 350, 3.5, 0.6, 500]
         }
 
         # spell :[have or not, level, equpped or not, functionality, upgrades price]
@@ -37,7 +37,19 @@ class Data:
             "default_castle": [True, 1, 1, 1000, 1, 150, 150]  # two upgrades
         }
 
-        self.lvl_choose = 0
+        self.warrior_gold = 200
+        self.warrior_diamond = 0
+        self.archer_gold = 300
+        self.archer_diamond = 200
+        self.wizard_gold = 300
+        self.wizard_diamond = 500
+        self.sparta_gold = 500
+        self.sparta_diamond = 350
+        self.giant_gold = 1000
+        self.giant_diamond = 500
+
+
+        self.lvl_choose = 1
 
         self.no_star = pygame.image.load('War of stick/Picture/utils/no_star.png')
         self.no_star_surf = pygame.transform.scale(self.no_star, (90, 40))
