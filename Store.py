@@ -612,29 +612,34 @@ class Game_Store:
                             elif troop_type == 'giant':
                                 self.clicked_image_surf = 'giant'
 
-                for item in self.backpack_troop_list:
-                    if item['equip'] == True:
-                        item_copy = item.copy()
-                        
-                        if item_copy['name'] == 'warrior':
-                            troop_equipped_image = pygame.image.load(
-                                'War of stick/Picture/stickman sword/stickman warrior card.png')
-                        elif item_copy['name'] == 'archer':
-                            troop_equipped_image = pygame.image.load(
-                                'War of stick/Picture/stickman archer/stickman archer card.png')
-                        elif item_copy['name'] == 'sparta':
-                            troop_equipped_image = pygame.image.load(
-                                'War of stick/Picture/stickman sparta/stickman sparta card.png')
-                        elif item_copy['name'] == 'wizard':
-                            troop_equipped_image = pygame.image.load(
-                                'War of stick/Picture/stickman wizard/stickman wizard card.png')
-                        elif item_copy['name'] == 'giant':
-                            troop_equipped_image = pygame.image.load(
-                                'War of stick/Picture/stickman giant/stickman giant card.png')
+                if self.backpack:
+                    # Clear the list before re-populating it to avoid duplicates
+                    self.troop_equipped_list.clear()
 
-                        troop_equipped_image = pygame.transform.scale(troop_equipped_image, (50, 55))
-                        item_copy['image'] = troop_equipped_image
-                        self.troop_equipped_list.append(item_copy)
+                    for item in self.backpack_troop_list:
+                        if item['equip']:
+                            item_copy = item.copy()
+
+                            if item_copy['name'] == 'warrior':
+                                troop_equipped_image = pygame.image.load(
+                                    'War of stick/Picture/stickman sword/stickman warrior card.png')
+                            elif item_copy['name'] == 'archer':
+                                troop_equipped_image = pygame.image.load(
+                                    'War of stick/Picture/stickman archer/stickman archer card.png')
+                            elif item_copy['name'] == 'sparta':
+                                troop_equipped_image = pygame.image.load(
+                                    'War of stick/Picture/stickman sparta/stickman sparta card.png')
+                            elif item_copy['name'] == 'wizard':
+                                troop_equipped_image = pygame.image.load(
+                                    'War of stick/Picture/stickman wizard/stickman wizard card.png')
+                            elif item_copy['name'] == 'giant':
+                                troop_equipped_image = pygame.image.load(
+                                    'War of stick/Picture/stickman giant/stickman giant card.png')
+
+                            troop_equipped_image = pygame.transform.scale(troop_equipped_image, (50, 55))
+                            item_copy['image'] = troop_equipped_image
+                            self.troop_equipped_list.append(item_copy)
+
 
                 if self.backpack and self.selected_category == 'Troop':
                     for item in self.backpack_troop_list:
@@ -687,9 +692,12 @@ class Game_Store:
                                     item_copy['image'] = troop_equipped_image
                                     self.troop_equipped_list.append(item_copy)
 
-                for item in self.spell_list:
-                    if item['equip'] == True:
-                        self.spell_equipped_list.append(item)
+                if self.backpack:
+                    self.spell_equipped_list.clear()
+
+                    for item in self.spell_list:
+                        if item['equip'] == True:
+                            self.spell_equipped_list.append(item)
 
                 if self.backpack and self.selected_category == 'Spell':
                     for item in self.spell_list:
@@ -758,8 +766,7 @@ class Game_Store:
     def backpack_screen(self):
         self.display_detail_info()
         for index, item in enumerate(self.troop_equipped_list):
-            if item['equip'] == True:
-                if index < len(self.x_troop_equipped_position):
+            if item['equip'] == True and index < len(self.x_troop_equipped_position):
                     equipped_troop_image_surf = item['image']
                     equipped_troop_image_x_coords = self.x_troop_equipped_position[index]
                     equipped_troop_image_y_coords = self.y_troop_equipped_position[index]
@@ -768,8 +775,7 @@ class Game_Store:
                     self.screen.blit(equipped_troop_image_surf, equipped_troop_image_rect)
 
         for index, item in enumerate(self.spell_equipped_list):
-            if item['equip'] == True:
-                if index < len(self.x_spell_equipped_position):
+            if item['equip'] == True and index < len(self.x_spell_equipped_position):
                     equipped_spell_image_surf = item['image']
                     equipped_spell_image_surf = pygame.transform.scale(equipped_spell_image_surf, (55, 55))
                     equipped_spell_image_x_coords = self.x_spell_equipped_position[index]
@@ -1603,7 +1609,7 @@ class Game_Store:
                         center=(self.x_coords[index] - 5, self.y_coords[index] + 45))
                     self.screen.blit(button_background_surf, button_background_rect)
 
-                    unlocked_text_surf = self.price_font.render('Uncloked', True, 'Black')
+                    unlocked_text_surf = self.price_font.render('Unlocked', True, 'Black')
                     unlocked_text_rect = unlocked_text_surf.get_rect(center=(self.x_coords[index] - 7, self.y_coords[index] + 46))
                     self.screen.blit(unlocked_text_surf, unlocked_text_rect)
 
