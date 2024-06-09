@@ -94,6 +94,9 @@ class Game_Store:
         self.selected_category = 'Castle'
         self.clicked_image_surf = 'warrior'
         self.clicked_spell_surf = 'freeze'
+        print(firebase.troop_storage)
+        print(self.troop_equipped_list)
+        print(self.spell_equipped_list)
         self.set_up()
 
     def set_up(self):
@@ -609,6 +612,30 @@ class Game_Store:
                             elif troop_type == 'giant':
                                 self.clicked_image_surf = 'giant'
 
+                for item in self.backpack_troop_list:
+                    if item['equip'] == True:
+                        item_copy = item.copy()
+                        
+                        if item_copy['name'] == 'warrior':
+                            troop_equipped_image = pygame.image.load(
+                                'War of stick/Picture/stickman sword/stickman warrior card.png')
+                        elif item_copy['name'] == 'archer':
+                            troop_equipped_image = pygame.image.load(
+                                'War of stick/Picture/stickman archer/stickman archer card.png')
+                        elif item_copy['name'] == 'sparta':
+                            troop_equipped_image = pygame.image.load(
+                                'War of stick/Picture/stickman sparta/stickman sparta card.png')
+                        elif item_copy['name'] == 'wizard':
+                            troop_equipped_image = pygame.image.load(
+                                'War of stick/Picture/stickman wizard/stickman wizard card.png')
+                        elif item_copy['name'] == 'giant':
+                            troop_equipped_image = pygame.image.load(
+                                'War of stick/Picture/stickman giant/stickman giant card.png')
+
+                        troop_equipped_image = pygame.transform.scale(troop_equipped_image, (50, 55))
+                        item_copy['image'] = troop_equipped_image
+                        self.troop_equipped_list.append(item_copy)
+
                 if self.backpack and self.selected_category == 'Troop':
                     for item in self.backpack_troop_list:
                         troop_data = firebase.troop_storage.get(item['name'])
@@ -629,7 +656,7 @@ class Game_Store:
                                     
                             equip_button_rect = item['equip button'].get_rect(midbottom=(383, 565))
                             if equip_button_rect.collidepoint(mouse_pos):
-                                if item['equip']:
+                                if item['equip'] == True:
                                     item['equip'] = False
                                     troop_data[2] = False
                                     for equipped_item in self.troop_equipped_list:
@@ -659,6 +686,10 @@ class Game_Store:
                                     troop_equipped_image = pygame.transform.scale(troop_equipped_image, (50, 55))
                                     item_copy['image'] = troop_equipped_image
                                     self.troop_equipped_list.append(item_copy)
+
+                for item in self.spell_list:
+                    if item['equip'] == True:
+                        self.spell_equipped_list.append(item)
 
                 if self.backpack and self.selected_category == 'Spell':
                     for item in self.spell_list:
@@ -727,23 +758,25 @@ class Game_Store:
     def backpack_screen(self):
         self.display_detail_info()
         for index, item in enumerate(self.troop_equipped_list):
-            if item['equip'] == True and index < len(self.x_troop_equipped_position):
-                equipped_troop_image_surf = item['image']
-                equipped_troop_image_x_coords = self.x_troop_equipped_position[index]
-                equipped_troop_image_y_coords = self.y_troop_equipped_position[index]
-                equipped_troop_image_rect = equipped_troop_image_surf.get_rect(
-                    topleft=(equipped_troop_image_x_coords, equipped_troop_image_y_coords))
-                self.screen.blit(equipped_troop_image_surf, equipped_troop_image_rect)
+            if item['equip'] == True:
+                if index < len(self.x_troop_equipped_position):
+                    equipped_troop_image_surf = item['image']
+                    equipped_troop_image_x_coords = self.x_troop_equipped_position[index]
+                    equipped_troop_image_y_coords = self.y_troop_equipped_position[index]
+                    equipped_troop_image_rect = equipped_troop_image_surf.get_rect(
+                        topleft=(equipped_troop_image_x_coords, equipped_troop_image_y_coords))
+                    self.screen.blit(equipped_troop_image_surf, equipped_troop_image_rect)
 
         for index, item in enumerate(self.spell_equipped_list):
-            if item['equip'] == True and index < len(self.x_spell_equipped_position):
-                equipped_spell_image_surf = item['image']
-                equipped_spell_image_surf = pygame.transform.scale(equipped_spell_image_surf, (55, 55))
-                equipped_spell_image_x_coords = self.x_spell_equipped_position[index]
-                equipped_spell_image_y_coords = self.y_spell_equipped_position[index]
-                equipped_spell_image_rect = equipped_spell_image_surf.get_rect(
-                    topleft=(equipped_spell_image_x_coords, equipped_spell_image_y_coords))
-                self.screen.blit(equipped_spell_image_surf, equipped_spell_image_rect)
+            if item['equip'] == True:
+                if index < len(self.x_spell_equipped_position):
+                    equipped_spell_image_surf = item['image']
+                    equipped_spell_image_surf = pygame.transform.scale(equipped_spell_image_surf, (55, 55))
+                    equipped_spell_image_x_coords = self.x_spell_equipped_position[index]
+                    equipped_spell_image_y_coords = self.y_spell_equipped_position[index]
+                    equipped_spell_image_rect = equipped_spell_image_surf.get_rect(
+                        topleft=(equipped_spell_image_x_coords, equipped_spell_image_y_coords))
+                    self.screen.blit(equipped_spell_image_surf, equipped_spell_image_rect)
 
         self.troop_screen_blit()
         self.spell_screen_blit()
@@ -1000,6 +1033,7 @@ class Game_Store:
                                 equip_text = self.font.render("Equip", True, (255, 255, 255))
                                 equip_text_rect = equip_text.get_rect(midtop=(380, 520))
                                 self.screen.blit(equip_text, equip_text_rect)
+
                             elif item['equip'] == True:
                                 unequip_button_surf = item['unequip button']
                                 unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383, 565))
@@ -1076,6 +1110,7 @@ class Game_Store:
                                 equip_text = self.font.render("Equip", True, (255, 255, 255))
                                 equip_text_rect = equip_text.get_rect(midtop=(380, 520))
                                 self.screen.blit(equip_text, equip_text_rect)
+
                             elif item['equip'] == True:
                                 unequip_button_surf = item['unequip button']
                                 unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383, 565))
@@ -1152,6 +1187,7 @@ class Game_Store:
                                 equip_text = self.font.render("Equip", True, (255, 255, 255))
                                 equip_text_rect = equip_text.get_rect(midtop=(380, 520))
                                 self.screen.blit(equip_text, equip_text_rect)
+                                
                             elif item['equip'] == True:
                                 unequip_button_surf = item['unequip button']
                                 unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383, 565))
@@ -1228,6 +1264,7 @@ class Game_Store:
                                 equip_text = self.font.render("Equip", True, (255, 255, 255))
                                 equip_text_rect = equip_text.get_rect(midtop=(380, 520))
                                 self.screen.blit(equip_text, equip_text_rect)
+                                
                             elif item['equip'] == True:
                                 unequip_button_surf = item['unequip button']
                                 unequip_button_rect = unequip_button_surf.get_rect(midbottom=(383, 565))
