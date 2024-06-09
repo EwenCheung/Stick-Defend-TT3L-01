@@ -35,10 +35,6 @@ class GameLevel:
 
         self.level_bg = pygame.image.load('War of stick/Picture/utils/choose level.png')
 
-        self.level_select_music = pygame.mixer.Sound('War of stick/Music/level.mp3')
-        self.level_select_music.set_volume(0.2)
-        self.level_select_music.play(loops=-1)
-
         # star rect for all level
         # level one
         self.star_one_rect = self.one_star_surf.get_rect(center=(180, 290))
@@ -489,6 +485,10 @@ class GameLevel:
 
             stick_of_war.winner = None
     def run(self):
+        self.level_select_music = pygame.mixer.Sound('War of stick/Music/level.mp3')
+        self.level_select_music.set_volume(0.2)
+        self.level_select_music.play(loops=-1)
+
         while True:
             self.screen.fill((255, 255, 255))
 

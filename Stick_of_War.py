@@ -329,10 +329,6 @@ class GameStickOfWar:
         self.freeze_price = 500
         self.rage_price = 500
 
-        self.game_music = pygame.mixer.Sound('War of stick/Music/game_music.mp3')
-        self.game_music.set_volume(0.2)
-        self.game_music.play(loops=-1)
-
         # set up Ninja timer
         self.ninja_timer = pygame.USEREVENT + 1
         if firebase.lvl_choose <= 1:
@@ -1035,6 +1031,9 @@ class GameStickOfWar:
     def run(self):
         pygame.quit()
         self.reset_func()
+        self.game_music = pygame.mixer.Sound('War of stick/Music/game_music.mp3')
+        self.game_music.set_volume(0.2)
+        self.game_music.play(loops=-1)
         while True:
             self.game_start()
             self.event_handling()
