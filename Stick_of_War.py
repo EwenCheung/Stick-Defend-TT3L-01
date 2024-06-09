@@ -664,6 +664,8 @@ class GameStickOfWar:
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                firebase.update_user()
+                firebase.push_data()
                 pygame.quit()
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:

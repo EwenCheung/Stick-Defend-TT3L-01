@@ -156,6 +156,7 @@ class Data:
 firebase = Data()
 firebase.fetch_data()
 
+
 """ 以上信息是可以用改用增 等。。。
     如果你们要
     
