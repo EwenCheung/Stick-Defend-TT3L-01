@@ -279,7 +279,7 @@ class Game_Store:
                 'diamond icon': self.diamond_image_surf_surf,
                 'upgrades button': self.upgrades_button_surf,
                 'health': (firebase.troop_storage['archer'][3] * 10),
-                'attack damage': (firebase.troop_storage['archer'][4] * 5),
+                'attack damage': (firebase.troop_storage['archer'][4] * 2),
                 'equip button': self.equip_button_surf,
                 'unequip button': self.unequip_button_surf
             },
@@ -317,7 +317,7 @@ class Game_Store:
                 'diamond icon': self.diamond_image_surf_surf,
                 'upgrades button': self.upgrades_button_surf,
                 'health': (firebase.troop_storage['wizard'][3] * 10),
-                'attack damage': (firebase.troop_storage['wizard'][4] * 5),
+                'attack damage': (firebase.troop_storage['wizard'][4] * 2),
                 'equip button': self.equip_button_surf,
                 'unequip button': self.unequip_button_surf
             },
