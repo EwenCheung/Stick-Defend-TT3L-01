@@ -468,6 +468,15 @@ class GameStickOfWar:
         self.level_text_surf = self.level_text.render("Level", True, (255, 255, 255))
         self.level_text_rect = self.level_text_surf.get_rect(center=(500, 500))
 
+        self.one_star = pygame.image.load('War of stick/Picture/utils/one_star.png')
+        self.one_star_surf = pygame.transform.scale(self.one_star, (180, 80))
+
+        self.two_star = pygame.image.load('War of stick/Picture/utils/two_star.png')
+        self.two_star_surf = pygame.transform.scale(self.two_star, (180, 80))
+
+        self.three_star = pygame.image.load('War of stick/Picture/utils/three_star.png')
+        self.three_star_surf = pygame.transform.scale(self.three_star, (180, 80))
+
         # Troop One
         # Warrior run
         self.warrior_all_image = [
@@ -998,6 +1007,24 @@ class GameStickOfWar:
             if self.winner == "User":
                 text = font.render("You've won!", True, (255, 255, 255))
                 time = font.render(f'{self.time_string}', True, (255, 255, 255))
+                if 0 <= stick_of_war.current_time <= 120000:
+                    prize = font.render("You've earn 30$", True, (255, 255, 255))
+                    prize_rect = prize.get_rect(center=(500, 200))
+                    star_rect = self.three_star_surf.get_rect(center=(500, 100))
+                    self.screen.blit(prize, prize_rect)
+                    self.screen.blit(self.three_star_surf, star_rect)
+                elif 120000 <= stick_of_war.current_time <= 240000:
+                    prize = font.render("You've earn 20$", True, (255, 255, 255))
+                    prize_rect = prize.get_rect(center=(500, 200))
+                    star_rect = self.three_star_surf.get_rect(center=(500, 100))
+                    self.screen.blit(prize, prize_rect)
+                    self.screen.blit(self.two_star_surf, star_rect)
+                elif stick_of_war.current_time >= 240000:
+                    prize = font.render("You've earn 10$", True, (255, 255, 255))
+                    prize_rect = prize.get_rect(center=(500, 200))
+                    star_rect = self.three_star_surf.get_rect(center=(500, 100))
+                    self.screen.blit(prize, prize_rect)
+                    self.screen.blit(self.one_star_surf, star_rect)
             else:
                 text = font.render("You've lost!", True, (255, 255, 255))
                 time = font.render(f'{self.time_string}', True, (255, 255, 255))
