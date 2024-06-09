@@ -391,15 +391,15 @@ class GamePokemonVsStick:
         self.background_surface = pygame.image.load('Plant vs Stick/Picture/utils/game_background.png').convert()
         self.background_surface = pygame.transform.scale(self.background_surface, (1000, 600))
 
-        self.machine_card_surface = pygame.image.load('Plant vs Stick/Picture/machine/machine_card.jpg').convert()
+        self.machine_card_surface = pygame.image.load('Plant vs Stick/Picture/machine/machine_card.png').convert()
         self.machine_card_surface = pygame.transform.scale(self.machine_card_surface, (68, 83))
         self.machine_card_rectangle = self.machine_card_surface.get_rect(topleft=self.machine_card_initial_position)
 
-        self.archer_card_surface = pygame.image.load('Plant vs Stick/Picture/archer/pikachu_card.jpg').convert()
+        self.archer_card_surface = pygame.image.load('Plant vs Stick/Picture/archer/archer_card.png').convert()
         self.archer_card_surface = pygame.transform.scale(self.archer_card_surface, (68, 83))
         self.archer_card_rectangle = self.archer_card_surface.get_rect(topleft=self.archer_card_initial_position)
 
-        self.wizard_card_surface = pygame.image.load('Plant vs Stick/Picture/wizard/squirtle_card.jpg').convert()
+        self.wizard_card_surface = pygame.image.load('Plant vs Stick/Picture/wizard/wizard_card.png').convert()
         self.wizard_card_surface = pygame.transform.scale(self.wizard_card_surface, (68, 83))
         self.wizard_card_rectangle = self.wizard_card_surface.get_rect(topleft=self.wizard_card_initial_position)
 
