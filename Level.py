@@ -366,7 +366,11 @@ class GameLevel:
             self.screen.blit(firebase.star_ten_surf, self.star_ten_rect)
 
     def achievement(self):
-        if stick_of_war.winner == "User":
+        if stick_of_war.winner =="Enemy":
+            if firebase.lvl_choose != 100:
+                firebase.money += int(10 + firebase.lvl_choose *1.3)
+                firebase.lvl_choose = 100
+        elif stick_of_war.winner == "User":
             if firebase.lvl_choose == 1:
                 if 0 <= stick_of_war.current_time <= 120000:
                     firebase.star_one_surf = self.three_star_surf

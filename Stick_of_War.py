@@ -1017,13 +1017,13 @@ class GameStickOfWar:
                     self.screen.blit(prize, prize_rect)
                     self.screen.blit(self.three_star_surf, star_rect)
                 elif 120000 <= self.current_time <= 240000:
-                    prize = font.render(f"You've earn {20 + firebase.lvl_choose * 5}$", True, (255, 255, 255))
+                    prize = font.render(f"You've earn {30 + firebase.lvl_choose * 5}$", True, (255, 255, 255))
                     prize_rect = prize.get_rect(center=(500, 200))
                     star_rect = self.three_star_surf.get_rect(center=(500, 100))
                     self.screen.blit(prize, prize_rect)
                     self.screen.blit(self.two_star_surf, star_rect)
                 elif self.current_time >= 240000:
-                    prize = font.render(F"You've earn {10 + firebase.lvl_choose * 2}$", True, (255, 255, 255))
+                    prize = font.render(F"You've earn {20 + firebase.lvl_choose * 2}$", True, (255, 255, 255))
                     prize_rect = prize.get_rect(center=(500, 200))
                     star_rect = self.three_star_surf.get_rect(center=(500, 100))
                     self.screen.blit(prize, prize_rect)
@@ -1031,7 +1031,7 @@ class GameStickOfWar:
             else:
                 text = font.render("You've lost!", True, (255, 255, 255))
                 time = font.render(f'{self.time_string}', True, (255, 255, 255))
-                prize = font.render(F"You've earn {10 + firebase.lvl_choose * 2}$", True, (255, 255, 255))
+                prize = font.render(F"You've earn {int(10 + firebase.lvl_choose *1.3)}$", True, (255, 255, 255))
                 prize_rect = prize.get_rect(center=(500, 200))
                 star_rect = self.three_star_surf.get_rect(center=(500, 100))
                 self.screen.blit(prize, prize_rect)
