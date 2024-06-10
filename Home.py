@@ -389,6 +389,8 @@ class GameHome:
                 self.retry = False
 
     def run(self):
+        self.home_music = pygame.mixer.Sound('War of stick/Music/home_music.wav')
+        self.home_music.set_volume(0.2)
         self.home_music.play(loops=-1)        
         while True:
             self.screen.fill((255, 255, 255))

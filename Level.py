@@ -523,6 +523,8 @@ class GameLevel:
 
             stick_of_war.winner = None
     def run(self):
+        self.level_select_music = pygame.mixer.Sound('War of stick/Music/level.mp3')
+        self.level_select_music.set_volume(0.2)
         self.level_select_music.play(loops=-1)
 
         while True:
