@@ -17,7 +17,6 @@ run_level = False
 run_store = False
 run_stick_of_war = False
 
-
 async def main():
     global home
     global level
@@ -27,7 +26,6 @@ async def main():
     global run_level
     global run_store
     global run_stick_of_war
-
 
     while True:
         try:
@@ -83,7 +81,7 @@ async def main():
                         home.choosing_login_method = False
                         break
 
-                    # CLear screen
+                    # Clear screen
                     pokemon_vs_stick.screen.fill((255, 255, 255))
 
                     # event_handling_control_function
