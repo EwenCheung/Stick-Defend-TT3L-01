@@ -3,9 +3,7 @@
 import pygame
 from sys import exit
 from random import randint, choice
-from Firebase import firebase
-import importlib
-from Home import home
+from Database import database
 
 # game start from here
 # have to initialise the pygame first
@@ -307,29 +305,28 @@ class GamePokemonVsStick:
         self.machine_card_initial_position = (120, 8)
         self.archer_card_initial_position = (191, 8)
         self.wizard_card_initial_position = (262, 8)
-        self.before_press_start = True  # main menu
-        self.after_press_start = False  # game start
-        self.begin_time = None
+        self.reset_func()
 
-        # Groups
-        self.troop_groups = pygame.sprite.Group()
-        self.hero_groups = pygame.sprite.Group()
+    def reset_func(self):
+            self.before_press_start = True  # main menu
+            self.after_press_start = False  # game start
+            self.begin_time = None
 
-        # reset game state for play again
-        self.reset_game_state()
+            # Groups
+            self.troop_groups = pygame.sprite.Group()
+            self.hero_groups = pygame.sprite.Group()
 
-        # set up gem_ball_drop_timer
-        self.gem_ball_timer = pygame.USEREVENT + 2
-        pygame.time.set_timer(self.gem_ball_timer, 16000)
+            # reset game state for play again
+            self.reset_game_state()
 
-        # choice of ninja
-        self.troop_choice = ['warrior', 'sparta', 'giant']
+            # set up gem_ball_drop_timer
+            self.gem_ball_timer = pygame.USEREVENT + 2
+            pygame.time.set_timer(self.gem_ball_timer, 16000)
+
+            # choice of ninja
+            self.troop_choice = ['warrior', 'sparta', 'giant']
 
     def reset_game_state(self):
-        # create a background music
-        self.bg_music = pygame.mixer.Sound('Plant vs Stick/audio/bg_music.mp3')
-        self.bg_music.set_volume(0.1)
-        self.bg_music.play(loops=-1)
 
         # set up Ninja timer
         self.troop_timer = pygame.USEREVENT + 1
@@ -362,6 +359,8 @@ class GamePokemonVsStick:
         self.spawned_ball = Gem_Ball()
         self.troop_groups.empty()
         self.hero_groups.empty()
+
+        self.go_home_py = False
         self.set_up()  # set up surface and rectangle etc
 
     def set_up(self):  # set up surface and rectangle etc
@@ -374,7 +373,7 @@ class GamePokemonVsStick:
         self.start_adventure_rect = self.start_adventure_surface.get_rect(topleft=(510, 70))
 
         username_font = pygame.font.Font(None, 30)
-        self.username_surface = username_font.render(firebase.username, True, 'Green')
+        self.username_surface = username_font.render(database.username, True, 'Green')
         self.username_rectangle = self.username_surface.get_rect(center=(257, 90))
 
         press_h_font = pygame.font.Font(None, 35)
@@ -440,8 +439,8 @@ class GamePokemonVsStick:
         for event in pygame.event.get():
             # press 'x' to quit the game
             if event.type == pygame.QUIT:
-                firebase.update_user()
-                firebase.push_data()
+                database.update_user()
+                database.push_data()
                 pygame.quit()
                 exit()
 
@@ -569,14 +568,8 @@ class GamePokemonVsStick:
                 mouse_pos = pygame.mouse.get_pos()
 
                 if self.before_press_start and self.back_background_rect.collidepoint(mouse_pos):
-                    self.go_home_py()
-
-    def go_home_py(self):
-        self.bg_music.stop()
-        home.choose_game_to_play = True
-        home.choosing_login_method = False
-        home.run()
-        exit()
+                    self.bg_music.stop()
+                    self.go_home_py = True
 
     def game_start(self):
         if self.before_press_start:  # main menu page
@@ -724,6 +717,9 @@ class GamePokemonVsStick:
             self.screen.blit(play_again, self.play_again_rect)
 
     def run(self):
+        self.bg_music = pygame.mixer.Sound('Plant vs Stick/audio/bg_music.mp3')
+        self.bg_music.set_volume(0.1)
+        self.bg_music.play(loops=-1)
         while True:
             # CLear screen
             self.screen.fill((255, 255, 255))

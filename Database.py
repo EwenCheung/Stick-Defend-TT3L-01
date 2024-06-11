@@ -1,9 +1,11 @@
 import ast
 import pygame
 
+
 class Data:
     def __init__(self):
         self.all_user = []
+        self.fetch_data()
         self.login_method = None
         self.username = "Guest"
         self.password = "888888"
@@ -14,7 +16,7 @@ class Data:
         # attack = (current attack* 1.1)
         # upgrades_price = (current price * 1.1)//1
         self.troop_storage = {
-            "warrior": [True, 1, True, 100, 1000, 15, 200],
+            "warrior": [True, 1, True, 1000, 10000, 15, 200],
             "archer": [True, 1, True, 200, 10, 1.1, 150],
             "wizard": [False, 1, False, 250, 10, 0.8, 200],
             "sparta": [False, 1, False, 300, 2.5, 1, 350],
@@ -47,7 +49,6 @@ class Data:
         self.sparta_diamond = 350
         self.giant_gold = 1000
         self.giant_diamond = 500
-
 
         self.lvl_choose = 100
 
@@ -87,18 +88,20 @@ class Data:
                 'stage_level': 1,
                 'money': 0,
                 'troop_storage': {
-                    "warrior": [True, 1, True, 100, 1, 1, 100],
-                    "archer": [False, 1, False, 200, 5, 1, 200],
-                    "wizard": [False, 1, False, 250, 5, 1, 300],
-                    "sparta": [False, 1, False, 300, 3, 1, 400],
-                    "giant": [False, 1, False, 350, 4, 1, 500]
+                    "warrior": [True, 1, True, 100, 1.5, 1, 200],
+                    "archer": [True, 1, True, 200, 10, 1.1, 150],
+                    "wizard": [False, 1, False, 250, 10, 0.8, 200],
+                    "sparta": [False, 1, False, 300, 2.5, 1, 350],
+                    "giant": [False, 1, False, 350, 3.5, 0.6, 500]
                 },
                 'spell_storage': {
-                    "rage": [False, 1, False, 0.5, 100],
-                    "healing": [False, 1, False, 300, 200],
-                    "freeze": [False, 1, False, 0.5, 300]
+                    "rage": [False, 1, False, 0.1, 150],
+                    "healing": [False, 1, False, 100, 150],
+                    "freeze": [False, 1, False, 0.1, 150]
                 },
-                'castle_storage': {"default_castle": [False, 1, 1, 1000, 10, 150, 150]}}
+                'castle_storage': {
+                    "default_castle": [True, 1, 1, 1000, 1, 150, 150]  # two upgrades
+                }}
         self.all_user.append(data)
 
     # read current user data
@@ -141,7 +144,6 @@ class Data:
 
     # fetch every user from database
     def fetch_data(self):
-        self.all_user = []
         with open('database.txt', mode='rt', encoding='utf-8') as f:
             for line in f:
                 user_data = ast.literal_eval(line.strip())
@@ -153,9 +155,7 @@ class Data:
                 f.write(f"{user}\n")
 
 
-firebase = Data()
-firebase.fetch_data()
-
+database = Data()
 
 """ 以上信息是可以用改用增 等。。。
     如果你们要

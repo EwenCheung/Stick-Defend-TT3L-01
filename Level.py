@@ -1,9 +1,7 @@
 import pygame
 from sys import exit
-import importlib
-from Firebase import firebase
+from Database import database
 from Stick_of_War import stick_of_war
-from Home import home
 
 pygame.init()
 pygame.font.init()
@@ -39,6 +37,10 @@ class GameLevel:
         self.level_select_music.set_volume(0.2)
         self.level_select_music.play(loops=-1)
 
+        self.go_home_py = False
+        self.go_store_py = False
+        self.go_stick_of_war = False
+
         # star rect for all level
         # level one
         self.star_one_rect = self.one_star_surf.get_rect(center=(180, 290))
@@ -70,7 +72,7 @@ class GameLevel:
         # level ten
         self.star_ten_rect = self.one_star_surf.get_rect(center=(805, 470))
 
-    def choose_level(self):
+    def choose_level(self, winner, played_time):
         self.wood_plank_rectangle_back = self.wood_plank_surface.get_rect(center=(115, 100))
 
         self.wood_plank_rectangle_store = self.wood_plank_surface.get_rect(center=(890, 100))
@@ -104,7 +106,7 @@ class GameLevel:
         self.wood_plank_rectangle_ten = self.wood_plank_surface.get_rect(center=(805, 410))
         self.lock_ten_rect = self.lock_surf.get_rect(center=(805, 410))
 
-        if firebase.stage_level == 1:
+        if database.stage_level == 1:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -118,9 +120,9 @@ class GameLevel:
             self.screen.blit(self.lock_surf, self.lock_eight_rect)
             self.screen.blit(self.lock_surf, self.lock_nine_rect)
             self.screen.blit(self.lock_surf, self.lock_ten_rect)
-            self.achievement()
+            self.achievement(winner, played_time)
             self.blit_star()
-        elif firebase.stage_level == 2:
+        elif database.stage_level == 2:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -134,9 +136,9 @@ class GameLevel:
             self.screen.blit(self.lock_surf, self.lock_eight_rect)
             self.screen.blit(self.lock_surf, self.lock_nine_rect)
             self.screen.blit(self.lock_surf, self.lock_ten_rect)
-            self.achievement()
+            self.achievement(winner, played_time)
             self.blit_star()
-        elif firebase.stage_level == 3:
+        elif database.stage_level == 3:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -150,9 +152,9 @@ class GameLevel:
             self.screen.blit(self.lock_surf, self.lock_eight_rect)
             self.screen.blit(self.lock_surf, self.lock_nine_rect)
             self.screen.blit(self.lock_surf, self.lock_ten_rect)
-            self.achievement()
+            self.achievement(winner, played_time)
             self.blit_star()
-        elif firebase.stage_level == 4:
+        elif database.stage_level == 4:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -166,9 +168,9 @@ class GameLevel:
             self.screen.blit(self.lock_surf, self.lock_eight_rect)
             self.screen.blit(self.lock_surf, self.lock_nine_rect)
             self.screen.blit(self.lock_surf, self.lock_ten_rect)
-            self.achievement()
+            self.achievement(winner, played_time)
             self.blit_star()
-        elif firebase.stage_level == 5:
+        elif database.stage_level == 5:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -182,9 +184,9 @@ class GameLevel:
             self.screen.blit(self.lock_surf, self.lock_eight_rect)
             self.screen.blit(self.lock_surf, self.lock_nine_rect)
             self.screen.blit(self.lock_surf, self.lock_ten_rect)
-            self.achievement()
+            self.achievement(winner, played_time)
             self.blit_star()
-        elif firebase.stage_level == 6:
+        elif database.stage_level == 6:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -198,9 +200,9 @@ class GameLevel:
             self.screen.blit(self.lock_surf, self.lock_eight_rect)
             self.screen.blit(self.lock_surf, self.lock_nine_rect)
             self.screen.blit(self.lock_surf, self.lock_ten_rect)
-            self.achievement()
+            self.achievement(winner, played_time)
             self.blit_star()
-        elif firebase.stage_level == 7:
+        elif database.stage_level == 7:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -214,9 +216,9 @@ class GameLevel:
             self.screen.blit(self.lock_surf, self.lock_eight_rect)
             self.screen.blit(self.lock_surf, self.lock_nine_rect)
             self.screen.blit(self.lock_surf, self.lock_ten_rect)
-            self.achievement()
+            self.achievement(winner, played_time)
             self.blit_star()
-        elif firebase.stage_level == 8:
+        elif database.stage_level == 8:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -230,9 +232,9 @@ class GameLevel:
             self.screen.blit(self.level_bg, (0, 0))
             self.screen.blit(self.lock_surf, self.lock_nine_rect)
             self.screen.blit(self.lock_surf, self.lock_ten_rect)
-            self.achievement()
+            self.achievement(winner, played_time)
             self.blit_star()
-        elif firebase.stage_level == 9:
+        elif database.stage_level == 9:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -246,9 +248,9 @@ class GameLevel:
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_nine)
             self.screen.blit(self.level_bg, (0, 0))
             self.screen.blit(self.lock_surf, self.lock_ten_rect)
-            self.achievement()
+            self.achievement(winner, played_time)
             self.blit_star()
-        elif firebase.stage_level == 10:
+        elif database.stage_level == 10:
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_back)
             self.screen.blit(self.wood_plank_surface_back_and_store, self.wood_plank_rectangle_store)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_one)
@@ -262,266 +264,254 @@ class GameLevel:
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_nine)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle_ten)
             self.screen.blit(self.level_bg, (0, 0))
-            self.achievement()
+            self.achievement(winner, played_time)
             self.blit_star()
 
     def event_handling(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                firebase.update_user()
-                firebase.push_data()
+                database.update_user()
+                database.push_data()
                 pygame.quit()
                 exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if self.wood_plank_rectangle_store.collidepoint(pygame.mouse.get_pos()):
-                    self.go_store_py()
+                    self.level_select_music.stop()
+                    self.go_store_py = True
 
                 if self.wood_plank_rectangle_back.collidepoint(pygame.mouse.get_pos()):
-                    self.go_home_py()
+                    self.level_select_music.stop()
+                    self.go_home_py = True
 
-                if firebase.stage_level >= 1:
+                if database.stage_level >= 1:
                     if self.wood_plank_rectangle_one.collidepoint(pygame.mouse.get_pos()):
-                        firebase.lvl_choose = 1
-                        stick_of_war.run()
+                        database.lvl_choose = 1
+                        self.go_stick_of_war = True
 
-                if firebase.stage_level >= 2:
+                if database.stage_level >= 2:
                     if self.wood_plank_rectangle_two.collidepoint(pygame.mouse.get_pos()):
-                        firebase.lvl_choose = 2
-                        stick_of_war.run()
+                        database.lvl_choose = 2
+                        self.go_stick_of_war = True
 
-                if firebase.stage_level >= 3:
+                if database.stage_level >= 3:
                     if self.wood_plank_rectangle_three.collidepoint(pygame.mouse.get_pos()):
-                        firebase.lvl_choose = 3
-                        stick_of_war.run()
+                        database.lvl_choose = 3
+                        self.go_stick_of_war = True
 
-                if firebase.stage_level >= 4:
+                if database.stage_level >= 4:
                     if self.wood_plank_rectangle_four.collidepoint(pygame.mouse.get_pos()):
-                        firebase.lvl_choose = 4
-                        stick_of_war.run()
+                        database.lvl_choose = 4
+                        self.go_stick_of_war = True
 
-                if firebase.stage_level >= 5:
+                if database.stage_level >= 5:
                     if self.wood_plank_rectangle_five.collidepoint(pygame.mouse.get_pos()):
-                        firebase.lvl_choose = 5
-                        stick_of_war.run()
+                        database.lvl_choose = 5
+                        self.go_stick_of_war = True
 
-                if firebase.stage_level >= 6:
+                if database.stage_level >= 6:
                     if self.wood_plank_rectangle_six.collidepoint(pygame.mouse.get_pos()):
-                        firebase.lvl_choose = 6
-                        stick_of_war.run()
+                        database.lvl_choose = 6
+                        self.go_stick_of_war = True
 
-                if firebase.stage_level >= 7:
+                if database.stage_level >= 7:
                     if self.wood_plank_rectangle_seven.collidepoint(pygame.mouse.get_pos()):
-                        firebase.lvl_choose = 7
-                        stick_of_war.run()
+                        database.lvl_choose = 7
+                        self.go_stick_of_war = True
 
-                if firebase.stage_level >= 8:
+                if database.stage_level >= 8:
                     if self.wood_plank_rectangle_eight.collidepoint(pygame.mouse.get_pos()):
-                        firebase.lvl_choose = 8
-                        stick_of_war.run()
+                        database.lvl_choose = 8
+                        self.go_stick_of_war = True
 
-                if firebase.stage_level >= 9:
+                if database.stage_level >= 9:
                     if self.wood_plank_rectangle_nine.collidepoint(pygame.mouse.get_pos()):
-                        firebase.lvl_choose = 9
-                        stick_of_war.run()
+                        database.lvl_choose = 9
+                        self.go_stick_of_war = True
 
-                if firebase.stage_level >= 10:
+                if database.stage_level >= 10:
                     if self.wood_plank_rectangle_ten.collidepoint(pygame.mouse.get_pos()):
-                        firebase.lvl_choose = 10
-                        stick_of_war.run()
-
-    def go_store_py(self):
-        self.level_select_music.stop()
-        store_module = importlib.import_module("Store")
-        game_store = store_module.Game_Store()
-        game_store.run()
-        exit()
-
-    def go_home_py(self):
-        self.level_select_music.stop()
-        home.choose_game_to_play = True
-        home.choosing_login_method = False
-        home.run()
-        exit()
+                        database.lvl_choose = 10
+                        self.go_stick_of_war = True
 
     def blit_star(self):
-        if firebase.stage_level >= 1:
-            self.screen.blit(firebase.star_one_surf, self.star_one_rect)
-        if firebase.stage_level >= 2:
-            self.screen.blit(firebase.star_two_surf, self.star_two_rect)
-        if firebase.stage_level >= 3:
-            self.screen.blit(firebase.star_three_surf, self.star_three_rect)
-        if firebase.stage_level >= 4:
-            self.screen.blit(firebase.star_four_surf, self.star_four_rect)
-        if firebase.stage_level >= 5:
-            self.screen.blit(firebase.star_five_surf, self.star_five_rect)
-        if firebase.stage_level >= 6:
-            self.screen.blit(firebase.star_six_surf, self.star_six_rect)
-        if firebase.stage_level >= 7:
-            self.screen.blit(firebase.star_seven_surf, self.star_seven_rect)
-        if firebase.stage_level >= 8:
-            self.screen.blit(firebase.star_eight_surf, self.star_eight_rect)
-        if firebase.stage_level >= 9:
-            self.screen.blit(firebase.star_nine_surf, self.star_nine_rect)
-        if firebase.stage_level >= 10:
-            self.screen.blit(firebase.star_ten_surf, self.star_ten_rect)
+        if database.stage_level >= 1:
+            self.screen.blit(database.star_one_surf, self.star_one_rect)
+        if database.stage_level >= 2:
+            self.screen.blit(database.star_two_surf, self.star_two_rect)
+        if database.stage_level >= 3:
+            self.screen.blit(database.star_three_surf, self.star_three_rect)
+        if database.stage_level >= 4:
+            self.screen.blit(database.star_four_surf, self.star_four_rect)
+        if database.stage_level >= 5:
+            self.screen.blit(database.star_five_surf, self.star_five_rect)
+        if database.stage_level >= 6:
+            self.screen.blit(database.star_six_surf, self.star_six_rect)
+        if database.stage_level >= 7:
+            self.screen.blit(database.star_seven_surf, self.star_seven_rect)
+        if database.stage_level >= 8:
+            self.screen.blit(database.star_eight_surf, self.star_eight_rect)
+        if database.stage_level >= 9:
+            self.screen.blit(database.star_nine_surf, self.star_nine_rect)
+        if database.stage_level >= 10:
+            self.screen.blit(database.star_ten_surf, self.star_ten_rect)
 
-    def achievement(self):
-        if stick_of_war.winner =="Enemy":
-            if firebase.lvl_choose != 100:
-                firebase.money += int(10 + firebase.lvl_choose *1.3)
-                firebase.lvl_choose = 100
-        elif stick_of_war.winner == "User":
-            if firebase.lvl_choose == 1:
-                if 0 <= stick_of_war.current_time <= 120000:
-                    firebase.star_one_surf = self.three_star_surf
-                    firebase.money += (30 + firebase.lvl_choose*15)
+    def achievement(self, winner, played_time):
+        if winner == "Enemy":
+            if database.lvl_choose != 100:
+                database.money += int(10 + database.lvl_choose * 1.3)
+                database.lvl_choose = 100
+        elif winner == "User":
+            if database.lvl_choose == 1:
+                if 0 <= played_time <= 120000:
+                    database.star_one_surf = self.three_star_surf
+                    database.money += (30 + database.lvl_choose * 15)
 
-                elif 120000 < stick_of_war.current_time <= 240000:
-                    firebase.star_one_surf = self.two_star_surf
-                    firebase.money += (30 + firebase.lvl_choose * 5)
+                elif 120000 < played_time <= 240000:
+                    database.star_one_surf = self.two_star_surf
+                    database.money += (30 + database.lvl_choose * 5)
 
-                elif stick_of_war.current_time > 240000:
-                    firebase.star_one_surf = self.one_star_surf
-                    firebase.money += (20 + firebase.lvl_choose*2)
+                elif played_time > 240000:
+                    database.star_one_surf = self.one_star_surf
+                    database.money += (20 + database.lvl_choose * 2)
 
-                firebase.lvl_choose = 100
+                database.lvl_choose = 100
 
-            if firebase.lvl_choose == 2:
-                if 0 <= stick_of_war.current_time <= 120000:
-                    firebase.star_two_surf = self.three_star_surf
-                    firebase.money += (30 + firebase.lvl_choose*15)
+            if database.lvl_choose == 2:
+                if 0 <= played_time <= 120000:
+                    database.star_two_surf = self.three_star_surf
+                    database.money += (30 + database.lvl_choose * 15)
 
-                elif 120000 < stick_of_war.current_time <= 240000:
-                    firebase.star_two_surf = self.two_star_surf
-                    firebase.money += (30 + firebase.lvl_choose * 5)
+                elif 120000 < played_time <= 240000:
+                    database.star_two_surf = self.two_star_surf
+                    database.money += (30 + database.lvl_choose * 5)
 
-                elif stick_of_war.current_time > 240000:
-                    firebase.star_two_surf = self.one_star_surf
-                    firebase.money += (20 + firebase.lvl_choose * 2)
+                elif played_time > 240000:
+                    database.star_two_surf = self.one_star_surf
+                    database.money += (20 + database.lvl_choose * 2)
 
-                firebase.lvl_choose = 100
+                database.lvl_choose = 100
 
-            if firebase.lvl_choose == 3:
-                if 0 <= stick_of_war.current_time <= 120000:
-                    firebase.star_three_surf = self.three_star_surf
-                    firebase.money += (30 + firebase.lvl_choose*15)
+            if database.lvl_choose == 3:
+                if 0 <= played_time <= 120000:
+                    database.star_three_surf = self.three_star_surf
+                    database.money += (30 + database.lvl_choose * 15)
 
-                elif 120000 < stick_of_war.current_time <= 240000:
-                    firebase.star_three_surf = self.two_star_surf
-                    firebase.money += (30 + firebase.lvl_choose * 5)
+                elif 120000 < played_time <= 240000:
+                    database.star_three_surf = self.two_star_surf
+                    database.money += (30 + database.lvl_choose * 5)
 
-                elif stick_of_war.current_time > 240000:
-                    firebase.star_three_surf = self.one_star_surf
-                    firebase.money += (20 + firebase.lvl_choose * 2)
+                elif played_time > 240000:
+                    database.star_three_surf = self.one_star_surf
+                    database.money += (20 + database.lvl_choose * 2)
 
-                firebase.lvl_choose = 100
+                database.lvl_choose = 100
 
-            if firebase.lvl_choose == 4:
-                if 0 <= stick_of_war.current_time <= 120000:
-                    firebase.star_four_surf = self.three_star_surf
-                    firebase.money += (30 + firebase.lvl_choose*15)
+            if database.lvl_choose == 4:
+                if 0 <= played_time <= 120000:
+                    database.star_four_surf = self.three_star_surf
+                    database.money += (30 + database.lvl_choose * 15)
 
-                elif 120000 < stick_of_war.current_time <= 240000:
-                    firebase.star_four_surf = self.two_star_surf
-                    firebase.money += (30 + firebase.lvl_choose * 5)
+                elif 120000 < played_time <= 240000:
+                    database.star_four_surf = self.two_star_surf
+                    database.money += (30 + database.lvl_choose * 5)
 
-                elif stick_of_war.current_time > 240000:
-                    firebase.star_four_surf = self.one_star_surf
-                    firebase.money += (20 + firebase.lvl_choose * 2)
+                elif played_time > 240000:
+                    database.star_four_surf = self.one_star_surf
+                    database.money += (20 + database.lvl_choose * 2)
 
-                firebase.lvl_choose = 100
+                database.lvl_choose = 100
 
-            if firebase.lvl_choose == 5:
-                if 0 <= stick_of_war.current_time <= 120000:
-                    firebase.star_five_surf = self.three_star_surf
-                    firebase.money += (30 + firebase.lvl_choose*15)
+            if database.lvl_choose == 5:
+                if 0 <= played_time <= 120000:
+                    database.star_five_surf = self.three_star_surf
+                    database.money += (30 + database.lvl_choose * 15)
 
-                elif 120000 < stick_of_war.current_time <= 240000:
-                    firebase.star_five_surf = self.two_star_surf
-                    firebase.money += (30 + firebase.lvl_choose * 5)
+                elif 120000 < played_time <= 240000:
+                    database.star_five_surf = self.two_star_surf
+                    database.money += (30 + database.lvl_choose * 5)
 
-                elif stick_of_war.current_time > 240000:
-                    firebase.star_five_surf = self.one_star_surf
-                    firebase.money += (20 + firebase.lvl_choose * 2)
+                elif played_time > 240000:
+                    database.star_five_surf = self.one_star_surf
+                    database.money += (20 + database.lvl_choose * 2)
 
-                firebase.lvl_choose = 100
+                database.lvl_choose = 100
 
-            if firebase.lvl_choose == 6:
-                if 0 <= stick_of_war.current_time <= 120000:
-                    firebase.star_six_surf = self.three_star_surf
-                    firebase.money += (30 + firebase.lvl_choose*15)
+            if database.lvl_choose == 6:
+                if 0 <= played_time <= 120000:
+                    database.star_six_surf = self.three_star_surf
+                    database.money += (30 + database.lvl_choose * 15)
 
-                elif 120000 < stick_of_war.current_time <= 240000:
-                    firebase.star_six_surf = self.two_star_surf
-                    firebase.money += (30 + firebase.lvl_choose * 5)
+                elif 120000 < played_time <= 240000:
+                    database.star_six_surf = self.two_star_surf
+                    database.money += (30 + database.lvl_choose * 5)
 
-                elif stick_of_war.current_time >= 240000:
-                    firebase.star_six_surf = self.one_star_surf
-                    firebase.money += (20 + firebase.lvl_choose * 2)
+                elif played_time >= 240000:
+                    database.star_six_surf = self.one_star_surf
+                    database.money += (20 + database.lvl_choose * 2)
 
-                firebase.lvl_choose = 100
+                database.lvl_choose = 100
 
-            if firebase.lvl_choose == 7:
-                if 0 <= stick_of_war.current_time <= 120000:
-                    firebase.star_seven_surf = self.three_star_surf
-                    firebase.money += (30 + firebase.lvl_choose*15)
+            if database.lvl_choose == 7:
+                if 0 <= played_time <= 120000:
+                    database.star_seven_surf = self.three_star_surf
+                    database.money += (30 + database.lvl_choose * 15)
 
-                elif 120000 < stick_of_war.current_time <= 240000:
-                    firebase.star_seven_surf = self.two_star_surf
-                    firebase.money += (30 + firebase.lvl_choose * 5)
+                elif 120000 < played_time <= 240000:
+                    database.star_seven_surf = self.two_star_surf
+                    database.money += (30 + database.lvl_choose * 5)
 
-                elif stick_of_war.current_time >= 240000:
-                    firebase.star_seven_surf = self.one_star_surf
-                    firebase.money += (20 + firebase.lvl_choose * 2)
+                elif played_time >= 240000:
+                    database.star_seven_surf = self.one_star_surf
+                    database.money += (20 + database.lvl_choose * 2)
 
-                firebase.lvl_choose = 100
+                database.lvl_choose = 100
 
-            if firebase.lvl_choose == 8:
-                if 0 <= stick_of_war.current_time <= 120000:
-                    firebase.star_eight_surf = self.three_star_surf
-                    firebase.money += (30 + firebase.lvl_choose*15)
+            if database.lvl_choose == 8:
+                if 0 <= played_time <= 120000:
+                    database.star_eight_surf = self.three_star_surf
+                    database.money += (30 + database.lvl_choose * 15)
 
-                elif 120000 < stick_of_war.current_time <= 240000:
-                    firebase.star_eight_surf = self.two_star_surf
-                    firebase.money += (30 + firebase.lvl_choose * 5)
+                elif 120000 < played_time <= 240000:
+                    database.star_eight_surf = self.two_star_surf
+                    database.money += (30 + database.lvl_choose * 5)
 
-                elif stick_of_war.current_time >= 240000:
-                    firebase.star_eight_surf = self.one_star_surf
-                    firebase.money += (20 + firebase.lvl_choose * 2)
+                elif played_time >= 240000:
+                    database.star_eight_surf = self.one_star_surf
+                    database.money += (20 + database.lvl_choose * 2)
 
-                firebase.lvl_choose = 100
+                database.lvl_choose = 100
 
-            if firebase.lvl_choose == 9:
-                if 0 <= stick_of_war.current_time <= 120000:
-                    firebase.star_nine_surf = self.three_star_surf
-                    firebase.money += (30 + firebase.lvl_choose*15)
+            if database.lvl_choose == 9:
+                if 0 <= played_time <= 120000:
+                    database.star_nine_surf = self.three_star_surf
+                    database.money += (30 + database.lvl_choose * 15)
 
-                elif 120000 < stick_of_war.current_time <= 240000:
-                    firebase.star_nine_surf = self.two_star_surf
-                    firebase.money += (30 + firebase.lvl_choose * 5)
+                elif 120000 < played_time <= 240000:
+                    database.star_nine_surf = self.two_star_surf
+                    database.money += (30 + database.lvl_choose * 5)
 
-                elif stick_of_war.current_time > 240000:
-                    firebase.star_nine_surf = self.one_star_surf
-                    firebase.money += (20 + firebase.lvl_choose * 2)
+                elif played_time > 240000:
+                    database.star_nine_surf = self.one_star_surf
+                    database.money += (20 + database.lvl_choose * 2)
 
-                firebase.lvl_choose = 100
+                database.lvl_choose = 100
 
-            if firebase.lvl_choose == 10:
-                if 0 <= stick_of_war.current_time <= 120000:
-                    firebase.star_ten_surf = self.three_star_surf
-                    firebase.money += (30 + firebase.lvl_choose*15)
+            if database.lvl_choose == 10:
+                if 0 <= played_time <= 120000:
+                    database.star_ten_surf = self.three_star_surf
+                    database.money += (30 + database.lvl_choose * 15)
 
-                elif 120000 < stick_of_war.current_time <= 240000:
-                    firebase.star_ten_surf = self.two_star_surf
-                    firebase.money += (30 + firebase.lvl_choose * 5)
+                elif 120000 < played_time <= 240000:
+                    database.star_ten_surf = self.two_star_surf
+                    database.money += (30 + database.lvl_choose * 5)
 
-                elif stick_of_war.current_time > 240000:
-                    firebase.star_ten_surf = self.one_star_surf
-                    firebase.money += (20 + firebase.lvl_choose * 2)
+                elif played_time > 240000:
+                    database.star_ten_surf = self.one_star_surf
+                    database.money += (20 + database.lvl_choose * 2)
 
-                firebase.lvl_choose = 100
+                database.lvl_choose = 100
 
-            stick_of_war.winner = None
+
     def run(self):
         self.level_select_music = pygame.mixer.Sound('War of stick/Music/level.mp3')
         self.level_select_music.set_volume(0.2)
@@ -530,9 +520,9 @@ class GameLevel:
         while True:
             self.screen.fill((255, 255, 255))
 
-            self.event_handling()
+            self.choose_level(stick_of_war.winner,stick_of_war.played_time)
 
-            self.choose_level()
+            self.event_handling()
 
             pygame.display.update()
             self.clock.tick(60)

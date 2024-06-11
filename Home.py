@@ -1,7 +1,6 @@
 import pygame
 from sys import exit
-import importlib
-from Firebase import firebase
+from Database import database
 import time
 
 pygame.init()
@@ -66,6 +65,8 @@ class GameHome:
         self.signin_time = None
         self.retry_time = None
         self.acc_found_time = None
+        self.go_pokemon_py = False
+        self.go_level_py = False
 
         # sign up
         self.user_text_box_rectangle = self.text_box_surface.get_rect(center=(500, 250))
@@ -115,21 +116,23 @@ class GameHome:
     def event_handling(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                firebase.update_user()
-                firebase.push_data()
+                database.update_user()
+                database.push_data()
                 pygame.quit()
                 exit()
             elif self.choose_game_to_play and event.type == pygame.MOUSEBUTTONDOWN:
                 if self.stick_of_war_rect.collidepoint(pygame.mouse.get_pos()):
                     self.choose_game_to_play = False
-                    self.go_level_py()
+                    self.home_music.stop()
+                    self.go_level_py = True
                 elif self.pokemon_vs_naruto_rect.collidepoint(pygame.mouse.get_pos()):
                     self.choose_game_to_play = False
-                    self.go_pokemon_py()
+                    self.home_music.stop()
+                    self.go_pokemon_py = True
                 elif self.back_rectangle.collidepoint(pygame.mouse.get_pos()):
                     self.choosing_login_method = True
                     self.choose_game_to_play = False
-                    firebase.login_method = None
+                    database.login_method = None
             elif self.choosing_login_method and event.type == pygame.MOUSEBUTTONDOWN:
                 if not self.signing_up and not self.login_as_guest and self.sign_in_rect.collidepoint(pygame.mouse.get_pos()):
                     self.signing_in = True
@@ -160,7 +163,7 @@ class GameHome:
                         self.key_user = False
                         self.key_pass = False
                         if self.sign_up_username != "" and self.sign_up_password != "":
-                            firebase.sign_up(self.sign_up_username, self.sign_up_password)
+                            database.sign_up(self.sign_up_username, self.sign_up_password)
                             self.signup_time = time.time()
                             self.signup_done = True
                             self.signing_up = False
@@ -205,7 +208,7 @@ class GameHome:
                     elif self.sign_in_login_rectangle.collidepoint(pygame.mouse.get_pos()):
                         self.sign_in_key_user = False
                         self.sign_in_key_pass = False
-                        find_user = firebase.sign_in(self.sign_in_username, self.sign_in_password)
+                        find_user = database.sign_in(self.sign_in_username, self.sign_in_password)
                         if find_user:
                             self.signing_in = False
                             self.choosing_login_method = False
@@ -241,24 +244,8 @@ class GameHome:
             elif self.login_as_guest:
                 self.choosing_login_method = False
                 self.choose_game_to_play = True
-                firebase.login_method = "Guest"
+                database.login_method = "Guest"
                 self.login_as_guest = False
-
-    def go_pokemon_py(self):
-        self.home_music.stop()
-        importlib.invalidate_caches()  # Clear any cached importlib entries
-        pokemon_module = importlib.import_module("Pokemon_vs_Stick")
-        game_pokemon = pokemon_module.GamePokemonVsStick()
-        game_pokemon.run()  # Call a method to start Stick_of_war game
-        exit()
-
-    def go_level_py(self):
-        self.home_music.stop() 
-        importlib.invalidate_caches()  # Clear any cached importlib entries
-        level_module = importlib.import_module('Level')
-        game_level = level_module.GameLevel()
-        game_level.run()
-        exit()
 
     def game_start_bg(self):
         self.screen.blit(self.image, self.image_rect)
@@ -393,7 +380,7 @@ class GameHome:
 
             self.event_handling()
             self.game_start_bg()
-            if firebase.login_method is None:
+            if database.login_method is None:
                 if self.loading:
                     self.update_progress()
                 elif self.finish_loading:
