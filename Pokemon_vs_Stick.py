@@ -5,7 +5,7 @@ from sys import exit
 from random import randint, choice
 from Database import database
 import importlib
-from Home import home
+from Main import home
 
 # game start from here
 # have to initialise the pygame first
@@ -575,7 +575,7 @@ class GamePokemonVsStick:
         self.bg_music.stop()
         home.choose_game_to_play = True
         home.choosing_login_method = False
-        home.run()
+        home.main()
         exit()
 
     def game_start(self):

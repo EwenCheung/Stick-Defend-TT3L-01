@@ -3,7 +3,7 @@ from sys import exit
 import importlib
 from Database import database
 from Stick_of_War import stick_of_war
-from Home import home
+from Main import home
 
 pygame.init()
 pygame.font.init()
