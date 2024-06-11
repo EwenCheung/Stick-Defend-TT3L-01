@@ -2,8 +2,8 @@ import pygame
 from sys import exit
 from Database import database
 
-pygame.init()
-pygame.font.init()
+# pygame.init()
+# pygame.font.init()
 
 
 # others troop * 10
@@ -63,8 +63,8 @@ class Item_card():
 
 class Game_Store:
     def __init__(self):
-        pygame.init()
-        pygame.font.init()
+        # pygame.init()
+        # pygame.font.init()
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((1000, 600))
         pygame.display.set_caption('Store')

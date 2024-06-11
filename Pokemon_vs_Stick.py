@@ -7,10 +7,10 @@ from Database import database
 
 # game start from here
 # have to initialise the pygame first
-pygame.init()
-pygame.font.init()
-pygame.display.set_caption('Pokemon vs Naruto')  # title name
-pygame.display.set_mode((1000, 600))
+# pygame.init()
+# pygame.font.init()
+# pygame.display.set_caption('Pokemon vs Naruto')  # title name
+# pygame.display.set_mode((1000, 600))
 
 
 class Tools:
@@ -298,8 +298,8 @@ class Troop(pygame.sprite.Sprite):
 
 class GamePokemonVsStick:
     def __init__(self):
-        pygame.init()
-        pygame.font.init()
+        # pygame.init()
+        # pygame.font.init()
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((1000, 600))  # screen size
         self.machine_card_initial_position = (120, 8)

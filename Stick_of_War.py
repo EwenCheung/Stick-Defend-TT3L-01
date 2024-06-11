@@ -5,8 +5,8 @@ from sys import exit
 from random import choice, randint
 from Database import database
 
-pygame.init()
-pygame.font.init()
+# pygame.init()
+# pygame.font.init()
 
 
 class TroopButton:
@@ -608,8 +608,8 @@ class GameStickOfWar:
 
 
     def reset_func(self):
-        pygame.init()
-        pygame.font.init()
+        # pygame.init()
+        # pygame.font.init()
         self.clock = pygame.time.Clock()
         pygame.display.set_caption('Tower Defend')  # title name
         self.screen = pygame.display.set_mode((1000, 600))

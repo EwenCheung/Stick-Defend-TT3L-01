@@ -1,11 +1,16 @@
 import asyncio
 import pygame
+pygame.init()
+pygame.font.init()
+pygame.display.set_caption('Stick_Defend')  # title name
+pygame.display.set_mode((1000, 600))
 from Database import database
 from Pokemon_vs_Stick import GamePokemonVsStick
 from Home import GameHome
 from Level import GameLevel
 from Store import Game_Store
 from Stick_of_War import GameStickOfWar
+
 
 home = GameHome()
 level = GameLevel()

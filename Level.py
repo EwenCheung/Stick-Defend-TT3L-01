@@ -3,14 +3,14 @@ from sys import exit
 from Database import database
 from Stick_of_War import stick_of_war
 
-pygame.init()
-pygame.font.init()
+# pygame.init()
+# pygame.font.init()
 
 
 class GameLevel:
     def __init__(self):
-        pygame.init()
-        pygame.font.init()
+        # pygame.init()
+        # pygame.font.init()
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((1000, 600))
         pygame.display.set_caption('Choose Level')
