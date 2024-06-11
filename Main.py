@@ -3,6 +3,7 @@ from sys import exit
 import importlib
 from Database import database
 import time
+import asyncio
 
 pygame.init()
 pygame.font.init()
@@ -253,7 +254,7 @@ class GameHome:
         exit()
 
     def go_level_py(self):
-        self.home_music.stop() 
+        self.home_music.stop()
         importlib.invalidate_caches()  # Clear any cached importlib entries
         level_module = importlib.import_module('Level')
         game_level = level_module.GameLevel()
@@ -384,10 +385,10 @@ class GameHome:
             else:
                 self.retry = False
 
-    def run(self):
+    async def main(self):
         self.home_music = pygame.mixer.Sound('War of stick/Music/home_music.wav')
         self.home_music.set_volume(0.2)
-        self.home_music.play(loops=-1)        
+        self.home_music.play(loops=-1)
         while True:
             self.screen.fill((255, 255, 255))
 
@@ -410,8 +411,9 @@ class GameHome:
             self.display_message()
             pygame.display.update()
             self.clock.tick(60)
+            await asyncio.sleep(0)
 
 
 home = GameHome()
 if __name__ == '__main__':
-    home.run()
+    asyncio.run(home.main())

@@ -153,8 +153,8 @@ class Data:
                 f.write(f"{user}\n")
 
 
-firebase = Data()
-firebase.fetch_data()
+database = Data()
+database.fetch_data()
 
 
 """ 以上信息是可以用改用增 等。。。
