@@ -1,4 +1,15 @@
-import pygame
+import subprocess
+import sys
+
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+try:
+    import pygame
+except ImportError:
+    install("pygame")
+    import pygame
+
 pygame.init()
 pygame.font.init()
 pygame.display.set_caption('Stick_Defend')  # title name
