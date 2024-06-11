@@ -1,4 +1,3 @@
-import asyncio
 import pygame
 pygame.init()
 pygame.font.init()
@@ -22,7 +21,7 @@ run_level = False
 run_store = False
 run_stick_of_war = False
 
-async def main():
+def main():
     global home
     global level
     global stick_of_war
@@ -70,7 +69,6 @@ async def main():
                     home.display_message()
                     pygame.display.update()
                     home.clock.tick(60)
-                    await asyncio.sleep(0)
 
             elif run_pokemon_vs_stick:
                 pokemon_vs_stick.reset_func()
@@ -99,7 +97,6 @@ async def main():
                     pygame.display.flip()  # redraw the screen
 
                     pokemon_vs_stick.clock.tick(60)  # 60 fps
-                    await asyncio.sleep(0)
 
             elif run_level:
                 level.level_select_music = pygame.mixer.Sound('War of stick/Music/level.mp3')
@@ -133,7 +130,6 @@ async def main():
 
                     pygame.display.update()
                     level.clock.tick(60)
-                    await asyncio.sleep(0)
 
             elif run_store:
                 store = Game_Store()
@@ -149,7 +145,6 @@ async def main():
                     store.game_start()
                     pygame.display.update()
                     store.clock.tick(60)
-                    await asyncio.sleep(0)
 
             elif run_stick_of_war:
                 stick_of_war.reset_func()
@@ -167,10 +162,9 @@ async def main():
 
                     pygame.display.update()  # Update the display
                     stick_of_war.clock.tick(60)  # Limit frame rate to 60 FPS
-                    await asyncio.sleep(0)
         except:
             database.update_user()
             database.push_data()
             break
 
-asyncio.run(main())
+main()
