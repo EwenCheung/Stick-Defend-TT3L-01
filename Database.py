@@ -9,19 +9,14 @@ class Data:
         self.login_method = None
         self.username = "Guest"
         self.password = "888888"
-<<<<<<< HEAD:Firebase.py
-        self.stage_level = 4
-        self.money = 100
-=======
         self.stage_level = 1
-        self.money = 300
->>>>>>> tattatta:Database.py
+        self.money = 500
         # troop : [have or not, level, equipped or not, health, attack damage, speed, upgrades_price]
         # health = (current health * 1.1)//1
         # attack = (current attack* 1.1)
         # upgrades_price = (current price * 1.1)//1
         self.troop_storage = {
-            "warrior": [True, 1, True, 100, 1.1, 1, 150],
+            "warrior": [True, 1, True, 100, 1.2, 1, 150],
             "archer": [False, 1, False, 200, 10, 1.1, 150],
             "wizard": [False, 1, False, 250, 10, 0.8, 200],
             "sparta": [False, 1, False, 300, 2.5, 1, 350],
@@ -33,8 +28,8 @@ class Data:
         # healing = healing + 100
         # freeze = freeze + 0.05
         self.spell_storage = {
-            "rage": [True, 1, False, 0.1, 150],
-            "healing": [True, 1, False, 100, 150],
+            "rage": [False, 1, False, 0.1, 150],
+            "healing": [False, 1, False, 100, 150],
             "freeze": [False, 1, False, 0.1, 150]
         }
         # first upgrades for health, second is formining speed level
@@ -91,7 +86,7 @@ class Data:
         data = {'username': username,
                 'password': password,
                 'stage_level': 1,
-                'money': 0,
+                'money': 500,
                 'troop_storage': {
                     "warrior": [True, 1, True, 100, 1.1, 1, 150],
                     "archer": [False, 1, False, 200, 10, 1.1, 150],
