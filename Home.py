@@ -37,7 +37,7 @@ class GameHome:
         self.progress = 0  # this one is if I put 0.2 it will start the loading bar from 0.2
 
         self.image = pygame.image.load(
-            "War of stick/Picture/utils/background_photo.jpg")  # Replace "home_image.jpg" with your image path
+            "War of stick/Picture/utils/background_photo.jpeg")  # Replace "home_image.jpg" with your image path
         self.image = pygame.transform.scale(self.image, (1000, 600))
         self.image_rect = self.image.get_rect(center=(1000 // 2, 600 // 2))
 
