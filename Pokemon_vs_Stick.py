@@ -3,32 +3,31 @@
 import pygame
 from sys import exit
 from random import randint, choice
-from Firebase import firebase
-import importlib
+from Database import database
 
 # game start from here
 # have to initialise the pygame first
-pygame.init()
-pygame.font.init()
-pygame.display.set_caption('Pokemon vs Naruto')  # title name
-pygame.display.set_mode((1000, 600))
+# pygame.init()
+# pygame.font.init()
+# pygame.display.set_caption('Pokemon vs Naruto')  # title name
+# pygame.display.set_mode((1000, 600))
 
 
 class Tools:
-    def find_grid_coor(self, pos, grid_coor, num_ball, pokemon_type):
+    def find_grid_coor(self, pos, grid_coor, num_ball, hero_type):
         # check whether out of map
         # 312 - 42 = 272 ( least x ) , 927 + 42 = 967 ( max x )
         # 172 - 45 = 127 ( least y ) , 532 + 45 = 577 ( max x )
         if pos[0] < 272 or pos[0] > 967 or pos[1] < 127 or pos[1] > 577:
             return None
 
-        if pokemon_type == 'machine':
+        if hero_type == 'machine':
             if num_ball < 50:
                 return None
-        elif pokemon_type == 'pikachu':
+        elif hero_type == 'archer':
             if num_ball < 150:
                 return None
-        elif pokemon_type == 'squirtle':
+        elif hero_type == 'wizard':
             if num_ball < 100:
                 return None
 
@@ -43,95 +42,93 @@ class Tools:
                             return None
                         elif coor[2] == 0:
                             coor[2] = 1
-                            return (coor[0], coor[1])  # return coordinate where pokemon have to stay
+                            return (coor[0], coor[1])  # return coordinate where hero have to stay
 
 
-class Poke_Ball:
+class Gem_Ball:
     def __init__(self):
-        self.poke_ball_surface = pygame.image.load('Plant vs Stick/Picture/utils/Poke_Ball.png').convert_alpha()
-        self.poke_ball_surface = pygame.transform.scale(self.poke_ball_surface, (50, 50))
-        self.poke_ball_rect_storage = []
+        self.gem_ball_surface = pygame.image.load('Plant vs Stick/Picture/utils/diamond_ball.png').convert_alpha()
+        self.gem_ball_surface = pygame.transform.scale(self.gem_ball_surface, (50, 50))
+        self.gem_ball_rect_storage = []
 
-    def create_poke_ball(self):
-        poke_ball_rectangle = self.poke_ball_surface.get_rect(center=(randint(312, 927), randint(-250, -100)))
-        self.poke_ball_rect_storage.append(poke_ball_rectangle)
+    def create_gem_ball(self):
+        gem_ball_rectangle = self.gem_ball_surface.get_rect(center=(randint(312, 927), randint(-250, -100)))
+        self.gem_ball_rect_storage.append(gem_ball_rectangle)
 
-    def drop_poke_ball(self):
-        for poke_ball_rect in self.poke_ball_rect_storage:
+    def drop_gem_ball(self):
+        for gem_ball_rect in self.gem_ball_rect_storage:
             # dropping from up and stop at bottom
-            if poke_ball_rect.y < 535:
-                poke_ball_rect.y += 0.6  # speed cannot below 0.6
+            if gem_ball_rect.y < 535:
+                gem_ball_rect.y += 0.6  # speed cannot below 0.6
 
 
-# load pokemon frame
+# load hero frame
 machine_frame = [
                     pygame.image.load('Plant vs Stick/Picture/machine/machine_1.png').convert_alpha() for _ in
                     range(30)] + [pygame.image.load('Plant vs Stick/Picture/machine/machine_2.png').convert_alpha()
                                   ]
 
-squirtle_normal = [pygame.image.load('Plant vs Stick/Picture/squirtle/squirtle_1.png').convert_alpha(),
-                   pygame.image.load('Plant vs Stick/Picture/squirtle/squirtle_1.png').convert_alpha(),
-                   pygame.image.load('Plant vs Stick/Picture/squirtle/squirtle_2.png').convert_alpha(),
-                   pygame.image.load('Plant vs Stick/Picture/squirtle/squirtle_2.png').convert_alpha()]
+wizard_normal = [pygame.image.load('Plant vs Stick/Picture/wizard/wizard_1.png').convert_alpha(),
+                   pygame.image.load('Plant vs Stick/Picture/wizard/wizard_2.png').convert_alpha()]
 
-pikachu_normal = [pygame.image.load('Plant vs Stick/Picture/pikachu/pikachu_1.png').convert_alpha(),
-                  pygame.image.load('Plant vs Stick/Picture/pikachu/pikachu_3.png').convert_alpha(),
-                  pygame.image.load('Plant vs Stick/Picture/pikachu/pikachu_4.png').convert_alpha()]
+archer_normal = [pygame.image.load('Plant vs Stick/Picture/archer/archer_1.png').convert_alpha(),
+                  pygame.image.load('Plant vs Stick/Picture/archer/archer_2.png').convert_alpha()]
 
-squirtle_attack = [pygame.image.load('Plant vs Stick/Picture/squirtle/squirtle_1.png').convert_alpha(),
-                   pygame.image.load('Plant vs Stick/Picture/squirtle/squirtle_2.png').convert_alpha(),
-                   pygame.image.load('Plant vs Stick/Picture/squirtle/squirtle_3.png').convert_alpha(),
-                   pygame.image.load('Plant vs Stick/Picture/squirtle/squirtle_4.png').convert_alpha()]
+wizard_attack = [pygame.image.load('Plant vs Stick/Picture/wizard/wizard_3.png').convert_alpha(),
+                   pygame.image.load('Plant vs Stick/Picture/wizard/wizard_4.png').convert_alpha(),
+                   pygame.image.load('Plant vs Stick/Picture/wizard/wizard_5.png').convert_alpha()]
 
-pikachu_attack = [pygame.image.load('Plant vs Stick/Picture/pikachu/pikachu_1.png').convert_alpha(),
-                  pygame.image.load('Plant vs Stick/Picture/pikachu/pikachu_2.png').convert_alpha(),
-                  pygame.image.load('Plant vs Stick/Picture/pikachu/pikachu_3.png').convert_alpha(),
-                  pygame.image.load('Plant vs Stick/Picture/pikachu/pikachu_4.png').convert_alpha()]
+archer_attack = [pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_1.png').convert_alpha(),
+                  pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_2.png').convert_alpha(),
+                  pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_3.png').convert_alpha(),
+                  pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_4.png').convert_alpha(),
+                  pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_5.png').convert_alpha(),
+                  pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_6.png').convert_alpha(),]
 
 
-class Pokemon(pygame.sprite.Sprite):
-    # pokemon
-    def __init__(self, pokemon_type, placing_coordinate):
+class Hero(pygame.sprite.Sprite):
+    # hero
+    def __init__(self, hero_type, placing_coordinate):
         super().__init__()
 
-        self.pokemon_type = pokemon_type
+        self.hero_type = hero_type
         self.placing_coordinate = placing_coordinate
 
-        if self.pokemon_type == 'machine':
+        if self.hero_type == 'machine':
             self.normal_frames = [pygame.transform.scale(frame, (70, 82)) for frame in machine_frame]
             self.health = 300
-        elif self.pokemon_type == 'pikachu':
-            self.attack_frames = [pygame.transform.scale(frame, (75, 82)) for frame in pikachu_attack]
-            self.normal_frames = [pygame.transform.scale(frame, (75, 82)) for frame in pikachu_normal]
+        elif self.hero_type == 'archer':
+            self.attack_frames = [pygame.transform.scale(frame, (75, 82)) for frame in archer_attack]
+            self.normal_frames = [pygame.transform.scale(frame, (75, 82)) for frame in archer_normal]
             self.health = 180
             self.bullet_speed = 5
-        elif self.pokemon_type == 'squirtle':
-            self.attack_frames = [pygame.transform.scale(frame, (75, 82)) for frame in squirtle_attack]
-            self.normal_frames = [pygame.transform.scale(frame, (75, 82)) for frame in squirtle_normal]
+        elif self.hero_type == 'wizard':
+            self.attack_frames = [pygame.transform.scale(frame, (75, 82)) for frame in wizard_attack]
+            self.normal_frames = [pygame.transform.scale(frame, (75, 82)) for frame in wizard_normal]
             self.health = 200
             self.bullet_speed = 4
         else:
-            print('No pokemon found')
+            print('No hero found')
 
         self.frames = self.normal_frames
         self.animation_index = 0
         self.image = self.frames[self.animation_index]
         self.rect = self.image.get_rect(center=(self.placing_coordinate))
 
-        self.pikachu_bullet_surface = pygame.image.load('Plant vs Stick/Picture/pikachu/pikachu_bullet.png').convert_alpha()
-        self.pikachu_bullet_surface = pygame.transform.scale(self.pikachu_bullet_surface, (50, 50))
+        self.archer_bullet_surface = pygame.image.load('Plant vs Stick/Picture/archer/archer_bullet.png').convert_alpha()
+        self.archer_bullet_surface = pygame.transform.scale(self.archer_bullet_surface, (50, 10))
 
-        self.squirtle_bullet_surface = pygame.image.load('Plant vs Stick/Picture/squirtle/squirtle_bullet.png').convert_alpha()
-        self.squirtle_bullet_surface = pygame.transform.scale(self.squirtle_bullet_surface, (50, 50))
+        self.wizard_bullet_surface = pygame.image.load('Plant vs Stick/Picture/wizard/wizard_bullet.png').convert_alpha()
+        self.wizard_bullet_surface = pygame.transform.scale(self.wizard_bullet_surface, (20, 20))
 
-        self.machine_ball_surface = pygame.image.load('Plant vs Stick/Picture/utils/Poke_Ball.png').convert_alpha()
+        self.machine_ball_surface = pygame.image.load('Plant vs Stick/Picture/utils/diamond_ball.png').convert_alpha()
         self.machine_ball_surface = pygame.transform.scale(self.machine_ball_surface, (25, 25))
 
         # this list will store all active bullet
         self.bullet_rect_storage = []
 
     def change_mode(self, mode):
-        if self.pokemon_type == 'pikachu' or self.pokemon_type == 'squirtle':
+        if self.hero_type == 'archer' or self.hero_type == 'wizard':
             if mode == 'attacking':
                 self.frames = self.attack_frames
             if mode == 'normal':
@@ -147,11 +144,11 @@ class Pokemon(pygame.sprite.Sprite):
 
     def create_bullet(self):
         # bullet created append into the list
-        if self.pokemon_type == 'pikachu':
-            new_bullet = self.pikachu_bullet_surface.get_rect(center=self.rect.center)
-        elif self.pokemon_type == 'squirtle':
-            new_bullet = self.squirtle_bullet_surface.get_rect(center=self.rect.center)
-        elif self.pokemon_type == 'machine':
+        if self.hero_type == 'archer':
+            new_bullet = self.archer_bullet_surface.get_rect(center=self.rect.center)
+        elif self.hero_type == 'wizard':
+            new_bullet = self.wizard_bullet_surface.get_rect(center=self.rect.center)
+        elif self.hero_type == 'machine':
             new_bullet = self.machine_ball_surface.get_rect(
                 center=((self.rect.bottomright[0] + randint(-15, 15)), ((self.rect.bottomright[1] + randint(-15, 15)))))
         self.bullet_rect_storage.append(new_bullet)
@@ -260,7 +257,7 @@ class Troop(pygame.sprite.Sprite):
             self.animation_attack_index = 0
         self.image = self.frame[int(self.animation_attack_index)]
 
-    def update(self, pokemon_groups):
+    def update(self, hero_groups):
         self.update_animation_state()
 
         if self.cooldown > 0:
@@ -268,24 +265,24 @@ class Troop(pygame.sprite.Sprite):
 
         self.rect.x -= self.speed
 
-        collisions = pygame.sprite.spritecollide(self, pokemon_groups, False)
+        collisions = pygame.sprite.spritecollide(self, hero_groups, False)
         if collisions:
             self.speed = 0
             self.animation_attack_state()
             if self.cooldown == 0:
-                for pokemon in collisions:
-                    pokemon.health -= self.attack
+                for hero in collisions:
+                    hero.health -= self.attack
 
                     self.cooldown = 60
-                    if pokemon.health <= 0:
+                    if hero.health <= 0:
                         coor_with_1 = []
                         for column in self.all_grid_coor:
                             for coor in column:
                                 if coor[2] == 1:
                                     coor_with_1.append(coor)
-                                    if [pokemon.rect.centerx, pokemon.rect.centery, 1] in coor_with_1:
+                                    if [hero.rect.centerx, hero.rect.centery, 1] in coor_with_1:
                                         coor[2] = 0
-                        pokemon.kill()
+                        hero.kill()
                         self.speed = self.original_speed
         else:
             self.speed = self.original_speed
@@ -301,34 +298,38 @@ class Troop(pygame.sprite.Sprite):
 
 class GamePokemonVsStick:
     def __init__(self):
+<<<<<<< HEAD
+=======
+        # pygame.init()
+        # pygame.font.init()
+>>>>>>> tattatta
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((1000, 600))  # screen size
         self.machine_card_initial_position = (120, 8)
-        self.pikachu_card_initial_position = (191, 8)
-        self.squirtle_card_initial_position = (262, 8)
-        self.before_press_start = True  # main menu
-        self.after_press_start = False  # game start
-        self.begin_time = None
+        self.archer_card_initial_position = (191, 8)
+        self.wizard_card_initial_position = (262, 8)
+        self.reset_func()
 
-        # Groups
-        self.troop_groups = pygame.sprite.Group()
-        self.pokemon_groups = pygame.sprite.Group()
+    def reset_func(self):
+            self.before_press_start = True  # main menu
+            self.after_press_start = False  # game start
+            self.begin_time = None
 
-        # reset game state for play again
-        self.reset_game_state()
+            # Groups
+            self.troop_groups = pygame.sprite.Group()
+            self.hero_groups = pygame.sprite.Group()
 
-        # set up poke_ball_drop_timer
-        self.poke_ball_timer = pygame.USEREVENT + 2
-        pygame.time.set_timer(self.poke_ball_timer, 16000)
+            # reset game state for play again
+            self.reset_game_state()
 
-        # choice of ninja
-        self.troop_choice = ['warrior', 'sparta', 'giant']
+            # set up gem_ball_drop_timer
+            self.gem_ball_timer = pygame.USEREVENT + 2
+            pygame.time.set_timer(self.gem_ball_timer, 16000)
+
+            # choice of ninja
+            self.troop_choice = ['warrior', 'sparta', 'giant']
 
     def reset_game_state(self):
-        # create a background music
-        self.bg_music = pygame.mixer.Sound('Plant vs Stick/audio/bg_music.mp3')
-        self.bg_music.set_volume(0.1)
-        self.bg_music.play(loops=-1)
 
         # set up Ninja timer
         self.troop_timer = pygame.USEREVENT + 1
@@ -336,7 +337,7 @@ class GamePokemonVsStick:
         pygame.time.set_timer(self.troop_timer, self.spawn_time)
 
         self.num_ball = 500
-        self.chosen_pokemon = None
+        self.chosen_hero = None
         self.coordinate = None
         self.remaining_time = None
         self.help_menu_page = None
@@ -358,9 +359,11 @@ class GamePokemonVsStick:
             [[927, 172, 0], [927, 262, 0], [927, 352, 0], [927, 442, 0], [927, 532, 0]]
         ]
         self.tools = Tools()
-        self.spawned_ball = Poke_Ball()
+        self.spawned_ball = Gem_Ball()
         self.troop_groups.empty()
-        self.pokemon_groups.empty()
+        self.hero_groups.empty()
+
+        self.go_home_py = False
         self.set_up()  # set up surface and rectangle etc
 
     def set_up(self):  # set up surface and rectangle etc
@@ -373,7 +376,7 @@ class GamePokemonVsStick:
         self.start_adventure_rect = self.start_adventure_surface.get_rect(topleft=(510, 70))
 
         username_font = pygame.font.Font(None, 30)
-        self.username_surface = username_font.render(firebase.username, True, 'Green')
+        self.username_surface = username_font.render(database.username, True, 'Green')
         self.username_rectangle = self.username_surface.get_rect(center=(257, 90))
 
         press_h_font = pygame.font.Font(None, 35)
@@ -390,17 +393,17 @@ class GamePokemonVsStick:
         self.background_surface = pygame.image.load('Plant vs Stick/Picture/utils/game_background.png').convert()
         self.background_surface = pygame.transform.scale(self.background_surface, (1000, 600))
 
-        self.machine_card_surface = pygame.image.load('Plant vs Stick/Picture/machine/machine_card.jpg').convert()
+        self.machine_card_surface = pygame.image.load('Plant vs Stick/Picture/machine/machine_card.png').convert()
         self.machine_card_surface = pygame.transform.scale(self.machine_card_surface, (68, 83))
         self.machine_card_rectangle = self.machine_card_surface.get_rect(topleft=self.machine_card_initial_position)
 
-        self.pikachu_card_surface = pygame.image.load('Plant vs Stick/Picture/pikachu/pikachu_card.jpg').convert()
-        self.pikachu_card_surface = pygame.transform.scale(self.pikachu_card_surface, (68, 83))
-        self.pikachu_card_rectangle = self.pikachu_card_surface.get_rect(topleft=self.pikachu_card_initial_position)
+        self.archer_card_surface = pygame.image.load('Plant vs Stick/Picture/archer/archer_card.png').convert()
+        self.archer_card_surface = pygame.transform.scale(self.archer_card_surface, (68, 83))
+        self.archer_card_rectangle = self.archer_card_surface.get_rect(topleft=self.archer_card_initial_position)
 
-        self.squirtle_card_surface = pygame.image.load('Plant vs Stick/Picture/squirtle/squirtle_card.jpg').convert()
-        self.squirtle_card_surface = pygame.transform.scale(self.squirtle_card_surface, (68, 83))
-        self.squirtle_card_rectangle = self.squirtle_card_surface.get_rect(topleft=self.squirtle_card_initial_position)
+        self.wizard_card_surface = pygame.image.load('Plant vs Stick/Picture/wizard/wizard_card.png').convert()
+        self.wizard_card_surface = pygame.transform.scale(self.wizard_card_surface, (68, 83))
+        self.wizard_card_rectangle = self.wizard_card_surface.get_rect(topleft=self.wizard_card_initial_position)
 
         self.num_ball_font = pygame.font.Font(None, 30)
         self.num_ball_surface = self.num_ball_font.render(str(self.num_ball), True, 'Black')
@@ -439,8 +442,8 @@ class GamePokemonVsStick:
         for event in pygame.event.get():
             # press 'x' to quit the game
             if event.type == pygame.QUIT:
-                firebase.update_user()
-                firebase.push_data()
+                database.update_user()
+                database.push_data()
                 pygame.quit()
                 exit()
 
@@ -466,90 +469,90 @@ class GamePokemonVsStick:
                 spawned_troop = Troop((choice(self.troop_choice)), self.grid_coor)
                 self.troop_groups.add(spawned_troop)
 
-            # spawned poke_ball from sky
-            if event.type == self.poke_ball_timer and self.after_press_start:
-                self.spawned_ball.create_poke_ball()
+            # spawned gem_ball from sky
+            if event.type == self.gem_ball_timer and self.after_press_start:
+                self.spawned_ball.create_gem_ball()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                # press pokemon card from the top , and chosen pokemon will be that
+                # press hero card from the top , and chosen hero will be that
                 if self.machine_card_rectangle.collidepoint(event.pos):
-                    self.chosen_pokemon = 'machine'
-                elif self.pikachu_card_rectangle.collidepoint(event.pos):
-                    self.chosen_pokemon = 'pikachu'
-                elif self.squirtle_card_rectangle.collidepoint(event.pos):
-                    self.chosen_pokemon = 'squirtle'
+                    self.chosen_hero = 'machine'
+                elif self.archer_card_rectangle.collidepoint(event.pos):
+                    self.chosen_hero = 'archer'
+                elif self.wizard_card_rectangle.collidepoint(event.pos):
+                    self.chosen_hero = 'wizard'
 
-                # if pressed poke_ball from sky , earned 50 num_ball
-                for poke_ball_rect in self.spawned_ball.poke_ball_rect_storage:
-                    if poke_ball_rect.collidepoint(event.pos):
-                        self.spawned_ball.poke_ball_rect_storage.remove(poke_ball_rect)
+                # if pressed gem_ball from sky , earned 50 num_ball
+                for gem_ball_rect in self.spawned_ball.gem_ball_rect_storage:
+                    if gem_ball_rect.collidepoint(event.pos):
+                        self.spawned_ball.gem_ball_rect_storage.remove(gem_ball_rect)
                         self.num_ball += 50
                         break
 
-                # if pressed poke_ball from machine , earned 25 num_ball
-                for machine_pokemon in self.pokemon_groups:
-                    if machine_pokemon.pokemon_type == 'machine':
-                        for bullet_rect in machine_pokemon.bullet_rect_storage:
+                # if pressed gem_ball from machine , earned 25 num_ball
+                for machine_hero in self.hero_groups:
+                    if machine_hero.hero_type == 'machine':
+                        for bullet_rect in machine_hero.bullet_rect_storage:
                             if bullet_rect.collidepoint(event.pos):
-                                machine_pokemon.bullet_rect_storage.remove(bullet_rect)
+                                machine_hero.bullet_rect_storage.remove(bullet_rect)
                                 self.num_ball += 25
                                 break
 
-            # drag the pokemon card chosen just now
-            if self.chosen_pokemon and event.type == pygame.MOUSEMOTION:
+            # drag the hero card chosen just now
+            if self.chosen_hero and event.type == pygame.MOUSEMOTION:
                 # card follow the mouse pos
-                if self.chosen_pokemon == 'machine':
+                if self.chosen_hero == 'machine':
                     self.machine_card_rectangle.move_ip(event.rel)
-                elif self.chosen_pokemon == 'pikachu':
-                    self.pikachu_card_rectangle.move_ip(event.rel)
-                elif self.chosen_pokemon == 'squirtle':
-                    self.squirtle_card_rectangle.move_ip(event.rel)
+                elif self.chosen_hero == 'archer':
+                    self.archer_card_rectangle.move_ip(event.rel)
+                elif self.chosen_hero == 'wizard':
+                    self.wizard_card_rectangle.move_ip(event.rel)
 
-            # button_up after dragging pokemon , pokemon planted and back to the initial position
-            if event.type == pygame.MOUSEBUTTONUP and self.chosen_pokemon is not None:
-                # check pokemon release at which coordinate and enough num_ball or not
-                # return None if the position release pokemon card is unavailable (out of map / already have pokemon)
+            # button_up after dragging hero , hero planted and back to the initial position
+            if event.type == pygame.MOUSEBUTTONUP and self.chosen_hero is not None:
+                # check hero release at which coordinate and enough num_ball or not
+                # return None if the position release hero card is unavailable (out of map / already have hero)
                 # return the x and y coordinate of the box for planting if available
                 self.coordinate = self.tools.find_grid_coor(event.pos, self.grid_coor, self.num_ball,
-                                                            self.chosen_pokemon)
+                                                            self.chosen_hero)
 
                 if self.coordinate is not None:  # not None which mean by is available for planting
-                    if self.chosen_pokemon == 'machine':
+                    if self.chosen_hero == 'machine':
                         self.num_ball -= 50
                         if not self.machine_card_rectangle.topleft == self.machine_card_initial_position:
                             self.machine_card_rectangle.topleft = self.machine_card_initial_position  # Snap back to initial position
 
-                    elif self.chosen_pokemon == 'pikachu':
+                    elif self.chosen_hero == 'archer':
                         self.num_ball -= 150
-                        if not self.pikachu_card_rectangle.topleft == self.pikachu_card_initial_position:
-                            self.pikachu_card_rectangle.topleft = self.pikachu_card_initial_position  # Snap back to initial position
+                        if not self.archer_card_rectangle.topleft == self.archer_card_initial_position:
+                            self.archer_card_rectangle.topleft = self.archer_card_initial_position  # Snap back to initial position
 
-                    elif self.chosen_pokemon == 'squirtle':
+                    elif self.chosen_hero == 'wizard':
                         self.num_ball -= 100
-                        if not self.squirtle_card_rectangle.topleft == self.squirtle_card_initial_position:
-                            self.squirtle_card_rectangle.topleft = self.squirtle_card_initial_position  # Snap back to initial position
+                        if not self.wizard_card_rectangle.topleft == self.wizard_card_initial_position:
+                            self.wizard_card_rectangle.topleft = self.wizard_card_initial_position  # Snap back to initial position
 
-                    # chosen pokemon spawned at the box with the coordinate returned above
-                    spawned_pokemon = Pokemon(self.chosen_pokemon, self.coordinate)
-                    self.pokemon_groups.add(spawned_pokemon)
+                    # chosen heri spawned at the box with the coordinate returned above
+                    spawned_hero = Hero(self.chosen_hero, self.coordinate)
+                    self.hero_groups.add(spawned_hero)
 
                 # if return None which mean by not available for planting
                 # card snap back without deducting num_balls
                 if self.coordinate is None:
-                    if self.chosen_pokemon == 'machine':
+                    if self.chosen_hero == 'machine':
                         if not self.machine_card_rectangle.topleft == self.machine_card_initial_position:
                             self.machine_card_rectangle.topleft = self.machine_card_initial_position
 
-                    elif self.chosen_pokemon == 'pikachu':
-                        if not self.pikachu_card_rectangle.topleft == self.pikachu_card_initial_position:
-                            self.pikachu_card_rectangle.topleft = self.pikachu_card_initial_position
+                    elif self.chosen_hero == 'archer':
+                        if not self.archer_card_rectangle.topleft == self.archer_card_initial_position:
+                            self.archer_card_rectangle.topleft = self.archer_card_initial_position
 
-                    elif self.chosen_pokemon == 'squirtle':
-                        if not self.squirtle_card_rectangle.topleft == self.squirtle_card_initial_position:
-                            self.squirtle_card_rectangle.topleft = self.squirtle_card_initial_position
+                    elif self.chosen_hero == 'wizard':
+                        if not self.wizard_card_rectangle.topleft == self.wizard_card_initial_position:
+                            self.wizard_card_rectangle.topleft = self.wizard_card_initial_position
 
                 # clear
-                self.chosen_pokemon = None
+                self.chosen_hero = None
                 self.coordinate = None
 
             # player can choose to turn back to main menu(before press start) or play again(after press start)
@@ -568,14 +571,8 @@ class GamePokemonVsStick:
                 mouse_pos = pygame.mouse.get_pos()
 
                 if self.before_press_start and self.back_background_rect.collidepoint(mouse_pos):
-                    self.go_home_py()
-
-    def go_home_py(self):
-        self.bg_music.stop()
-        home_module = importlib.import_module("Home")
-        home_select = home_module.GameHome()
-        home_select.run()
-        exit()
+                    self.bg_music.stop()
+                    self.go_home_py = True
 
     def game_start(self):
         if self.before_press_start:  # main menu page
@@ -619,73 +616,73 @@ class GamePokemonVsStick:
             # blit all background
             self.screen.blit(self.background_surface, (0, 0))
             self.screen.blit(self.machine_card_surface, self.machine_card_rectangle)
-            self.screen.blit(self.pikachu_card_surface, self.pikachu_card_rectangle)
-            self.screen.blit(self.squirtle_card_surface, self.squirtle_card_rectangle)
+            self.screen.blit(self.archer_card_surface, self.archer_card_rectangle)
+            self.screen.blit(self.wizard_card_surface, self.wizard_card_rectangle)
             self.screen.blit(self.num_ball_surface, self.num_ball_rectangle)
             self.screen.blit(self.wood_plank_surface, self.wood_plank_rectangle)
             self.screen.blit(self.timer, self.timer_rectangle)
 
-            # update the frame of ninja and pokemon then draw them out
-            self.pokemon_groups.draw(self.screen)
-            self.pokemon_groups.update()
+            # update the frame of ninja and hero then draw them out
+            self.hero_groups.draw(self.screen)
+            self.hero_groups.update()
             self.troop_groups.draw(self.screen)
-            self.troop_groups.update(self.pokemon_groups)
+            self.troop_groups.update(self.hero_groups)
 
-            # blit poke ball
-            for poke_ball_rect in self.spawned_ball.poke_ball_rect_storage:
-                self.spawned_ball.drop_poke_ball()
-                self.screen.blit(self.spawned_ball.poke_ball_surface, poke_ball_rect)
+            # blit gem ball
+            for gem_ball_rect in self.spawned_ball.gem_ball_rect_storage:
+                self.spawned_ball.drop_gem_ball()
+                self.screen.blit(self.spawned_ball.gem_ball_surface, gem_ball_rect)
 
             self.screen.blit(self.wave_background_surf, self.wave_background_rect)
             self.screen.blit(self.wave_surface, self.wave_rectangle)
 
             # three usage for this piece of code
-            # 1. check ninja with pokemon in same row ( have to attack or not )
-            # 2. change pokemon mode(attacking or normal)
+            # 1. check ninja with hero in same row ( have to attack or not )
+            # 2. change hero mode(attacking or normal)
             # 3. bullet dissapear when collide with ninja
-            for pokemon in self.pokemon_groups:
+            for hero in self.hero_groups:
                 for troop in self.troop_groups:
-                    # if ninja appear on screen and in same row with pokemon , add ninja to list
+                    # if ninja appear on screen and in same row with hero , add ninja to list
                     # y_coor same means same row
-                    if troop.rect.centerx < 1025 and troop.rect.centery == pokemon.rect.centery:
+                    if troop.rect.centerx < 1025 and troop.rect.centery == hero.rect.centery:
                         if troop.rect.centery not in self.row_with_troop:
                             # append ninja into the list if this ninja is not in the list and change mode
                             self.row_with_troop.append(troop.rect.centery)
-                            pokemon.change_mode('attacking')
+                            hero.change_mode('attacking')
 
                         die = troop.check_troop_die()
-                        if die or troop.rect.centerx < (pokemon.rect.centerx - 30):
+                        if die or troop.rect.centerx < (hero.rect.centerx - 30):
                             self.row_with_troop.remove(troop.rect.centery)
-                            for pokemon in self.pokemon_groups:
-                                if pokemon.pokemon_type != 'machine':
-                                    pokemon.bullet_rect_storage = []
-                            pokemon.change_mode('normal')
+                            for hero in self.hero_groups:
+                                if hero.hero_type != 'machine':
+                                    hero.bullet_rect_storage = []
+                            hero.change_mode('normal')
 
                     # bullet collide then cause damage and dissapear
-                    for bullet_rect in pokemon.bullet_rect_storage:
-                        if pokemon.pokemon_type != 'machine' and bullet_rect.colliderect(troop.rect):
-                            pokemon.bullet_rect_storage.remove(bullet_rect)
-                            if pokemon.pokemon_type == 'pikachu':
+                    for bullet_rect in hero.bullet_rect_storage:
+                        if hero.hero_type != 'machine' and bullet_rect.colliderect(troop.rect):
+                            hero.bullet_rect_storage.remove(bullet_rect)
+                            if hero.hero_type == 'archer':
                                 troop.troop_being_attack(25)
-                            elif pokemon.pokemon_type == 'squirtle':
+                            elif hero.hero_type == 'wizard':
                                 troop.troop_being_attack(18)
                             break
 
-            # move and blit bullet for pokemon in row_with_ninja
-            for pokemon in self.pokemon_groups:
-                if pokemon.rect.centery in self.row_with_troop:
-                    if pokemon.pokemon_type == 'pikachu':
-                        pokemon.move_bullet()
-                        for bullet_rect in pokemon.bullet_rect_storage:
-                            self.screen.blit(pokemon.pikachu_bullet_surface, bullet_rect)
-                    elif pokemon.pokemon_type == 'squirtle':
-                        pokemon.move_bullet()
-                        for bullet_rect in pokemon.bullet_rect_storage:
-                            self.screen.blit(pokemon.squirtle_bullet_surface, bullet_rect)
+            # move and blit bullet for hero in row_with_ninja
+            for hero in self.hero_groups:
+                if hero.rect.centery in self.row_with_troop:
+                    if hero.hero_type == 'archer':
+                        hero.move_bullet()
+                        for bullet_rect in hero.bullet_rect_storage:
+                            self.screen.blit(hero.archer_bullet_surface, bullet_rect)
+                    elif hero.hero_type == 'wizard':
+                        hero.move_bullet()
+                        for bullet_rect in hero.bullet_rect_storage:
+                            self.screen.blit(hero.wizard_bullet_surface, bullet_rect)
 
-                if pokemon.pokemon_type == 'machine':
-                    for bullet_rect in pokemon.bullet_rect_storage:
-                        self.screen.blit(pokemon.machine_ball_surface, bullet_rect)  # Draw the poke ball
+                if hero.hero_type == 'machine':
+                    for bullet_rect in hero.bullet_rect_storage:
+                        self.screen.blit(hero.machine_ball_surface, bullet_rect)  # Draw the gem ball
 
             # if ninja cross over to the house then lose
             for troop in self.troop_groups:
@@ -723,6 +720,9 @@ class GamePokemonVsStick:
             self.screen.blit(play_again, self.play_again_rect)
 
     def run(self):
+        self.bg_music = pygame.mixer.Sound('Plant vs Stick/audio/bg_music.mp3')
+        self.bg_music.set_volume(0.1)
+        self.bg_music.play(loops=-1)
         while True:
             # CLear screen
             self.screen.fill((255, 255, 255))
