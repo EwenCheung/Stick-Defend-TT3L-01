@@ -615,8 +615,8 @@ class GameStickOfWar:
         self.screen = pygame.display.set_mode((1000, 600))
         self.bg_x = 0
         self.scroll_speed = 10
-        self.num_gold = 100000
-        self.num_diamond = 100000
+        self.num_gold = 400
+        self.num_diamond = 400
         self.gold_time = pygame.time.get_ticks()
         self.diamond_time = pygame.time.get_ticks()
         self.gold_interval = 110

@@ -16,7 +16,7 @@ class Data:
         # attack = (current attack* 1.1)
         # upgrades_price = (current price * 1.1)//1
         self.troop_storage = {
-            "warrior": [True, 1, True, 1000, 10000, 15, 200],
+            "warrior": [True, 1, True, 100, 1.8, 1, 200],
             "archer": [True, 1, True, 200, 10, 1.1, 150],
             "wizard": [False, 1, False, 250, 10, 0.8, 200],
             "sparta": [False, 1, False, 300, 2.5, 1, 350],
