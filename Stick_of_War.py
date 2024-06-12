@@ -625,7 +625,7 @@ class GameStickOfWar:
         self.enemy_on_court = []
         self.health_bar_user = HealthBar(database.castle_storage["default_castle"][3], database.castle_storage["default_castle"][3],
                                          (620, 530), 200, 20, (0, 255, 0))  # health bar
-        self.health_bar_enemy = HealthBar(5000 * (database.lvl_choose * 2), 5000 * (database.lvl_choose * 2), (620, 560), 200, 20,
+        self.health_bar_enemy = HealthBar(int(2500 * (database.lvl_choose * 1.5)), int(2500 * (database.lvl_choose * 1.5)), (620, 560), 200, 20,
                                           (255, 0, 0))
         self.healing_initial_position = (35, 550)
         self.freeze_initial_position = (105, 550)

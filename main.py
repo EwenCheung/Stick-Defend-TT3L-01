@@ -93,6 +93,8 @@ def main():
                         pokemon_vs_stick.go_home_py = False
                         home.choose_game_to_play = True
                         home.choosing_login_method = False
+                        database.update_user()
+                        database.push_data()
                         break
 
                     # Clear screen
@@ -126,6 +128,8 @@ def main():
                         level.go_home_py = False
                         home.choose_game_to_play = True
                         home.choosing_login_method = False
+                        database.update_user()
+                        database.push_data()
                         break
                     elif level.go_stick_of_war:
                         run_level = False
