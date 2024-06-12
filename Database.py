@@ -10,14 +10,14 @@ class Data:
         self.username = "Guest"
         self.password = "888888"
         self.stage_level = 1
-        self.money = 200
+        self.money = 300
         # troop : [have or not, level, equipped or not, health, attack damage, speed, upgrades_price]
         # health = (current health * 1.1)//1
         # attack = (current attack* 1.1)
         # upgrades_price = (current price * 1.1)//1
         self.troop_storage = {
-            "warrior": [True, 1, True, 100, 1.1, 1, 200],
-            "archer": [True, 1, True, 200, 10, 1.1, 150],
+            "warrior": [True, 1, True, 100, 1.1, 1, 150],
+            "archer": [False, 1, False, 200, 10, 1.1, 150],
             "wizard": [False, 1, False, 250, 10, 0.8, 200],
             "sparta": [False, 1, False, 300, 2.5, 1, 350],
             "giant": [False, 1, False, 350, 3.5, 0.6, 500]
