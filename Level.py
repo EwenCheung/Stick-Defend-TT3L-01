@@ -34,10 +34,6 @@ class GameLevel:
 
         self.level_bg = pygame.image.load('Stick of War/Picture/utils/choose level.png')
 
-        self.level_select_music = pygame.mixer.Sound('Stick of War/Music/level.mp3')
-        self.level_select_music.set_volume(0.2)
-        self.level_select_music.play(loops=-1)
-
         self.go_home_py = False
         self.go_store_py = False
         self.go_stick_of_war = False
@@ -286,51 +282,61 @@ class GameLevel:
 
                 if database.stage_level >= 1:
                     if self.wood_plank_rectangle_one.collidepoint(pygame.mouse.get_pos()):
+                        self.level_select_music.stop()
                         database.lvl_choose = 1
                         self.go_stick_of_war = True
 
                 if database.stage_level >= 2:
                     if self.wood_plank_rectangle_two.collidepoint(pygame.mouse.get_pos()):
+                        self.level_select_music.stop()
                         database.lvl_choose = 2
                         self.go_stick_of_war = True
 
                 if database.stage_level >= 3:
                     if self.wood_plank_rectangle_three.collidepoint(pygame.mouse.get_pos()):
+                        self.level_select_music.stop()
                         database.lvl_choose = 3
                         self.go_stick_of_war = True
 
                 if database.stage_level >= 4:
                     if self.wood_plank_rectangle_four.collidepoint(pygame.mouse.get_pos()):
+                        self.level_select_music.stop()
                         database.lvl_choose = 4
                         self.go_stick_of_war = True
 
                 if database.stage_level >= 5:
                     if self.wood_plank_rectangle_five.collidepoint(pygame.mouse.get_pos()):
+                        self.level_select_music.stop()
                         database.lvl_choose = 5
                         self.go_stick_of_war = True
 
                 if database.stage_level >= 6:
                     if self.wood_plank_rectangle_six.collidepoint(pygame.mouse.get_pos()):
+                        self.level_select_music.stop()
                         database.lvl_choose = 6
                         self.go_stick_of_war = True
 
                 if database.stage_level >= 7:
                     if self.wood_plank_rectangle_seven.collidepoint(pygame.mouse.get_pos()):
+                        self.level_select_music.stop()
                         database.lvl_choose = 7
                         self.go_stick_of_war = True
 
                 if database.stage_level >= 8:
                     if self.wood_plank_rectangle_eight.collidepoint(pygame.mouse.get_pos()):
+                        self.level_select_music.stop()
                         database.lvl_choose = 8
                         self.go_stick_of_war = True
 
                 if database.stage_level >= 9:
                     if self.wood_plank_rectangle_nine.collidepoint(pygame.mouse.get_pos()):
+                        self.level_select_music.stop()
                         database.lvl_choose = 9
                         self.go_stick_of_war = True
 
                 if database.stage_level >= 10:
                     if self.wood_plank_rectangle_ten.collidepoint(pygame.mouse.get_pos()):
+                        self.level_select_music.stop()
                         database.lvl_choose = 10
                         self.go_stick_of_war = True
 
