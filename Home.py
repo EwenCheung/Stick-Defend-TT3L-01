@@ -49,10 +49,6 @@ class GameHome:
         self.text_box_surface = pygame.image.load('Plant vs Stick/Picture/utils/wood.png').convert()
         self.text_box_surface = pygame.transform.scale(self.text_box_surface, (400, 60))
 
-        self.login_as_guest_rect = self.wood_plank_surface.get_rect(center=(500, 300))
-        self.sign_in_rect = self.wood_plank_surface.get_rect(center=(650, 430))
-        self.sign_up_rect = self.wood_plank_surface.get_rect(center=(350, 430))
-
         self.loading = True
         self.finish_loading = False
 
@@ -134,19 +130,11 @@ class GameHome:
                     self.home_music.stop()
                     self.go_pokemon_py = True
                 elif self.back_rectangle.collidepoint(pygame.mouse.get_pos()):
-                    self.choose_game_to_play = False
-<<<<<<< HEAD
                     self.choosing_login_method = True
-                    firebase.login_method = None
-                    firebase.update_user()
-                    firebase.push_data()
-            if self.choosing_login_method and event.type == pygame.MOUSEBUTTONDOWN:
-                if self.sign_in_rect.collidepoint(pygame.mouse.get_pos()) and not self.signing_up and not self.login_as_guest:
-=======
+                    self.choose_game_to_play = False
                     database.login_method = None
             elif self.choosing_login_method and event.type == pygame.MOUSEBUTTONDOWN:
                 if not self.signing_up and not self.login_as_guest and self.sign_in_rect.collidepoint(pygame.mouse.get_pos()):
->>>>>>> tattatta
                     self.signing_in = True
                     self.choosing_login_method = False
                 elif not self.signing_in and not self.login_as_guest and self.sign_up_rect.collidepoint(pygame.mouse.get_pos()):
@@ -256,30 +244,8 @@ class GameHome:
             elif self.login_as_guest:
                 self.choosing_login_method = False
                 self.choose_game_to_play = True
-<<<<<<< HEAD
-                firebase.login_method = "Guest"
-
-
-    def go_pokemon_py(self):
-        self.home_music.stop()
-        importlib.invalidate_caches()  # Clear any cached importlib entries
-        pokemon_module = importlib.import_module("Pokemon_vs_Stick")
-        game_pokemon = pokemon_module.GamePokemonVsStick()
-        game_pokemon.run()  # Call a method to start Stick_of_war game
-        exit()
-
-
-    def go_level_py(self):
-        self.home_music.stop()
-        importlib.invalidate_caches()  # Clear any cached importlib entries
-        level_module = importlib.import_module('Level')
-        game_level = level_module.GameLevel()
-        game_level.run()
-        exit()
-=======
                 database.login_method = "Guest"
                 self.login_as_guest = False
->>>>>>> tattatta
 
     def game_start_bg(self):
         self.screen.blit(self.image, self.image_rect)
@@ -319,10 +285,13 @@ class GameHome:
 
     def signing_user(self):
         self.draw_button_with_text(self.wood_plank_surface, self.wood_plank_surface.get_rect(center=(350, 430)), 'Sign Up')
+        self.sign_up_rect = self.wood_plank_surface.get_rect(center=(350, 430))
 
         self.draw_button_with_text(self.wood_plank_surface, self.wood_plank_surface.get_rect(center=(650, 430)), 'Sign In')
+        self.sign_in_rect = self.wood_plank_surface.get_rect(center=(650, 430))
 
         self.draw_button_with_text(self.wood_plank_surface, self.wood_plank_surface.get_rect(center=(500, 300)), 'Login as Guest')
+        self.login_as_guest_rect = self.wood_plank_surface.get_rect(center=(500, 300))
 
     def sign_in(self):
         self.screen.blit(self.sign_in_ask_username, self.sign_in_ask_username_rect)
@@ -405,7 +374,7 @@ class GameHome:
     def run(self):
         self.home_music = pygame.mixer.Sound('War of stick/Music/home_music.wav')
         self.home_music.set_volume(0.2)
-        self.home_music.play(loops=-1)        
+        self.home_music.play(loops=-1)
         while True:
             self.screen.fill((255, 255, 255))
 
@@ -424,7 +393,6 @@ class GameHome:
                     elif self.choose_game_to_play:
                         self.choose_game()
             else:
-                self.choose_game_to_play = True
                 self.choose_game()
             self.display_message()
             pygame.display.update()
