@@ -3,6 +3,7 @@ from sys import exit
 from Database import database
 from Stick_of_War import stick_of_war
 
+
 # pygame.init()
 # pygame.font.init()
 
@@ -511,7 +512,6 @@ class GameLevel:
 
                 database.lvl_choose = 100
 
-
     def run(self):
         self.level_select_music = pygame.mixer.Sound('War of stick/Music/level.mp3')
         self.level_select_music.set_volume(0.2)
@@ -520,7 +520,7 @@ class GameLevel:
         while True:
             self.screen.fill((255, 255, 255))
 
-            self.choose_level(stick_of_war.winner,stick_of_war.played_time)
+            self.choose_level(stick_of_war.winner, stick_of_war.played_time)
 
             self.event_handling()
 

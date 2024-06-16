@@ -1,8 +1,10 @@
 import subprocess
 import sys
 
+
 def install(package):
     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
 
 try:
     import pygame
@@ -21,7 +23,6 @@ from Level import GameLevel
 from Store import Game_Store
 from Stick_of_War import GameStickOfWar
 
-
 home = GameHome()
 level = GameLevel()
 stick_of_war = GameStickOfWar()
@@ -31,6 +32,7 @@ run_home = True
 run_level = False
 run_store = False
 run_stick_of_war = False
+
 
 def main():
     global home
@@ -181,6 +183,7 @@ def main():
             database.update_user()
             database.push_data()
             break
+
 
 if __name__ == "__main__":
     main()

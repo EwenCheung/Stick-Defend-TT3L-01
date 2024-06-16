@@ -5,6 +5,7 @@ from sys import exit
 from random import randint, choice
 from Database import database
 
+
 # game start from here
 # have to initialise the pygame first
 # pygame.init()
@@ -69,21 +70,21 @@ machine_frame = [
                                   ]
 
 wizard_normal = [pygame.image.load('Plant vs Stick/Picture/wizard/wizard_1.png').convert_alpha(),
-                   pygame.image.load('Plant vs Stick/Picture/wizard/wizard_2.png').convert_alpha()]
+                 pygame.image.load('Plant vs Stick/Picture/wizard/wizard_2.png').convert_alpha()]
 
 archer_normal = [pygame.image.load('Plant vs Stick/Picture/archer/archer_1.png').convert_alpha(),
-                  pygame.image.load('Plant vs Stick/Picture/archer/archer_2.png').convert_alpha()]
+                 pygame.image.load('Plant vs Stick/Picture/archer/archer_2.png').convert_alpha()]
 
 wizard_attack = [pygame.image.load('Plant vs Stick/Picture/wizard/wizard_3.png').convert_alpha(),
-                   pygame.image.load('Plant vs Stick/Picture/wizard/wizard_4.png').convert_alpha(),
-                   pygame.image.load('Plant vs Stick/Picture/wizard/wizard_5.png').convert_alpha()]
+                 pygame.image.load('Plant vs Stick/Picture/wizard/wizard_4.png').convert_alpha(),
+                 pygame.image.load('Plant vs Stick/Picture/wizard/wizard_5.png').convert_alpha()]
 
 archer_attack = [pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_1.png').convert_alpha(),
-                  pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_2.png').convert_alpha(),
-                  pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_3.png').convert_alpha(),
-                  pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_4.png').convert_alpha(),
-                  pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_5.png').convert_alpha(),
-                  pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_6.png').convert_alpha(),]
+                 pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_2.png').convert_alpha(),
+                 pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_3.png').convert_alpha(),
+                 pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_4.png').convert_alpha(),
+                 pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_5.png').convert_alpha(),
+                 pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_6.png').convert_alpha(), ]
 
 
 class Hero(pygame.sprite.Sprite):
@@ -306,23 +307,23 @@ class GamePokemonVsStick:
         self.reset_func()
 
     def reset_func(self):
-            self.before_press_start = True  # main menu
-            self.after_press_start = False  # game start
-            self.begin_time = None
+        self.before_press_start = True  # main menu
+        self.after_press_start = False  # game start
+        self.begin_time = None
 
-            # Groups
-            self.troop_groups = pygame.sprite.Group()
-            self.hero_groups = pygame.sprite.Group()
+        # Groups
+        self.troop_groups = pygame.sprite.Group()
+        self.hero_groups = pygame.sprite.Group()
 
-            # reset game state for play again
-            self.reset_game_state()
+        # reset game state for play again
+        self.reset_game_state()
 
-            # set up gem_ball_drop_timer
-            self.gem_ball_timer = pygame.USEREVENT + 2
-            pygame.time.set_timer(self.gem_ball_timer, 16000)
+        # set up gem_ball_drop_timer
+        self.gem_ball_timer = pygame.USEREVENT + 2
+        pygame.time.set_timer(self.gem_ball_timer, 16000)
 
-            # choice of ninja
-            self.troop_choice = ['warrior', 'sparta', 'giant']
+        # choice of ninja
+        self.troop_choice = ['warrior', 'sparta', 'giant']
 
     def reset_game_state(self):
 
