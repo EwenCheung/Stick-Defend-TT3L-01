@@ -5,6 +5,7 @@ from sys import exit
 from random import choice, randint
 from Database import database
 
+
 # pygame.init()
 # pygame.font.init()
 
@@ -606,7 +607,6 @@ class GameStickOfWar:
         self.enemy_three_frame_storage = [pygame.transform.scale(frame, (100, 95)) for frame in self.enemy_three_normal]
         self.enemy_three_attack_frame_storage = [pygame.transform.scale(frame, (100, 95)) for frame in self.enemy_three_attack]
 
-
     def reset_func(self):
         # pygame.init()
         # pygame.font.init()
@@ -625,7 +625,8 @@ class GameStickOfWar:
         self.enemy_on_court = []
         self.health_bar_user = HealthBar(database.castle_storage["default_castle"][3], database.castle_storage["default_castle"][3],
                                          (620, 530), 200, 20, (0, 255, 0))  # health bar
-        self.health_bar_enemy = HealthBar(int(2500 * (database.lvl_choose * 1.5)), int(2500 * (database.lvl_choose * 1.5)), (620, 560), 200, 20,
+        self.health_bar_enemy = HealthBar(int(2500 * (database.lvl_choose * 1.5)), int(2500 * (database.lvl_choose * 1.5)),
+                                          (620, 560), 200, 20,
                                           (255, 0, 0))
         self.healing_initial_position = (35, 550)
         self.freeze_initial_position = (105, 550)
@@ -660,11 +661,11 @@ class GameStickOfWar:
         self.rage_timer = pygame.USEREVENT + 3
         self.healing = False
         self.heal_run = 0
-        
+
         self.start_game_time = pygame.time.get_ticks()
         self.end_game_time = 0
         self.played_time = 0
-        
+
     def event_handling(self):
         def clicked_troop(gold_cost, diamond_cost, button_name, frame_storage, attack_frame_storage, health, attack_damage,
                           speed, troop_width, troop_height, troop_name, troop_size):
@@ -721,11 +722,13 @@ class GameStickOfWar:
                     new_ninja = None
                     self.ninja_chosen = choice(self.ninja_choice)
                     if self.ninja_chosen == "naruto":
-                        new_ninja = Ninja(self.ninja_chosen, self.enemy_one_frame_storage, self.enemy_one_attack_frame_storage, 50 * (database.lvl_choose),
+                        new_ninja = Ninja(self.ninja_chosen, self.enemy_one_frame_storage, self.enemy_one_attack_frame_storage,
+                                          50 * (database.lvl_choose),
                                           0.9, 1 + (database.lvl_choose / 5),
                                           self.background_image.get_width())
                     elif self.ninja_chosen == "sasuke":
-                        new_ninja = Ninja(self.ninja_chosen, self.enemy_two_frame_storage, self.enemy_two_attack_frame_storage, 60 * (database.lvl_choose),
+                        new_ninja = Ninja(self.ninja_chosen, self.enemy_two_frame_storage, self.enemy_two_attack_frame_storage,
+                                          60 * (database.lvl_choose),
                                           1, 2 + (database.lvl_choose / 5),
                                           self.background_image.get_width())
                     elif self.ninja_chosen == "kakashi":
@@ -808,7 +811,7 @@ class GameStickOfWar:
                     troop.attack(self.bg_x)
                     troop.move_bullet(self.bg_x)
                     for bullet in troop.bullet_on_court:
-                        if bullet[1].x+930 >= self.right_rect_castle.x:
+                        if bullet[1].x + 930 >= self.right_rect_castle.x:
                             self.health_bar_enemy.update_health(troop.attack_damage)
                             troop.bullet_on_court.remove(bullet)
                             print(bullet[1].x)
