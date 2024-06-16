@@ -33,8 +33,6 @@ class GameLevel:
 
         self.level_bg = pygame.image.load('War of stick/Picture/utils/choose level.png')
 
-<<<<<<< HEAD
-=======
         self.level_select_music = pygame.mixer.Sound('War of stick/Music/level.mp3')
         self.level_select_music.set_volume(0.2)
         self.level_select_music.play(loops=-1)
@@ -43,7 +41,6 @@ class GameLevel:
         self.go_store_py = False
         self.go_stick_of_war = False
 
->>>>>>> tattatta
         # star rect for all level
         # level one
         self.star_one_rect = self.one_star_surf.get_rect(center=(180, 290))
@@ -336,21 +333,6 @@ class GameLevel:
                         database.lvl_choose = 10
                         self.go_stick_of_war = True
 
-<<<<<<< HEAD
-    def go_store_py(self):
-        store_module = importlib.import_module("Store")
-        game_store = store_module.Game_Store()
-        game_store.run()
-        exit()
-
-    def go_home_py(self):
-        pygame.quit()  # Cleanup before switching
-        importlib.invalidate_caches()  # Clear any cached importlib entries
-        home_module = importlib.import_module("Home")
-        go_home = home_module.GameHome()
-        go_home.run()
-        exit()
-=======
     def blit_star(self):
         if database.stage_level >= 1:
             self.screen.blit(database.star_one_surf, self.star_one_rect)
@@ -383,7 +365,6 @@ class GameLevel:
                 if 0 <= played_time <= 120000:
                     database.star_one_surf = self.three_star_surf
                     database.money += (30 + database.lvl_choose * 15)
->>>>>>> tattatta
 
                 elif 120000 < played_time <= 240000:
                     database.star_one_surf = self.two_star_surf
