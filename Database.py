@@ -52,7 +52,7 @@ class Data:
 
         self.lvl_choose = 100
 
-        self.no_star = pygame.image.load('War of stick/Picture/utils/no_star.png')
+        self.no_star = pygame.image.load('Stick of War/Picture/utils/no_star.png')
         self.no_star_surf = pygame.transform.scale(self.no_star, (90, 40))
         self.star_one_surf = self.no_star_surf
         self.star_two_surf = self.no_star_surf

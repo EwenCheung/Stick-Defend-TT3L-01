@@ -48,7 +48,7 @@ class Tools:
 
 class Gem_Ball:
     def __init__(self):
-        self.gem_ball_surface = pygame.image.load('Plant vs Stick/Picture/utils/diamond_ball.png').convert_alpha()
+        self.gem_ball_surface = pygame.image.load('Bokemon vs Stick/Picture/utils/diamond_ball.png').convert_alpha()
         self.gem_ball_surface = pygame.transform.scale(self.gem_ball_surface, (50, 50))
         self.gem_ball_rect_storage = []
 
@@ -65,26 +65,26 @@ class Gem_Ball:
 
 # load hero frame
 machine_frame = [
-                    pygame.image.load('Plant vs Stick/Picture/machine/machine_1.png').convert_alpha() for _ in
-                    range(30)] + [pygame.image.load('Plant vs Stick/Picture/machine/machine_2.png').convert_alpha()
+                    pygame.image.load('Bokemon vs Stick/Picture/machine/machine_1.png').convert_alpha() for _ in
+                    range(30)] + [pygame.image.load('Bokemon vs Stick/Picture/machine/machine_2.png').convert_alpha()
                                   ]
 
-wizard_normal = [pygame.image.load('Plant vs Stick/Picture/wizard/wizard_1.png').convert_alpha(),
-                 pygame.image.load('Plant vs Stick/Picture/wizard/wizard_2.png').convert_alpha()]
+wizard_normal = [pygame.image.load('Bokemon vs Stick/Picture/wizard/wizard_1.png').convert_alpha(),
+                 pygame.image.load('Bokemon vs Stick/Picture/wizard/wizard_2.png').convert_alpha()]
 
-archer_normal = [pygame.image.load('Plant vs Stick/Picture/archer/archer_1.png').convert_alpha(),
-                 pygame.image.load('Plant vs Stick/Picture/archer/archer_2.png').convert_alpha()]
+archer_normal = [pygame.image.load('Bokemon vs Stick/Picture/archer/archer_1.png').convert_alpha(),
+                 pygame.image.load('Bokemon vs Stick/Picture/archer/archer_2.png').convert_alpha()]
 
-wizard_attack = [pygame.image.load('Plant vs Stick/Picture/wizard/wizard_3.png').convert_alpha(),
-                 pygame.image.load('Plant vs Stick/Picture/wizard/wizard_4.png').convert_alpha(),
-                 pygame.image.load('Plant vs Stick/Picture/wizard/wizard_5.png').convert_alpha()]
+wizard_attack = [pygame.image.load('Bokemon vs Stick/Picture/wizard/wizard_3.png').convert_alpha(),
+                 pygame.image.load('Bokemon vs Stick/Picture/wizard/wizard_4.png').convert_alpha(),
+                 pygame.image.load('Bokemon vs Stick/Picture/wizard/wizard_5.png').convert_alpha()]
 
-archer_attack = [pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_1.png').convert_alpha(),
-                 pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_2.png').convert_alpha(),
-                 pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_3.png').convert_alpha(),
-                 pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_4.png').convert_alpha(),
-                 pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_5.png').convert_alpha(),
-                 pygame.image.load('Plant vs Stick/Picture/archer/archer_attack_6.png').convert_alpha(), ]
+archer_attack = [pygame.image.load('Bokemon vs Stick/Picture/archer/archer_attack_1.png').convert_alpha(),
+                 pygame.image.load('Bokemon vs Stick/Picture/archer/archer_attack_2.png').convert_alpha(),
+                 pygame.image.load('Bokemon vs Stick/Picture/archer/archer_attack_3.png').convert_alpha(),
+                 pygame.image.load('Bokemon vs Stick/Picture/archer/archer_attack_4.png').convert_alpha(),
+                 pygame.image.load('Bokemon vs Stick/Picture/archer/archer_attack_5.png').convert_alpha(),
+                 pygame.image.load('Bokemon vs Stick/Picture/archer/archer_attack_6.png').convert_alpha(), ]
 
 
 class Hero(pygame.sprite.Sprite):
@@ -116,13 +116,13 @@ class Hero(pygame.sprite.Sprite):
         self.image = self.frames[self.animation_index]
         self.rect = self.image.get_rect(center=(self.placing_coordinate))
 
-        self.archer_bullet_surface = pygame.image.load('Plant vs Stick/Picture/archer/archer_bullet.png').convert_alpha()
+        self.archer_bullet_surface = pygame.image.load('Bokemon vs Stick/Picture/archer/archer_bullet.png').convert_alpha()
         self.archer_bullet_surface = pygame.transform.scale(self.archer_bullet_surface, (50, 10))
 
-        self.wizard_bullet_surface = pygame.image.load('Plant vs Stick/Picture/wizard/wizard_bullet.png').convert_alpha()
+        self.wizard_bullet_surface = pygame.image.load('Bokemon vs Stick/Picture/wizard/wizard_bullet.png').convert_alpha()
         self.wizard_bullet_surface = pygame.transform.scale(self.wizard_bullet_surface, (20, 20))
 
-        self.machine_ball_surface = pygame.image.load('Plant vs Stick/Picture/utils/diamond_ball.png').convert_alpha()
+        self.machine_ball_surface = pygame.image.load('Bokemon vs Stick/Picture/utils/diamond_ball.png').convert_alpha()
         self.machine_ball_surface = pygame.transform.scale(self.machine_ball_surface, (25, 25))
 
         # this list will store all active bullet
@@ -167,39 +167,39 @@ class Hero(pygame.sprite.Sprite):
 
 # load stickman image
 stickman_warrior_image = [
-    pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword run/stickman sword run 1.png').convert_alpha(),
-    pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword run/stickman sword run 2.png').convert_alpha(),
-    pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword run/stickman sword run 3.png').convert_alpha(),
-    pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword run/stickman sword run 4.png').convert_alpha(),
-    pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword run/stickman sword run 5.png').convert_alpha()]
+    pygame.image.load('Bokemon vs Stick/Picture/stickman sword/stickman sword run/stickman sword run 1.png').convert_alpha(),
+    pygame.image.load('Bokemon vs Stick/Picture/stickman sword/stickman sword run/stickman sword run 2.png').convert_alpha(),
+    pygame.image.load('Bokemon vs Stick/Picture/stickman sword/stickman sword run/stickman sword run 3.png').convert_alpha(),
+    pygame.image.load('Bokemon vs Stick/Picture/stickman sword/stickman sword run/stickman sword run 4.png').convert_alpha(),
+    pygame.image.load('Bokemon vs Stick/Picture/stickman sword/stickman sword run/stickman sword run 5.png').convert_alpha()]
 
 stickman_sparta_image = [
-    pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 1.png').convert_alpha(),
-    pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 2.png').convert_alpha(),
-    pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 3.png').convert_alpha(),
-    pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 4.png').convert_alpha(),
-    pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 5.png').convert_alpha()]
+    pygame.image.load('Bokemon vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 1.png').convert_alpha(),
+    pygame.image.load('Bokemon vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 2.png').convert_alpha(),
+    pygame.image.load('Bokemon vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 3.png').convert_alpha(),
+    pygame.image.load('Bokemon vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 4.png').convert_alpha(),
+    pygame.image.load('Bokemon vs Stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 5.png').convert_alpha()]
 
 stickman_giant_image = [
-    pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 1.png').convert_alpha(),
-    pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 2.png').convert_alpha(),
-    pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 3.png').convert_alpha(),
-    pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 4.png').convert_alpha(),
-    pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 5.png').convert_alpha()]
+    pygame.image.load('Bokemon vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 1.png').convert_alpha(),
+    pygame.image.load('Bokemon vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 2.png').convert_alpha(),
+    pygame.image.load('Bokemon vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 3.png').convert_alpha(),
+    pygame.image.load('Bokemon vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 4.png').convert_alpha(),
+    pygame.image.load('Bokemon vs Stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 5.png').convert_alpha()]
 
 # load stickman attack image
 stickman_warrior_attack = [
-    pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword attack/stickman sword attack 1.png').convert_alpha(),
-    pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword attack/stickman sword attack 2.png').convert_alpha(),
-    pygame.image.load('Plant vs Stick/Picture/stickman sword/stickman sword attack/stickman sword attack 3.png').convert_alpha()]
+    pygame.image.load('Bokemon vs Stick/Picture/stickman sword/stickman sword attack/stickman sword attack 1.png').convert_alpha(),
+    pygame.image.load('Bokemon vs Stick/Picture/stickman sword/stickman sword attack/stickman sword attack 2.png').convert_alpha(),
+    pygame.image.load('Bokemon vs Stick/Picture/stickman sword/stickman sword attack/stickman sword attack 3.png').convert_alpha()]
 
 stickman_sparta_attack = [
-    pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 1.png').convert_alpha(),
-    pygame.image.load('Plant vs Stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 2.png').convert_alpha()]
+    pygame.image.load('Bokemon vs Stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 1.png').convert_alpha(),
+    pygame.image.load('Bokemon vs Stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 2.png').convert_alpha()]
 
 stickman_giant_attack = [
-    pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant attack/stickman giant attack 1.png').convert_alpha(),
-    pygame.image.load('Plant vs Stick/Picture/stickman giant/stickman giant attack/stickman giant attack 2.png').convert_alpha()]
+    pygame.image.load('Bokemon vs Stick/Picture/stickman giant/stickman giant attack/stickman giant attack 1.png').convert_alpha(),
+    pygame.image.load('Bokemon vs Stick/Picture/stickman giant/stickman giant attack/stickman giant attack 2.png').convert_alpha()]
 
 
 class Troop(pygame.sprite.Sprite):
@@ -364,10 +364,10 @@ class GamePokemonVsStick:
 
     def set_up(self):  # set up surface and rectangle etc
         # main menu surface and rect
-        self.welcome_surface = pygame.image.load('Plant vs Stick/Picture/utils/welcome.jpg').convert()
+        self.welcome_surface = pygame.image.load('Bokemon vs Stick/Picture/utils/welcome.jpg').convert()
         self.welcome_surface = pygame.transform.scale(self.welcome_surface, (1000, 600))
 
-        self.start_adventure_surface = pygame.image.load('Plant vs Stick/Picture/utils/white_screen.jpeg').convert()
+        self.start_adventure_surface = pygame.image.load('Bokemon vs Stick/Picture/utils/white_screen.jpeg').convert()
         self.start_adventure_surface = pygame.transform.scale(self.start_adventure_surface, (410, 100))
         self.start_adventure_rect = self.start_adventure_surface.get_rect(topleft=(510, 70))
 
@@ -381,23 +381,23 @@ class GamePokemonVsStick:
 
         self.help_menu_font = pygame.font.Font(None, 20)
         # Read the help_menu_file file
-        with open("Plant vs Stick/Data/help_menu.txt", "r") as file:
+        with open("Bokemon vs Stick/Data/help_menu.txt", "r") as file:
             self.help_menu_content = file.read()
         self.help_menu_page = False
 
         # game start surface and rect
-        self.background_surface = pygame.image.load('Plant vs Stick/Picture/utils/game_background.png').convert()
+        self.background_surface = pygame.image.load('Bokemon vs Stick/Picture/utils/game_background.png').convert()
         self.background_surface = pygame.transform.scale(self.background_surface, (1000, 600))
 
-        self.machine_card_surface = pygame.image.load('Plant vs Stick/Picture/machine/machine_card.png').convert()
+        self.machine_card_surface = pygame.image.load('Bokemon vs Stick/Picture/machine/machine_card.png').convert()
         self.machine_card_surface = pygame.transform.scale(self.machine_card_surface, (68, 83))
         self.machine_card_rectangle = self.machine_card_surface.get_rect(topleft=self.machine_card_initial_position)
 
-        self.archer_card_surface = pygame.image.load('Plant vs Stick/Picture/archer/archer_card.png').convert()
+        self.archer_card_surface = pygame.image.load('Bokemon vs Stick/Picture/archer/archer_card.png').convert()
         self.archer_card_surface = pygame.transform.scale(self.archer_card_surface, (68, 83))
         self.archer_card_rectangle = self.archer_card_surface.get_rect(topleft=self.archer_card_initial_position)
 
-        self.wizard_card_surface = pygame.image.load('Plant vs Stick/Picture/wizard/wizard_card.png').convert()
+        self.wizard_card_surface = pygame.image.load('Bokemon vs Stick/Picture/wizard/wizard_card.png').convert()
         self.wizard_card_surface = pygame.transform.scale(self.wizard_card_surface, (68, 83))
         self.wizard_card_rectangle = self.wizard_card_surface.get_rect(topleft=self.wizard_card_initial_position)
 
@@ -409,11 +409,11 @@ class GamePokemonVsStick:
         self.wave_surface = self.wave_font.render(f'Wave {self.wave}', True, 'White')
         self.wave_rectangle = self.wave_surface.get_rect(center=(80, 580))
 
-        self.wave_background_surf = pygame.image.load('Plant vs Stick/Picture/utils/wave_background.jpeg').convert()
+        self.wave_background_surf = pygame.image.load('Bokemon vs Stick/Picture/utils/wave_background.jpeg').convert()
         self.wave_background_surf = pygame.transform.scale(self.wave_background_surf, (140, 50))
         self.wave_background_rect = self.wave_background_surf.get_rect(center=(80, 580))
 
-        self.wood_plank_surface = pygame.image.load('Plant vs Stick/Picture/utils/wood.png').convert()
+        self.wood_plank_surface = pygame.image.load('Bokemon vs Stick/Picture/utils/wood.png').convert()
         self.wood_plank_surface = pygame.transform.scale(self.wood_plank_surface, (140, 50))
         self.wood_plank_rectangle = self.wood_plank_surface.get_rect(topleft=(850, 10))
         self.time = None
@@ -425,7 +425,7 @@ class GamePokemonVsStick:
         self.back_background_surf.fill((14, 25, 45))
         self.back_background_rect = self.back_background_surf.get_rect(center=(254, 40))
 
-        self.back_button_surf = pygame.image.load('War of stick/Picture/Store/back_to_level.png').convert_alpha()
+        self.back_button_surf = pygame.image.load('Stick of War/Picture/Store/back_to_level.png').convert_alpha()
         self.back_button_surf = pygame.transform.scale(self.back_button_surf, (75, 75))
         self.back_button_rect = self.back_button_surf.get_rect(center=(155, 40))
 
@@ -716,7 +716,7 @@ class GamePokemonVsStick:
             self.screen.blit(play_again, self.play_again_rect)
 
     def run(self):
-        self.bg_music = pygame.mixer.Sound('Plant vs Stick/audio/bg_music.mp3')
+        self.bg_music = pygame.mixer.Sound('Bokemon vs Stick/audio/bg_music.mp3')
         self.bg_music.set_volume(0.1)
         self.bg_music.play(loops=-1)
         while True:

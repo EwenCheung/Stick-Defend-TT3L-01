@@ -15,50 +15,50 @@ from Database import database
 class Item_card():
     def __init__(self):
         # load store card image
-        self.warrior_card_image = pygame.image.load('War of stick/Picture/stickman sword/stickman warrior card.png').convert_alpha()
+        self.warrior_card_image = pygame.image.load('Stick of War/Picture/stickman sword/stickman warrior card.png').convert_alpha()
         self.warrior_card_surf = pygame.transform.scale(self.warrior_card_image, (50, 75))
 
-        self.archer_card_image = pygame.image.load('War of stick/Picture/stickman archer/stickman archer card.png').convert_alpha()
+        self.archer_card_image = pygame.image.load('Stick of War/Picture/stickman archer/stickman archer card.png').convert_alpha()
         self.archer_card_surf = pygame.transform.scale(self.archer_card_image, (50, 75))
 
-        self.sparta_card_image = pygame.image.load('War of stick/Picture/stickman sparta/stickman sparta card.png').convert_alpha()
+        self.sparta_card_image = pygame.image.load('Stick of War/Picture/stickman sparta/stickman sparta card.png').convert_alpha()
         self.sparta_card_surf = pygame.transform.scale(self.sparta_card_image, (50, 75))
 
-        self.wizard_card_image = pygame.image.load('War of stick/Picture/stickman wizard/stickman wizard card.png').convert_alpha()
+        self.wizard_card_image = pygame.image.load('Stick of War/Picture/stickman wizard/stickman wizard card.png').convert_alpha()
         self.wizard_card_surf = pygame.transform.scale(self.wizard_card_image, (50, 75))
         self.wizard_card_rect = self.wizard_card_surf.get_rect(center=(700, 100))
 
-        self.giant_card_image = pygame.image.load('War of stick/Picture/stickman giant/stickman giant card.png').convert_alpha()
+        self.giant_card_image = pygame.image.load('Stick of War/Picture/stickman giant/stickman giant card.png').convert_alpha()
         self.giant_card_surf = pygame.transform.scale(self.giant_card_image, (50, 75))
 
         # load backpack stick image
         self.warrior_image_surf = pygame.image.load(
-            'War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 1.png').convert_alpha()
+            'Stick of War/Picture/stickman sword/stickman sword attack/stickman sword attack 1.png').convert_alpha()
         self.warrior_image_surf = pygame.transform.scale(self.warrior_image_surf, (100, 120))
 
-        self.archer_image_surf = pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha()
+        self.archer_image_surf = pygame.image.load('Stick of War/Picture/stickman archer/stickman archer 1.png').convert_alpha()
         self.archer_image_surf = pygame.transform.scale(self.archer_image_surf, (65, 65))
 
         self.sparta_image_surf = pygame.image.load(
-            'War of stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 1.png').convert_alpha()
+            'Stick of War/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 1.png').convert_alpha()
         self.sparta_image_surf = pygame.transform.scale(self.sparta_image_surf, (80, 105))
 
         self.wizard_image_surf = pygame.image.load(
-            'War of stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 1.png').convert_alpha()
+            'Stick of War/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 1.png').convert_alpha()
         self.wizard_image_surf = pygame.transform.scale(self.wizard_image_surf, (85, 100))
 
         self.giant_image_surf = pygame.image.load(
-            'War of stick/Picture/stickman giant/stickman giant walk/stickman giant walk 1.png').convert_alpha()
+            'Stick of War/Picture/stickman giant/stickman giant walk/stickman giant walk 1.png').convert_alpha()
         self.giant_image_surf = pygame.transform.scale(self.giant_image_surf, (75, 80))
 
         # spell card
-        self.freeze_card_image_surf = pygame.image.load('War of stick/Picture/spell/freeze_spell.png').convert_alpha()
+        self.freeze_card_image_surf = pygame.image.load('Stick of War/Picture/spell/freeze_spell.png').convert_alpha()
         self.freeze_card_image_surf = pygame.transform.scale(self.freeze_card_image_surf, (60, 60))
 
-        self.healing_card_image_surf = pygame.image.load('War of stick/Picture/spell/healing_spell.png').convert_alpha()
+        self.healing_card_image_surf = pygame.image.load('Stick of War/Picture/spell/healing_spell.png').convert_alpha()
         self.healing_card_image_surf = pygame.transform.scale(self.healing_card_image_surf, (60, 60))
 
-        self.rage_card_image_surf = pygame.image.load('War of stick/Picture/spell/rage_spell.png').convert_alpha()
+        self.rage_card_image_surf = pygame.image.load('Stick of War/Picture/spell/rage_spell.png').convert_alpha()
         self.rage_card_image_surf = pygame.transform.scale(self.rage_card_image_surf, (60, 60))
 
 
@@ -100,69 +100,69 @@ class Game_Store:
         self.upgrades_button_surf = self.button()
         # store
         # load background
-        self.background_image = pygame.image.load('War of stick/Picture/store/store background.png').convert_alpha()
+        self.background_image = pygame.image.load('Stick of War/Picture/store/store background.png').convert_alpha()
         self.background_surf = pygame.transform.scale(self.background_image, (1000, 600))
 
-        self.button_background_surf = pygame.image.load('War of stick/Picture/store/button_for_store.png')
+        self.button_background_surf = pygame.image.load('Stick of War/Picture/store/button_for_store.png')
         self.button_background_surf = pygame.transform.scale(self.button_background_surf, (150, 75))
 
         # load the backpack image
-        self.backpack_image_surf = pygame.image.load('War of stick/Picture/store/backpack.png').convert_alpha()
+        self.backpack_image_surf = pygame.image.load('Stick of War/Picture/store/backpack.png').convert_alpha()
         self.backpack_image_surf = pygame.transform.scale(self.backpack_image_surf, (90, 90))
         self.backpack_image_rect = self.backpack_image_surf.get_rect(bottomright=(870, 570))
 
         # money for purchase
-        self.money_image_surf = pygame.image.load('War of stick/Picture/store/money.png').convert_alpha()
+        self.money_image_surf = pygame.image.load('Stick of War/Picture/store/money.png').convert_alpha()
         self.money_image_surf = pygame.transform.scale(self.money_image_surf, (15, 10))
         self.money_image_rect = self.money_image_surf.get_rect(topright=(920, 10))
 
         # load blank card image
-        self.blank_card_surf = pygame.image.load('War of stick/Picture/store/blank card image.png').convert_alpha()
+        self.blank_card_surf = pygame.image.load('Stick of War/Picture/store/blank card image.png').convert_alpha()
         self.blank_card_surf = pygame.transform.scale(self.blank_card_surf, (50, 75))
 
         # backpack
         # load backpack image
-        self.backpack_background_surf = pygame.image.load('War of stick/Picture/store/backpack background.png').convert_alpha()
+        self.backpack_background_surf = pygame.image.load('Stick of War/Picture/store/backpack background.png').convert_alpha()
         self.backpack_background_surf = pygame.transform.scale(self.backpack_background_surf, (800, 400))
 
-        self.castle_image_surf = pygame.image.load('War of stick/Picture/store/castle.png').convert_alpha()
+        self.castle_image_surf = pygame.image.load('Stick of War/Picture/store/castle.png').convert_alpha()
         self.castle_image_surf = pygame.transform.scale(self.castle_image_surf, (300, 300))
         self.store_castle_image_surf = pygame.transform.scale(self.castle_image_surf, (120, 120))
 
-        self.health_image_surf = pygame.image.load('War of stick/Picture/store/health.png').convert_alpha()
+        self.health_image_surf = pygame.image.load('Stick of War/Picture/store/health.png').convert_alpha()
         self.health_image_surf = pygame.transform.scale(self.health_image_surf, (20, 20))
 
-        self.mining_image_surf = pygame.image.load('War of stick/Picture/store/pickaxe.png').convert_alpha()
+        self.mining_image_surf = pygame.image.load('Stick of War/Picture/store/pickaxe.png').convert_alpha()
         self.mining_image_surf = pygame.transform.scale(self.mining_image_surf, (30, 30))
 
-        self.damage_image_surf = pygame.image.load('War of stick/Picture/store/damage.png').convert_alpha()
+        self.damage_image_surf = pygame.image.load('Stick of War/Picture/store/damage.png').convert_alpha()
         self.damage_image_surf = pygame.transform.scale(self.damage_image_surf, (25, 25))
 
-        self.freeze_function_image_surf = pygame.image.load('War of stick/Picture/spell/freeze_animation.png').convert_alpha()
+        self.freeze_function_image_surf = pygame.image.load('Stick of War/Picture/spell/freeze_animation.png').convert_alpha()
         self.freeze_function_image_surf = pygame.transform.scale(self.freeze_function_image_surf, (30, 30))
 
-        self.healing_function_image_surf = pygame.image.load('War of stick/Picture/spell/healing_animation.png').convert_alpha()
+        self.healing_function_image_surf = pygame.image.load('Stick of War/Picture/spell/healing_animation.png').convert_alpha()
         self.healing_function_image_surf = pygame.transform.scale(self.healing_function_image_surf, (30, 30))
 
-        self.rage_function_image_surf = pygame.image.load('War of stick/Picture/spell/rage_animation.png').convert_alpha()
+        self.rage_function_image_surf = pygame.image.load('Stick of War/Picture/spell/rage_animation.png').convert_alpha()
         self.rage_function_image_surf = pygame.transform.scale(self.rage_function_image_surf, (30, 30))
 
         # load the back button image
-        self.back_button_surf = pygame.image.load('War of stick/Picture/store/back button.png').convert_alpha()
+        self.back_button_surf = pygame.image.load('Stick of War/Picture/store/back button.png').convert_alpha()
         self.back_button_surf = pygame.transform.scale(self.back_button_surf, (50, 50))
         self.back_button_rect = self.back_button_surf.get_rect(bottomright=(900, 100))
 
-        self.troop_equipment_box_surf = pygame.image.load('War of stick/Picture/store/equipment box.png').convert_alpha()
+        self.troop_equipment_box_surf = pygame.image.load('Stick of War/Picture/store/equipment box.png').convert_alpha()
         self.troop_equipment_box_surf = pygame.transform.scale(self.troop_equipment_box_surf, (500, 100))
         self.troop_equipment_box_rect = self.troop_equipment_box_surf.get_rect(center=(500, 158))
 
         self.spell_equipment_box_surf = self.troop_equipment_box_surf.copy()
         self.spell_equipment_box_rect = self.spell_equipment_box_surf.get_rect(center=(500, 87))
 
-        self.gold_image_surf = pygame.image.load('War of stick/Picture/utils/gold.png').convert_alpha()
+        self.gold_image_surf = pygame.image.load('Stick of War/Picture/utils/gold.png').convert_alpha()
         self.gold_image_surf_surf = pygame.transform.scale(self.gold_image_surf, (25, 25))
 
-        self.diamond_image_surf = pygame.image.load('War of stick/Picture/utils/diamond.png').convert_alpha()
+        self.diamond_image_surf = pygame.image.load('Stick of War/Picture/utils/diamond.png').convert_alpha()
         self.diamond_image_surf_surf = pygame.transform.scale(self.diamond_image_surf, (40, 25))
 
         self.equip_button_size = (120, 65)
@@ -172,12 +172,12 @@ class Game_Store:
         self.unequip_button_surf = pygame.Surface(self.equip_button_size)
         self.unequip_button_surf.fill((144, 238, 144))
 
-        self.back_level_button_surf = pygame.image.load('War of stick/Picture/Store/back_to_level.png').convert_alpha()
+        self.back_level_button_surf = pygame.image.load('Stick of War/Picture/Store/back_to_level.png').convert_alpha()
         self.back_level_button_surf = pygame.transform.scale(self.back_level_button_surf, (75, 75))
         self.back_level_button_rect = self.back_level_button_surf.get_rect(topleft=(25, 15))
 
         self.back_level_background_surf = pygame.image.load(
-            'War of stick/Picture/Store/back_to_level_background.png').convert_alpha()
+            'Stick of War/Picture/Store/back_to_level_background.png').convert_alpha()
         self.back_level_background_surf = pygame.transform.scale(self.back_level_background_surf, (150, 100))
         self.back_level_background_rect = self.back_level_background_surf.get_rect(topleft=(40, 2))
 
@@ -191,7 +191,7 @@ class Game_Store:
 
         # words for the topic
         self.topic_word_surf = pygame.font.Font(None, 60)
-        self.topic_word_surf = self.topic_word_surf.render('War of stick store', True, 'Black')
+        self.topic_word_surf = self.topic_word_surf.render('Stick of War store', True, 'Black')
         self.topic_word_rect = self.topic_word_surf.get_rect(center=(462, 60))
 
         self.level_word_surf = pygame.font.Font(None, 50)
@@ -443,9 +443,9 @@ class Game_Store:
         }]
 
     def button(self):
-        self.title_background_surf = pygame.image.load('War of stick/Picture/store/coklat background.jpg').convert_alpha()
+        self.title_background_surf = pygame.image.load('Stick of War/Picture/store/coklat background.jpg').convert_alpha()
         self.title_background_surf = pygame.transform.scale(self.title_background_surf, (90, 40))
-        self.title_background_dark_surf = pygame.image.load('War of stick/Picture/store/choc_bg_dark.png').convert_alpha()
+        self.title_background_dark_surf = pygame.image.load('Stick of War/Picture/store/choc_bg_dark.png').convert_alpha()
         self.title_background_dark_surf = pygame.transform.scale(self.title_background_dark_surf, (90, 40))
         self.button_surf = [
             self.title_background_surf.copy(),
@@ -619,19 +619,19 @@ class Game_Store:
 
                             if item_copy['name'] == 'warrior':
                                 troop_equipped_image = pygame.image.load(
-                                    'War of stick/Picture/stickman sword/stickman warrior card.png')
+                                    'Stick of War/Picture/stickman sword/stickman warrior card.png')
                             elif item_copy['name'] == 'archer':
                                 troop_equipped_image = pygame.image.load(
-                                    'War of stick/Picture/stickman archer/stickman archer card.png')
+                                    'Stick of War/Picture/stickman archer/stickman archer card.png')
                             elif item_copy['name'] == 'sparta':
                                 troop_equipped_image = pygame.image.load(
-                                    'War of stick/Picture/stickman sparta/stickman sparta card.png')
+                                    'Stick of War/Picture/stickman sparta/stickman sparta card.png')
                             elif item_copy['name'] == 'wizard':
                                 troop_equipped_image = pygame.image.load(
-                                    'War of stick/Picture/stickman wizard/stickman wizard card.png')
+                                    'Stick of War/Picture/stickman wizard/stickman wizard card.png')
                             elif item_copy['name'] == 'giant':
                                 troop_equipped_image = pygame.image.load(
-                                    'War of stick/Picture/stickman giant/stickman giant card.png')
+                                    'Stick of War/Picture/stickman giant/stickman giant card.png')
 
                             troop_equipped_image = pygame.transform.scale(troop_equipped_image, (50, 55))
                             item_copy['image'] = troop_equipped_image
@@ -670,19 +670,19 @@ class Game_Store:
                                     item_copy = item.copy()
                                     if item_copy['name'] == 'warrior':
                                         troop_equipped_image = pygame.image.load(
-                                            'War of stick/Picture/stickman sword/stickman warrior card.png')
+                                            'Stick of War/Picture/stickman sword/stickman warrior card.png')
                                     elif item_copy['name'] == 'archer':
                                         troop_equipped_image = pygame.image.load(
-                                            'War of stick/Picture/stickman archer/stickman archer card.png')
+                                            'Stick of War/Picture/stickman archer/stickman archer card.png')
                                     elif item_copy['name'] == 'sparta':
                                         troop_equipped_image = pygame.image.load(
-                                            'War of stick/Picture/stickman sparta/stickman sparta card.png')
+                                            'Stick of War/Picture/stickman sparta/stickman sparta card.png')
                                     elif item_copy['name'] == 'wizard':
                                         troop_equipped_image = pygame.image.load(
-                                            'War of stick/Picture/stickman wizard/stickman wizard card.png')
+                                            'Stick of War/Picture/stickman wizard/stickman wizard card.png')
                                     elif item_copy['name'] == 'giant':
                                         troop_equipped_image = pygame.image.load(
-                                            'War of stick/Picture/stickman giant/stickman giant card.png')
+                                            'Stick of War/Picture/stickman giant/stickman giant card.png')
 
                                     troop_equipped_image = pygame.transform.scale(troop_equipped_image, (50, 55))
                                     item_copy['image'] = troop_equipped_image

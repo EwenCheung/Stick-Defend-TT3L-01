@@ -38,16 +38,16 @@ class GameHome:
         self.progress = 0  # this one is if I put 0.2 it will start the loading bar from 0.2
 
         self.image = pygame.image.load(
-            "War of stick/Picture/utils/background_photo.jpeg")  # Replace "home_image.jpg" with your image path
+            "Stick of War/Picture/utils/background_photo.jpeg")  # Replace "home_image.jpg" with your image path
         self.image = pygame.transform.scale(self.image, (1000, 600))
         self.image_rect = self.image.get_rect(center=(1000 // 2, 600 // 2))
 
-        self.wood_plank_surface = pygame.image.load('Plant vs Stick/Picture/utils/wood.png').convert()
+        self.wood_plank_surface = pygame.image.load('Bokemon vs Stick/Picture/utils/wood.png').convert()
         self.wood_plank_surface = pygame.transform.scale(self.wood_plank_surface, (200, 60))
         self.pokemon_vs_naruto_rect = None
         self.stick_of_war_rect = None
 
-        self.text_box_surface = pygame.image.load('Plant vs Stick/Picture/utils/wood.png').convert()
+        self.text_box_surface = pygame.image.load('Bokemon vs Stick/Picture/utils/wood.png').convert()
         self.text_box_surface = pygame.transform.scale(self.text_box_surface, (400, 60))
 
         self.loading = True
@@ -373,7 +373,7 @@ class GameHome:
                 self.retry = False
 
     def run(self):
-        self.home_music = pygame.mixer.Sound('War of stick/Music/home_music.wav')
+        self.home_music = pygame.mixer.Sound('Stick of War/Music/home_music.wav')
         self.home_music.set_volume(0.2)
         self.home_music.play(loops=-1)
         while True:

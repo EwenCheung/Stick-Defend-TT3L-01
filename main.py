@@ -17,7 +17,7 @@ pygame.font.init()
 pygame.display.set_caption('Stick_Defend')  # title name
 pygame.display.set_mode((1000, 600))
 from Database import database
-from Pokemon_vs_Stick import GamePokemonVsStick
+from Bokemon_vs_Stick import GamePokemonVsStick
 from Home import GameHome
 from Level import GameLevel
 from Store import Game_Store
@@ -47,7 +47,7 @@ def main():
     while True:
         try:
             if run_home:
-                home.home_music = pygame.mixer.Sound('War of stick/Music/home_music.wav')
+                home.home_music = pygame.mixer.Sound('Stick of War/Music/home_music.wav')
                 home.home_music.set_volume(0.2)
                 home.home_music.play(loops=-1)
                 while True:
@@ -85,7 +85,7 @@ def main():
 
             elif run_pokemon_vs_stick:
                 pokemon_vs_stick.reset_func()
-                pokemon_vs_stick.bg_music = pygame.mixer.Sound('Plant vs Stick/audio/bg_music.mp3')
+                pokemon_vs_stick.bg_music = pygame.mixer.Sound('Bokemon vs Stick/audio/bg_music.mp3')
                 pokemon_vs_stick.bg_music.set_volume(0.1)
                 pokemon_vs_stick.bg_music.play(loops=-1)
                 while True:
@@ -114,7 +114,7 @@ def main():
                     pokemon_vs_stick.clock.tick(60)  # 60 fps
 
             elif run_level:
-                level.level_select_music = pygame.mixer.Sound('War of stick/Music/level.mp3')
+                level.level_select_music = pygame.mixer.Sound('Stick of War/Music/level.mp3')
                 level.level_select_music.set_volume(0.2)
                 level.level_select_music.play(loops=-1)
 
@@ -165,7 +165,7 @@ def main():
 
             elif run_stick_of_war:
                 stick_of_war.reset_func()
-                stick_of_war.game_music = pygame.mixer.Sound('War of stick/Music/game_music.mp3')
+                stick_of_war.game_music = pygame.mixer.Sound('Stick of War/Music/game_music.mp3')
                 stick_of_war.game_music.set_volume(0.2)
                 stick_of_war.game_music.play(loops=-1)
                 while True:

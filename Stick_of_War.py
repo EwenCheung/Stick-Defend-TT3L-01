@@ -175,12 +175,12 @@ class Troop:
 
     def create_bullet(self, bg_x):
         if self.troop_name == 'Archer':
-            bullet = pygame.image.load('War of stick/Picture/utils/archer_bullet.png')
+            bullet = pygame.image.load('Stick of War/Picture/utils/archer_bullet.png')
             bullet_surf = pygame.transform.scale(bullet, (20, 20))
             bullet_rect = bullet_surf.get_rect(center=(self.coordinate_x + bg_x, randint(435, 465)))
             new_bullet = [bullet_surf, bullet_rect]
         elif self.troop_name == 'Wizard':
-            bullet = pygame.image.load('War of stick/Picture/utils/wizard_bullet.png')
+            bullet = pygame.image.load('Stick of War/Picture/utils/wizard_bullet.png')
             bullet_surf = pygame.transform.scale(bullet, (50, 50))
             bullet_rect = bullet_surf.get_rect(center=(self.coordinate_x + bg_x, randint(435, 465)))
             new_bullet = [bullet_surf, bullet_rect]
@@ -291,71 +291,71 @@ class GameStickOfWar:
 
         self.ninja_choice = ["naruto", "naruto", "naruto", "kakashi", "kakashi", "sasuke"]
         # Scrolling Background
-        self.background_image = pygame.image.load('War of stick/Picture/utils/map.jpg')
+        self.background_image = pygame.image.load('Stick of War/Picture/utils/map.jpg')
         self.left_rect_castle = pygame.Rect(self.bg_x, 90, 170, 390)
         self.right_rect_castle = pygame.Rect(self.bg_x + self.background_image.get_width() - 100, 90, 170,
                                              390)  # distance between troop and castle during time
 
         # spell equipment
-        self.box = pygame.image.load('War of stick/Picture/utils/box.png')
+        self.box = pygame.image.load('Stick of War/Picture/utils/box.png')
         self.box_surf = pygame.transform.scale(self.box, (600, 80))
         self.box_rect = self.box_surf.get_rect(center=(300, 550))
 
         # healing
-        self.healing_spell = pygame.image.load('War of stick/Picture/spell/healing_spell.png')
+        self.healing_spell = pygame.image.load('Stick of War/Picture/spell/healing_spell.png')
         self.healing_spell_surf = pygame.transform.scale(self.healing_spell, (70, 70))
         self.healing_spell_rect = self.healing_spell_surf.get_rect(center=self.healing_initial_position)
         # healing dim
-        self.healing_dim = pygame.image.load('War of stick/Picture/spell/healing_dim_spell.png')
+        self.healing_dim = pygame.image.load('Stick of War/Picture/spell/healing_dim_spell.png')
         self.healing_dim_surf = pygame.transform.scale(self.healing_dim, (70, 70))
         self.healing_dim_rect = self.healing_dim_surf.get_rect(center=self.healing_initial_position)
         # healing red
-        self.healing_red = pygame.image.load('War of stick/Picture/spell/healing_red.png')
+        self.healing_red = pygame.image.load('Stick of War/Picture/spell/healing_red.png')
         self.healing_red_surf = pygame.transform.scale(self.healing_red, (70, 70))
         self.healing_red_rect = self.healing_red_surf.get_rect(center=self.healing_initial_position)
         # healing animation
-        self.healing_spell_animation = pygame.image.load('War of stick/Picture/spell/healing_animation.png')
+        self.healing_spell_animation = pygame.image.load('Stick of War/Picture/spell/healing_animation.png')
         self.healing_spell_animation.set_alpha(128)
         self.healing_spell_animation_surf = pygame.transform.scale(self.healing_spell_animation, (100, 100))
 
         # freeze
-        self.freeze_spell = pygame.image.load('War of stick/Picture/spell/freeze_spell.png')
+        self.freeze_spell = pygame.image.load('Stick of War/Picture/spell/freeze_spell.png')
         self.freeze_spell_surf = pygame.transform.scale(self.freeze_spell, (70, 70))
         self.freeze_spell_rect = self.freeze_spell_surf.get_rect(center=self.freeze_initial_position)
         # freeze dim
-        self.freeze_dim = pygame.image.load('War of stick/Picture/spell/freeze_dim_spell.png')
+        self.freeze_dim = pygame.image.load('Stick of War/Picture/spell/freeze_dim_spell.png')
         self.freeze_dim_surf = pygame.transform.scale(self.freeze_dim, (70, 70))
         self.freeze_dim_rect = self.freeze_dim_surf.get_rect(center=self.freeze_initial_position)
         # freeze red
-        self.freeze_red = pygame.image.load('War of stick/Picture/spell/freeze_red.png')
+        self.freeze_red = pygame.image.load('Stick of War/Picture/spell/freeze_red.png')
         self.freeze_red_surf = pygame.transform.scale(self.freeze_red, (70, 70))
         self.freeze_red_rect = self.freeze_red_surf.get_rect(center=self.freeze_initial_position)
         # rage animation
-        self.freeze_spell_animation = pygame.image.load('War of stick/Picture/spell/freeze_animation.png')
+        self.freeze_spell_animation = pygame.image.load('Stick of War/Picture/spell/freeze_animation.png')
         self.freeze_spell_animation.set_alpha(128)
         self.freeze_spell_animation_surf = pygame.transform.scale(self.freeze_spell_animation, (80, 80))
 
         # rage
-        self.rage_spell = pygame.image.load('War of stick/Picture/spell/rage_spell.png')
+        self.rage_spell = pygame.image.load('Stick of War/Picture/spell/rage_spell.png')
         self.rage_spell_surf = pygame.transform.scale(self.rage_spell, (70, 70))
         self.rage_spell_rect = self.rage_spell_surf.get_rect(center=self.rage_initial_position)
         # rage dim
-        self.rage_dim = pygame.image.load('War of stick/Picture/spell/rage_dim_spell.png')
+        self.rage_dim = pygame.image.load('Stick of War/Picture/spell/rage_dim_spell.png')
         self.rage_dim_surf = pygame.transform.scale(self.rage_dim, (70, 70))
         self.rage_dim_rect = self.rage_dim_surf.get_rect(center=self.rage_initial_position)
         # rage red
-        self.rage_red = pygame.image.load('War of stick/Picture/spell/rage_red.png')
+        self.rage_red = pygame.image.load('Stick of War/Picture/spell/rage_red.png')
         self.rage_red_surf = pygame.transform.scale(self.rage_red, (70, 70))
         self.rage_red_rect = self.rage_red_surf.get_rect(center=self.rage_initial_position)
         # rage animation
-        self.rage_spell_animation = pygame.image.load('War of stick/Picture/spell/rage_animation.png')
+        self.rage_spell_animation = pygame.image.load('Stick of War/Picture/spell/rage_animation.png')
         self.rage_spell_animation.set_alpha(128)
         self.rage_spell_animation_surf = pygame.transform.scale(self.rage_spell_animation, (90, 100))
         # rage special for giant
         self.rage_spell_animation_giant_surf = pygame.transform.scale(self.rage_spell_animation, (90, 150))
 
         # Gold assets
-        self.pic_gold = pygame.image.load('War of stick/Picture/utils/gold.png').convert_alpha()
+        self.pic_gold = pygame.image.load('Stick of War/Picture/utils/gold.png').convert_alpha()
         self.pic_gold_surf = pygame.transform.scale(self.pic_gold, (25, 25))
         self.pic_gold_rect = self.pic_gold_surf.get_rect(center=(760, 50))
         self.num_gold_font = pygame.font.Font(None, 30)
@@ -363,7 +363,7 @@ class GameStickOfWar:
         self.num_gold_rect = self.num_gold_surf.get_rect(center=(800, 50))
 
         # Diamond assets
-        self.pic_diamond = pygame.image.load('War of stick/Picture/utils/diamond.png').convert_alpha()
+        self.pic_diamond = pygame.image.load('Stick of War/Picture/utils/diamond.png').convert_alpha()
         self.pic_diamond_surf = pygame.transform.scale(self.pic_diamond, (50, 25))
         self.pic_diamond_rect = self.pic_diamond_surf.get_rect(center=(760, 80))
         self.num_diamond_font = pygame.font.Font(None, 30)
@@ -371,7 +371,7 @@ class GameStickOfWar:
         self.num_diamond_rect = self.num_diamond_surf.get_rect(center=(800, 80))
 
         # Troop Assets
-        self.pic_troop = pygame.image.load('War of stick/Picture/utils/troop_pic.png').convert_alpha()
+        self.pic_troop = pygame.image.load('Stick of War/Picture/utils/troop_pic.png').convert_alpha()
         self.pic_troop_surf = pygame.transform.scale(self.pic_troop, (80, 80))
         self.pic_troop_rect = self.pic_troop_surf.get_rect(center=(866, 100))
         self.num_troop_font = pygame.font.Font(None, 30)
@@ -379,12 +379,12 @@ class GameStickOfWar:
         self.num_troop_rect = self.num_troop_surf.get_rect(center=(905, 80))
 
         # timer asset
-        self.timer = pygame.image.load('War of stick/Picture/store/timer.png')
+        self.timer = pygame.image.load('Stick of War/Picture/store/timer.png')
         self.timer_surf = pygame.transform.scale(self.timer, (30, 30))
         self.timer_rect = self.timer_surf.get_rect(center=(863, 50))
 
         # spell price
-        self.price_box = pygame.image.load('War of stick/Picture/utils/price_box.png')
+        self.price_box = pygame.image.load('Stick of War/Picture/utils/price_box.png')
         self.price_box_surf = pygame.transform.scale(self.price_box, (50, 20))
         self.price_box_heal_rect = self.price_box_surf.get_rect(center=(35, 510))
         self.price_box_freeze_rect = self.price_box_surf.get_rect(center=(105, 510))
@@ -402,10 +402,10 @@ class GameStickOfWar:
         self.rage_price_surf = self.rage_price_font.render(str(self.rage_price), True, 'Black')
         self.rage_price_rect = self.rage_price_surf.get_rect(center=(175, 510))
 
-        self.lock = pygame.image.load('War of stick/Picture/utils/lock.png')
+        self.lock = pygame.image.load('Stick of War/Picture/utils/lock.png')
         self.lock_surf = pygame.transform.scale(self.lock, (50, 50))
 
-        self.wood_plank = pygame.image.load('Plant vs Stick/Picture/utils/wood.png').convert()
+        self.wood_plank = pygame.image.load('Bokemon vs Stick/Picture/utils/wood.png').convert()
         self.wood_plank_surface = pygame.transform.scale(self.wood_plank, (100, 50))
         self.wood_plank_rect = self.wood_plank_surface.get_rect(center=(500, 500))
 
@@ -413,42 +413,42 @@ class GameStickOfWar:
         self.level_text_surf = self.level_text.render("Level", True, (255, 255, 255))
         self.level_text_rect = self.level_text_surf.get_rect(center=(500, 500))
 
-        self.one_star = pygame.image.load('War of stick/Picture/utils/one_star.png')
+        self.one_star = pygame.image.load('Stick of War/Picture/utils/one_star.png')
         self.one_star_surf = pygame.transform.scale(self.one_star, (180, 80))
 
-        self.two_star = pygame.image.load('War of stick/Picture/utils/two_star.png')
+        self.two_star = pygame.image.load('Stick of War/Picture/utils/two_star.png')
         self.two_star_surf = pygame.transform.scale(self.two_star, (180, 80))
 
-        self.three_star = pygame.image.load('War of stick/Picture/utils/three_star.png')
+        self.three_star = pygame.image.load('Stick of War/Picture/utils/three_star.png')
         self.three_star_surf = pygame.transform.scale(self.three_star, (180, 80))
 
-        self.no_star = pygame.image.load('War of stick/Picture/utils/no_star.png')
+        self.no_star = pygame.image.load('Stick of War/Picture/utils/no_star.png')
         self.no_star_surf = pygame.transform.scale(self.no_star, (180, 80))
 
         # Troop One
         # Warrior run
         self.warrior_all_image = [
-            pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 1.png').convert_alpha(),
-            pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 2.png').convert_alpha(),
-            pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 3.png').convert_alpha(),
-            pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 4.png').convert_alpha(),
-            pygame.image.load('War of stick/Picture/stickman sword/stickman sword run/stickman sword run 5.png').convert_alpha()]
+            pygame.image.load('Stick of War/Picture/stickman sword/stickman sword run/stickman sword run 1.png').convert_alpha(),
+            pygame.image.load('Stick of War/Picture/stickman sword/stickman sword run/stickman sword run 2.png').convert_alpha(),
+            pygame.image.load('Stick of War/Picture/stickman sword/stickman sword run/stickman sword run 3.png').convert_alpha(),
+            pygame.image.load('Stick of War/Picture/stickman sword/stickman sword run/stickman sword run 4.png').convert_alpha(),
+            pygame.image.load('Stick of War/Picture/stickman sword/stickman sword run/stickman sword run 5.png').convert_alpha()]
         self.warrior_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.warrior_all_image]
 
         # Warrior attack
         self.warrior_attack_image = [
             pygame.image.load(
-                'War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 1.png').convert_alpha(),
+                'Stick of War/Picture/stickman sword/stickman sword attack/stickman sword attack 1.png').convert_alpha(),
             pygame.image.load(
-                'War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 2.png').convert_alpha(),
+                'Stick of War/Picture/stickman sword/stickman sword attack/stickman sword attack 2.png').convert_alpha(),
             pygame.image.load(
-                'War of stick/Picture/stickman sword/stickman sword attack/stickman sword attack 3.png').convert_alpha()]
+                'Stick of War/Picture/stickman sword/stickman sword attack/stickman sword attack 3.png').convert_alpha()]
         self.warrior_attack_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.warrior_attack_image]
 
-        self.warrior_button_image = pygame.image.load('War of stick/Picture/button/sword_button.png')
-        self.warrior_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/sword_dim.png')
-        self.warrior_button_flash = pygame.image.load('War of stick/Picture/button_flash/warrior_flash.png')
-        self.warrior_lock = pygame.image.load('War of stick/Picture/button_lock/warrior_lock.png')
+        self.warrior_button_image = pygame.image.load('Stick of War/Picture/button/sword_button.png')
+        self.warrior_button_dim_image = pygame.image.load('Stick of War/Picture/button_dim/sword_dim.png')
+        self.warrior_button_flash = pygame.image.load('Stick of War/Picture/button_flash/warrior_flash.png')
+        self.warrior_lock = pygame.image.load('Stick of War/Picture/button_lock/warrior_lock.png')
         self.warrior_button = TroopButton(self, self.warrior_button_image, self.warrior_button_dim_image, self.warrior_button_flash,
                                           self.warrior_lock,
                                           (100, 100), (100, 70), f'{database.warrior_gold}n{database.warrior_diamond}', 3000,
@@ -456,20 +456,20 @@ class GameStickOfWar:
 
         # Troop Two
         # Archer walk
-        self.archer_all_image = [pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
-                                 pygame.image.load('War of stick/Picture/stickman archer/stickman archer 2.png').convert_alpha()]
+        self.archer_all_image = [pygame.image.load('Stick of War/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
+                                 pygame.image.load('Stick of War/Picture/stickman archer/stickman archer 2.png').convert_alpha()]
         self.archer_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.archer_all_image]
 
         # archer attack
         self.archer_attack_image = [
-            pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
-            pygame.image.load('War of stick/Picture/stickman archer/stickman archer 1.png').convert_alpha()]
+            pygame.image.load('Stick of War/Picture/stickman archer/stickman archer 1.png').convert_alpha(),
+            pygame.image.load('Stick of War/Picture/stickman archer/stickman archer 1.png').convert_alpha()]
         self.archer_attack_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.archer_attack_image]
 
-        self.archer_button_image = pygame.image.load('War of stick/Picture/button/archer_button.png')
-        self.archer_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/archer_dim.png')
-        self.archer_button_flash = pygame.image.load('War of stick/Picture/button_flash/archer_flash.png')
-        self.archer_lock = pygame.image.load('War of stick/Picture/button_lock/archer_lock.png')
+        self.archer_button_image = pygame.image.load('Stick of War/Picture/button/archer_button.png')
+        self.archer_button_dim_image = pygame.image.load('Stick of War/Picture/button_dim/archer_dim.png')
+        self.archer_button_flash = pygame.image.load('Stick of War/Picture/button_flash/archer_flash.png')
+        self.archer_lock = pygame.image.load('Stick of War/Picture/button_lock/archer_lock.png')
         self.archer_button = TroopButton(self, self.archer_button_image, self.archer_button_dim_image, self.archer_button_flash,
                                          self.archer_lock,
                                          (100, 100), (200, 70), f'{database.archer_gold}n{database.archer_diamond}', 3000,
@@ -479,33 +479,33 @@ class GameStickOfWar:
         # Wizard walk
         self.wizard_all_image = [
             pygame.image.load(
-                'War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 1.png').convert_alpha(),
+                'Stick of War/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 1.png').convert_alpha(),
             pygame.image.load(
-                'War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 2.png').convert_alpha(),
+                'Stick of War/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 2.png').convert_alpha(),
             pygame.image.load(
-                'War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 3.png').convert_alpha(),
+                'Stick of War/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 3.png').convert_alpha(),
             pygame.image.load(
-                'War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 4.png').convert_alpha(),
+                'Stick of War/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 4.png').convert_alpha(),
             pygame.image.load(
-                'War of stick/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 5.png').convert_alpha()
+                'Stick of War/Picture/stickman wizard/stickman wizard walk/stickman wizard walk 5.png').convert_alpha()
         ]
         self.wizard_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.wizard_all_image]
 
         # Wizard run
         self.wizard_attack_image = [
             pygame.image.load(
-                'War of stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 1.png').convert_alpha(),
+                'Stick of War/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 1.png').convert_alpha(),
             pygame.image.load(
-                'War of stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 2.png').convert_alpha(),
+                'Stick of War/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 2.png').convert_alpha(),
             pygame.image.load(
-                'War of stick/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 3.png').convert_alpha()
+                'Stick of War/Picture/stickman wizard/stickman wizard attack/stickman wizard attack 3.png').convert_alpha()
         ]
         self.wizard_attack_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.wizard_attack_image]
 
-        self.wizard_button_image = pygame.image.load('War of stick/Picture/button/wizard_button.png')
-        self.wizard_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/wizard_dim.png')
-        self.wizard_button_flash = pygame.image.load('War of stick/Picture/button_flash/wizard_flash.png')
-        self.wizard_lock = pygame.image.load('War of stick/Picture/button_lock/wizard_lock.png')
+        self.wizard_button_image = pygame.image.load('Stick of War/Picture/button/wizard_button.png')
+        self.wizard_button_dim_image = pygame.image.load('Stick of War/Picture/button_dim/wizard_dim.png')
+        self.wizard_button_flash = pygame.image.load('Stick of War/Picture/button_flash/wizard_flash.png')
+        self.wizard_lock = pygame.image.load('Stick of War/Picture/button_lock/wizard_lock.png')
         self.wizard_button = TroopButton(self, self.wizard_button_image, self.wizard_button_dim_image, self.wizard_button_flash,
                                          self.wizard_lock,
                                          (100, 100), (300, 70), f'{database.wizard_gold}n{database.wizard_diamond}', 3000,
@@ -514,31 +514,31 @@ class GameStickOfWar:
         # Sparta run
         self.sparta_all_image = [
             pygame.image.load(
-                'War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 1.png').convert_alpha(),
+                'Stick of War/Picture/stickman sparta/stickman sparta run/stickman sparta run 1.png').convert_alpha(),
             pygame.image.load(
-                'War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 2.png').convert_alpha(),
+                'Stick of War/Picture/stickman sparta/stickman sparta run/stickman sparta run 2.png').convert_alpha(),
             pygame.image.load(
-                'War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 3.png').convert_alpha(),
+                'Stick of War/Picture/stickman sparta/stickman sparta run/stickman sparta run 3.png').convert_alpha(),
             pygame.image.load(
-                'War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 4.png').convert_alpha(),
+                'Stick of War/Picture/stickman sparta/stickman sparta run/stickman sparta run 4.png').convert_alpha(),
             pygame.image.load(
-                'War of stick/Picture/stickman sparta/stickman sparta run/stickman sparta run 5.png').convert_alpha()
+                'Stick of War/Picture/stickman sparta/stickman sparta run/stickman sparta run 5.png').convert_alpha()
         ]
         self.sparta_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.sparta_all_image]
 
         # Sparta attack
         self.sparta_attack_image = [
             pygame.image.load(
-                'War of stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 1.png').convert_alpha(),
+                'Stick of War/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 1.png').convert_alpha(),
             pygame.image.load(
-                'War of stick/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 2.png').convert_alpha()
+                'Stick of War/Picture/stickman sparta/stickman sparta attack/stickman sparta attack 2.png').convert_alpha()
         ]
         self.sparta_attack_frame_storage = [pygame.transform.scale(frame, (75, 100)) for frame in self.sparta_attack_image]
 
-        self.sparta_button_image = pygame.image.load('War of stick/Picture/button/sparta_button.png')
-        self.sparta_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/sparta_dim.png')
-        self.sparta_button_flash = pygame.image.load('War of stick/Picture/button_flash/sparta_flash.png')
-        self.sparta_lock = pygame.image.load('War of stick/Picture/button_lock/sparta_lock.png')
+        self.sparta_button_image = pygame.image.load('Stick of War/Picture/button/sparta_button.png')
+        self.sparta_button_dim_image = pygame.image.load('Stick of War/Picture/button_dim/sparta_dim.png')
+        self.sparta_button_flash = pygame.image.load('Stick of War/Picture/button_flash/sparta_flash.png')
+        self.sparta_lock = pygame.image.load('Stick of War/Picture/button_lock/sparta_lock.png')
         self.sparta_button = TroopButton(self, self.sparta_button_image, self.sparta_button_dim_image, self.sparta_button_flash,
                                          self.sparta_lock,
                                          (100, 100), (400, 70), f'{database.sparta_gold}n{database.sparta_diamond}', 3000,
@@ -547,63 +547,64 @@ class GameStickOfWar:
         # Troop Five
         # Giant Walk
         self.giant_all_image = [
-            pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 1.png').convert_alpha(),
-            pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 2.png').convert_alpha(),
-            pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 3.png').convert_alpha(),
-            pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 4.png').convert_alpha(),
-            pygame.image.load('War of stick/Picture/stickman giant/stickman giant walk/stickman Giant walk 5.png').convert_alpha()]
+            pygame.image.load('Stick of War/Picture/stickman giant/stickman giant walk/stickman Giant walk 1.png').convert_alpha(),
+            pygame.image.load('Stick of War/Picture/stickman giant/stickman giant walk/stickman Giant walk 2.png').convert_alpha(),
+            pygame.image.load('Stick of War/Picture/stickman giant/stickman giant walk/stickman Giant walk 3.png').convert_alpha(),
+            pygame.image.load('Stick of War/Picture/stickman giant/stickman giant walk/stickman Giant walk 4.png').convert_alpha(),
+            pygame.image.load('Stick of War/Picture/stickman giant/stickman giant walk/stickman Giant walk 5.png').convert_alpha()]
         self.giant_frame_storage = [pygame.transform.scale(frame, (150, 200)) for frame in self.giant_all_image]
 
         # Giant Attack
         self.giant_attack_image = [
             pygame.image.load(
-                'War of stick/Picture/stickman giant/stickman giant attack/stickman Giant attack 1.png').convert_alpha(),
+                'Stick of War/Picture/stickman giant/stickman giant attack/stickman Giant attack 1.png').convert_alpha(),
             pygame.image.load(
-                'War of stick/Picture/stickman giant/stickman giant attack/stickman Giant attack 2.png').convert_alpha()]
+                'Stick of War/Picture/stickman giant/stickman giant attack/stickman Giant attack 2.png').convert_alpha()]
         self.giant_attack_frame_storage = [pygame.transform.scale(frame, (150, 200)) for frame in self.giant_attack_image]
 
-        self.giant_button_image = pygame.image.load('War of stick/Picture/button/giant_button.png').convert_alpha()
-        self.giant_button_dim_image = pygame.image.load('War of stick/Picture/button_dim/giant_dim.png')
-        self.giant_button_flash = pygame.image.load('War of stick/Picture/button_flash/giant_flash.png')
-        self.giant_lock = pygame.image.load('War of stick/Picture/button_lock/giant_lock.png')
+        self.giant_button_image = pygame.image.load('Stick of War/Picture/button/giant_button.png').convert_alpha()
+        self.giant_button_dim_image = pygame.image.load('Stick of War/Picture/button_dim/giant_dim.png')
+        self.giant_button_flash = pygame.image.load('Stick of War/Picture/button_flash/giant_flash.png')
+        self.giant_lock = pygame.image.load('Stick of War/Picture/button_lock/giant_lock.png')
         self.giant_button = TroopButton(self, self.giant_button_image, self.giant_button_dim_image, self.giant_button_flash,
                                         self.giant_lock,
                                         (100, 100),
                                         (500, 70), f'{database.giant_gold}n{database.giant_diamond}', 3000, database.giant_gold,
                                         database.giant_diamond)
 
-        self.enemy_one_normal = [pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_1.png').convert_alpha(),
-                                 pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_2.png').convert_alpha(),
-                                 pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_3.png').convert_alpha(),
-                                 pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_4.png').convert_alpha()]
-        self.enemy_one_attack = [pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_attack_1.png').convert_alpha(),
-                                 pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_attack_2.png').convert_alpha(),
-                                 pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_attack_3.png').convert_alpha(),
-                                 pygame.image.load('Plant vs Stick/Picture/enemy_one/enemy_one_attack_4.png').convert_alpha()]
+        self.enemy_one_normal = [pygame.image.load('Bokemon vs Stick/Picture/enemy_one/enemy_one_1.png').convert_alpha(),
+                                 pygame.image.load('Bokemon vs Stick/Picture/enemy_one/enemy_one_2.png').convert_alpha(),
+                                 pygame.image.load('Bokemon vs Stick/Picture/enemy_one/enemy_one_3.png').convert_alpha(),
+                                 pygame.image.load('Bokemon vs Stick/Picture/enemy_one/enemy_one_4.png').convert_alpha()]
+        self.enemy_one_attack = [pygame.image.load('Bokemon vs Stick/Picture/enemy_one/enemy_one_attack_1.png').convert_alpha(),
+                                 pygame.image.load('Bokemon vs Stick/Picture/enemy_one/enemy_one_attack_2.png').convert_alpha(),
+                                 pygame.image.load('Bokemon vs Stick/Picture/enemy_one/enemy_one_attack_3.png').convert_alpha(),
+                                 pygame.image.load('Bokemon vs Stick/Picture/enemy_one/enemy_one_attack_4.png').convert_alpha()]
         self.enemy_one_frame_storage = [pygame.transform.scale(frame, (110, 135)) for frame in self.enemy_one_normal]
         self.enemy_one_attack_frame_storage = [pygame.transform.scale(frame, (110, 135)) for frame in self.enemy_one_attack]
 
-        self.enemy_two_normal = [pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_1.png').convert_alpha(),
-                                 pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_2.png').convert_alpha(),
-                                 pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_3.png').convert_alpha(),
-                                 pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_4.png').convert_alpha()]
-        self.enemy_two_attack = [pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_attack_1.png').convert_alpha(),
-                                 pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_attack_2.png').convert_alpha(),
-                                 pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_attack_3.png').convert_alpha(),
-                                 pygame.image.load('Plant vs Stick/Picture/enemy_two/enemy_two_attack_4.png').convert_alpha(), ]
+        self.enemy_two_normal = [pygame.image.load('Bokemon vs Stick/Picture/enemy_two/enemy_two_1.png').convert_alpha(),
+                                 pygame.image.load('Bokemon vs Stick/Picture/enemy_two/enemy_two_2.png').convert_alpha(),
+                                 pygame.image.load('Bokemon vs Stick/Picture/enemy_two/enemy_two_3.png').convert_alpha(),
+                                 pygame.image.load('Bokemon vs Stick/Picture/enemy_two/enemy_two_4.png').convert_alpha()]
+        self.enemy_two_attack = [pygame.image.load('Bokemon vs Stick/Picture/enemy_two/enemy_two_attack_1.png').convert_alpha(),
+                                 pygame.image.load('Bokemon vs Stick/Picture/enemy_two/enemy_two_attack_2.png').convert_alpha(),
+                                 pygame.image.load('Bokemon vs Stick/Picture/enemy_two/enemy_two_attack_3.png').convert_alpha(),
+                                 pygame.image.load('Bokemon vs Stick/Picture/enemy_two/enemy_two_attack_4.png').convert_alpha(), ]
         self.enemy_two_frame_storage = [pygame.transform.scale(frame, (100, 95)) for frame in self.enemy_two_normal]
         self.enemy_two_attack_frame_storage = [pygame.transform.scale(frame, (100, 95)) for frame in self.enemy_two_attack]
 
-        self.enemy_three_normal = [pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_1.png').convert_alpha(),
-                                   pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_2.png').convert_alpha(),
-                                   pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_3.png').convert_alpha(),
-                                   pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_4.png').convert_alpha(),
-                                   pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_5.png').convert_alpha(), ]
-        self.enemy_three_attack = [pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_1.png').convert_alpha(),
-                                   pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_2.png').convert_alpha(),
-                                   pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_3.png').convert_alpha(),
-                                   pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_4.png').convert_alpha(),
-                                   pygame.image.load('Plant vs Stick/Picture/enemy_three/enemy_three_attack_5.png').convert_alpha()]
+        self.enemy_three_normal = [pygame.image.load('Bokemon vs Stick/Picture/enemy_three/enemy_three_1.png').convert_alpha(),
+                                   pygame.image.load('Bokemon vs Stick/Picture/enemy_three/enemy_three_2.png').convert_alpha(),
+                                   pygame.image.load('Bokemon vs Stick/Picture/enemy_three/enemy_three_3.png').convert_alpha(),
+                                   pygame.image.load('Bokemon vs Stick/Picture/enemy_three/enemy_three_4.png').convert_alpha(),
+                                   pygame.image.load('Bokemon vs Stick/Picture/enemy_three/enemy_three_5.png').convert_alpha(), ]
+        self.enemy_three_attack = [pygame.image.load('Bokemon vs Stick/Picture/enemy_three/enemy_three_attack_1.png').convert_alpha(),
+                                   pygame.image.load('Bokemon vs Stick/Picture/enemy_three/enemy_three_attack_2.png').convert_alpha(),
+                                   pygame.image.load('Bokemon vs Stick/Picture/enemy_three/enemy_three_attack_3.png').convert_alpha(),
+                                   pygame.image.load('Bokemon vs Stick/Picture/enemy_three/enemy_three_attack_4.png').convert_alpha(),
+                                   pygame.image.load(
+                                       'Bokemon vs Stick/Picture/enemy_three/enemy_three_attack_5.png').convert_alpha()]
         self.enemy_three_frame_storage = [pygame.transform.scale(frame, (100, 95)) for frame in self.enemy_three_normal]
         self.enemy_three_attack_frame_storage = [pygame.transform.scale(frame, (100, 95)) for frame in self.enemy_three_attack]
 
@@ -814,10 +815,6 @@ class GameStickOfWar:
                         if bullet[1].x + 930 >= self.right_rect_castle.x:
                             self.health_bar_enemy.update_health(troop.attack_damage)
                             troop.bullet_on_court.remove(bullet)
-                            print(bullet[1].x)
-                            print(self.right_rect_castle.x)
-                            print(troop.attack_damage)
-                            print(self.health_bar_enemy.current_health)
                 else:
                     troop.move_bullet(self.bg_x)
                     break
@@ -1072,7 +1069,7 @@ class GameStickOfWar:
 
     def run(self):
         self.reset_func()
-        self.game_music = pygame.mixer.Sound('War of stick/Music/game_music.mp3')
+        self.game_music = pygame.mixer.Sound('Stick of War/Music/game_music.mp3')
         self.game_music.set_volume(0.2)
         self.game_music.play(loops=-1)
         while True:

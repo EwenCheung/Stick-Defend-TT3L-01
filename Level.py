@@ -16,25 +16,25 @@ class GameLevel:
         self.screen = pygame.display.set_mode((1000, 600))
         pygame.display.set_caption('Choose Level')
 
-        self.wood_plank_surface = pygame.image.load('Plant vs Stick/Picture/utils/wood.png').convert()
+        self.wood_plank_surface = pygame.image.load('Bokemon vs Stick/Picture/utils/wood.png').convert()
         self.wood_plank_surface = pygame.transform.scale(self.wood_plank_surface, (100, 120))
         self.wood_plank_surface_back_and_store = pygame.transform.scale(self.wood_plank_surface, (90, 50))
 
-        self.lock = pygame.image.load('War of stick/Picture/utils/lock.png')
+        self.lock = pygame.image.load('Stick of War/Picture/utils/lock.png')
         self.lock_surf = pygame.transform.scale(self.lock, (100, 100))
 
-        self.one_star = pygame.image.load('War of stick/Picture/utils/one_star.png')
+        self.one_star = pygame.image.load('Stick of War/Picture/utils/one_star.png')
         self.one_star_surf = pygame.transform.scale(self.one_star, (90, 40))
 
-        self.two_star = pygame.image.load('War of stick/Picture/utils/two_star.png')
+        self.two_star = pygame.image.load('Stick of War/Picture/utils/two_star.png')
         self.two_star_surf = pygame.transform.scale(self.two_star, (90, 40))
 
-        self.three_star = pygame.image.load('War of stick/Picture/utils/three_star.png')
+        self.three_star = pygame.image.load('Stick of War/Picture/utils/three_star.png')
         self.three_star_surf = pygame.transform.scale(self.three_star, (90, 40))
 
-        self.level_bg = pygame.image.load('War of stick/Picture/utils/choose level.png')
+        self.level_bg = pygame.image.load('Stick of War/Picture/utils/choose level.png')
 
-        self.level_select_music = pygame.mixer.Sound('War of stick/Music/level.mp3')
+        self.level_select_music = pygame.mixer.Sound('Stick of War/Music/level.mp3')
         self.level_select_music.set_volume(0.2)
         self.level_select_music.play(loops=-1)
 
@@ -513,7 +513,7 @@ class GameLevel:
                 database.lvl_choose = 100
 
     def run(self):
-        self.level_select_music = pygame.mixer.Sound('War of stick/Music/level.mp3')
+        self.level_select_music = pygame.mixer.Sound('Stick of War/Music/level.mp3')
         self.level_select_music.set_volume(0.2)
         self.level_select_music.play(loops=-1)
 
