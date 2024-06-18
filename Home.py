@@ -21,6 +21,10 @@ class LoadingBar:
         # if remove that the loading bar won't work
 
     def draw_bar(self, screen):
+        """"
+        first one is draw the behind the loading bar 
+        second one is the loading bar
+        """
         pygame.draw.rect(screen, self.border_colour, (
             self.x - self.border_width, self.y - self.border_width, self.width + 2 * self.border_width,
             self.height + 2 * self.border_width))

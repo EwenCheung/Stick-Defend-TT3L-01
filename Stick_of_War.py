@@ -40,16 +40,16 @@ class TroopButton:
     def render_name(self, screen):
         font = pygame.font.Font(None, 15)
         lines = self.price.split('n')
-        total_height = len(lines) * 15
-        y_offset = -total_height / 2
+        total_height = len(lines) * 15 # to determine their height of both of the price
+        y_offset = -total_height / 2 # to stack them vertically
 
         colors = [(255, 215, 0), (56, 182, 255)]  # gold, blue
         for line, color in zip(lines, colors):
             text = font.render(line, True, color)
             text_rect = text.get_rect(center=(self.position[0], self.position[1] + y_offset))
-            text_rect.y += 46
+            text_rect.y += 46 # if don't have this then the price will have the same center position as the button
             screen.blit(text, text_rect)
-            y_offset += 8
+            y_offset += 8 # this will make sure the diamond price to be place below the gold price
 
     def draw(self, screen, troop_available):
         if troop_available == True:
@@ -87,6 +87,7 @@ class TroopButton:
         cooldown_text = cooldown_font.render(f"{self.remaining_cooldown}", True, (255, 255, 255))
         cooldown_text_rect = cooldown_text.get_rect(center=(self.position[0], self.position[1]))
         screen.blit(cooldown_text, cooldown_text_rect)
+        # last clicked time store the current time when i clicked it
 
     def is_clicked(self, mouse_pos):
         current_time = pygame.time.get_ticks()
@@ -94,8 +95,8 @@ class TroopButton:
             if self.rect.collidepoint(mouse_pos):
                 self.clicked = True
                 self.last_clicked_time = current_time
-                return True
-        return False
+                return True # meet cooldown and collision check
+        return False # otherwise
 
 
 class Troop:
@@ -909,6 +910,7 @@ class GameStickOfWar:
             timer_surface = pygame.font.Font(None, 30).render(self.time_string, True, 'black')
             timer_rect = timer_surface.get_rect(center=(908, 50))
             self.screen.blit(timer_surface, timer_rect)
+            # once the code is run, the star time will run then if i start the game then the end game time will take over 
 
         self.health_bar_user.draw(self.screen)
         self.health_bar_enemy.draw(self.screen)
