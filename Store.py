@@ -977,7 +977,7 @@ class Game_Store:
                             gold_icon_rect = gold_icon_surf.get_rect(midleft=(375, 293))
                             self.screen.blit(gold_icon_surf, gold_icon_rect)
 
-                            gold_text_surf = self.font.render(str(100), True, 'White')
+                            gold_text_surf = self.font.render(str(database.warrior_gold), True, 'White')
                             gold_text_rect = gold_text_surf.get_rect(midleft=(406, 293))
                             self.screen.blit(gold_text_surf, gold_text_rect)
 
@@ -985,7 +985,7 @@ class Game_Store:
                             diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366, 330))
                             self.screen.blit(diamond_icon_surf, diamond_icon_rect)
 
-                            diamond_text_surf = self.font.render(('-'), True, "White")
+                            diamond_text_surf = self.font.render(str(database.warrior_diamond), True, "White")
                             diamond_text_rect = diamond_text_surf.get_rect(midleft=(406, 332))
                             self.screen.blit(diamond_text_surf, diamond_text_rect)
 
@@ -1054,7 +1054,7 @@ class Game_Store:
                             gold_icon_rect = gold_icon_surf.get_rect(midleft=(375, 293))
                             self.screen.blit(gold_icon_surf, gold_icon_rect)
 
-                            gold_text_surf = self.font.render(str(300), True, 'White')
+                            gold_text_surf = self.font.render(str(database.archer_gold), True, 'White')
                             gold_text_rect = gold_text_surf.get_rect(midleft=(406, 293))
                             self.screen.blit(gold_text_surf, gold_text_rect)
 
@@ -1062,7 +1062,7 @@ class Game_Store:
                             diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366, 330))
                             self.screen.blit(diamond_icon_surf, diamond_icon_rect)
 
-                            diamond_text_surf = self.font.render(str(200), True, "White")
+                            diamond_text_surf = self.font.render(str(database.archer_diamond), True, "White")
                             diamond_text_rect = diamond_text_surf.get_rect(midleft=(406, 332))
                             self.screen.blit(diamond_text_surf, diamond_text_rect)
 
@@ -1131,7 +1131,7 @@ class Game_Store:
                             gold_icon_rect = gold_icon_surf.get_rect(midleft=(375, 293))
                             self.screen.blit(gold_icon_surf, gold_icon_rect)
 
-                            gold_text_surf = self.font.render(str(700), True, 'White')
+                            gold_text_surf = self.font.render(str(database.sparta_gold), True, 'White')
                             gold_text_rect = gold_text_surf.get_rect(midleft=(406, 293))
                             self.screen.blit(gold_text_surf, gold_text_rect)
 
@@ -1139,7 +1139,7 @@ class Game_Store:
                             diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366, 330))
                             self.screen.blit(diamond_icon_surf, diamond_icon_rect)
 
-                            diamond_text_surf = self.font.render(str(200), True, "White")
+                            diamond_text_surf = self.font.render(str(database.sparta_diamond), True, "White")
                             diamond_text_rect = diamond_text_surf.get_rect(midleft=(406, 332))
                             self.screen.blit(diamond_text_surf, diamond_text_rect)
 
@@ -1208,7 +1208,7 @@ class Game_Store:
                             gold_icon_rect = gold_icon_surf.get_rect(midleft=(375, 293))
                             self.screen.blit(gold_icon_surf, gold_icon_rect)
 
-                            gold_text_surf = self.font.render(str(500), True, 'White')
+                            gold_text_surf = self.font.render(str(database.wizard_gold), True, 'White')
                             gold_text_rect = gold_text_surf.get_rect(midleft=(406, 293))
                             self.screen.blit(gold_text_surf, gold_text_rect)
 
@@ -1216,7 +1216,7 @@ class Game_Store:
                             diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366, 330))
                             self.screen.blit(diamond_icon_surf, diamond_icon_rect)
 
-                            diamond_text_surf = self.font.render(str(500), True, "White")
+                            diamond_text_surf = self.font.render(str(database.wizard_diamond), True, "White")
                             diamond_text_rect = diamond_text_surf.get_rect(midleft=(406, 332))
                             self.screen.blit(diamond_text_surf, diamond_text_rect)
 
@@ -1285,7 +1285,7 @@ class Game_Store:
                             gold_icon_rect = gold_icon_surf.get_rect(midleft=(375, 293))
                             self.screen.blit(gold_icon_surf, gold_icon_rect)
 
-                            gold_text_surf = self.font.render(str(700), True, 'White')
+                            gold_text_surf = self.font.render(str(database.giant_gold), True, 'White')
                             gold_text_rect = gold_text_surf.get_rect(midleft=(406, 293))
                             self.screen.blit(gold_text_surf, gold_text_rect)
 
@@ -1293,7 +1293,7 @@ class Game_Store:
                             diamond_icon_rect = diamond_icon_surf.get_rect(midleft=(366, 330))
                             self.screen.blit(diamond_icon_surf, diamond_icon_rect)
 
-                            diamond_text_surf = self.font.render(str(200), True, "White")
+                            diamond_text_surf = self.font.render(str(database.giant_diamond), True, "White")
                             diamond_text_rect = diamond_text_surf.get_rect(midleft=(406, 332))
                             self.screen.blit(diamond_text_surf, diamond_text_rect)
 
