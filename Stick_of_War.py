@@ -81,7 +81,7 @@ class TroopButton:
         self.render_name(screen)
 
     def testing(self, screen):
-        current_time = pygame.time.get_ticks()
+        current_time = pygame.time.get_ticks() # this current time run when the code is run
         self.remaining_cooldown = max(0, self.cooldown_time - (current_time - self.last_clicked_time)) // 1000
         cooldown_font = pygame.font.Font(None, 70)
         cooldown_text = cooldown_font.render(f"{self.remaining_cooldown}", True, (255, 255, 255))
@@ -786,7 +786,7 @@ class GameStickOfWar:
         elif keys[pygame.K_d] or keys[pygame.K_RIGHT]:
             self.bg_x -= self.scroll_speed
 
-        self.bg_x = max(self.bg_x, 1000 - self.background_image.get_width())
+        self.bg_x = max(self.bg_x, 1000 - self.background_image.get_width()) # without this two it will scroll more than the bg width
         self.bg_x = min(self.bg_x, 0)
 
         current_time = pygame.time.get_ticks()
