@@ -273,6 +273,7 @@ class GameLevel:
                 exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if self.wood_plank_rectangle_store.collidepoint(pygame.mouse.get_pos()):
+                    self.level_select_music.stop()
                     self.go_store_py = True
 
                 if self.wood_plank_rectangle_back.collidepoint(pygame.mouse.get_pos()):
